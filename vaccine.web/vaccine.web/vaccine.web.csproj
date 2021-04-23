@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="clientapps\src\assets\**" />
+    <Compile Remove="clientapps\src\sass\**" />
+    <Content Remove="clientapps\src\assets\**" />
+    <Content Remove="clientapps\src\sass\**" />
+    <EmbeddedResource Remove="clientapps\src\assets\**" />
+    <EmbeddedResource Remove="clientapps\src\sass\**" />
+    <None Remove="clientapps\src\assets\**" />
+    <None Remove="clientapps\src\sass\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="site.config.json" />
+    <Content Remove="site.store.Debug.json" />
+    <Content Remove="site.store.Release.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="site.config.Release.json" />
+    <None Include="site.config.Debug.json" />
+    <None Include="site.config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="xcopy &quot;$(ProjectDir)site.config.$(ConfigurationName).json&quot; &quot;$(ProjectDir)site.config.json&quot; /q /y&#xD;&#xA;" />
+  </Target>
+
+</Project>
