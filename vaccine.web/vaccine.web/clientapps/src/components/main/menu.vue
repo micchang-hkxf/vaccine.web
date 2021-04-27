@@ -5,6 +5,11 @@
                 <v-list-item-title>Dialog</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
+        <v-list-item @click="toPages('steps')">
+            <v-list-item-content>
+                <v-list-item-title>Steps</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
     </v-list>
 </template>
 
