@@ -1,5 +1,8 @@
 ﻿<template>
     <app-layout>
+        <template v-slot:navigation>
+            <app-menu></app-menu>
+        </template>
         <template v-slot:app-content>
             <div id="app">
                 main page @ vue aaacgb<br />
@@ -16,6 +19,7 @@
 </template>
 
 <script>
+    import appMenu from 'components/main/menu'
     import appLayout from 'components/app_layout'
     import axios from 'axios'
     import { mapState } from 'vuex'
@@ -30,7 +34,7 @@
             ...mapState('config', ['configEnabled']),
         },
         props: {
-            
+
         },
         created: function () {
             axios.get('/api/state').then(r => {
@@ -38,10 +42,10 @@
             })
         },
         methods: {
-           
+
         },
         components: {
-            appLayout
+            appLayout, appMenu
         }
     }
 </script>
