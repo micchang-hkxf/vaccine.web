@@ -43,30 +43,37 @@ Vue.use(VueI18n)
 
 export default new Vuetify({
     theme: {
-        light:true ,
+        light: true,
         dark: true,
-      options: {
-        customProperties: true,
-      },
-        themes: {
-        dark: {
+        options: {
+            customProperties: true,
         },
-      light: {
-        primary: '#2EB6C7',
-        secondary: '#424242',
-        accent: '#82B1FF',
-        error: '#FF5252',
-        info: '#2196F3',
-        success: '#4CAF50',
-        warning: '#FFC107'
-      },
+        themes: {
+            dark: {
+                primary: '#2EB6C7',
+                secondary: '#364250',
+                accent: '#82B1FF',
+                error: '#F0524B',
+                info: '#2196F3',
+                success: '#2EB6C7',
+                warning: '#FC8E5E'
+            },
+            light: {
+                primary: '#2EB6C7',
+                secondary: '#364250',
+                accent: '#82B1FF',
+                error: '#F0524B',
+                info: '#2196F3',
+                success: '#2EB6C7',
+                warning: '#FC8E5E'
+            },
+        },
     },
-  },
     lang: {
         locales: { zhHant },
         current: 'zh-Hant',
     },
     icons: {
-        iconfont:'fa'||'mdi'
+        iconfont: 'fa' || 'mdi'
     }
 });
