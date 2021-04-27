@@ -1,8 +1,20 @@
 ﻿<template>
-    <v-dialog v-model="isShow" full-screen>
-        11111
+    <v-dialog v-model="isShow">
+        <v-card class="mx-auto">
+            <v-toolbar :color="primary" height="56px">
+                <slot name="toolbar"></slot>
+            </v-toolbar>
+            <slot name="content"></slot>
+            <v-card-actions>
+                <slot name="action"></slot>
+            </v-card-actions>
+        </v-card>
     </v-dialog>
 </template>
+
+<style scoped>
+
+</style>
 
 <script>
     export default {
@@ -10,6 +22,7 @@
             isShow: false
         }),
         computed: {
+
         },
         props: ["refKey"],
         created: function () {
@@ -22,11 +35,9 @@
             });
         },
         methods: {
-           
+
         },
         components: {
         }
     }
 </script>
-<style>
-</style>
