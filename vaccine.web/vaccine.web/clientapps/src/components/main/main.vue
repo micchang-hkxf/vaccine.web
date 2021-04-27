@@ -2,7 +2,7 @@
     <app-layout>
         <template v-slot:app-content>
             <div id="app">
-                main page @ vue aaacb<br />
+                main page @ vue aaacgb<br />
                 vuetify: {{($vuetify.breakpoint!=null?'vuetify已啟用':'')}}<br />
                 vue-router: {{($route!=null?'router已啟用':'')}}<br />
                 config : {{ configEnabled }}<br />
