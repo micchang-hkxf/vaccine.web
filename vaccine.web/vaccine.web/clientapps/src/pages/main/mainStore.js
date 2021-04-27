@@ -2,7 +2,7 @@
 import Vuex from 'vuex'
 Vue.use(Vuex)
 import userStore from "stores/userStore"
-import configStore from "stores/configStore"
+//import configStore from "stores/configStore"
 
 export default new Vuex.Store({
     actions: {
@@ -15,6 +15,6 @@ export default new Vuex.Store({
     },
     modules: {
         user: userStore,
-        config: configStore
+        //config: configStore
     }
 })
