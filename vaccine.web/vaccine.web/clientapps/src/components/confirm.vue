@@ -5,7 +5,7 @@
             <v-card>
                 <v-card-title>
                     <div class="confirm-image d-flex justify-center">
-                        <div style="width:46px;height:46px;">
+                        <div >
                             <slot name="confirm-image"></slot>
                         </div>
                     </div>
@@ -37,11 +37,11 @@
                         <v-row>
                             <v-cols cols="6" class="confirm-btns">
                                 <v-btn class="confirm-left-btn"
-                                       color="#324150"
+                                       color="rgba(50,65,80,0.2)"
                                        :ripple="false"
                                        outlined
                                        @click="leftBtnAction">
-                                    <span class="confirm-btns-text"><slot name="confirm-left-btn-text"></slot></span>
+                                    <span class="confirm-left-btns-text"><slot name="confirm-left-btn-text"></slot></span>
                                 </v-btn>
                             </v-cols>
                             <v-cols cols="6" class="confirm-btns">
@@ -49,7 +49,7 @@
                                        color="#2EB6C7"
                                        :ripple="false"
                                        @click="rightBtnAction">
-                                    <span class="confirm-btns-text"><slot name="confirm-right-btn-text"></slot></span>
+                                    <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
 
                                 </v-btn>
                             </v-cols>
@@ -65,10 +65,20 @@
 
 
 <style>
-    .v-dialog{
-        box-shadow:none !important;
+    .v-dialog {
+        box-shadow: none !important;
+        border-radius: 8px !important;
     }
 
+    .v-btn--contained {
+     box-shadow:none !important;    
+    }
+
+
+    .v-btn:before {
+         background-color: white !important; 
+    }
+    
     .row, .col {
         margin: 0px !important;
         padding: 0px !important;
@@ -77,7 +87,7 @@
 
     .confirm-image {
         width: 100%;
-        padding-top:24px;
+        padding-top:14px;
     }
 
     .confirm-text-container {
@@ -92,7 +102,7 @@
         font: normal normal normal 20px Noto Sans T Chinese;
         text-align: center;
         opacity: 1;
-        padding-top: 24px;
+        padding-top: 14px;
     }
 
     .confirm-text {
@@ -101,17 +111,17 @@
         font: normal normal normal 16px Noto Sans T Chinese;
         text-align: center;
         opacity: 1;
-       
+        padding-top: 4px;
     }
 
     .confirm-sub-title {
         display: flex;
         justify-content: center;
-        color: #364250;
+        color: rgba(50,65,80,0.5);      
         font: normal normal normal 12px Noto Sans T Chinese;
         text-align: center;
         opacity: 1;
-      
+        padding-top: 4px;
     }
 
 
@@ -122,24 +132,37 @@
      
     }
 
-    .confirm-btns-text {
-        /*color: #324150;*/
+    .confirm-left-btns-text {
+        color: #324150;
         font: normal normal normal 16px/24px Roboto;
         letter-spacing: 0px;
         text-align: center;
         opacity: 1;
     }
 
+    .confirm-right-btns-text {
+        color: #FFFFFF;
+        font: normal normal normal 16px/24px Roboto;
+        letter-spacing: 0px;
+        text-align: center;
+        opacity: 1;
+    }
+
+
     .confirm-center-btn {
+        width: 88px;
         margin-bottom: 20px;
     }
 
     .confirm-left-btn {
+        width: 88px;
+        /*color: rgba(50,65,80,0.2) !important;*/
         margin-bottom: 20px;
         margin-right: 20px;
     }
 
     .confirm-right-btn {
+        width: 88px;
         margin-bottom: 20px;
         margin-left: 20px;
     }
