@@ -7,7 +7,7 @@
             <div id="app">
                 <!--<v-btn @click="switch('one')">one</v-btn>
     <sys-dialog ref-key="one"></sys-dialog>-->
-                <v-btn @click="show('two')">two</v-btn>
+                <v-btn color="primary" @click="show('two')">two</v-btn>
                 <com-dialog ref-key="two"></com-dialog>
             </div>
         </template>

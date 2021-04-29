@@ -1,6 +1,6 @@
 ﻿<template>
     <!-- App.vue -->
-    <v-app class="app-container">
+    <v-app class="app-container" light>
         <v-navigation-drawer app v-model="showNavi">
             <div class="app-navigation" v-if="$slots['navigation']">
                 <slot name="navigation" />
