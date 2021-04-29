@@ -9,7 +9,19 @@ module.exports = {
             entry: "./src/pages/main/main.js",
             template: "./src/pages/main/main.html",
             //title: "main",
-            chunks: ["main"]
+            chunks: ['chunk-vendors', 'chunk-common',"main"]
+        },
+        admin: {
+            entry: "./src/pages/admin/admin.js",
+            template: "./src/pages/admin/admin.html",
+            //title: "main",
+            chunks: ['chunk-vendors', 'chunk-common',"admin"]
+        },
+        regist: {
+            entry: "./src/pages/regist/regist.js",
+            template: "./src/pages/regist/regist.html",
+            //title: "main",
+            chunks: ['chunk-vendors', 'chunk-common',"regist"]
         },
     },
     chainWebpack: config => {
