@@ -2,15 +2,16 @@
     <v-stepper v-model="e1" :alt-labels="altLabels" :class="refClass">
         <v-stepper-header>
             <template v-for="(step,index) in steps">
-                <v-stepper-step :step="step.stepNum" :key="index" color="none">
+                <v-stepper-step :step="step.stepNum" :key="'step' + index" color="none">
                     {{step.title}}
                 </v-stepper-step>
-                <v-divider v-if="index !== steps.length - 1" :key="index"></v-divider>
+                <v-divider v-if="index !== steps.length - 1" :key="'divider' + index"></v-divider>
+                <div class="step-arrow" v-if="arrow && index !== steps.length - 1" :key="'arrow' + index"></div>
             </template>
         </v-stepper-header>
 
         <v-stepper-items>
-            <v-stepper-content :step="step.stepNum" v-for="(step,index) in steps" :key="index">
+            <v-stepper-content :step="step.stepNum" v-for="(step,index) in steps" :key="'content'+ index">
                 <slot :name="`step-${step.stepNum}`" :next="next" :previous="previous"></slot>
             </v-stepper-content>
         </v-stepper-items>
@@ -24,12 +25,12 @@
         }),
         computed: {
             refClass: function () {
-                var result={ };
+                var result = {};
                 result[this.refKey] = true;
                 return result;
             }
         },
-        props: ["refKey","steps","altLabels"],
+        props: ["refKey", "steps", "altLabels","arrow"],
         created: function () {
             var comp = this;
             comp.$bus.$on(`${comp.refKey}_gotoStep`, function (stepNum) {
@@ -38,10 +39,14 @@
         },
         methods: {
             next: function () {
-                this.e1 += 1;
+                if (this.e1 < this.steps.length) {
+                    this.e1 += 1;
+                }
             },
             previous: function () {
-                this.e1 -= 1;
+                if (this.e1 > 1) {
+                    this.e1 -= 1;
+                }
             }
         },
         components: {
@@ -51,6 +56,7 @@
 <style>
     .v-stepper, .v-stepper__header {
         box-shadow: none !important;
+        margin: 0 24px;
     }
 
     .v-stepper__step {
@@ -96,6 +102,16 @@
     }
 
     .v-stepper--alt-labels .v-stepper__header .v-divider {
-        margin-top: 50px !important;  
+        margin-top: 44px !important;  
+    }
+
+    .step-arrow::after {
+        position: relative;
+        content: '\25BA';
+        top: 26px;
+    }
+
+    .v-stepper--alt-labels .step-arrow::after {
+        top: 33px;
     }
 </style>
