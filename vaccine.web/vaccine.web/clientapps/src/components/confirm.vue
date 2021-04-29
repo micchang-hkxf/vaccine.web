@@ -23,8 +23,9 @@
                                 <v-btn class="confirm-center-btn"
                                        color="#2EB6C7"
                                        :ripple="false"
-                                       @click="isShow = false">
-                                    <span class="confirm-btns-text"><slot name="confirm-right-btn-text"></slot></span>
+                                       @click="rightBtnAction">
+                                    <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
+
                                 </v-btn>
                             </v-cols>                          
                         </v-row>
