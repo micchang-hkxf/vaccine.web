@@ -9,9 +9,9 @@
                 <com-steps ref-key="one"
                            :steps="steps"
                            :alt-labels="false">
-                    <template v-slot:step-1>
+                    <template v-slot:step-1="{next, previous}">
                         <v-card class="mb-12" color="grey lighten-1" height="100px">內文 1</v-card>
-                        <v-btn color="primary" @click="gotoStep('one',2)">Continue</v-btn>
+                        <v-btn color="primary" @click="next">Continue</v-btn>
                         <v-btn text @click="stepsCancel('one')">Cancel</v-btn>
                     </template>
                     <template v-slot:step-2>
@@ -62,7 +62,7 @@
                 { 'stepNum': 1, 'title': '步驟 1' },
                 { 'stepNum': 2, 'title': '步驟 2' },
                 { 'stepNum': 3, 'title': '步驟 3' }
-            ], // stepNum: 標籤編號, title: 標籤文
+            ], // stepNum: 標籤編號, title: 標籤標題
         }),
         computed: {
         },
