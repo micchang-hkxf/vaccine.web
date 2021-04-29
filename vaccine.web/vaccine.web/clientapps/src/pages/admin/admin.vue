@@ -16,7 +16,6 @@
             
         },
         created: function () {
-            this.$vuetify.theme.light = true;
         },
         methods: {
            

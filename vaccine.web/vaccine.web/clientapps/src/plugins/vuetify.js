@@ -44,7 +44,7 @@ Vue.use(VueI18n)
 export default new Vuetify({
     theme: {
         light: true,
-        dark: true,
+        dark: false,
         options: {
             customProperties: true,
         },
