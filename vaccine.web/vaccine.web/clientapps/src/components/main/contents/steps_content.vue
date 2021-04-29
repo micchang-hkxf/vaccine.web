@@ -9,7 +9,8 @@
                 <com-steps ref-key="one"
                            :steps="steps"
                            :alt-labels="false"
-                           :arrow="false">
+                           :arrow="true"
+                           stepType="grid">
                     <template v-slot:step-1="{next}">
                         <v-card class="mb-12" color="grey lighten-1" height="100px">內文 1</v-card>
                         <v-btn color="primary" @click="next">Next</v-btn>
@@ -30,7 +31,8 @@
                 <com-steps ref-key="two"
                            :steps="steps"
                            :alt-labels="true"
-                           :arrow="true">
+                           :arrow="true"
+                           stepType="grid">
                     <template v-slot:step-1="{next}">
                         <v-card class="mb-12" color="grey lighten-1" height="100px">內文 1</v-card>
                         <v-btn color="primary" @click="next">Next</v-btn>
@@ -43,6 +45,25 @@
                     <template v-slot:step-3="{previous}">
                         <v-card class="mb-12" color="grey lighten-1" height="100px">內文 3</v-card>
                         <v-btn color="primary" @click="stepsFinish('two')">Finish</v-btn>
+                        <v-btn color="primary" @click="previous">Previous</v-btn>
+                    </template>
+                </com-steps>
+
+                <label>範例三</label>
+                <com-steps ref-key="three"
+                           :steps="stepsNoTitle">
+                    <template v-slot:step-1="{next}">
+                        <v-card class="mb-12" color="grey lighten-1" height="100px">內文 1</v-card>
+                        <v-btn color="primary" @click="next">Next</v-btn>
+                    </template>
+                    <template v-slot:step-2="{next, previous}">
+                        <v-card class="mb-12" color="grey lighten-1" height="100px">內文 2</v-card>
+                        <v-btn color="primary" @click="next">Next</v-btn>
+                        <v-btn color="primary" @click="previous">Previous</v-btn>
+                    </template>
+                    <template v-slot:step-3="{previous}">
+                        <v-card class="mb-12" color="grey lighten-1" height="100px">內文 3</v-card>
+                        <v-btn color="primary" @click="stepsFinish('three')">Finish</v-btn>
                         <v-btn color="primary" @click="previous">Previous</v-btn>
                     </template>
                 </com-steps>
@@ -63,6 +84,11 @@
                 { 'stepNum': 2, 'title': '步驟 2' },
                 { 'stepNum': 3, 'title': '步驟 3' }
             ], // stepNum: 標籤編號, title: 標籤標題
+            stepsNoTitle: [
+                { 'stepNum': 1 },
+                { 'stepNum': 2 },
+                { 'stepNum': 3 }
+            ],
         }),
         computed: {
         },
