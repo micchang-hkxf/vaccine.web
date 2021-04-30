@@ -10,6 +10,11 @@
                 <v-list-item-title>Steps</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
+        <v-list-item @click="toPages('loading')">
+            <v-list-item-content>
+                <v-list-item-title>Loading</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
     </v-list>
 </template>
 
