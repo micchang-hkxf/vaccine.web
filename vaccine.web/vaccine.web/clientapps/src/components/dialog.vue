@@ -1,10 +1,12 @@
 ﻿<template>
-    <v-dialog v-model="isShow">
-        <v-card class="mx-auto">
-            <v-toolbar :color="primary" height="56px">
+    <v-dialog v-model="isShow" :width="width">
+        <v-card class="mx-auto" >
+            <v-toolbar :color="primary" class="dialog-toolbar">
                 <slot name="toolbar"></slot>
             </v-toolbar>
-            <slot name="content"></slot>
+            <div class="dialog-content">
+                <slot name="content"></slot>
+            </div>
             <v-card-actions>
                 <slot name="action"></slot>
             </v-card-actions>
@@ -13,7 +15,21 @@
 </template>
 
 <style scoped>
-
+    .v-dialog {
+        border-radius: 0px 0px 8px 8px !important;
+        box-shadow: none !important;
+    }
+    .dialog-content {
+        padding: 16px;
+    }
+    .dialog-toolbar {
+        font-size:20px!important;
+        color:white!important;
+        height: 56px;
+        background: #2EB6C7 0% 0% no-repeat padding-box !important;
+        border-radius: 8px 8px 0px 0px;
+        opacity: 1;
+    }
 </style>
 
 <script>
@@ -24,7 +40,7 @@
         computed: {
 
         },
-        props: ["refKey"],
+        props: ["refKey","width"],
         created: function () {
             var comp = this;
             this.$bus.$on(`${comp.refKey}_show`, function (isShow) {
@@ -35,7 +51,6 @@
             });
         },
         methods: {
-
         },
         components: {
         }
