@@ -8,6 +8,7 @@ export default new VueRouter({
     routes: [
         { name: 'confirm', path: '/compoments/confirm', component: content_confirm },
         { name: 'dialog', path: '/compoments/dialog', component: content_dialog },
+        { name: 'loading', path: '/compoments/loading', component: content_loading },
         { name: 'main', path: '/main', component: content_main },
         { name: '*', path: '/', component: content_main }
     ]

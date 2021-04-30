@@ -37,9 +37,14 @@
             drawer:true ,
         }),
         computed: {
-            showNavi: function () {
-                return this.drawer && this.$slots['navigation'];
-            }
+            showNavi: {
+                get: function () {
+                    return this.drawer && this.$slots['navigation'];
+                },
+                set: function () {
+                    null;
+                }
+            } 
         },
         props: {
             
