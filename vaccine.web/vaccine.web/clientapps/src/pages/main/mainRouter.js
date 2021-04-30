@@ -3,6 +3,7 @@
 import content_main from 'components/main/main.vue'
 import content_dialog from 'components/main/contents/dialog_content.vue'
 import content_confirm from 'components/main/contents/confirm_content.vue'
+import content_loading from 'components/main/contents/loading_content.vue'
 
 export default new VueRouter({
     routes: [
