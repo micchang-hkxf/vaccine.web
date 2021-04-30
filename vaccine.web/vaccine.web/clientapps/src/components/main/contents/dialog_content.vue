@@ -34,6 +34,7 @@
     export default {
         // router,
         data: () => ({
+
         }),
         computed: {
         },
