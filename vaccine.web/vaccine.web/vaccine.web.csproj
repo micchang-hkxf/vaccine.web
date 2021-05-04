@@ -36,8 +36,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="clientapps\public\login\" />
     <Folder Include="clientapps\src\components\admin\contents\" />
     <Folder Include="clientapps\src\components\regist\contents\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Login\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

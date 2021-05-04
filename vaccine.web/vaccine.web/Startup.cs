@@ -79,7 +79,12 @@ namespace VuetifyProjectTemplate
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=main}/{action=Index}"
-                    );
+                );
+
+                routes.MapRoute(
+                    name: "login",
+                    template: "{controller=login}/{action=Index}"
+                );
             });
         }
     }
