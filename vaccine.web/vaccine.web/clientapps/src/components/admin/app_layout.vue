@@ -7,7 +7,7 @@
             </div>
         </v-navigation-drawer>
         <v-app-bar app
-                   color="indigo darken-1"
+                   color="#736DB9"
                    dark
                    height="65px"
                    :fixed="toolbar.fixed"
@@ -58,7 +58,7 @@
                 //
                 fixed: true,
                 // sets if the toolbar contents is leaving space for drawer (false) or not (true)
-                clippedLeft: true
+                clippedLeft: false
             },
         }),
         computed: {
