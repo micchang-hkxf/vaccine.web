@@ -23,6 +23,12 @@ module.exports = {
             //title: "main",
             chunks: ['chunk-vendors', 'chunk-common',"regist"]
         },
+        login: {
+            entry: "./src/pages/login/login.js",
+            template: "./src/pages/login/login.html",
+            //title: "main",
+            chunks: ['chunk-vendors', 'chunk-common', "login"]
+        },
     },
     chainWebpack: config => {
 
