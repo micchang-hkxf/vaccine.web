@@ -14,6 +14,8 @@
 
                 <slot :name="header.templateName" v-if="$slots[header.templateName]!=null" :item="item"></slot>
             </template>
+
+
             <template v-slot:item.modify="{ item }">
                 <v-menu bottom right offset-y>
                     <template v-slot:activator="{ on }">
