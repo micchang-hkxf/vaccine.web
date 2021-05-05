@@ -7,7 +7,7 @@
         </v-list-item>
     </v-list>
 </template>
-
+ 
 <script>
     //import { mapState } from 'vuex'
 
