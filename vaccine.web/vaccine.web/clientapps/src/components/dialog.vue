@@ -2,13 +2,13 @@
     <v-dialog v-model="isShow" :width="width">
         <v-card class="mx-auto" >
             <v-toolbar :color="primary" class="dialog-toolbar">
-                <slot name="toolbar"></slot>
+                <slot name="toolbar" :close="close"></slot>
             </v-toolbar>
             <div class="dialog-content">
-                <slot name="content"></slot>
+                <slot name="content" :close="close"></slot>
             </div>
             <v-card-actions>
-                <slot name="action"></slot>
+                <slot name="action" :close="close"></slot>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -51,6 +51,12 @@
             });
         },
         methods: {
+            close: function () {
+                this.$set(this, 'isShow', false);
+            },
+            open: function () {
+                this.$set(this, 'isShow', true);
+            }
         },
         components: {
         }
