@@ -18,8 +18,8 @@ export default new Vuex.Store({
                         return;
                     }
                     if (exist.state == 'network') {
+                        result.state = 'network';
                         throw result;
-                        return;
                     }
                     if (exist.upd != account.upd) {
                         result.state = 'password'
