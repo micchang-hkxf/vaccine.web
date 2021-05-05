@@ -6,16 +6,16 @@
         <template v-slot:app-content>
             <div id="app">
                 <v-btn @click="show('table')">table</v-btn>
-                <com-table ref-key="table" :headers="headers" :items="desserts">
-                    <template v-slot:column.no>
-                        <div>9***563214</div>
-                        <!--{{item}}-->
-                        <!--<div :key="index">9***563214 /////{{item}}</div>-->
+                <com-table ref-key="table" :headers="headers" :items="desserts" :page="page"  :total-count="totalCount" 
+                           :items-per-page="itemsPerPage" :total-visible="totalVisible"   >
+                    <template v-slot:item.no="{item}">
+                     
+                        <div>{{item}}</div>
                     </template>
 
-                    <!--<template v-slot:column.modify>
+                    <template v-slot:item.modify>
                         modify
-                    </template>-->
+                    </template>
                 </com-table>
             </div>
         </template>
@@ -34,6 +34,10 @@
     import comTable from 'components/table'
     export default {
         data: () => ({
+            totalCount: 12,
+            page: 1,
+            itemsPerPage: 2,
+            totalVisible: 3,
             headers: [
                 { text: '序號',     value: 'no', align: 'start',sortable: false,},
                 { text: '簽核',     value: 'sign', sortable: false},
@@ -62,6 +66,79 @@
                 },
                 {
                     no: '1',
+                    sign: 262,
+                    symbo: 16.0,
+                    date: 23,
+                    keynote: 6.0,
+                    delivery: '7%',
+
+                },
+                {
+                    no: '5',
+                    sign: 262,
+                    symbo: 16.0,
+                    date: 23,
+                    keynote: 6.0,
+                    delivery: '7%',
+                },
+                {
+                    no: '16',
+                    sign: 262,
+                    symbo: 16.0,
+                    date: 23,
+                    keynote: 6.0,
+                    delivery: '7%',
+                },
+                {
+                    no: '5',
+                    sign: 262,
+                    symbo: 16.0,
+                    date: 23,
+                    keynote: 6.0,
+                    delivery: '7%',
+                },
+                {
+                    no: '5',
+                    sign: 262,
+                    symbo: 16.0,
+                    date: 23,
+                    keynote: 6.0,
+                    delivery: '7%',
+                },
+                {
+                    no: '5',
+                    sign: 262,
+                    symbo: 16.0,
+                    date: 23,
+                    keynote: 6.0,
+                    delivery: '7%',
+                },
+                {
+                    no: '5',
+                    sign: 262,
+                    symbo: 16.0,
+                    date: 23,
+                    keynote: 6.0,
+                    delivery: '7%',
+                },
+                {
+                    no: '5',
+                    sign: 262,
+                    symbo: 16.0,
+                    date: 23,
+                    keynote: 6.0,
+                    delivery: '7%',
+                },
+                {
+                    no: '5',
+                    sign: 262,
+                    symbo: 16.0,
+                    date: 23,
+                    keynote: 6.0,
+                    delivery: '7%',
+                },
+                {
+                    no: '5',
                     sign: 262,
                     symbo: 16.0,
                     date: 23,
