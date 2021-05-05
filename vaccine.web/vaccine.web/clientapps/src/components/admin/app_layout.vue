@@ -1,7 +1,7 @@
 ﻿<template>
     <!-- App.vue -->
     <v-app>
-        <v-navigation-drawer app v-model="showNavi">
+        <v-navigation-drawer app clipped v-model="showNavi">
             <div class="app-navigation" v-if="$slots['navigation']">
                 <slot name="navigation" />
             </div>
@@ -58,7 +58,7 @@
                 //
                 fixed: true,
                 // sets if the toolbar contents is leaving space for drawer (false) or not (true)
-                clippedLeft: false
+                clippedLeft: true,
             },
         }),
         computed: {
@@ -82,5 +82,10 @@
     }
 </script>
 <style>
-
+    .v-navigation-drawer__content {
+        overflow-y: hidden !important;
+    }
+    .user-title:hover {
+        color: white !important;
+    }
 </style>
