@@ -28,6 +28,11 @@
                 <v-list-item-title>Table</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
+        <v-list-item @click="openPages('/login')">
+            <v-list-item-content>
+                <v-list-item-title>Login</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
     </v-list>
 </template>
 
@@ -46,6 +51,9 @@
         methods: {
             toPages: function (name) {
                 this.$router.push({ name })
+            },
+            openPages: function (url) {
+                window.open(url)
             }
         },
         components: {
