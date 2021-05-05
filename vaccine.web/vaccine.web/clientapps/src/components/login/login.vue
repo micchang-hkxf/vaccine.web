@@ -2,19 +2,20 @@
     <section id="app" class="rectangle">
         <div class="logo"></div>
         <div class="title">里辦疫苗接種便民系統</div>
-        <form @submit="checkForm" method="post">
+        <v-form ref="loginForm" method="post">
             <div>
-                <label>帳號</label><p />
-                <input type="text" id="username" placeholder="請輸入帳號" v-model="username" ref="username" autocomplete="off" />
+                <label>帳號</label><p />              
+                <!--<v-text-field placeholder="請輸入帳號" :rules="[rules.required]" v-model="username" filled></v-text-field>-->  
+                <input type="text" id="username" placeholder="請輸入帳號" :rules="[rules.required]" v-model="username" ref="username" autocomplete="off" />
             </div>
             <div>
                 <label>密碼</label><p />
-                <input type="password" id="password" placeholder="請輸入密碼" v-model="password" ref="password" />
+                <input type="password" id="password" placeholder="請輸入密碼" :rules="[rules.required]" v-model="password" ref="password" />
             </div>
             <div>
                 <input type="submit" value="登入" @click="check" />
             </div>
-        </form>
+        </v-form>
         <div class="forgt">
             <a href="#" @click="forgetPassword">忘記密碼？</a>
         </div>
@@ -29,7 +30,11 @@
         // router,
         data: () => ({
             username: '',
-            password: ''
+            password: '',
+            rules: {
+                required: v => v || '必須填寫欄位!',
+                english: v => v.match(/[a-z]+/) || '必須輸入英文!',
+            }
         }),
         computed: {
 
@@ -43,12 +48,14 @@
         methods: {
             ...mapActions(['checkLogin']),
             check: function () {
+                var isValid = this.$refs.loginForm.validate();
+                if (!isValid) return;
                 this.checkLogin({ uid: this.username, upd: this.password })
                     .then(function (result) {
-                        alert(result.state);
+                        alert(result.status);
                     })
                     .catch(function (ex) {
-                        alert(ex.state);
+                        alert(ex.status);
                     })
             },
             forgetPassword: function () {
@@ -88,6 +95,7 @@
 
     window.history.replaceState(null, null, window.location.href);
 </script>
+
 <style>
     :root {
         /* Colors: */

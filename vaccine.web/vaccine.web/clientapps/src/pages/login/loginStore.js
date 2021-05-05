@@ -9,27 +9,27 @@ export default new Vuex.Store({
     actions: {
         checkLogin: function ({ state },account) {
             return new Promise(function (resolve, reject) {
-                var result = { uid: account.uid, state: '' };
+                var result = { uid: account.uid, status: '' };
                 try {
                     var exist = state.loginFake.accounts.find(f => f.uid == account.uid);
                     if (!exist) {
-                        result.state = 'notfound'
+                        result.status = 'notfound'
                         resolve(result);
                         return;
                     }
-                    if (exist.state == 'network') {
-                        result.state = 'network';
+                    if (exist.status == 'network') {
+                        result.status = 'network';
                         throw result;
                     }
                     if (exist.upd != account.upd) {
-                        result.state = 'password'
+                        result.status = 'password'
                         resolve(result);
                         return;
                     }
-                    result.state = exist.state;
+                    result.status = exist.status;
                     resolve(result);
                 } catch (e) {
-                    result.state = 'network';
+                    result.status = 'network';
                     reject(result);
                 }
             });
@@ -38,8 +38,8 @@ export default new Vuex.Store({
     state: {
         loginFake : {
             accounts: [
-                { uid: "micchang", upd: '***', state: 'pass' },
-                { uid: "micchang01", upd: '***', state: 'network' }
+                { uid: "micchang", upd: '***', status: 'pass' },
+                { uid: "micchang01", upd: '***', status: 'network' }
             ]
         }
     },
