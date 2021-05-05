@@ -12,7 +12,7 @@
                 <input type="password" id="password" placeholder="請輸入密碼" v-model="password" ref="password" />
             </div>
             <div>
-                <input type="submit" value="登入" />
+                <input type="submit" value="登入" @click="check" />
             </div>
         </form>
         <div class="forgt">
@@ -24,7 +24,7 @@
 <script>
     //import comDialog from 'components/dialog'
     import axios from 'axios'
-
+    import { mapActions } from 'vuex'
     export default {
         // router,
         data: () => ({
@@ -41,6 +41,16 @@
             
         },
         methods: {
+            ...mapActions(['checkLogin']),
+            check: function () {
+                this.checkLogin({ uid: this.username, upd: this.password })
+                    .then(function (result) {
+                        alert(result.state);
+                    })
+                    .catch(function (ex) {
+                        alert(ex.state);
+                    })
+            },
             forgetPassword: function () {
                 alert('忘記密碼');
             },
