@@ -1,49 +1,49 @@
 ﻿<template>
-    <section id="app" class="rectangle">
-        <div class="logo"></div>
-        <div class="title">里辦疫苗接種便民系統</div>
-        <div class="content">
-            <div>
-                <v-label>帳號</v-label>
-                <v-text-field id="uid" placeholder="請輸入帳號" v-model="uid" ref="uid" :rules="rules" solo @keyup.enter="check"></v-text-field>
+    <div>
+        <section id="app" class="rectangle">
+            <div class="logo"></div>
+            <div class="title">里辦疫苗接種便民系統</div>
+            <div class="content">
+                <div>
+                    <v-label>帳號</v-label>
+                    <v-text-field id="uid" placeholder="請輸入帳號" v-model="uid" ref="uid" solo @keyup.enter="check"></v-text-field>
+                </div>
+                <div>
+                    <v-label>密碼</v-label>
+                    <v-text-field id="upd" placeholder="請輸入密碼" v-model="upd" ref="upd" solo @keyup.enter="check"
+                                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                    :type="show1 ? 'text' : 'password'"
+                                    @click:append="show1 = !show1"></v-text-field>
+                </div>
+                <div>
+                    <v-btn block height="48px" @click="check">登入</v-btn>
+                </div>
             </div>
-            <div>
-                <v-label>密碼</v-label>
-                <v-text-field id="upd" placeholder="請輸入密碼" v-model="upd" ref="upd" :rules="rules" solo @keyup.enter="check"
-                              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                              :type="show1 ? 'text' : 'password'"
-                              @click:append="show1 = !show1"></v-text-field>
+            <div class="forgt">
+                <a href="#" @click="forgetUpd">忘記密碼？</a>
             </div>
-            <div>
-                <v-btn block height="48px" @click="check">登入</v-btn>
-            </div>
-        </div>
-        <div class="forgt">
-            <a href="#" @click="forgetUpd">忘記密碼？</a>
-        </div>
-    </section>
+        </section>
+
+        <com-confirm ref-key="noManagementArea" data-app="true">
+            <template v-slot:confirm-image>
+                <v-img src="/alert_success.svg"></v-img>
+            </template>
+            <template v-slot:confirm-text>
+                很抱歉，您目前沒有所屬的管
+                轄區域權限，所以暫時無法使
+                用本系統，如有需要請聯絡相
+                關人員給予協助
+            </template>
+            <template v-slot:confirm-right-btn-text>
+                了解
+            </template>
+        </com-confirm>
+    </div>
 </template>
-<!--
-<template>
-    <com-confirm ref-key="noManagementArea">
-        <template v-slot:confirm-image>
-            <v-img src="/alert_success.svg"></v-img>
-        </template>
-        <template v-slot:confirm-text>
-            很抱歉，您目前沒有所屬的管
-            轄區域權限，所以暫時無法使
-            用本系統，如有需要請聯絡相
-            關人員給予協助
-        </template>
-        <template v-slot:confirm-right-btn-text>
-            了解
-        </template>
-    </com-confirm>
-</template>
--->
+
 <script>
     //import comDialog from 'components/dialog'
-    //import comConfirm from 'components/confirm'
+    import comConfirm from 'components/confirm'
     import { mapActions } from 'vuex'
     export default {
         // router,
@@ -64,11 +64,12 @@
         methods: {
             ...mapActions(['checkLogin']),
             check: function () {
-                this.checkLogin({ uid: this.uid, upd: this.upd })
+                var comp = this;
+                comp.checkLogin({ uid: comp.uid, upd: comp.upd })
                     .then(function (result) {
                         switch (result.state) {
                             case 'no management area':
-                                this.showConfirm('noManagementArea');
+                                comp.showConfirm('noManagementArea');
                                 break;
                             default:
                                 break;
@@ -79,16 +80,14 @@
                     })
             },
             showConfirm: function (refKey) {
-                if (typeof refKey !== undefined) {
-                    this.$bus.$emit(`${refKey}_switch`);
-                }
+                this.$bus.$emit(`${refKey}_switch`);
             },
             forgetUpd: function () {
                 alert('忘記密碼');
             }
         },
         components: {
-            /*comDialog, comConfirm*/
+            /*comDialog,*/ comConfirm
         }
     }
 </script>
@@ -118,7 +117,7 @@
         --unnamed-character-spacing-0: 0px;
         --unnamed-line-spacing-24: 24px;
     }
-
+    
     body {
         background: var(--pri) 0% 0% no-repeat padding-box;
         opacity: 1;
@@ -229,7 +228,7 @@
         -o-user-select: none;
         user-select: none;
     }
-
+    
     /* Extra small devices (portrait phones, less than 576px) */
     @media (max-width: 575.98px) {
         body {
