@@ -4,32 +4,35 @@ Vue.use(Vuex)
 import userStore from "stores/userStore"
 //import configStore from "stores/configStore"
 
-
 export default new Vuex.Store({
     actions: {
-        checkLogin: function ({ state },account) {
+        checkLogin: function ({ state }, account) {
             return new Promise(function (resolve, reject) {
-                var result = { uid: account.uid, status: '' };
+                var result = { uid: account.uid, state: '', state1: '' };
                 try {
                     var exist = state.loginFake.accounts.find(f => f.uid == account.uid);
+
                     if (!exist) {
-                        result.status = 'notfound'
+                        result.state = 'not found'
                         resolve(result);
                         return;
                     }
-                    if (exist.status == 'network') {
-                        result.status = 'network';
+
+                    if (exist.upd !== account.upd) {
+                        result.state = 'password incorrect'
+                        resolve(result);
+                        return;
+                    }
+
+                    if (exist.state === 'network abnormal') {
+                        result.state = exist.state;
                         throw result;
                     }
-                    if (exist.upd != account.upd) {
-                        result.status = 'password'
-                        resolve(result);
-                        return;
-                    }
-                    result.status = exist.status;
+
+                    result.state = exist.state;
                     resolve(result);
                 } catch (e) {
-                    result.status = 'network';
+                    result.state = 'network abnormal';
                     reject(result);
                 }
             });
@@ -38,8 +41,13 @@ export default new Vuex.Store({
     state: {
         loginFake : {
             accounts: [
-                { uid: "micchang", upd: '***', status: 'pass' },
-                { uid: "micchang01", upd: '***', status: 'network' }
+                { uid: "yea01", upd: '123', state: 'no management area', state1: '' },
+                { uid: "yea02", upd: '123', state: 'not member'        , state1: ''},
+                { uid: "yea03", upd: '123', state: 'not yet enabled'   , state1: 'first login' },
+                { uid: "yea04", upd: '123', state: 'not yet enabled'   , state1: 'password is about to expire' },
+                { uid: "yea05", upd: '123', state: 'not yet enabled'   , state1: 'password has expired' },
+                { uid: "yea06", upd: '123', state: 'deactivate'        , state1: '' },
+                { uid: "yea07", upd: '123', state: 'network abnormal'  , state1: '' },
             ]
         }
     },

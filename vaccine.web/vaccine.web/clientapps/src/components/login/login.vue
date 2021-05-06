@@ -2,39 +2,55 @@
     <section id="app" class="rectangle">
         <div class="logo"></div>
         <div class="title">里辦疫苗接種便民系統</div>
-        <v-form ref="loginForm" method="post">
+        <div class="content">
             <div>
-                <label>帳號</label><p />              
-                <!--<v-text-field placeholder="請輸入帳號" :rules="[rules.required]" v-model="username" filled></v-text-field>-->  
-                <input type="text" id="username" placeholder="請輸入帳號" :rules="[rules.required]" v-model="username" ref="username" autocomplete="off" />
+                <v-label>帳號</v-label>
+                <v-text-field id="uid" placeholder="請輸入帳號" v-model="uid" ref="uid" :rules="rules" solo @keyup.enter="check"></v-text-field>
             </div>
             <div>
-                <label>密碼</label><p />
-                <input type="password" id="password" placeholder="請輸入密碼" :rules="[rules.required]" v-model="password" ref="password" />
+                <v-label>密碼</v-label>
+                <v-text-field id="upd" placeholder="請輸入密碼" v-model="upd" ref="upd" :rules="rules" solo @keyup.enter="check"
+                              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                              :type="show1 ? 'text' : 'password'"
+                              @click:append="show1 = !show1"></v-text-field>
             </div>
             <div>
-                <input type="submit" value="登入" @click="check" />
+                <v-btn block height="48px" @click="check">登入</v-btn>
             </div>
-        </v-form>
+        </div>
         <div class="forgt">
-            <a href="#" @click="forgetPassword">忘記密碼？</a>
+            <a href="#" @click="forgetUpd">忘記密碼？</a>
         </div>
     </section>
 </template>
-
+<!--
+<template>
+    <com-confirm ref-key="noManagementArea">
+        <template v-slot:confirm-image>
+            <v-img src="/alert_success.svg"></v-img>
+        </template>
+        <template v-slot:confirm-text>
+            很抱歉，您目前沒有所屬的管
+            轄區域權限，所以暫時無法使
+            用本系統，如有需要請聯絡相
+            關人員給予協助
+        </template>
+        <template v-slot:confirm-right-btn-text>
+            了解
+        </template>
+    </com-confirm>
+</template>
+-->
 <script>
     //import comDialog from 'components/dialog'
-    import axios from 'axios'
+    //import comConfirm from 'components/confirm'
     import { mapActions } from 'vuex'
     export default {
         // router,
         data: () => ({
-            username: '',
-            password: '',
-            rules: {
-                required: v => v || '必須填寫欄位!',
-                english: v => v.match(/[a-z]+/) || '必須輸入英文!',
-            }
+            uid: '',
+            upd: '',
+            show1: false
         }),
         computed: {
 
@@ -48,54 +64,34 @@
         methods: {
             ...mapActions(['checkLogin']),
             check: function () {
-                var isValid = this.$refs.loginForm.validate();
-                if (!isValid) return;
-                this.checkLogin({ uid: this.username, upd: this.password })
+                this.checkLogin({ uid: this.uid, upd: this.upd })
                     .then(function (result) {
-                        alert(result.status);
+                        switch (result.state) {
+                            case 'no management area':
+                                this.showConfirm('noManagementArea');
+                                break;
+                            default:
+                                break;
+                        }
                     })
                     .catch(function (ex) {
-                        alert(ex.status);
+                        alert(ex.state);
                     })
             },
-            forgetPassword: function () {
-                alert('忘記密碼');
+            showConfirm: function (refKey) {
+                if (typeof refKey !== undefined) {
+                    this.$bus.$emit(`${refKey}_switch`);
+                }
             },
-            checkForm: function (e) {
-                e.preventDefault();
-
-                if (this.username === '') {
-                    alert('請輸入帳號');
-                    this.$refs.username.focus();
-                    return;
-                }
-
-                if (this.password === '') {
-                    alert('請輸入密碼');
-                    this.$refs.password.focus();
-                    return;
-                }
-
-                axios.post('/api/state', {
-                    username: this.username,
-                    password: this.password
-                })
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            forgetUpd: function () {
+                alert('忘記密碼');
             }
         },
         components: {
-            //comDialog
+            /*comDialog, comConfirm*/
         }
     }
-
-    window.history.replaceState(null, null, window.location.href);
 </script>
-
 <style>
     :root {
         /* Colors: */
@@ -146,7 +142,7 @@
         margin-left: 180px;
         width: 120px;
         height: 120px;
-        background: var(--pri) 0% 0% no-repeat padding-box;
+        background: var(--pri) -25px -15px no-repeat padding-box url("/login/login_logo.svg");
         opacity: 1;
     }
 
@@ -164,13 +160,15 @@
         white-space: nowrap;
     }
 
-    section.rectangle form {
+    section.rectangle .content {
         position: relative;
         top: 72px;
+        margin: 0 64px;
     }
 
-    section.rectangle form div {
-        margin-left: 64px;
+    section.rectangle .content > div > label {
+        width: 32px;
+        height: 16px;
         font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-noto-sans-t-chinese);
         letter-spacing: var(--unnamed-character-spacing-0);
         color: var(--bk);
@@ -178,24 +176,31 @@
         opacity: 1;
     }
 
-    section.rectangle input {
+    .v-text-field .v-input__slot {
         width: 352px;
         height: 48px;
-        background: var(--bk_06) 0% 0% no-repeat padding-box;
+        background: var(--bk_06) 0% 0% no-repeat padding-box !important;
         border-radius: 8px;
         opacity: 1;
-        margin-bottom: 24px;
+        box-shadow: none !important;
     }
 
-    section.rectangle input[placeholder] {
-        padding: 16px;
+    .v-text-field .v-text-field__slot input {
+        font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-noto-sans-t-chinese);
+        letter-spacing: var(--unnamed-character-spacing-0);
+        color: var(--bk);
+        text-align: left;
+        opacity: 1;
     }
 
-    section.rectangle input[type="submit"] {
-        width: 352px;
-        height: 48px;
+    .v-text-field .v-text-field__slot input::placeholder {
+        color: var(--bk_4);
+    }
+
+    section.rectangle .v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
         background: var(--bk_4) 0% 0% no-repeat padding-box;
         border-radius: 8px;
+        opacity: 1;
         font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-noto-sans-t-chinese);
         letter-spacing: var(--unnamed-character-spacing-0);
         color: var(--w);
@@ -205,7 +210,7 @@
 
     section.rectangle .forgt {
         position: relative;
-        top: 140px;
+        top: 150px;
         height: 16px;
         text-align: center;
     }
