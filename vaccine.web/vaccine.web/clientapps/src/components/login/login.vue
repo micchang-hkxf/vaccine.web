@@ -1,7 +1,7 @@
 ﻿<template>
     <v-app class="rectangle">
         <v-main>
-            <v-form ref="loginForm">
+            <v-form lazy-validation ref="loginForm">
                 <div class="logo"></div>
                 <div class="title">里辦疫苗接種便民系統</div>
                 <div class="content">
@@ -210,7 +210,7 @@
     }
 
     .rectangle .v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
-        background: var(--bk_4) 0% 0% no-repeat padding-box;
+        background: var(--bk_4) 0% 0% no-repeat padding-box !important;
         border-radius: 8px;
         font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-noto-sans-t-chinese);
         letter-spacing: var(--unnamed-character-spacing-0);
