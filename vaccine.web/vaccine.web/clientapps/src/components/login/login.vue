@@ -1,14 +1,13 @@
 ﻿<template>
     <v-app class="rectangle">
         <v-main>
-
-            <v-form>
+            <v-form ref="loginForm">
                 <div class="logo"></div>
                 <div class="title">里辦疫苗接種便民系統</div>
                 <div class="content">
                     <div>
                         <v-label>帳號</v-label>
-                        <v-text-field id="uid" placeholder="請輸入帳號" v-model="uid" ref="uid" solo @keyup.enter="check"></v-text-field>
+                        <v-text-field id="uid" placeholder="請輸入帳號" v-model="uid" :rules="[rules.required]" ref="uid" solo @keyup.enter="check"></v-text-field>
                     </div>
                     <div>
                         <v-label>密碼</v-label>
@@ -53,7 +52,10 @@
         data: () => ({
             uid: '',
             upd: '',
-            show1: false
+            show1: false,
+            rules: {
+                required: v => !!v ||"required"
+            }
         }),
         computed: {
 
@@ -68,6 +70,9 @@
             ...mapActions(['checkLogin']),
             check: function () {
                 var comp = this;
+                var isvaild = comp.$refs.loginForm.validate();
+                if (!isvaild) return;
+
                 comp.checkLogin({ uid: comp.uid, upd: comp.upd })
                     .then(function (result) {
                         switch (result.state) {
@@ -207,7 +212,6 @@
     .rectangle .v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
         background: var(--bk_4) 0% 0% no-repeat padding-box;
         border-radius: 8px;
-        opacity: 1;
         font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-noto-sans-t-chinese);
         letter-spacing: var(--unnamed-character-spacing-0);
         color: var(--w);
@@ -239,7 +243,7 @@
 
     /* Extra small devices (portrait phones, less than 576px) */
     @media (max-width: 575.98px) {
-        .v-app {
+        body {
             background: var(--w);
         }
     }
