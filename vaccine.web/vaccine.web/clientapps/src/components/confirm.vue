@@ -1,7 +1,5 @@
-﻿<template>
-    <v-row justify="center">
-
-        <v-dialog v-model="isShow"  width="264">
+﻿<template> 
+        <v-dialog v-model="isShow"  width="264" persistent>
             <v-card>
                 <v-card-title>
                     <div class="confirm-image d-flex justify-center">
@@ -61,7 +59,6 @@
 
             </v-card>
         </v-dialog>
-    </v-row>
 </template>
 
 
