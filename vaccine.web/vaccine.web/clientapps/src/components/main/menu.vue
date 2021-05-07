@@ -22,9 +22,20 @@
                 <v-list-item-title>Loading</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
+
+        <v-list-item @click="toPages('table')">
+            <v-list-item-content>
+                <v-list-item-title>Table</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
         <v-list-item @click="openPages('/login')">
             <v-list-item-content>
                 <v-list-item-title>Login</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="openPages('/admin')">
+            <v-list-item-content>
+                <v-list-item-title>Layout</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
     </v-list>
