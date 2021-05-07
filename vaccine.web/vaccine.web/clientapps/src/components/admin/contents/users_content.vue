@@ -6,7 +6,7 @@
         <template v-slot:app-content>
             <div id="app">
                 <v-btn @click="show('table')">table</v-btn>
-                <com-table ref-key="table" :headers="headers" :items="tableItems">
+                <com-table ref-key="table" :headers="headers" :items="getTableItems">
                     <template v-slot:column.no>
                         <div>9***563214</div>
                         <!--{{item}}-->
@@ -48,7 +48,7 @@
             desserts: [],
         }),
         computed: {
-            ...mapGetters('users',['tableItems'])
+            ...mapGetters('users',['getTableItems'])
 
         },
         props: {

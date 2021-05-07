@@ -4,7 +4,7 @@ Vue.use(Vuex)
 import userStore from "stores/userStore"
 
 
-export default new Vuex.Store({
+export default {
     actions: {
     },
     state: {
@@ -37,7 +37,8 @@ export default new Vuex.Store({
         ]
     },
     getters: {
-        tableItems: state => state.items
+        getTableItems: state => state.items 
+          
         
 
     },
@@ -50,4 +51,4 @@ export default new Vuex.Store({
         user: userStore,
 
     }
-})
+}
