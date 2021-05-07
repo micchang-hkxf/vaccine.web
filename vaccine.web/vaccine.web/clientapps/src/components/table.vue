@@ -1,8 +1,8 @@
 ﻿<template>
     <div>
-        <v-card>
+        <template>
             <slot name="search-bar"></slot>
-        </v-card>
+        </template>
 
         <v-data-table :headers="computedHeaders"
                       :items="items"

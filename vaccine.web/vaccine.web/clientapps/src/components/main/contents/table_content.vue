@@ -12,20 +12,8 @@
                         <div>{{item}}</div>
                     </template>
                     <template v-slot:search-bar>
-                        <v-row>
-                            <v-col class="d-flex" cols="12" md="6" lg="6" sm="6" xs="6">
-                                <v-select v-model="selectStatus"
-                                          :items="options"
-                                          item-text="state"
-                                          item-value="state"
-                                          label="所有疫苗類型"
-                                          :menu-props="{ bottom: true, offsetY: true }"
-                                          outlined
-                                          clearable
-                                          style="margin-right: 10px;min-width:150px"
-                                          return-object>
-                                </v-select>
-
+                        <v-row>                            
+                            <v-col class="d-flex" cols="12">
                                 <v-select v-model="selectStatus"
                                           :items="options"
                                           item-text="state"
@@ -78,6 +66,9 @@
                                 <v-btn icon color="#626781" style="top:10px">
                                     <v-icon>fas fa-search</v-icon>
                                 </v-btn>
+
+
+                                <v-text-field label="Regular"></v-text-field>
                             </v-col>
 
                         </v-row>
