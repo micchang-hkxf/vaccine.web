@@ -1,35 +1,61 @@
 ﻿<template>
-    <section id="app" class="rectangle">
-        <div class="logo"></div>
-        <div class="title">里辦疫苗接種便民系統</div>
-        <form @submit="checkForm" method="post">
-            <div>
-                <label>帳號</label><p />
-                <input type="text" id="username" placeholder="請輸入帳號" v-model="username" ref="username" autocomplete="off" />
-            </div>
-            <div>
-                <label>密碼</label><p />
-                <input type="password" id="password" placeholder="請輸入密碼" v-model="password" ref="password" />
-            </div>
-            <div>
-                <input type="submit" value="登入" />
-            </div>
-        </form>
-        <div class="forgt">
-            <a href="#" @click="forgetPassword">忘記密碼？</a>
-        </div>
-    </section>
-</template>
+    <v-app class="rectangle">
+        <v-main>
+            <v-form lazy-validation ref="loginForm">
+                <div class="logo"></div>
+                <div class="title">里辦疫苗接種便民系統</div>
+                <div class="content">
+                    <div>
+                        <v-label>帳號</v-label>
+                        <v-text-field id="uid" placeholder="請輸入帳號" v-model="uid" :rules="[rules.required]" ref="uid" solo @keyup.enter="check"></v-text-field>
+                    </div>
+                    <div>
+                        <v-label>密碼</v-label>
+                        <v-text-field id="upd" placeholder="請輸入密碼" v-model="upd" ref="upd" solo @keyup.enter="check"
+                                      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                      :type="show1 ? 'text' : 'password'"
+                                      @click:append="show1 = !show1"></v-text-field>
+                    </div>
+                    <div>
+                        <v-btn block height="48px" @click="check">登入</v-btn>
+                    </div>
+                </div>
+                <div class="forgt">
+                    <a href="#" @click="forgetUpd">忘記密碼？</a>
+                </div>
+            </v-form>
 
+            <com-confirm ref="noManagementArea" ref-key="confirm">
+                <template v-slot:confirm-image>
+                    <v-img src="/alert_success.svg"></v-img>
+                </template>
+                <template v-slot:confirm-text>
+                    很抱歉，您目前沒有所屬的管
+                    轄區域權限，所以暫時無法使
+                    用本系統，如有需要請聯絡相
+                    關人員給予協助
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    了解
+                </template>
+            </com-confirm>
+        </v-main>
+
+    </v-app>
+</template>
 <script>
     //import comDialog from 'components/dialog'
-    import axios from 'axios'
-
+    import comConfirm from 'components/confirm'
+    import { mapActions } from 'vuex'
     export default {
         // router,
         data: () => ({
-            username: '',
-            password: ''
+            uid: '',
+            upd: '',
+            show1: false,
+            rules: {
+                required: v => !!v ||"required"
+            }
         }),
         computed: {
 
@@ -41,42 +67,42 @@
             
         },
         methods: {
-            forgetPassword: function () {
-                alert('忘記密碼');
+            ...mapActions(['checkLogin']),
+            check: function () {
+                var comp = this;
+                var isvaild = comp.$refs.loginForm.validate();
+                if (!isvaild) return;
+
+                comp.checkLogin({ uid: comp.uid, upd: comp.upd })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'no management area':
+                                //comp.$refs.noManagementArea.open();
+                                comp.$bus.$emit(`confirm_show`, true);
+                                //comp.$forceUpdate();
+                                //comp.showConfirm('noManagementArea');
+                                break;
+                            default:
+                                break;
+                        }
+                    })
+                    .catch(function (ex) {
+                        alert(ex.state);
+                    })
             },
-            checkForm: function (e) {
-                e.preventDefault();
-
-                if (this.username === '') {
-                    alert('請輸入帳號');
-                    this.$refs.username.focus();
-                    return;
+            showConfirm: function (refKey) {
+                if (typeof refKey !== undefined) {
+                    this.$bus.$emit(`${refKey}_switch`);
                 }
-
-                if (this.password === '') {
-                    alert('請輸入密碼');
-                    this.$refs.password.focus();
-                    return;
-                }
-
-                axios.post('/api/state', {
-                    username: this.username,
-                    password: this.password
-                })
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            },
+            forgetUpd: function () {
+                alert('忘記密碼');
             }
         },
         components: {
-            //comDialog
+            /*comDialog,*/ comConfirm
         }
     }
-
-    window.history.replaceState(null, null, window.location.href);
 </script>
 <style>
     :root {
@@ -110,7 +136,7 @@
         opacity: 1;
     }
 
-    section.rectangle {
+    .rectangle {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -122,17 +148,17 @@
         opacity: 1;
     }
 
-    section.rectangle .logo {
+    .rectangle .logo {
         position: relative;
         top: 32px;
         margin-left: 180px;
         width: 120px;
         height: 120px;
-        background: var(--pri) 0% 0% no-repeat padding-box;
+        background: var(--pri) -25px -15px no-repeat padding-box url("/login/login_logo.svg");
         opacity: 1;
     }
 
-    section.rectangle .title {
+    .rectangle .title {
         position: relative;
         top: 48px;
         margin-left: 96px;
@@ -146,13 +172,15 @@
         white-space: nowrap;
     }
 
-    section.rectangle form {
+    .rectangle .content {
         position: relative;
         top: 72px;
+        margin: 0 64px;
     }
 
-    section.rectangle form div {
-        margin-left: 64px;
+    .rectangle .content > div > label {
+        width: 32px;
+        height: 16px;
         font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-noto-sans-t-chinese);
         letter-spacing: var(--unnamed-character-spacing-0);
         color: var(--bk);
@@ -160,23 +188,29 @@
         opacity: 1;
     }
 
-    section.rectangle input {
+    .v-text-field .v-input__slot {
         width: 352px;
         height: 48px;
-        background: var(--bk_06) 0% 0% no-repeat padding-box;
+        background: var(--bk_06) 0% 0% no-repeat padding-box !important;
         border-radius: 8px;
         opacity: 1;
-        margin-bottom: 24px;
+        box-shadow: none !important;
     }
 
-    section.rectangle input[placeholder] {
-        padding: 16px;
+    .v-text-field .v-text-field__slot input {
+        font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-noto-sans-t-chinese);
+        letter-spacing: var(--unnamed-character-spacing-0);
+        color: var(--bk);
+        text-align: left;
+        opacity: 1;
     }
 
-    section.rectangle input[type="submit"] {
-        width: 352px;
-        height: 48px;
-        background: var(--bk_4) 0% 0% no-repeat padding-box;
+    .v-text-field .v-text-field__slot input::placeholder {
+        color: var(--bk_4);
+    }
+
+    .rectangle .v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
+        background: var(--bk_4) 0% 0% no-repeat padding-box !important;
         border-radius: 8px;
         font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-noto-sans-t-chinese);
         letter-spacing: var(--unnamed-character-spacing-0);
@@ -185,14 +219,14 @@
         opacity: 1;
     }
 
-    section.rectangle .forgt {
+    .rectangle .forgt {
         position: relative;
-        top: 140px;
+        top: 150px;
         height: 16px;
         text-align: center;
     }
 
-    section.rectangle .forgt a {
+    .rectangle .forgt a {
         width: 80px;
         height: 16px;
         font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-noto-sans-t-chinese);

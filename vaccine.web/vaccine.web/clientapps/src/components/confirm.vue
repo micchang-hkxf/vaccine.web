@@ -51,7 +51,7 @@
                                     <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
 
                                 </v-btn>
-                            </v-cols>
+                            </v-col>
                         </v-row>
                     </div>
                 </template>
@@ -186,6 +186,9 @@
             });
         },
         methods: {
+            open: function(){
+                this.isShow = true;
+            },
             rightBtnAction: function () {
                 this.rightClick();
             },
