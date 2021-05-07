@@ -98,6 +98,11 @@
                             return;
                         }
 
+                        if (result.state === 'not yet enabled') {
+                            // 傳送驗證碼
+
+                        }
+
                         location.replace('/admin');
                     })
                     .catch(function () {
@@ -142,6 +147,10 @@
         --unnamed-font-size-16: 16px;
         --unnamed-character-spacing-0: 0px;
         --unnamed-line-spacing-24: 24px;
+    }
+
+    html.overflow-y-hidden {
+        overflow-y: auto !important;
     }
 
     body {
@@ -252,6 +261,10 @@
         -moz-user-select: none;
         -o-user-select: none;
         user-select: none;
+    }
+
+    .v-application--wrap {
+        min-height: initial;
     }
 
     /* Extra small devices (portrait phones, less than 576px) */
