@@ -36,6 +36,43 @@
                     了解
                 </template>
             </com-confirm>
+            <!---->
+            <v-dialog v-model="dialog" persistent max-width="500px">
+                <v-card>
+                    <v-card-title>
+                        <span>身份驗證（240s）</span>
+                        <v-spacer></v-spacer>
+                        <v-btn icon @click="dialog = false">
+                            <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                    </v-card-title>
+                    <v-content>
+                        <v-row>
+                            <v-col cols="12">
+                                <div class="dialog-sub-title">
+                                    請輸入６位數驗證碼以完成身份確認
+                                </div>
+                                <v-text-field label="驗證碼＊"
+                                              placeholder="請輸入驗證碼"
+                                              maxlength="6"
+                                              filled></v-text-field>
+                                <div class="verification-code-Message">{{verificationCodeMessage}}</div>
+                            </v-col>
+                        </v-row>
+                    </v-content>
+                    <v-card-actions>
+                        <v-btn icon @click="reSendVerificationCode">
+                            <v-icon>mdi-reload</v-icon>
+                        </v-btn>
+                        <span>重新傳送驗證碼（60s）</span>
+                        <v-spacer></v-spacer>
+                        <v-btn @click="dialog = false">
+                            送出
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
         </v-main>
     </v-app>
 </template>
@@ -49,7 +86,9 @@
             uid: '',
             upd: '',
             show1: false,
+            dialog: true,
             alertMessage: '',
+            verificationCodeMessage: '驗證碼無效，請重新輸入！',
             rules: {
                 required: v => !!v ||"必填"
             }
@@ -100,7 +139,8 @@
 
                         if (result.state === 'not yet enabled') {
                             // 傳送驗證碼
-
+                            comp.dialog = true;
+                            return;
                         }
 
                         location.replace('/admin');
@@ -112,6 +152,9 @@
             },
             alertClick: function () {
                 this.$bus.$emit('alert_show', false);
+            },
+            reSendVerificationCode: function () {
+                alert('驗證碼已送出');
             },
             forgetUpd: function () {
                 alert('忘記密碼');
@@ -265,6 +308,35 @@
 
     .v-application--wrap {
         min-height: initial;
+    }
+
+    .dialog-sub-title {
+        display: flex;
+        color: var(--bk);
+        font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-noto-sans-t-chinese);
+        opacity: 1;
+        padding-top: 4px;
+        margin: 5px 0;
+    }
+
+    .v-dialog .v-content__wrap {
+        margin: 0 10px;
+    }
+
+    .v-dialog .v-text-field .v-input__slot {
+        width: 100%;
+    }
+
+    .v-dialog .v-text-field .v-input__slot:before, .v-dialog .v-text-field .v-input__slot:after {
+        width: 0 !important;
+    }
+
+    .v-dialog .v-text-field .primary--text {
+        color: var(--bk) !important;
+    }
+
+    .v-dialog .verification-code-Message {
+        color: #FF0000;
     }
 
     /* Extra small devices (portrait phones, less than 576px) */
