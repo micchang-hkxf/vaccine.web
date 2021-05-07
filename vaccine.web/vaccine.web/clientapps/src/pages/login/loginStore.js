@@ -32,7 +32,6 @@ export default new Vuex.Store({
                     result.state = exist.state;
                     resolve(result);
                 } catch (e) {
-                    result.state = 'network abnormal';
                     reject(result);
                 }
             });
@@ -41,8 +40,9 @@ export default new Vuex.Store({
     state: {
         loginFake : {
             accounts: [
+                { uid: "yea"  , upd: '123', state: 'pass'              , state1: '' },
                 { uid: "yea01", upd: '123', state: 'no management area', state1: '' },
-                { uid: "yea02", upd: '123', state: 'not member'        , state1: ''},
+                { uid: "yea02", upd: '123', state: 'not member'        , state1: '' },
                 { uid: "yea03", upd: '123', state: 'not yet enabled'   , state1: 'first login' },
                 { uid: "yea04", upd: '123', state: 'not yet enabled'   , state1: 'password is about to expire' },
                 { uid: "yea05", upd: '123', state: 'not yet enabled'   , state1: 'password has expired' },

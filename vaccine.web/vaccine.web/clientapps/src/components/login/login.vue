@@ -7,11 +7,11 @@
                 <div class="content">
                     <div>
                         <v-label>帳號</v-label>
-                        <v-text-field id="uid" placeholder="請輸入帳號" v-model="uid" :rules="[rules.required]" ref="uid" solo @keyup.enter="check"></v-text-field>
+                        <v-text-field id="uid" placeholder="請輸入帳號" v-model="uid" :rules="[rules.required]" ref="uid" solo @keyup.enter="check" autocomplete="off"></v-text-field>
                     </div>
                     <div>
                         <v-label>密碼</v-label>
-                        <v-text-field id="upd" placeholder="請輸入密碼" v-model="upd" ref="upd" solo @keyup.enter="check"
+                        <v-text-field id="upd" placeholder="請輸入密碼" v-model="upd" :rules="[rules.required]" ref="upd" solo @keyup.enter="check"
                                       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                                       :type="show1 ? 'text' : 'password'"
                                       @click:append="show1 = !show1"></v-text-field>
@@ -24,23 +24,19 @@
                     <a href="#" @click="forgetUpd">忘記密碼？</a>
                 </div>
             </v-form>
-
-            <com-confirm ref="noManagementArea" ref-key="confirm">
+            <!--共用 alert -->
+            <com-confirm ref="alert" ref-key="alert" :right-click="alertClick">
                 <template v-slot:confirm-image>
                     <v-img src="/alert_success.svg"></v-img>
                 </template>
                 <template v-slot:confirm-text>
-                    很抱歉，您目前沒有所屬的管
-                    轄區域權限，所以暫時無法使
-                    用本系統，如有需要請聯絡相
-                    關人員給予協助
+                    {{alertMessage}}
                 </template>
                 <template v-slot:confirm-right-btn-text>
                     了解
                 </template>
             </com-confirm>
         </v-main>
-
     </v-app>
 </template>
 <script>
@@ -53,8 +49,9 @@
             uid: '',
             upd: '',
             show1: false,
+            alertMessage: '',
             rules: {
-                required: v => !!v ||"required"
+                required: v => !!v ||"必填"
             }
         }),
         computed: {
@@ -73,27 +70,43 @@
                 var isvaild = comp.$refs.loginForm.validate();
                 if (!isvaild) return;
 
+                comp.alertMessage = '';
                 comp.checkLogin({ uid: comp.uid, upd: comp.upd })
                     .then(function (result) {
                         switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '帳號不存在';
+                                break;
+                            case 'password incorrect':
+                                comp.alertMessage = '密碼不正確';
+                                break;
                             case 'no management area':
-                                //comp.$refs.noManagementArea.open();
-                                comp.$bus.$emit(`confirm_show`, true);
-                                //comp.$forceUpdate();
-                                //comp.showConfirm('noManagementArea');
+                                comp.alertMessage = '很抱歉，您目前沒有所屬的管轄區域權限，所以暫時無法使用本系統，如有需要請聯絡相關人員給予協助';
+                                break;
+                            case 'not member':
+                                comp.alertMessage = '很抱歉，目前Web只開放衛生局與健康服務中心人員使用，其他人員請前往App版進行操作';
+                                break;
+                            case 'deactivate':
+                                comp.alertMessage = '很抱歉，您的帳號已遭停用，所以暫時無法使用本系統，如有需要請聯絡相關人員給予協助';
                                 break;
                             default:
                                 break;
                         }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        location.replace('/admin');
                     })
-                    .catch(function (ex) {
-                        alert(ex.state);
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
                     })
             },
-            showConfirm: function (refKey) {
-                if (typeof refKey !== undefined) {
-                    this.$bus.$emit(`${refKey}_switch`);
-                }
+            alertClick: function () {
+                this.$bus.$emit('alert_show', false);
             },
             forgetUpd: function () {
                 alert('忘記密碼');
