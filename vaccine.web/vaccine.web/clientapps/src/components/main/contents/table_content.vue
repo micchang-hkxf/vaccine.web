@@ -9,7 +9,6 @@
                 <com-table ref-key="table" :headers="headers" :items="desserts" :total-count="totalCount"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible">
                     <template v-slot:item.no="{item}">
-
                         <div>{{item}}</div>
                     </template>
                     <template v-slot:search-bar>
