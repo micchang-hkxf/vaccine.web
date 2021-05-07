@@ -39,6 +39,7 @@
         computed: {
             showNavi: {
                 get: function () {
+                    if (!this.enabledDrawer) return false;
                     return this.drawer && this.$slots['navigation'];
                 },
                 set: function () {
@@ -49,7 +50,7 @@
                 return this.appBar || {};
             }
         },
-        props: ['appBar'],
+        props: ['appBar','enabledDrawer'],
         created: function () {
         },
         methods: {

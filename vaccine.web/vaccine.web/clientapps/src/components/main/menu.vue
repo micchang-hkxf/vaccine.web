@@ -29,6 +29,12 @@
             </v-list-item-content>
         </v-list-item>
 
+        <v-list-item @click="openPages('/admin')">
+            <v-list-item-content>
+                <v-list-item-title>Layout</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+
         <v-divider></v-divider>
         <v-list-item @click="openPages('/login')">
             <v-list-item-content>
@@ -36,9 +42,9 @@
             </v-list-item-content>
         </v-list-item>
 
-        <v-list-item @click="openPages('/admin')">
+        <v-list-item @click="openPages('/admin/#/users')">
             <v-list-item-content>
-                <v-list-item-title>Layout</v-list-item-title>
+                <v-list-item-title>Users</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
 
