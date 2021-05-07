@@ -1,14 +1,8 @@
-﻿import Vue from 'vue'
-import Vuex from 'vuex'
-Vue.use(Vuex)
-import userStore from "stores/userStore"
-
-
-export default {
+﻿export default {
+    namespaced: true,
     actions: {
     },
     state: {
-        isLoading: false,
         items: [
             {
                 no: '1',
@@ -38,17 +32,11 @@ export default {
     },
     getters: {
         getTableItems: state => state.items 
-          
-        
-
     },
     mutations: {
-        loaded(state) {
-            state.isLoading = !state.isLoading
-        }
     },
     modules: {
-        user: userStore,
 
     }
 }
+

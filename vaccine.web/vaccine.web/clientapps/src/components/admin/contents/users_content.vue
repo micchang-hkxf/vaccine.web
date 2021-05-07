@@ -24,6 +24,9 @@
 
 
 <style>
+    .v-menu__content .v-list-item__content .v-list-item__title {
+        color: black !important;
+    }
 </style>
 
 
