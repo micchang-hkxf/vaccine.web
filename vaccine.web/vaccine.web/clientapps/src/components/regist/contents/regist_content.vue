@@ -60,29 +60,29 @@
     }
 </script>
 <style>
-    .action img {
+    .regist-content .action img {
         width: 72px;
         height: 60px;
     }
-    .action {
+    .regist-content .action {
         font-size: 20px;
-        color:white;
-        background-color:#736DB9;
+        color: white;
+        background-color: #736DB9;
         width: 150px !important;
         height: 150px;
         border-radius: 10px;
     }
-    .action-content {
+    .regist-content .action-content {
         padding-top: 20px;
     }
-    .action-sub-title {
-        padding-top:40px!important;
+    .regist-content .action-sub-title {
+        padding-top: 40px !important;
     }
-    .action-container {
+    .regist-content .action-container {
         padding-left: 24px;
         padding-right: 24px;
     }
-    .action-sub-title {
+    .regist-content .action-sub-title {
         font-size: 20px !important;
     }
 </style>
