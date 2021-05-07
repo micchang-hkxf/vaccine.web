@@ -17,7 +17,7 @@
                 <template v-if="!$slots['confirm-left-btn-text']">
                     <div class="d-flex justify-center">
                         <v-row>
-                            <v-cols cols="12" class="confirm-btns">
+                            <v-col cols="12" class="confirm-btns">
                                 <v-btn class="confirm-center-btn"
                                        color="#2EB6C7"
                                        :ripple="false"
@@ -25,7 +25,7 @@
                                     <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
 
                                 </v-btn>
-                            </v-cols>                          
+                            </v-col>                          
                         </v-row>
                     </div>
                 </template>
@@ -34,7 +34,7 @@
                 <template v-if="$slots['confirm-left-btn-text']">
                     <div class="d-flex justify-center">
                         <v-row>
-                            <v-cols cols="6" class="confirm-btns">
+                            <v-col cols="6" class="confirm-btns">
                                 <v-btn class="confirm-left-btn"
                                        color="rgba(50,65,80,0.2)"
                                        :ripple="false"
@@ -42,7 +42,7 @@
                                        @click="leftBtnAction">
                                     <span class="confirm-left-btns-text"><slot name="confirm-left-btn-text"></slot></span>
                                 </v-btn>
-                            </v-cols>
+                            </v-col>
                             <v-cols cols="6" class="confirm-btns">
                                 <v-btn class="confirm-right-btn"
                                        color="#2EB6C7"

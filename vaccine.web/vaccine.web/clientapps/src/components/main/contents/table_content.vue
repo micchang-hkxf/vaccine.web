@@ -6,15 +6,173 @@
         <template v-slot:app-content>
             <div id="app">
                 <v-btn @click="show('table')">table</v-btn>
-                <com-table ref-key="table" :headers="headers" :items="desserts"  :total-count="totalCount" 
-                           :items-per-page="itemsPerPage" :total-visible="totalVisible"   >
+                <com-table ref-key="table" :headers="headers" :items="desserts" :total-count="totalCount"
+                           :items-per-page="itemsPerPage" :total-visible="totalVisible">
                     <template v-slot:item.no="{item}">
-                     
+
                         <div>{{item}}</div>
+                    </template>
+                    <template v-slot:search-bar>
+                        <v-row>
+                            <v-col class="d-flex" cols="12" md="6" lg="6" sm="6" xs="6">
+                                <v-select v-model="selectStatus"
+                                          :items="options"
+                                          item-text="state"
+                                          item-value="state"
+                                          label="所有疫苗類型"
+                                          :menu-props="{ bottom: true, offsetY: true }"
+                                          outlined
+                                          clearable
+                                          style="margin-right: 10px;min-width:150px"
+                                          return-object>
+                                </v-select>
+
+                                <v-select v-model="selectStatus"
+                                          :items="options"
+                                          item-text="state"
+                                          item-value="state"
+                                          label="所有疫苗類型"
+                                          :menu-props="{ bottom: true, offsetY: true }"
+                                          outlined
+                                          clearable
+                                          style="margin-right: 10px;min-width:150px"
+                                          class="search-filter"
+                                          return-object>
+                                </v-select>
+                                <v-select v-model="selectStatus"
+                                          :items="options"
+                                          item-text="state"
+                                          item-value="state"
+                                          label="所有疫苗類型"
+                                          :menu-props="{ bottom: true, offsetY: true }"
+                                          outlined
+                                          clearable
+                                          style="margin-right: 10px;min-width:150px"
+                                          class="search-filter"
+                                          return-object>
+                                </v-select>
+                                <v-select v-model="selectStatus"
+                                          :items="options"
+                                          item-text="state"
+                                          item-value="state"
+                                          label="所有疫苗類型"
+                                          :menu-props="{ bottom: true, offsetY: true }"
+                                          outlined
+                                          clearable
+                                          style="margin-right: 10px;min-width:150px"
+                                          class="search-filter"
+                                          return-object>
+                                </v-select>
+                                <v-select v-model="selectStatus"
+                                          :items="options"
+                                          item-text="state"
+                                          item-value="state"
+                                          label="所有疫苗類型"
+                                          :menu-props="{ bottom: true, offsetY: true }"
+                                          outlined
+                                          clearable
+                                          style="margin-right: 10px;min-width:150px"
+                                          class="search-filter"
+                                          return-object>
+                                </v-select>
+
+                                <v-btn icon color="#626781" style="top:10px">
+                                    <v-icon>fas fa-search</v-icon>
+                                </v-btn>
+                            </v-col>
+
+                        </v-row>
+
+
+                    </template>
+                   
+                    <template v-slot:toolbar-action={selectAll,deleteSelected,selectedItems,selected,switchSelect} >
+                        <v-checkbox :ripple="false" hide-details @click="switchSelect" ></v-checkbox>
+                        <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
+                            <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
+                        </v-btn>
+                        <v-spacer></v-spacer>
+
+                        <v-menu bottom right offset-y>
+                            <template v-slot:activator="{ on }">
+                                <v-btn v-on="on" color="#626781" @click.stop="">
+                                    <v-icon left color='white' size="15">fas fa-plus</v-icon>
+                                    <span style="color:white">新增報名表</span>
+                                </v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item-action-text>
+                                        選擇新增方式:
+                                    </v-list-item-action-text>
+                                </v-list-item>
+                                <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item-action-text>
+                                        <v-btn icon dense>
+                                            <v-icon small>far fa-edit</v-icon>
+                                        </v-btn>手動輸入
+                                    </v-list-item-action-text>
+                                </v-list-item>
+                                <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item-action-text>
+                                        <v-btn icon dense>
+                                            <v-icon small>far fa-trash-alt</v-icon>
+                                        </v-btn>檔案匯入
+                                    </v-list-item-action-text>
+                                </v-list-item>
+
+                            </v-list>
+                        </v-menu>
+
+
                     </template>
 
                     <template v-slot:item.modify>
-                        modify
+                        <v-menu bottom right offset-y>
+                            <template v-slot:activator="{ on }">
+                                <v-btn dark icon v-on="on" @click.stop="">
+                                    <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
+                                </v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item-action-text>
+                                        <v-btn icon dense>
+                                            <v-icon small>far fa-edit</v-icon>
+                                        </v-btn>編輯
+                                    </v-list-item-action-text>
+                                </v-list-item>
+                                <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item-action-text>
+                                        <v-btn icon dense>
+                                            <v-icon small>far fa-trash-alt</v-icon>
+                                        </v-btn>刪除
+                                    </v-list-item-action-text>
+                                </v-list-item>
+                                <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item-action-text>
+                                        <v-btn icon dense>
+                                            <v-icon small>mdi-arrow-down</v-icon>
+                                        </v-btn>完整下載接種同意書
+                                    </v-list-item-action-text>
+                                </v-list-item>
+                                <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item-action-text>
+                                        <v-btn icon dense>
+                                            <v-icon small>mdi-arrow-down</v-icon>
+                                        </v-btn>下載報名清冊
+                                    </v-list-item-action-text>
+                                </v-list-item>
+                                <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item-action-text>
+                                        <v-btn icon dense>
+                                            <v-icon small>mdi-arrow-down</v-icon>
+                                        </v-btn>下載施打清冊
+                                    </v-list-item-action-text>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+
                     </template>
                 </com-table>
             </div>
@@ -34,6 +192,7 @@
     import comTable from 'components/table'
     export default {
         data: () => ({
+            //selected: false,         
             totalCount: 12,
             itemsPerPage: 3,
             totalVisible: 4,
@@ -222,7 +381,17 @@
                     qualified: '423',
                 },
             ],
+            selectStatus: '',
+            options: [
+                { state: '進行中', id: 'geton' },
+                { state: '即將開始(已預先開放)', id: 'abouttostart' },
+                { state: '尚未開始', id: 'notyetstart' },
+                { state: '已結束', id: 'history' },
+            ],
         }),
+        watch: {
+          
+        },
         computed: {
         },
         props: {
@@ -233,6 +402,9 @@
         methods: {
             show: function (refKey) {
                 this.$bus.$emit(`${refKey}_switch`);
+            },
+            editItem: function () {
+                alert('test');
             },
             //confirmRightClick: function () {
             //    this.$bus.$emit(`confirm_show`, false);
