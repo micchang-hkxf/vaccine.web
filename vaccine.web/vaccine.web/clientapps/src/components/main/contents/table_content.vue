@@ -1,5 +1,5 @@
 ﻿<template>
-    <app-layout>
+    <app-layout  enabled-drawer="true">
         <template v-slot:navigation>
             <app-menu></app-menu>
         </template>
