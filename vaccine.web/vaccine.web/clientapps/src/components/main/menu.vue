@@ -28,14 +28,38 @@
                 <v-list-item-title>Table</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
+
+        <v-list-item @click="openPages('/admin')">
+            <v-list-item-content>
+                <v-list-item-title>Layout</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
         <v-list-item @click="openPages('/login')">
             <v-list-item-content>
                 <v-list-item-title>Login</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="openPages('/admin')">
+
+        <v-list-item @click="openPages('/admin/#/users')">
             <v-list-item-content>
-                <v-list-item-title>Layout</v-list-item-title>
+                <v-list-item-title>Users</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+
+        <v-list-item @click="openPages('/regist/#/regist')">
+            <v-list-item-content>
+                <v-list-item-title>報名</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item @click="openPages('/regist/#/unapply')">
+            <v-list-item-content>
+                <v-list-item-title>未登記清單</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
     </v-list>
