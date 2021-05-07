@@ -62,11 +62,7 @@
 
     .menu-list {
         background: #626781 !important;
-
         height: 100vh !important;
     }
 
-    .v-list-item__title {
-        color: white;
-    }
 </style>

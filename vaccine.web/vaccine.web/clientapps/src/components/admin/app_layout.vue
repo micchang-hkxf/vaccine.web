@@ -85,7 +85,10 @@
     .v-navigation-drawer__content {
         overflow-y: hidden !important;
     }
-    .user-title:hover {
+    /*.user-title:hover {
+        color: white !important;
+    }*/
+    .menu-list .v-list-item__content .v-list-item__title {
         color: white !important;
     }
 </style>
