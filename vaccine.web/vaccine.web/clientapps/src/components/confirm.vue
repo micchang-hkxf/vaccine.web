@@ -1,7 +1,5 @@
-﻿<template>
-    <v-row justify="center">
-
-        <v-dialog v-model="isShow"  width="264">
+﻿<template> 
+        <v-dialog v-model="isShow"  width="264" persistent>
             <v-card>
                 <v-card-title>
                     <div class="confirm-image d-flex justify-center">
@@ -45,7 +43,7 @@
                                     <span class="confirm-left-btns-text"><slot name="confirm-left-btn-text"></slot></span>
                                 </v-btn>
                             </v-col>
-                            <v-col cols="6" class="confirm-btns">
+                            <v-cols cols="6" class="confirm-btns">
                                 <v-btn class="confirm-right-btn"
                                        color="#2EB6C7"
                                        :ripple="false"
@@ -61,7 +59,6 @@
 
             </v-card>
         </v-dialog>
-    </v-row>
 </template>
 
 

@@ -11,18 +11,13 @@
                         <div>-網路報名系統-</div>
                     </div>
                 </div>
-                <div class="action-title d-flex flex-row justify-center">我要報名</div>
+                <div class="action-title d-flex flex-row justify-center">
+                    <slot name="regist-title"></slot>
+                </div>
             </div>
         </template>
         <template v-slot:app-content>
-            <div id="app">
-                <div class="tab-container">
-                    <v-tabs color="black" slider-color="#736DB9" grow>
-                        <v-tab>我要報名</v-tab>
-                        <v-tab>查詢紀錄</v-tab>
-                    </v-tabs>
-                </div>
-            </div>
+            <slot name="regist-content"></slot>
         </template>
     </app-layout>
 </template>
