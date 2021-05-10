@@ -43,7 +43,7 @@
                                     <span class="confirm-left-btns-text"><slot name="confirm-left-btn-text"></slot></span>
                                 </v-btn>
                             </v-col>
-                            <v-cols cols="6" class="confirm-btns">
+                            <v-col cols="6" class="confirm-btns">
                                 <v-btn class="confirm-right-btn"
                                        color="#2EB6C7"
                                        :ripple="false"
