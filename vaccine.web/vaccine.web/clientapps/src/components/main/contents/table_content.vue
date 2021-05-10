@@ -12,7 +12,7 @@
                         <div>{{item}}</div>
                     </template>
                     <template v-slot:item.quota>
-                        <div>45/<span style="color:gray">60</span></div>
+                        <div>45/<span style="color:dimgrey">60</span></div>
                     </template>
                     <template v-slot:search-bar>
                         <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
