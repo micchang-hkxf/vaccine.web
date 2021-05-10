@@ -3,11 +3,41 @@
     actions: {
     },
     state: {
+        arealist: [
+            {
+                id: 1,
+                state: "A區"
+            },{
+                id: 2,
+                state: "B區"
+         
+            }
+        ],
+        rolelist: [
+            {
+                id: 1,
+                state: "admin"
+            }, {
+                id: 2,
+                state: "user"
+
+            }
+        ],
+        userlist: [
+            {
+                id: 1,
+                state: "UserA/001"
+            }, {
+                id: 2,
+                state: "UserB/002"
+
+            }
+        ],
         items: [
             {
-                checked: false,
+                //checked: false,
                 date: '2021/04/12',
-                title: '110年5月份新冠疫苗 接種',
+                title: '110年5月份新冠疫苗 接種123',
                 type: '新冠肺炎',
                 district: '內湖區',
                 village: '西康里',
@@ -19,7 +49,7 @@
                 qualified: '423',
             },
             {
-                checked: false,
+                //checked: false,
                 date: '2021/04/08',
                 title: '110年5月份新冠疫苗 接種',
                 type: '新冠肺炎',
@@ -33,7 +63,7 @@
                 qualified: '423',
             },
             {
-                checked: false,
+                //checked: false,
                 date: '2021/04/12',
                 title: '110年5月份新冠疫苗 接種',
                 type: '新冠肺炎',
@@ -47,7 +77,7 @@
                 qualified: '423',
             },
             {
-                checked: false,
+                //checked: false,
                 date: '2021/04/12',
                 title: '110年5月份新冠疫苗 接種',
                 type: '新冠肺炎',
@@ -61,7 +91,7 @@
                 qualified: '423',
             },
             {
-                checked: false,
+                //checked: false,
                 date: '2021/04/03',
                 title: '110年5月份新冠疫苗 接種',
                 type: '新冠肺炎',
@@ -75,7 +105,7 @@
                 qualified: '423',
             },
             {
-                checked: false,
+                //checked: false,
                 date: '2021/04/06',
                 title: '110年5月份新冠疫苗 接種',
                 type: '新冠肺炎',
@@ -89,7 +119,7 @@
                 qualified: '423',
             },
             {
-                checked: false,
+                //checked: false,
                 date: '2021/04/10',
                 title: '110年5月份新冠疫苗 接種',
                 type: '新冠肺炎',
@@ -103,7 +133,7 @@
                 qualified: '423',
             },
             {
-                checked: false,
+                //checked: false,
                 date: '2021/04/22',
                 title: '110年5月份新冠疫苗 接種',
                 type: '新冠肺炎',
@@ -117,7 +147,7 @@
                 qualified: '423',
             },
             {
-                checked: false,
+                //checked: false,
                 date: '2021/04/02',
                 title: '110年5月份新冠疫苗 接種',
                 type: '新冠肺炎',
@@ -131,7 +161,7 @@
                 qualified: '423',
             },
             {
-                checked: false,
+                //checked: false,
                 date: '2021/04/01',
                 title: '110年5月份新冠疫苗 接種',
                 type: '新冠肺炎',
@@ -145,7 +175,7 @@
                 qualified: '423',
             },
             {
-                checked: false,
+                //checked: false,
                 date: '2021/04/10',
                 title: '110年5月份新冠疫苗 接種',
                 type: '新冠肺炎',
@@ -159,7 +189,7 @@
                 qualified: '423',
             },
             {
-                checked: false,
+                //checked: false,
                 date: '2021/04/15',
                 title: '110年5月份新冠疫苗 接種',
                 type: '新冠肺炎',
@@ -175,7 +205,11 @@
         ],
     },
     getters: {
-        getTableItems: state => state.items 
+        getTableItems: state => state.items,
+        getAreaItems: state => state.arealist,
+        getRoleItems: state => state.rolelist,
+        getUserItems: state => state.userlist,
+    
     },
     mutations: {
     },

@@ -91,4 +91,5 @@
     .menu-list .v-list-item__content .v-list-item__title {
         color: white !important;
     }
+
 </style>
