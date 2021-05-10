@@ -8,7 +8,7 @@
             <!-- -->
         </v-navigation-drawer>
 
-        <v-app-bar app v-if="$slots['app-bar']">
+        <v-app-bar app v-if="$slots['app-bar']" v-bind="barOption">
             <div class="app-bar" v-if="$slots['app-bar']">
                 <slot name="app-bar" />
             </div>
@@ -39,16 +39,18 @@
         computed: {
             showNavi: {
                 get: function () {
+                    if (!this.enabledDrawer) return false;
                     return this.drawer && this.$slots['navigation'];
                 },
                 set: function () {
                     null;
                 }
-            } 
+            } ,
+            barOption: function () {
+                return this.appBar || {};
+            }
         },
-        props: {
-            
-        },
+        props: ['appBar','enabledDrawer'],
         created: function () {
         },
         methods: {

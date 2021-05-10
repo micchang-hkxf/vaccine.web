@@ -28,7 +28,7 @@
             setColor2: 'red',
             value: 30,
             loadingText:"",
-            picPath: "http://localhost/loading.gif"
+            picPath: "/images/loading.gif"
         }),
         computed: {
         },
@@ -84,23 +84,23 @@
         margin: 1rem;
     }
     .w3-modal {
-        z-index: 3;
-        display: none;
-        padding-top: 100px;
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
         height: 100%;
-        overflow: auto;
+        width: 100%;
+        display: none;
+        position: fixed;
+        z-index: 99999999999999999;
+        top: 0;
+        left: 0;
         background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0,0.4)
+        background-color: rgba(0,0,0, 0.5);
+
     }
     .w3-modal-content {
-        margin: auto;
         position: relative;
-        padding: 0;
-        outline: 0;
+        top: 25%;
+        width: 100%;
+        text-align: center;
+        margin-top: 30px;
     }
 
    

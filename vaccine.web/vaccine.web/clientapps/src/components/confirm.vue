@@ -1,9 +1,10 @@
 ﻿<template> 
-        <v-dialog v-model="isShow"  width="264" persistent>
+        <v-dialog v-model="isShow"  width="264" persistent  >
             <v-card>
+                <!--@keydown.enter="isShow = false-->
                 <v-card-title>
                     <div class="confirm-image d-flex justify-center">
-                        <div >
+                        <div>
                             <slot name="confirm-image"></slot>
                         </div>
                     </div>
@@ -25,7 +26,7 @@
                                     <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
 
                                 </v-btn>
-                            </v-col>                          
+                            </v-col>
                         </v-row>
                     </div>
                 </template>
@@ -43,7 +44,7 @@
                                     <span class="confirm-left-btns-text"><slot name="confirm-left-btn-text"></slot></span>
                                 </v-btn>
                             </v-col>
-                            <v-cols cols="6" class="confirm-btns">
+                            <v-col cols="6" class="confirm-btns">
                                 <v-btn class="confirm-right-btn"
                                        color="#2EB6C7"
                                        :ripple="false"
@@ -51,7 +52,7 @@
                                     <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
 
                                 </v-btn>
-                            </v-cols>
+                            </v-col>
                         </v-row>
                     </div>
                 </template>
@@ -186,6 +187,9 @@
             });
         },
         methods: {
+            open: function(){
+                this.isShow = true;
+            },
             rightBtnAction: function () {
                 this.rightClick();
             },
