@@ -4,10 +4,14 @@
             <slot name="search-bar"></slot>
         </template>
 
-        <v-data-table :headers="computedHeaders"
+        <v-data-table v-model="selected"
+                      :headers="computedHeaders"
                       :items="items"
+                      item-key="date"
                       :page.sync="page"
                       :items-per-page="itemsPerPage"
+                      :single-select="singleSelect"
+                      :show-select="showSelect"
                       class="elevation-1"
                       hide-default-footer>
 
@@ -17,9 +21,9 @@
 
                 <slot :name="header.templateName" v-if="$slots[header.templateName]!=null" :item="item"></slot>
             </template>
-            <template v-slot:item.checked="{ item }">
+            <!--<template v-slot:item.checked="{ item }">
                 <v-checkbox v-model="item.checked" :ripple="false"></v-checkbox>
-            </template>
+            </template>-->
             <template v-slot:top>
 
                 <v-toolbar flat color="white">
@@ -46,8 +50,8 @@
 
 <style>
     .row, .col {
-        margin: 0px !important;
-        padding: 0px !important;
+        /*margin: 0px !important;
+        padding: 0px !important;*/
         flex-wrap: nowrap !important;
     }
 
@@ -57,19 +61,36 @@
     .theme--light.v-pagination .v-pagination__item--active {
         color: #626781 !important;
     }
-   
+    .v-input--selection-controls__ripple {
+        border-radius: 50%;
+        cursor: pointer;
+        height: 34px;
+        position: absolute;
+        transition: inherit;
+        width: 34px;
+        left: -12px;
+        top: calc(50% - 24px);
+        margin: 7px;
+        display: none;
+    }
+
+
+    .fa-check-square:before, .fa-minus-square:before {
+        color: #736DB9;
+    }
 
 </style>
 
 
 <script>
     export default {
-        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage', 'totalVisible'],
+        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage', 'totalVisible','showSelect'],
         data: () => ({
             page:1,
             isShow: false,
-            selected: false, 
-            singleSelect: true,
+            selected:[],
+            //selected: false, 
+            singleSelect: false,
            
         }),
         watch: {

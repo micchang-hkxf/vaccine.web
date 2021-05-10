@@ -5,81 +5,45 @@
         </template>
         <template v-slot:app-content>
             <div id="app">
-                <v-btn @click="show('table')">table</v-btn>
+                <!--<v-btn @click="show('table')">table</v-btn>-->
                 <com-table ref-key="table" :headers="headers" :items="desserts" :total-count="totalCount"
-                           :items-per-page="itemsPerPage" :total-visible="totalVisible">
+                           :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect">
                     <template v-slot:item.no="{item}">
                         <div>{{item}}</div>
                     </template>
                     <template v-slot:search-bar>
-                        <v-row>                            
-                            <v-col class="d-flex" cols="12">
-                                <v-select v-model="selectStatus"
-                                          :items="options"
-                                          item-text="state"
-                                          item-value="state"
-                                          label="所有疫苗類型"
-                                          :menu-props="{ bottom: true, offsetY: true }"
-                                          outlined
-                                          clearable
-                                          style="margin-right: 10px;min-width:150px"
-                                          class="search-filter"
-                                          return-object>
-                                </v-select>
-                                <v-select v-model="selectStatus"
-                                          :items="options"
-                                          item-text="state"
-                                          item-value="state"
-                                          label="所有疫苗類型"
-                                          :menu-props="{ bottom: true, offsetY: true }"
-                                          outlined
-                                          clearable
-                                          style="margin-right: 10px;min-width:150px"
-                                          class="search-filter"
-                                          return-object>
-                                </v-select>
-                                <v-select v-model="selectStatus"
-                                          :items="options"
-                                          item-text="state"
-                                          item-value="state"
-                                          label="所有疫苗類型"
-                                          :menu-props="{ bottom: true, offsetY: true }"
-                                          outlined
-                                          clearable
-                                          style="margin-right: 10px;min-width:150px"
-                                          class="search-filter"
-                                          return-object>
-                                </v-select>
-                                <v-select v-model="selectStatus"
-                                          :items="options"
-                                          item-text="state"
-                                          item-value="state"
-                                          label="所有疫苗類型"
-                                          :menu-props="{ bottom: true, offsetY: true }"
-                                          outlined
-                                          clearable
-                                          style="margin-right: 10px;min-width:150px"
-                                          class="search-filter"
-                                          return-object>
-                                </v-select>
-
-                                <v-btn icon color="#626781" style="top:10px">
+                        <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
+                            <v-row>
+                                <v-col cols="6">
+                                    <v-select v-model="selectStatus"
+                                              :items="options"
+                                              item-text="state"
+                                              item-value="state"
+                                              label="所有疫苗類型"
+                                              :menu-props="{ bottom: true, offsetY: true }"
+                                              outlined
+                                              dense
+                                              style="margin-right: 10px;"
+                                              class="search-filter"
+                                              return-object>
+                                    </v-select>
+                                </v-col>
+                                <v-col cols="6">
+                                    <v-text-field label="人員姓名/帳號" outlined dense></v-text-field>
+                                </v-col>
+                                <v-btn icon color="#626781" style="top:5px;">
                                     <v-icon>fas fa-search</v-icon>
                                 </v-btn>
-
-
-                                <v-text-field label="Regular"></v-text-field>
-                            </v-col>
-
-                        </v-row>
+                            </v-row>
+                        </div>
 
 
                     </template>
                    
-                    <template v-slot:toolbar-action={selectAll,deleteSelected,selectedItems,selected,switchSelect} >
-                        <v-checkbox :ripple="false" hide-details @click="switchSelect" ></v-checkbox>
-                        <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
-                            <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
+                    <template v-slot:toolbar-action={selectAll,deleteSelected,selectedItems,selected}>
+                        <!--<v-checkbox :ripple="false" hide-details @click="switchSelect" color="#736DB9">selected</v-checkbox>-->
+                        <v-btn color="#F0524B" :disabled="selected.length<=0 " @click="deleteSelected(selected)">
+                            <span style="color:white">刪除選取項目 ({{selected.length}})</span>
                         </v-btn>
                         <v-spacer></v-spacer>
 
@@ -186,8 +150,8 @@
             totalCount: 12,
             itemsPerPage: 3,
             totalVisible: 4,
-            headers: [
-                { text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
+            showSelect: true,
+            headers: [               
                 { text: '建立日期',     value: 'date', align: 'start',sortable: true, flex:6},
                 { text: '場次標題', value: 'title', sortable: false, flex: 6},
                 { text: '疫苗類型', value: 'type', sortable: false, flex: 6},
@@ -202,9 +166,8 @@
                 { text: '', value: 'modify', sortable: false },
             ],
             desserts: [
-                {
-                    checked:false,
-                    date: '2021/04/12',
+                {                    
+                    date: '2021/04/01',
                     title: '110年5月份新冠疫苗 接種',
                     type: '新冠肺炎',
                     district: '內湖區',
@@ -217,7 +180,6 @@
                     qualified: '423',
                 },
                 {
-                    checked: false,
                     date: '2021/04/08',
                     title: '110年5月份新冠疫苗 接種',
                     type: '新冠肺炎',
@@ -231,35 +193,6 @@
                     qualified: '423',
                 },
                 {
-                    checked: false,
-                    date: '2021/04/12',
-                    title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
-                    village: '西康里',
-                    institution: '王慶森診所',
-                    instutionDistrict: '內湖區',
-                    stationTime: '2021/05/08 08:30 - 11:30',
-                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                    quota: '425/670',
-                    qualified: '423',
-                },
-                {
-                    checked: false,
-                    date: '2021/04/12',
-                    title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
-                    village: '西康里',
-                    institution: '王慶森診所',
-                    instutionDistrict: '內湖區',
-                    stationTime: '2021/05/08 08:30 - 11:30',
-                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                    quota: '425/670',
-                    qualified: '423',
-                },
-                {
-                    checked: false,
                     date: '2021/04/03',
                     title: '110年5月份新冠疫苗 接種',
                     type: '新冠肺炎',
@@ -273,7 +206,32 @@
                     qualified: '423',
                 },
                 {
-                    checked: false,
+                    date: '2021/04/04',
+                    title: '110年5月份新冠疫苗 接種',
+                    type: '新冠肺炎',
+                    district: '內湖區',
+                    village: '西康里',
+                    institution: '王慶森診所',
+                    instutionDistrict: '內湖區',
+                    stationTime: '2021/05/08 08:30 - 11:30',
+                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
+                    quota: '425/670',
+                    qualified: '423',
+                },
+                {
+                    date: '2021/04/05',
+                    title: '110年5月份新冠疫苗 接種',
+                    type: '新冠肺炎',
+                    district: '內湖區',
+                    village: '西康里',
+                    institution: '王慶森診所',
+                    instutionDistrict: '內湖區',
+                    stationTime: '2021/05/08 08:30 - 11:30',
+                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
+                    quota: '425/670',
+                    qualified: '423',
+                },
+                {
                     date: '2021/04/06',
                     title: '110年5月份新冠疫苗 接種',
                     type: '新冠肺炎',
@@ -287,7 +245,6 @@
                     qualified: '423',
                 },
                 {
-                    checked: false,
                     date: '2021/04/10',
                     title: '110年5月份新冠疫苗 接種',
                     type: '新冠肺炎',
@@ -301,7 +258,6 @@
                     qualified: '423',
                 },
                 {
-                    checked: false,
                     date: '2021/04/22',
                     title: '110年5月份新冠疫苗 接種',
                     type: '新冠肺炎',
@@ -313,63 +269,7 @@
                     registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
                     quota: '425/670',
                     qualified: '423',
-                },
-                {
-                    checked: false,
-                    date: '2021/04/02',
-                    title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
-                    village: '西康里',
-                    institution: '王慶森診所',
-                    instutionDistrict: '內湖區',
-                    stationTime: '2021/05/08 08:30 - 11:30',
-                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                    quota: '425/670',
-                    qualified: '423',
-                },
-                {
-                    checked: false,
-                    date: '2021/04/01',
-                    title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
-                    village: '西康里',
-                    institution: '王慶森診所',
-                    instutionDistrict: '內湖區',
-                    stationTime: '2021/05/08 08:30 - 11:30',
-                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                    quota: '425/670',
-                    qualified: '423',
-                },
-                {
-                    checked: false,
-                    date: '2021/04/10',
-                    title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
-                    village: '西康里',
-                    institution: '王慶森診所',
-                    instutionDistrict: '內湖區',
-                    stationTime: '2021/05/08 08:30 - 11:30',
-                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                    quota: '425/670',
-                    qualified: '423',
-                },
-                {
-                    checked: false,
-                    date: '2021/04/15',
-                    title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
-                    village: '西康里',
-                    institution: '王慶森診所',
-                    instutionDistrict: '內湖區',
-                    stationTime: '2021/05/08 08:30 - 11:30',
-                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                    quota: '425/670',
-                    qualified: '423',
-                },
+                }                   
             ],
             selectStatus: '',
             options: [
