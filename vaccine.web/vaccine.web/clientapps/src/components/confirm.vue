@@ -1,9 +1,10 @@
 ﻿<template> 
-        <v-dialog v-model="isShow"  width="264" persistent>
+        <v-dialog v-model="isShow"  width="264" persistent  >
             <v-card>
+                <!--@keydown.enter="isShow = false-->
                 <v-card-title>
                     <div class="confirm-image d-flex justify-center">
-                        <div >
+                        <div>
                             <slot name="confirm-image"></slot>
                         </div>
                     </div>
@@ -25,7 +26,7 @@
                                     <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
 
                                 </v-btn>
-                            </v-col>                          
+                            </v-col>
                         </v-row>
                     </div>
                 </template>
