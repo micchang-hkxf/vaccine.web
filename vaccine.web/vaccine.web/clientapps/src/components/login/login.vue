@@ -37,36 +37,40 @@
                 </template>
             </com-confirm>
             <!---->
-            <v-dialog v-model="dialog" persistent max-width="500px">
+            <v-dialog v-model="authenticationDialog" persistent max-width="500px">
                 <v-card>
                     <v-card-title>
-                        <span>身份驗證（240s）</span>
+                        <span>身份驗證（{{authenticationSec}}s）</span>
                         <v-spacer></v-spacer>
-                        <v-btn icon @click="dialog = false">
+                        <v-btn icon @click="reload">
                             <v-icon>mdi-close</v-icon>
                         </v-btn>
                     </v-card-title>
-                    <v-content>
+                    <div class="dialog-content">
                         <v-row>
                             <v-col cols="12">
                                 <div class="dialog-sub-title">
                                     請輸入６位數驗證碼以完成身份確認
                                 </div>
-                                <v-text-field label="驗證碼＊"
+                                <v-text-field v-model="verificationCode"
+                                              label="驗證碼＊"
                                               placeholder="請輸入驗證碼"
                                               maxlength="6"
-                                              filled></v-text-field>
-                                <div class="verification-code-Message">{{verificationCodeMessage}}</div>
+                                              filled
+                                              ref="verificationCode"
+                                              @keyup.enter="checkAuthenticationVerificationCode"
+                                              autocomplete="off"></v-text-field>
+                                <div class="verification-code-message">{{verificationCodeMessage}}</div>
                             </v-col>
                         </v-row>
-                    </v-content>
+                    </div>
                     <v-card-actions>
-                        <v-btn icon @click="reSendVerificationCode">
+                        <v-btn icon @click="reSendVerificationCode" ref="resendBtn" :class="sending ? 'disabled' : ''">
                             <v-icon>mdi-reload</v-icon>
                         </v-btn>
-                        <span>重新傳送驗證碼（60s）</span>
+                        <span class="resend-message" :class="sending ? 'disabled' : ''" ref="resendMessage" @click="reSendVerificationCode">重新傳送驗證碼（{{verificationCodeSec}}s）</span>
                         <v-spacer></v-spacer>
-                        <v-btn @click="dialog = false">
+                        <v-btn @click="checkAuthenticationVerificationCode">
                             送出
                         </v-btn>
                     </v-card-actions>
@@ -80,17 +84,24 @@
     //import comDialog from 'components/dialog'
     import comConfirm from 'components/confirm'
     import { mapActions } from 'vuex'
+
     export default {
         // router,
         data: () => ({
             uid: '',
             upd: '',
             show1: false,
-            dialog: true,
             alertMessage: '',
-            verificationCodeMessage: '驗證碼無效，請重新輸入！',
+            authenticationDialog: false,
+            authenticationSec: 240,
+            verificationCodeSec: 60,
+            verificationCode: '',
+            verificationCodeMessage: '',
+            authenticationTiming: null,
+            verificationCodeTiming: null,
+            sending: false,
             rules: {
-                required: v => !!v ||"必填"
+                required: v => !!v || "必填"
             }
         }),
         computed: {
@@ -100,10 +111,59 @@
 
         },
         created: function () {
-            
+            var comp = this;
+            var _authenticationSec   = comp.authenticationSec;
+            var _verificationCodeSec = comp.verificationCodeSec;
+
+            // uid focus
+            setTimeout(() => this.$refs.uid.focus(), 0); 
+
+            comp.$bus.$on('authentication_dialog_show', function (isShow) {
+                comp.authenticationDialog = isShow;
+                if (isShow) {
+                    setTimeout(() => comp.$refs.verificationCode.focus(), 0);
+                    if (comp.authenticationTiming === null) {
+                        comp.authenticationTiming = setInterval(function () {
+                            comp.authenticationSec--;
+                            if (comp.authenticationSec === 0) {
+                                comp.reload();
+                            }
+                        }, 1000);
+                    }
+                    
+                    if (comp.verificationCodeTiming === null) {
+                        comp.verificationCodeTiming = setInterval(function () {
+                            comp.verificationCodeSec--;
+                            if (comp.verificationCodeSec === 0) {
+                                clearInterval(comp.verificationCodeTiming);
+                                comp.verificationCodeTiming = null;
+                                comp.verificationCodeSec = _verificationCodeSec;
+                                comp.sending = false;
+                            }
+                        }, 1000);
+                    }
+                } else {
+                    setTimeout(function () {
+                        comp.verificationCode = '';
+
+                        if (comp.authenticationTiming !== null) {
+                            clearInterval(comp.authenticationTiming);
+                            comp.authenticationTiming = null;
+                            comp.authenticationSec = _authenticationSec;
+                        }
+
+                        if (comp.verificationCodeTiming !== null) {
+                            clearInterval(comp.verificationCodeTiming);
+                            comp.verificationCodeTiming = null;
+                            comp.verificationCodeSec = _verificationCodeSec;
+                            comp.sending = false;
+                        }
+                    }, 0);
+                }
+            });
         },
         methods: {
-            ...mapActions(['checkLogin']),
+            ...mapActions(['checkLogin', 'checkVerificationCode']),
             check: function () {
                 var comp = this;
                 var isvaild = comp.$refs.loginForm.validate();
@@ -138,8 +198,10 @@
                         }
 
                         if (result.state === 'not yet enabled') {
-                            // 傳送驗證碼
-                            comp.dialog = true;
+                            // TODO: User/Login
+
+                            comp.sending = true;
+                            comp.$bus.$emit('authentication_dialog_show', true);
                             return;
                         }
 
@@ -154,10 +216,68 @@
                 this.$bus.$emit('alert_show', false);
             },
             reSendVerificationCode: function () {
-                alert('驗證碼已送出');
+                if (!this.sending) {
+                    this.check();
+                    this.$bus.$emit('authentication_dialog_show', true);
+                    this.sending = true;
+                }
+            },
+            closeAuthenticationDialog: function () {
+                this.$bus.$emit('authentication_dialog_show', false);
+            },
+            reload: function () {
+                location.reload();
+            },
+            checkAuthenticationVerificationCode: function () {
+                var comp = this;
+                if (comp.verificationCode.length < 6) {
+                    return;
+                }
+                comp.checkVerificationCode({ uid: comp.uid, verificationCode: comp.verificationCode })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'invalid':
+                                comp.verificationCodeMessage = '驗證碼無效，請重新輸入！';
+                                break;
+                            default:
+                                comp.verificationCodeMessage = '';
+                                break;
+                        }
+                        
+                        if (result.state !== 'pass') {
+                            // verificationCode select
+                            comp.$refs.verificationCode.$el.querySelector('input').select();
+                            return;
+                        }
+                        
+                        if (result.state1 === 'first login') {
+                            comp.closeAuthenticationDialog();
+                            // TODO
+                            alert("提醒您！為了確保您的資料安全，請更新您的個人密碼。");
+                            return;
+                        }
+
+                        if (result.state1 === 'password is about to expire') {
+                            comp.closeAuthenticationDialog();
+                            // TODO
+                            alert("提醒您！您的密碼即將到期，請儘快更新您的個人密碼。");
+                            return;
+                        }
+
+                        if (result.state1 === 'password has expired') {
+                            comp.closeAuthenticationDialog();
+                            // TODO
+                            alert("您的密碼已到期！請更新您的個人密碼。");
+                            return;
+                        }
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    })
             },
             forgetUpd: function () {
-                alert('忘記密碼');
+                // TODO: 忘記密碼
             }
         },
         components: {
@@ -193,7 +313,7 @@
     }
 
     html.overflow-y-hidden {
-        overflow-y: auto !important;
+        overflow-y: scroll !important;
     }
 
     body {
@@ -319,7 +439,7 @@
         margin: 5px 0;
     }
 
-    .v-dialog .v-content__wrap {
+    .v-dialog .dialog-content {
         margin: 0 10px;
     }
 
@@ -335,8 +455,23 @@
         color: var(--bk) !important;
     }
 
-    .v-dialog .verification-code-Message {
+    .v-dialog .verification-code-message {
         color: #FF0000;
+        min-height: 24px;
+    }
+
+    .v-dialog .resend-message {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+        cursor: pointer;
+    }
+
+    .v-dialog .disabled {
+        cursor: not-allowed;
+        pointer-events: none;
+        color: var(--bk_4);
     }
 
     /* Extra small devices (portrait phones, less than 576px) */
