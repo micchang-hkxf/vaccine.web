@@ -1,8 +1,8 @@
 ﻿<template>
     <v-dialog v-model="isShow" :width="width">
         <v-card class="mx-auto" >
-            <v-toolbar :color="primary" class="dialog-toolbar">
-                <slot name="toolbar" :close="close"></slot>
+            <v-toolbar color="primary" class="dialog-toolbar">
+                <slot name="toolbar"></slot>
             </v-toolbar>
             <div class="dialog-content">
                 <slot name="content" :close="close"></slot>
