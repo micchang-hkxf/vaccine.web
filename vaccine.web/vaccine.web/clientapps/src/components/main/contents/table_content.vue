@@ -8,8 +8,11 @@
                 <!--<v-btn @click="show('table')">table</v-btn>-->
                 <com-table ref-key="table" :headers="headers" :items="desserts" :total-count="totalCount"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect">
-                    <template v-slot:item.no="{item}">
+                    <template v-slot:item.date="{item}">
                         <div>{{item}}</div>
+                    </template>
+                    <template v-slot:item.quota>
+                        <div>45/<span style="color:gray">60</span></div>
                     </template>
                     <template v-slot:search-bar>
                         <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
@@ -39,7 +42,7 @@
 
 
                     </template>
-                   
+
                     <template v-slot:toolbar-action={selectAll,deleteSelected,selectedItems,selected}>
                         <!--<v-checkbox :ripple="false" hide-details @click="switchSelect" color="#736DB9">selected</v-checkbox>-->
                         <v-btn color="#F0524B" :disabled="selected.length<=0 " @click="deleteSelected(selected)">
