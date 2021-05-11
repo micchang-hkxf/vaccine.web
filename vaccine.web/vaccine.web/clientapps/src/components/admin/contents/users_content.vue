@@ -4,9 +4,10 @@
             <app-menu></app-menu>
         </template>
         <template v-slot:app-content>
+
             <div class="page-title-block">人員管理</div>
             <div id="app" class="table-list">
-                <com-table ref-key="table" :headers="headers" :items="getTableItems" :total-count="totalCount"
+                <com-table ref-key="table" :headers="headers" :items="getTableItems" :total-count="totalCount" :show-select="showSelect"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible">
                     <template v-slot:item.no="{item}">
                         <div>{{item}}</div>
@@ -95,7 +96,7 @@
                                         選擇新增方式:
                                     </v-list-item-action-text>
                                 </v-list-item>
-                                <v-list-item @click.stop="editItem(item)">
+                                <v-list-item @click.stop="newItem('newuser')">
                                     <v-list-item-action-text>
                                         <v-btn icon dense>
                                             <v-icon small>far fa-edit</v-icon>
@@ -151,7 +152,24 @@
                     </template>
                 </com-table>
             </div>
+
+            <com-dialog ref="dialogPanel" ref-key="newuser" width="60%">
+                <template v-slot:toolbar>
+                    公文管理環境檢測
+                </template>
+                <template v-slot:content>
+
+                </template>
+                <template v-slot:action="{close}">
+                    <v-btn @click="close">取消</v-btn>
+                    <v-spacer></v-spacer>
+
+                    <v-btn>送出</v-btn>
+                </template>
+            </com-dialog>
         </template>
+
+
     </app-layout>
 </template>
 
@@ -171,7 +189,7 @@
         height: 65px;
         padding: 20px;
         background: #FFFFFF80 !important;
-        font-size:20px;
+        font-size: 20px;
     }
 </style>
 
@@ -180,6 +198,7 @@
     import appMenu from 'components/admin/menu'
     import appLayout from 'components/admin/app_layout'
     import comTable from 'components/table'
+    import comDialog from 'components/dialog'
     import { mapGetters } from 'vuex'
     //import usersStore  from 'stores/admin/usersStore'
 
@@ -188,6 +207,7 @@
             totalCount: 12,
             itemsPerPage: 3,
             totalVisible: 4,
+            showSelect: false,
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
                 { text: '建立日期', value: 'date', align: 'start', sortable: true, flex: 6 },
@@ -210,7 +230,7 @@
             selectStatus4: null,
             permissionStatus: [
                 { state: '啟用', id: 'on' },
-                { state: '未啟用', id: 'off' },
+                { state: '停用', id: 'off' },
               
             ],
 
@@ -228,10 +248,9 @@
         created: function () {
         },
         methods: {
-            show: function (refKey) {
-                this.$bus.$emit(`${refKey}_switch`);
-
-            },
+            //show: function (refKey) {
+            //    this.$bus.$emit(`${refKey}_switch`);
+            //},
             editItem: function () {
                 alert('edit');
             },
@@ -244,10 +263,15 @@
             search: function () {
                 console.log("Label: ", this.selectStatus.id)
                 console.log("Value: ", this.selectStatus.state)
+            },
+            newItem: function (refKey) {
+                this.$bus.$emit(`${refKey}_show`, true);
+            },
+            close: function () {
             }
         },
         components: {
-            appLayout, appMenu, comTable
+            appLayout, appMenu, comTable, comDialog
         }
     }
 

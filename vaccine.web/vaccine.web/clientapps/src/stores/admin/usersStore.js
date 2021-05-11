@@ -15,11 +15,11 @@
         ],
         rolelist: [
             {
-                id: 1,
-                state: "admin"
+                id: 'admin',
+                state: "系統管理員"
             }, {
-                id: 2,
-                state: "user"
+                id: 'areaadmin',
+                state: "轄區管理員"
 
             }
         ],
@@ -64,7 +64,7 @@
             },
             {
                 //checked: false,
-                date: '2021/04/12',
+                date: '2021/04/22',
                 title: '110年5月份新冠疫苗 接種',
                 type: '新冠肺炎',
                 district: '內湖區',
@@ -78,7 +78,7 @@
             },
             {
                 //checked: false,
-                date: '2021/04/12',
+                date: '2021/04/14',
                 title: '110年5月份新冠疫苗 接種',
                 type: '新冠肺炎',
                 district: '內湖區',
