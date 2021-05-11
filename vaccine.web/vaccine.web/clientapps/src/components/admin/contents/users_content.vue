@@ -91,19 +91,19 @@
                                 </v-btn>
                             </template>
                             <v-list>
-                                <v-list-item @click.stop="editItem(item)">
+                                <v-list-item>
                                     <v-list-item-action-text>
                                         選擇新增方式:
                                     </v-list-item-action-text>
                                 </v-list-item>
-                                <v-list-item @click.stop="newItem('newuser')">
+                                <v-list-item @click.stop="newItem('userform')">
                                     <v-list-item-action-text>
                                         <v-btn icon dense>
                                             <v-icon small>far fa-edit</v-icon>
                                         </v-btn>手動輸入
                                     </v-list-item-action-text>
                                 </v-list-item>
-                                <v-list-item @click.stop="editItem(item)">
+                                <v-list-item @click.stop="importItem(item)">
                                     <v-list-item-action-text>
                                         <v-btn icon dense>
                                             <v-icon small>far fa-trash-alt</v-icon>
@@ -113,8 +113,6 @@
 
                             </v-list>
                         </v-menu>
-
-
                     </template>
 
                     <template v-slot:item.modify>
@@ -125,7 +123,7 @@
                                 </v-btn>
                             </template>
                             <v-list>
-                                <v-list-item @click.stop="editItem(item)">
+                                <v-list-item @click.stop="editItem(item,'userform')">
                                     <v-list-item-action-text>
                                         <v-btn icon dense>
                                             <v-icon small>far fa-edit</v-icon>
@@ -153,20 +151,48 @@
                 </com-table>
             </div>
 
-            <com-dialog ref="dialogPanel" ref-key="newuser" width="60%">
+            <com-dialog ref="dialogPanel" ref-key="userform" width="60%">
                 <template v-slot:toolbar>
-                    公文管理環境檢測
+                    新增人員
                 </template>
                 <template v-slot:content>
-
+                    <v-form v-model="valid" ref="form">
+                        <v-label><span class="star">姓名</span></v-label>
+                        <v-text-field outlined class="w01" v-model="uName"></v-text-field>
+                        <v-label><span class="star">帳號</span></v-label>
+                        <v-text-field outlined class="w02" v-model="acc"></v-text-field>
+                        <v-label><span class="star">email</span></v-label>
+                        <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>
+                        <v-label><span class="star">手機</span></v-label>
+                        <v-text-field outlined class="w02" type="number" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
+                        <v-label><span class="star">再次確認手機</span></v-label>
+                        <v-text-field outlined class="w02" type="number" v-model="mbNo2" :rules="[rules.mbNo.regex]"></v-text-field>
+                        <v-label><span class="star">服務單位</span></v-label>
+                        <v-text-field outlined class="w02" v-model="unitName"></v-text-field>
+                    </v-form>
                 </template>
                 <template v-slot:action="{close}">
                     <v-btn @click="close">取消</v-btn>
                     <v-spacer></v-spacer>
-
-                    <v-btn>送出</v-btn>
+                    <v-btn @click="saveform">儲存</v-btn>
                 </template>
             </com-dialog>
+            <com-confirm ref-key="confirm"  :right-click="confirmRightClick">
+                <template v-slot:confirm-image>
+                    <v-img src="/alert_success.svg"></v-img>
+                </template>
+                <template v-slot:confirm-title>
+                    {{ alertTitle }}
+                </template>
+                <template v-slot:confirm-text>
+                    {{ alertMessage }}
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    確認
+                </template>
+
+
+            </com-confirm>
         </template>
 
 
@@ -191,6 +217,18 @@
         background: #FFFFFF80 !important;
         font-size: 20px;
     }
+
+    .users-list .w01 {
+        width:300px;
+    }
+    .users-list .star:after {
+        color: red;
+        content: "*";
+    }
+    .users-list .w02 {
+        width: 600px;
+    }
+
 </style>
 
 
@@ -200,14 +238,25 @@
     import comTable from 'components/table'
     import comDialog from 'components/dialog'
     import { mapGetters } from 'vuex'
+    import comConfirm from 'components/confirm'
     //import usersStore  from 'stores/admin/usersStore'
-
+   
+  
     export default {
         data: () => ({
             totalCount: 12,
             itemsPerPage: 3,
             totalVisible: 4,
+            uName: null,
+            acc: null,
+            email: null,
+            mbNo: null,
+            mbNo2: null,
+            unitName: null,
             showSelect: false,
+            valid: true,
+            alertMessage: "",
+            alertTitle:"",
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
                 { text: '建立日期', value: 'date', align: 'start', sortable: true, flex: 6 },
@@ -233,7 +282,16 @@
                 { state: '停用', id: 'off' },
               
             ],
-
+            rules: {
+                email: {
+                    required: v => !!v || '欄位必填.',
+                    regex: v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail 格式錯誤'
+                },
+                mbNo: {
+                    required: v => !!v || '欄位必填.',
+                    regex: v => /^09\d{8}$/.test(v) || '手機號碼格式錯誤'
+                }
+            }
         }),
         computed: {
             ...mapGetters('users', ['getTableItems']),
@@ -248,30 +306,66 @@
         created: function () {
         },
         methods: {
-            //show: function (refKey) {
-            //    this.$bus.$emit(`${refKey}_switch`);
-            //},
-            editItem: function () {
-                alert('edit');
+            editItem(item, refKey) {
+                this.$bus.$emit(`${refKey}_show`, true);
+                //alert(this.getTableItems[2]);
+               
             },
-            stopItem: function () {
+            stopItem () {
                 alert('stop');
             },
-            removeItem: function () {
+            removeItem () {
                 alert('remove');
             },
-            search: function () {
-                console.log("Label: ", this.selectStatus.id)
-                console.log("Value: ", this.selectStatus.state)
+            search() {
+                var filter=[]
+                if (this.selectStatus != undefined) {
+                    filter.push(this.selectStatus.id);
+                    //console.log("Label: ", this.selectStatus.id)
+                    //console.log("Value: ", this.selectStatus.state)
+                }
+                if (this.selectStatus2 != undefined) {
+                    filter.push(this.selectStatus2.id);
+                }
+                if (this.selectStatus3 != undefined) {
+                    filter.push(this.selectStatus3.id);
+                }
+                if (this.selectStatus4 != undefined) {
+                    filter.push(this.selectStatus4.id);
+                }
+                console.log(filter);
             },
-            newItem: function (refKey) {
+            newItem (item,refKey) {
                 this.$bus.$emit(`${refKey}_show`, true);
             },
-            close: function () {
-            }
+            importItem () {
+                alert('import');
+            },
+            close () {
+            },
+            saveform () {
+                if (this.$refs.form.validate()) {
+                    this.$set(this, "alertTitle", '儲存成功');
+                    this.$refs.dialogPanel.close();
+                } else if (this.mbNo != this.mbNo2) {
+                    this.$bus.$emit(`confirm_show`, true);
+                    this.$set(this, "alertTitle", '儲存失敗');
+                    this.$set(this, "alertMessage", '手機輸入不一致');
+                } else {
+                    this.$set(this, "alertTitle", '儲存失敗');
+                    this.$set(this, "alertMessage", 'xxxxxxxxxxxx');
+                }
+            },
+            confirmRightClick () {
+                this.$bus.$emit(`confirm_show`, false);
+            },
+            clear() {
+                this.$refs.form.reset()
+            },
+          
         },
         components: {
-            appLayout, appMenu, comTable, comDialog
+            appLayout, appMenu, comTable, comDialog, comConfirm
         }
     }
 
