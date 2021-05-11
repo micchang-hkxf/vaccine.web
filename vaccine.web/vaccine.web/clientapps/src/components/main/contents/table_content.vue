@@ -6,10 +6,13 @@
         <template v-slot:app-content>
             <div id="app">
                 <!--<v-btn @click="show('table')">table</v-btn>-->
-                <com-table ref-key="table" :headers="headers" :items="desserts" :total-count="totalCount"
+                <com-table ref-key="table" :headers="headers" :items="desserts" :total-count="totalCount" disabled-prop="disabled"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect">
                     <template v-slot:item.date="{item}">
-                        <div>{{item}}</div>
+                        <div>{{item}}*</div>
+                    </template>
+                    <template v-slot:header.date="{header}">
+                        <div>customer {{header}}</div>
                     </template>
                     <template v-slot:item.quota>
                         <div>45/<span style="color:dimgrey">60</span></div>
@@ -84,7 +87,8 @@
 
                     </template>
 
-                    <template v-slot:item.modify>
+
+                    <template v-slot:item.modify="{item}">
                         <v-menu bottom right offset-y>
                             <template v-slot:activator="{ on }">
                                 <v-btn dark icon v-on="on" @click.stop="">
@@ -139,7 +143,9 @@
 
 
 <style>
-
+    .item-disabled {
+        background-color:gray;
+    }
 </style>
 
 
@@ -194,6 +200,7 @@
                     registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
                     quota: '425/670',
                     qualified: '423',
+                    disabled:true
                 },
                 {
                     date: '2021/04/03',
@@ -296,8 +303,8 @@
             show: function (refKey) {
                 this.$bus.$emit(`${refKey}_switch`);
             },
-            editItem: function () {
-                alert('test');
+            editItem: function (item) {
+                console.log(item);
             },
             //confirmRightClick: function () {
             //    this.$bus.$emit(`confirm_show`, false);
