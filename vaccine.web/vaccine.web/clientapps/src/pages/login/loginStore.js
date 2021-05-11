@@ -44,7 +44,8 @@ export default new Vuex.Store({
 
                     if (!exist) {
                         result.state = 'not found';
-                        throw result;
+                        resolve(result);
+                        return;
                     }
 
                     if (exist.verificationCode !== account.verificationCode) {
@@ -53,8 +54,46 @@ export default new Vuex.Store({
                         return;
                     }
 
+                    if (exist.state === 'network abnormal') {
+                        result.state = exist.state;
+                        throw result;
+                    }
+
                     result.state = 'pass';
                     result.state1 = exist.state1;
+                    resolve(result);
+                } catch (e) {
+                    reject(result);
+                }
+            });
+        },
+        checkResetPw: function ({ state }, account) {
+            return new Promise(function (resolve, reject) {
+                var result = { uid: account.uid, state: '' };
+                try {
+                    var exist = state.loginFake.accounts.find(f => f.uid == account.uid);
+                    
+                    if (!exist) {
+                        result.state = 'not found';
+                        resolve(result);
+                        return;
+                    }
+                    
+                    if (exist.resetPwState !== 'pass') {
+                        result.state = exist.resetPwState;
+                        resolve(result);
+                        return;
+                    }
+                    
+                    if (exist.state === 'network abnormal') {
+                        result.state = exist.state;
+                        throw result;
+                    }
+
+                    //console.log(account.upd);
+                    //console.log(account.newUpd);
+
+                    result.state = exist.resetPwState;
                     resolve(result);
                 } catch (e) {
                     reject(result);
@@ -65,14 +104,15 @@ export default new Vuex.Store({
     state: {
         loginFake : {
             accounts: [
-                { uid: "yea"  , upd: '123', state: 'pass'              , state1: ''                           ,  verificationCode: '123456'},
-                { uid: "yea01", upd: '123', state: 'no management area', state1: ''                           ,  verificationCode: '123456' },
-                { uid: "yea02", upd: '123', state: 'not member'        , state1: ''                           ,  verificationCode: '123456' },
-                { uid: "yea03", upd: '123', state: 'not yet enabled'   , state1: 'first login'                ,  verificationCode: '123456' },
-                { uid: "yea04", upd: '123', state: 'not yet enabled'   , state1: 'password is about to expire',  verificationCode: '123456' },
-                { uid: "yea05", upd: '123', state: 'not yet enabled'   , state1: 'password has expired'       ,  verificationCode: '123456' },
-                { uid: "yea06", upd: '123', state: 'deactivate'        , state1: ''                           ,  verificationCode: '123456' },
-                { uid: "yea07", upd: '123', state: 'network abnormal'  , state1: ''                           ,  verificationCode: '123456' },
+                { uid: "yea"  , upd: '123', state: 'pass'              , state1: ''                           ,  verificationCode: '123456', resetPwState: ''      },
+                { uid: "yea01", upd: '123', state: 'no management area', state1: ''                           ,  verificationCode: '123456', resetPwState: ''      },
+                { uid: "yea02", upd: '123', state: 'not member'        , state1: ''                           ,  verificationCode: '123456', resetPwState: ''      },
+                { uid: "yea03", upd: '123', state: 'not yet enabled'   , state1: 'first login'                ,  verificationCode: '123456', resetPwState: 'pass'  },
+                { uid: "yea04", upd: '123', state: 'not yet enabled'   , state1: 'password is about to expire',  verificationCode: '123456', resetPwState: 'pass'  },
+                { uid: "yea05", upd: '123', state: 'not yet enabled'   , state1: 'password has expired'       ,  verificationCode: '123456', resetPwState: 'pass'  },
+                { uid: "yea06", upd: '123', state: 'not yet enabled'   , state1: 'password must change'       ,  verificationCode: '123456', resetPwState: 'error' },
+                { uid: "yea07", upd: '123', state: 'deactivate'        , state1: ''                           ,  verificationCode: '123456', resetPwState: ''      },
+                { uid: "yea08", upd: '123', state: 'network abnormal'  , state1: ''                           ,  verificationCode: '123456', resetPwState: ''      },
             ]
         }
     },

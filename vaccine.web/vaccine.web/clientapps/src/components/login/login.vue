@@ -7,17 +7,17 @@
                 <div class="content">
                     <div>
                         <v-label>帳號</v-label>
-                        <v-text-field id="uid" placeholder="請輸入帳號" v-model="uid" :rules="[rules.required]" ref="uid" solo @keyup.enter="check" autocomplete="off"></v-text-field>
+                        <v-text-field id="uid" placeholder="請輸入帳號" v-model="uid" :rules="[rules.required]" ref="uid" solo @keyup.enter="sendLoginForm" autocomplete="off"></v-text-field>
                     </div>
                     <div>
                         <v-label>密碼</v-label>
-                        <v-text-field id="upd" placeholder="請輸入密碼" v-model="upd" :rules="[rules.required]" ref="upd" solo @keyup.enter="check"
+                        <v-text-field id="upd" placeholder="請輸入密碼" v-model="upd" :rules="[rules.required]" ref="upd" solo @keyup.enter="sendLoginForm"
                                       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                                       :type="show1 ? 'text' : 'password'"
                                       @click:append="show1 = !show1"></v-text-field>
                     </div>
                     <div>
-                        <v-btn block height="48px" @click="check">登入</v-btn>
+                        <v-btn block height="48px" @click="sendLoginForm">登入</v-btn>
                     </div>
                 </div>
                 <div class="forgt">
@@ -27,7 +27,7 @@
             <!--共用 alert -->
             <com-confirm ref="alert" ref-key="alert" :right-click="alertClick">
                 <template v-slot:confirm-image>
-                    <v-img src="/alert_success.svg"></v-img>
+                    <v-img src="/alert_warning.svg"></v-img>
                 </template>
                 <template v-slot:confirm-text>
                     {{alertMessage}}
@@ -76,12 +76,76 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-
+            <!---->
+            <com-confirm ref="alertPw" ref-key="alertPw" :left-click="alertPwLeftClick" :right-click="alertPwRightClick">
+                <template v-slot:confirm-image>
+                    <v-img :src="alertPwImg"></v-img>
+                </template>
+                <template v-slot:confirm-text>
+                    {{alertPwMessage}}
+                </template>
+                <template v-slot:confirm-left-btn-text>
+                    {{alertPwCancel}}
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    修改密碼
+                </template>
+            </com-confirm>
+            <!---->
+            <com-dialog ref="dialogResetPw" ref-key="dialogResetPw" width="60%">
+                <template v-slot:toolbar>
+                    重設密碼
+                </template>
+                <template v-slot:content>
+                    <v-form lazy-validation ref="resetPwForm">
+                        <div>
+                            <v-label>舊密碼＊</v-label>
+                            <v-text-field placeholder="請輸入目前密碼" v-model="oldUpd" ref="oldUpd" solo
+                                          :rules="[rules.required, alertPwOldUpdCheck]"
+                                          :append-icon="oldUpdShow ? 'mdi-eye' : 'mdi-eye-off'"
+                                          :type="oldUpdShow ? 'text' : 'password'"
+                                          @click:append="oldUpdShow = !oldUpdShow"
+                                          @keyup.enter="sendResetPwForm"></v-text-field>
+                        </div>
+                        <div>
+                            <v-label>新密碼＊（請輸入8位以上包含半形英文+數字）</v-label>
+                            <v-text-field placeholder="請輸入新密碼" v-model="newUpd" ref="newUpd" solo
+                                          :rules="[rules.required, alertPwNewUpdCheck]"
+                                          :append-icon="newUpdShow ? 'mdi-eye' : 'mdi-eye-off'"
+                                          :type="newUpdShow ? 'text' : 'password'"
+                                          @click:append="newUpdShow = !newUpdShow"
+                                          @keyup.enter="sendResetPwForm"></v-text-field>
+                        </div>
+                        <div>
+                            <v-label>確認新密碼＊</v-label>
+                            <v-text-field placeholder="請再次輸入新密碼" v-model="confirmNewUpd" ref="confirmNewUpd" solo
+                                          :rules="[rules.required, alertPwConfirmNewUpdCheck]"
+                                          :append-icon="confirmNewUpdShow ? 'mdi-eye' : 'mdi-eye-off'"
+                                          :type="confirmNewUpdShow ? 'text' : 'password'"
+                                          @click:append="confirmNewUpdShow = !confirmNewUpdShow"
+                                          @keyup.enter="sendResetPwForm"></v-text-field>
+                        </div>
+                    </v-form>
+                </template>
+                <template v-slot:action>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="sendResetPwForm">送出</v-btn>
+                </template>
+            </com-dialog>
+            <!---->
+            <com-confirm ref="alertResetPw" ref-key="alertResetPw" :right-click="alertResetPwClick">
+                <template v-slot:confirm-text>
+                    {{alertResetPwMessage}}
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    確定
+                </template>
+            </com-confirm>
         </v-main>
     </v-app>
 </template>
 <script>
-    //import comDialog from 'components/dialog'
+    import comDialog from 'components/dialog'
     import comConfirm from 'components/confirm'
     import { mapActions } from 'vuex'
 
@@ -100,8 +164,20 @@
             authenticationTiming: null,
             verificationCodeTiming: null,
             sending: false,
+            alertPwState: '',
+            alertPwImg: '',
+            alertPwMessage: '',
+            alertPwCancel: '',
+            oldUpd: '',
+            oldUpdShow: false,
+            newUpd: '',
+            newUpdShow: false,
+            confirmNewUpd: '',
+            confirmNewUpdShow: false,
+            alertResetPwMessage: '',
+            alertResetPwResetPwState: '',
             rules: {
-                required: v => !!v || "必填"
+                required: v => !!v || '必填'
             }
         }),
         computed: {
@@ -163,8 +239,8 @@
             });
         },
         methods: {
-            ...mapActions(['checkLogin', 'checkVerificationCode']),
-            check: function () {
+            ...mapActions(['checkLogin', 'checkVerificationCode', 'checkResetPw']),
+            sendLoginForm: function () {
                 var comp = this;
                 var isvaild = comp.$refs.loginForm.validate();
                 if (!isvaild) return;
@@ -249,25 +325,38 @@
                             comp.$refs.verificationCode.$el.querySelector('input').select();
                             return;
                         }
-                        
+
+                        comp.closeAuthenticationDialog();
+
                         if (result.state1 === 'first login') {
-                            comp.closeAuthenticationDialog();
-                            // TODO
-                            alert("提醒您！為了確保您的資料安全，請更新您的個人密碼。");
+                            comp.alertPwState = result.state1;
+                            comp.alertPwImg = '';
+                            comp.alertPwMessage = '提醒您！為了確保您的資料安全，請更新您的個人密碼。';
+                            comp.alertPwCancel = '取消';
+                            comp.$bus.$emit('alertPw_show', true);
                             return;
                         }
 
                         if (result.state1 === 'password is about to expire') {
-                            comp.closeAuthenticationDialog();
-                            // TODO
-                            alert("提醒您！您的密碼即將到期，請儘快更新您的個人密碼。");
+                            comp.alertPwState = result.state1;
+                            comp.alertPwImg = '';
+                            comp.alertPwMessage = '提醒您！您的密碼即將到期，請儘快更新您的個人密碼。';
+                            comp.alertPwCancel = '下次再說';
+                            comp.$bus.$emit('alertPw_show', true);
                             return;
                         }
 
                         if (result.state1 === 'password has expired') {
-                            comp.closeAuthenticationDialog();
-                            // TODO
-                            alert("您的密碼已到期！請更新您的個人密碼。");
+                            comp.alertPwState = result.state1;
+                            comp.alertPwImg = '/alert_warning.svg';
+                            comp.alertPwMessage = '您的密碼已到期！請更新您的個人密碼。';
+                            comp.alertPwCancel = '取消';
+                            comp.$bus.$emit('alertPw_show', true);
+                            return;
+                        }
+
+                        if (result.state1 === 'password must change') {
+                            comp.alertPwRightClick();
                             return;
                         }
                     })
@@ -276,12 +365,86 @@
                         comp.$bus.$emit('alert_show', true);
                     })
             },
+            alertPwLeftClick: function () {
+                if (this.alertPwState === 'password is about to expire') {
+                    location.replace('/admin');
+                } else {
+                    // TODO: 登出
+
+                    this.reload();
+                }
+            },
+            alertPwRightClick: function () {
+                this.$bus.$emit('alertPw_show', false);
+                this.$bus.$emit('dialogResetPw_show', true);
+                setTimeout(() => this.$refs.oldUpd.focus(), 0); 
+            },
+            alertPwOldUpdCheck: function () {
+                if (this.oldUpd !== this.upd) {
+                    return '密碼輸入錯誤！';
+                }
+                return true;
+            },
+            alertPwNewUpdCheck: function () {
+                var re = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+                if (!re.test(this.newUpd)) {
+                    return '密碼至少需8位半形英文+數字！';
+                }
+                return true;
+            },
+            alertPwConfirmNewUpdCheck: function () {
+                if (this.confirmNewUpd !== this.newUpd) {
+                    return '密碼不一致，請重新輸入！';
+                }
+                return true;
+            },
+            sendResetPwForm: function () {
+                var comp = this;
+                var isvaild = comp.$refs.resetPwForm.validate();
+                if (!isvaild) return;
+                
+                comp.alertResetPwMessage = '';
+                comp.checkResetPw({ uid: comp.uid, upd: comp.upd, newUpd: comp.newUpd })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertResetPwMessage = '帳號不存在';
+                                break;
+                            case 'pass':
+                                comp.alertResetPwMessage = '您的密碼已更新，請重新登入 !';
+                                break;
+                            case 'error':
+                                comp.alertResetPwMessage = '處理錯誤，請重新嘗試';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        // TODO: User/Login
+
+                        comp.alertResetPwResetPwState = result.state;
+                        comp.$bus.$emit('alertResetPw_show', true);
+                    })
+                    .catch(function () {
+                        comp.alertResetPwMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alertResetPw_show', true);
+                    })
+            },
+            alertResetPwClick: function () {
+                if (this.alertResetPwResetPwState === 'pass') {
+                    // TODO: 登出
+
+                    location.reload();
+                } else {
+                    location.reload();
+                }
+            },
             forgetUpd: function () {
                 // TODO: 忘記密碼
             }
         },
         components: {
-            /*comDialog,*/ comConfirm
+            comDialog, comConfirm
         }
     }
 </script>
