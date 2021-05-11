@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="clientapps\public\images\" />
     <Folder Include="clientapps\src\components\admin\contents\" />
   </ItemGroup>
 

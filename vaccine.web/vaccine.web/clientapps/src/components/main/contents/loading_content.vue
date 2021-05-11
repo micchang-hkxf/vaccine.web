@@ -56,7 +56,7 @@
                 var s = this.$bus;
                 s.$emit(`${refKey}_show3`, "資料處理中...");
                 //s.$emit(`${refKey}_picpath`, "https://loading.io//mod/spinner/double-ring/sample.gif");
-                s.$emit(`${refKey}_picpath`, "https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_%28wobbly%29.gif");
+                s.$emit(`${refKey}_picpath`, "/images/loading.gif");
                 setTimeout(function () {
                     s.$emit(`${refKey}_hide3`);
                 },3000);
