@@ -7,10 +7,10 @@
 
             <div class="page-title-block">人員管理</div>
             <div id="app" class="table-list">
-                <com-table ref-key="table" :headers="headers" :items="getTableItems" :total-count="totalCount" :show-select="showSelect"
-                           :items-per-page="itemsPerPage" :total-visible="totalVisible">
-                    <template v-slot:item.no="{item}">
-                        <div>{{item}}</div>
+                <com-table ref-key="table" :headers="headers" :items="getTableItems" :total-count="totalCount" disabled-prop="disabled"
+                           :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect">
+                    <template v-slot:item.quota>
+                        <div>45/<span style="color:dimgrey">60</span></div>
                     </template>
                     <template v-slot:search-bar>
                         <v-row>
@@ -77,10 +77,10 @@
 
                     <template v-slot:toolbar-action={}>
                         <!--<v-checkbox :ripple="false" hide-details @click="switchSelect"></v-checkbox>
-                <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
-                    <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
-                </v-btn>
-                -->
+        <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
+            <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
+        </v-btn>
+        -->
                         <v-spacer></v-spacer>
 
                         <v-menu bottom right offset-y>
@@ -96,7 +96,7 @@
                                         選擇新增方式:
                                     </v-list-item-action-text>
                                 </v-list-item>
-                                <v-list-item @click.stop="newItem('userform')">
+                                <v-list-item @click.stop="newItem()">
                                     <v-list-item-action-text>
                                         <v-btn icon dense>
                                             <v-icon small>far fa-edit</v-icon>
@@ -115,7 +115,7 @@
                         </v-menu>
                     </template>
 
-                    <template v-slot:item.modify>
+                    <template v-slot:item.modify="{item}">
                         <v-menu bottom right offset-y>
                             <template v-slot:activator="{ on }">
                                 <v-btn dark icon v-on="on" @click.stop="">
@@ -123,7 +123,7 @@
                                 </v-btn>
                             </template>
                             <v-list>
-                                <v-list-item @click.stop="editItem(item,'userform')">
+                                <v-list-item @click.stop="editItem(item)">
                                     <v-list-item-action-text>
                                         <v-btn icon dense>
                                             <v-icon small>far fa-edit</v-icon>
@@ -237,11 +237,10 @@
     import appLayout from 'components/admin/app_layout'
     import comTable from 'components/table'
     import comDialog from 'components/dialog'
-    import { mapGetters } from 'vuex'
+    import { mapGetters, mapActions } from 'vuex'
     import comConfirm from 'components/confirm'
     //import usersStore  from 'stores/admin/usersStore'
-   
-  
+
     export default {
         data: () => ({
             totalCount: 12,
@@ -259,17 +258,11 @@
             alertTitle:"",
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
-                { text: '建立日期', value: 'date', align: 'start', sortable: true, flex: 6 },
-                { text: '場次標題', value: 'title', sortable: false, flex: 6 },
-                { text: '疫苗類型', value: 'type', sortable: false, flex: 6 },
-                { text: '行政區', value: 'district', sortable: false, flex: 6 },
-                { text: '村里', value: 'village', sortable: false, flex: 6 },
-                { text: '醫療院所', value: 'institution', sortable: false, flex: 6 },
-                { text: '院所行政區', value: 'instutionDistrict', sortable: false, flex: 6 },
-                { text: '設站時間', value: 'stationTime', sortable: false, flex: 6 },
-                { text: '報名時間', value: 'registrationTime', sortable: false, flex: 6 },
-                { text: '名額', value: 'quota', sortable: false, flex: 6 },
-                { text: '復審合格數', value: 'qualified', sortable: false, flex: 6 },
+                { text: '姓名', value: 'uName', align: 'start', sortable: true, flex: 6 },
+                { text: '帳號', value: 'acc', sortable: false, flex: 6 },
+                { text: 'email', value: 'email', sortable: false, flex: 6 },
+                { text: '手機', value: 'mbNo', sortable: false, flex: 6 },
+                { text: '服務單位', value: 'unitName', sortable: false, flex: 6 },
                 { text: '', value: 'modify', sortable: false },
             ],
             desserts: [],
@@ -278,8 +271,8 @@
             selectStatus3: null,
             selectStatus4: null,
             permissionStatus: [
-                { state: '啟用', id: 'on' },
-                { state: '停用', id: 'off' },
+                { state: '啟用', st: true },
+                { state: '停用', st: false },
               
             ],
             rules: {
@@ -297,8 +290,9 @@
             ...mapGetters('users', ['getTableItems']),
             ...mapGetters('users', ['getAreaItems']),
             ...mapGetters('users', ['getRoleItems']),
-            ...mapGetters('users', ['getUserItems'])
+            ...mapGetters('users', ['getUserItems']),
 
+           
         },
         props: {
 
@@ -306,10 +300,18 @@
         created: function () {
         },
         methods: {
-            editItem(item, refKey) {
-                this.$bus.$emit(`${refKey}_show`, true);
-                //alert(this.getTableItems[2]);
-               
+            ...mapActions([
+                'filterData'
+            ]),
+            editItem(item) {
+                this.$bus.$emit('userform_show', true);
+                this.$set(this, "uName", item.uName);
+                this.$set(this, "acc", item.acc);
+                this.$set(this, "mbNo", item.mbNo);
+                this.$set(this, "mbNo2", item.mbNo);
+                this.$set(this, "email", item.email);
+                this.$set(this, "unitName", item.unitName);
+
             },
             stopItem () {
                 alert('stop');
@@ -318,25 +320,46 @@
                 alert('remove');
             },
             search() {
-                var filter=[]
+                var filter = {};
                 if (this.selectStatus != undefined) {
-                    filter.push(this.selectStatus.id);
-                    //console.log("Label: ", this.selectStatus.id)
-                    //console.log("Value: ", this.selectStatus.state)
+                    filter.userTyp=this.selectStatus.id;
                 }
                 if (this.selectStatus2 != undefined) {
-                    filter.push(this.selectStatus2.id);
+                    filter.zones = this.selectStatus2.id;
                 }
                 if (this.selectStatus3 != undefined) {
-                    filter.push(this.selectStatus3.id);
+                    filter.isEnable = this.selectStatus3.st;
                 }
                 if (this.selectStatus4 != undefined) {
-                    filter.push(this.selectStatus4.id);
+                    filter.uName = this.selectStatus4.id;
                 }
-                console.log(filter);
+                var comp = this;
+
+                comp.alertMessage = '';
+                comp.filterData(filter)
+                //comp.$store.dispatch('filterData', filter)
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '查無資料';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    })
             },
-            newItem (item,refKey) {
-                this.$bus.$emit(`${refKey}_show`, true);
+            newItem () {
+                this.$bus.$emit('userform_show', true);
             },
             importItem () {
                 alert('import');
