@@ -18,8 +18,7 @@
                 { text: "aaa", active: true, key: "meetings", target: null },
                 { text: "bbb", active: false, key: "parameters", target: null },
                 { text: "ccc", active: false, key: "managers", target: null },
-                { text: "ddd", active: false, key: "rents", target: null },
-                { text: "eee", active: false, key: "webex", target: "https://admin.webex.com/login" }
+                { text: "報名查詢", active: false, key: "registed", target: "#/registed" },
             ],
             currentContent: { text: "我的會議", active: true, key: "meetings" },
 
@@ -28,15 +27,19 @@
 
         },
         props: {
+
         },
 
         created: function () {
+
         },
         methods: {
 
             menuActive: function (menu) {
                 if (menu.target != null) {
-                    window.open(menu.target, menu.text);
+
+                    window.location = menu.target;
+                    //window.open(menu.target, menu.text);
                     return;
                 }
                 window.location.hash = "";
