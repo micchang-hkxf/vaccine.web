@@ -34,8 +34,15 @@
             </v-menu>
         </v-app-bar>
         <v-main class="app-content" v-if="$slots['app-content']">
-            <div class="app-content" v-if="$slots['app-content']">
-                <slot name="app-content" />
+            <v-toolbar elevation="0" height="72px">
+                <v-toolbar-title>
+                    <slot name="content-title" v-if="$slots['content-title']"></slot>
+                </v-toolbar-title>
+            </v-toolbar>
+            <div class="app-content-container" v-if="$slots['app-content']">
+                <v-card class="app-content-card" rounded="0px">
+                    <slot name="app-content" />
+                </v-card>
             </div>
         </v-main>
 
@@ -52,7 +59,7 @@
         // router,
         data: () => ({
             drawer: true,
-            user: {name:'todo'},
+            user: { name: 'todo' },
             menus: [],
             toolbar: {
                 //
@@ -69,7 +76,7 @@
                 set: function () {
                     null;
                 }
-            } 
+            }
         },
         props: {
 
@@ -82,6 +89,18 @@
     }
 </script>
 <style>
+    .app-content-card {
+        margin: 20px !important;
+    }
+
+    .app-content-container {
+        height: calc(100% - 72px);
+    }
+
+    .app-content {
+        background-color: #F2F3F7;
+    }
+
     .v-navigation-drawer__content {
         overflow-y: hidden !important;
     }
