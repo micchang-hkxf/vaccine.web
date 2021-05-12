@@ -12,18 +12,30 @@
                       :items-per-page="itemsPerPage"
                       :single-select="singleSelect"
                       :show-select="showSelect"
+                      :item-class="rowClass"
                       class="elevation-0"
                       hide-default-footer>
 
+
+            <template v-for="(header,index) in computedHeaders" v-slot:[header.headerTemplateName]>
+
+                <span :key="index" v-if="!header.hasHeaderTemplate"> {{header.text}}</span>
+
+                <slot :name="header.headerTemplateName" v-if="header.hasHeaderTemplate" :header="header"></slot>
+
+            </template>
+
+
             <template v-for="(header,index) in computedHeaders" v-slot:[header.templateName]="{item}">
 
-                <span :key="index" v-if="$slots[header.templateName]==null"> {{item[header.value]}}</span>
+                <span :key="index" v-if="!header.hasTemplate"> {{item[header.value]}}</span>
 
-                <slot :name="header.templateName" v-if="$slots[header.templateName]!=null" :item="item"></slot>
+                <slot :name="header.templateName" v-if="header.hasTemplate" :item="item"></slot>
+
             </template>
             <!--<template v-slot:item.checked="{ item }">
-                <v-checkbox v-model="item.checked" :ripple="false"></v-checkbox>
-            </template>-->
+        <v-checkbox v-model="item.checked" :ripple="false"></v-checkbox>
+    </template>-->
             <template v-slot:top>
 
                 <v-toolbar flat color="white">
@@ -84,7 +96,7 @@
 
 <script>
     export default {
-        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage', 'totalVisible','showSelect'],
+        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage', 'totalVisible','showSelect','disabledProp'],
         data: () => ({
             page:1,
             isShow: false,
@@ -106,7 +118,11 @@
                 return this.headers.map((x) => {
                     return {
                         ...x,
-                        templateName: 'item.'+x.value
+                        templateName: 'item.' + x.value,
+                        hasTemplate: this.$slots['item.' + x.value] != null || this.$scopedSlots['item.' + x.value] != null,
+
+                        headerTemplateName: 'header.' + x.value,
+                        hasHeaderTemplate: this.$slots['header.' + x.value] != null || this.$scopedSlots['header.' + x.value] != null
                     }
                    
                 })
@@ -128,7 +144,13 @@
             });
         },
         methods: {
-          
+            rowClass: function (item) {
+                if (!this.disabledProp) return "";
+                return item[this.disabledProp] ? "item-disabled" : "" ;
+            },
+            hasSlot: function (templateName) {
+                return this.$slots[templateName] != null;
+            },
             deleteSelected: function (item) {
                 console.log('selected', item);
             },
