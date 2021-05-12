@@ -10,7 +10,7 @@
             <div id="app">
 
                 <v-card style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
-                    <com-table ref-key="table" :headers="headers" :items="desserts" :total-count="totalCount"
+                    <com-table ref-key="table" :headers="getHeaders" :items="getDesserts" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
                                style="margin-left: 15px;padding-top: 15px;margin-right: 15px; box-shadow: none !important">
                         <template v-slot:item.date="{item}">
@@ -23,28 +23,30 @@
                             <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
                                 <v-row>
                                     <v-col cols="2">
-                                        <v-select v-model="selectStatus"
-                                                  :items="options"
-                                                  item-text="state"
-                                                  item-value="state"
+                                        <v-select v-model="selectVaccine"
+                                                  :items="getVaccines"
+                                                  item-text="name"
+                                                  item-value="name"
                                                   label="所有疫苗類型"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
                                                   dense
+                                                  clearable
                                                   style="margin-right: 10px;"
                                                   class="search-filter"
                                                   return-object>
                                         </v-select>
                                     </v-col>
                                     <v-col cols="2">
-                                        <v-select v-model="selectStatus"
-                                                  :items="options"
-                                                  item-text="state"
-                                                  item-value="state"
+                                        <v-select v-model="selectDistrict"
+                                                  :items="getDistricts"
+                                                  item-text="name"
+                                                  item-value="name"
                                                   label="全部行政區"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
                                                   dense
+                                                  clearable
                                                   style="margin-right: 10px;"
                                                   class="search-filter"
                                                   return-object>
@@ -52,37 +54,40 @@
                                     </v-col>
 
                                     <v-col cols="2">
-                                        <v-select v-model="selectStatus"
-                                                  :items="options"
-                                                  item-text="state"
-                                                  item-value="state"
+                                        <v-select v-model="selectVillage"
+                                                  :items="getVillages"
+                                                  item-text="name"
+                                                  item-value="name"
                                                   label="全部村里"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
                                                   dense
+                                                  clearable
                                                   style="margin-right: 10px;"
                                                   class="search-filter"
                                                   return-object>
                                         </v-select>
                                     </v-col>
                                     <v-col cols="2">
-                                        <v-select v-model="selectStatus"
-                                                  :items="options"
-                                                  item-text="state"
-                                                  item-value="state"
+                                        <v-select v-model="selectInstitution"
+                                                  :items="getInstitutions"
+                                                  item-text="name"
+                                                  item-value="name"
                                                   label="全部醫療院所"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
                                                   dense
+                                                  clearable
                                                   style="margin-right: 10px;"
                                                   class="search-filter"
                                                   return-object>
                                         </v-select>
                                     </v-col>
                                     <v-col cols="2">
-                                        <v-text-field label="標題關鍵字" outlined dense></v-text-field>
+                                        <v-text-field  v-model="titleWord" label="標題關鍵字" outlined dense clearable></v-text-field>
                                     </v-col>
-                                    <v-btn icon color="#626781" style="top:5px;">
+                                    <v-btn icon color="#626781" style="top:5px;" :ripple="false"
+                                           @click="searchForm(selectVaccine,selectDistrict,selectVillage,selectInstitution,titleWord)">
                                         <v-icon>fas fa-search</v-icon>
                                     </v-btn>
                                 </v-row>
@@ -92,7 +97,6 @@
                         </template>
 
                         <template v-slot:toolbar-action={selectAll,deleteSelected,selectedItems,selected}>
-                            <!--<v-checkbox :ripple="false" hide-details @click="switchSelect" color="#736DB9">selected</v-checkbox>-->
                             <v-btn color="#F0524B" :disabled="selected.length<=0 " @click="deleteSelected(selected)">
                                 <span style="color:white">刪除選取項目 ({{selected.length}})</span>
                             </v-btn>
@@ -106,19 +110,19 @@
                                     </v-btn>
                                 </template>
                                 <v-list>
-                                    <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item @click.stop="">
                                         <v-list-item-action-text>
                                             選擇新增方式:
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item @click.stop="manualInput">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
                                                 <v-icon small>far fa-edit</v-icon>
                                             </v-btn>手動輸入
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item @click.stop="fileImport">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
                                                 <v-icon small>far fa-trash-alt</v-icon>
@@ -218,6 +222,11 @@
         color: lightgray;
         font-size: 14px;
     }
+
+    .theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
+        color: rgba(0, 0, 0, 0.6);
+        background: rgba(98, 103, 129, 0.06);
+    }
 </style>
 
 
@@ -227,144 +236,22 @@
     import appMenu from 'components/admin/menu';
     import appLayout from 'components/admin/app_layout';
     import comTable from 'components/table'
+    import {  mapGetters } from 'vuex'
     export default {
-        // router,
+        // routermapActions,,
         data: () => ({
             totalCount: 12,
             itemsPerPage: 3,
             totalVisible: 4,
             showSelect: true,
-            headers: [
-                { text: '建立日期', value: 'date', align: 'start', sortable: true, flex: 6 },
-                { text: '場次標題', value: 'title', sortable: false, flex: 6 },
-                { text: '疫苗類型', value: 'type', sortable: false, flex: 6 },
-                { text: '行政區', value: 'district', sortable: false, flex: 6 },
-                { text: '村里', value: 'village', sortable: false, flex: 6 },
-                { text: '醫療院所', value: 'institution', sortable: false, flex: 6 },
-                { text: '院所行政區', value: 'instutionDistrict', sortable: false, flex: 6 },
-                { text: '設站時間', value: 'stationTime', sortable: false, flex: 6 },
-                { text: '報名時間', value: 'registrationTime', sortable: false, flex: 6 },
-                { text: '名額', value: 'quota', sortable: false, flex: 6 },
-                { text: '復審合格數', value: 'qualified', sortable: false, flex: 6 },
-                { text: '', value: 'modify', sortable: false },
-            ],
-            desserts: [
-                {
-                    date: '2021/04/01',
-                    title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
-                    village: '西康里',
-                    institution: '王慶森診所',
-                    instutionDistrict: '內湖區',
-                    stationTime: '2021/05/08 08:30 - 11:30',
-                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                    quota: '425/670',
-                    qualified: '423',
-                },
-                {
-                    date: '2021/04/08',
-                    title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
-                    village: '西康里',
-                    institution: '王慶森診所',
-                    instutionDistrict: '內湖區',
-                    stationTime: '2021/05/08 08:30 - 11:30',
-                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                    quota: '425/670',
-                    qualified: '423',
-                },
-                {
-                    date: '2021/04/03',
-                    title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
-                    village: '西康里',
-                    institution: '王慶森診所',
-                    instutionDistrict: '內湖區',
-                    stationTime: '2021/05/08 08:30 - 11:30',
-                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                    quota: '425/670',
-                    qualified: '423',
-                },
-                {
-                    date: '2021/04/04',
-                    title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
-                    village: '西康里',
-                    institution: '王慶森診所',
-                    instutionDistrict: '內湖區',
-                    stationTime: '2021/05/08 08:30 - 11:30',
-                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                    quota: '425/670',
-                    qualified: '423',
-                },
-                {
-                    date: '2021/04/05',
-                    title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
-                    village: '西康里',
-                    institution: '王慶森診所',
-                    instutionDistrict: '內湖區',
-                    stationTime: '2021/05/08 08:30 - 11:30',
-                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                    quota: '425/670',
-                    qualified: '423',
-                },
-                {
-                    date: '2021/04/06',
-                    title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
-                    village: '西康里',
-                    institution: '王慶森診所',
-                    instutionDistrict: '內湖區',
-                    stationTime: '2021/05/08 08:30 - 11:30',
-                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                    quota: '425/670',
-                    qualified: '423',
-                },
-                {
-                    date: '2021/04/10',
-                    title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
-                    village: '西康里',
-                    institution: '王慶森診所',
-                    instutionDistrict: '內湖區',
-                    stationTime: '2021/05/08 08:30 - 11:30',
-                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                    quota: '425/670',
-                    qualified: '423',
-                },
-                {
-                    date: '2021/04/22',
-                    title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
-                    village: '西康里',
-                    institution: '王慶森診所',
-                    instutionDistrict: '內湖區',
-                    stationTime: '2021/05/08 08:30 - 11:30',
-                    registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                    quota: '425/670',
-                    qualified: '423',
-                }
-            ],
-            selectStatus: '',
-            options: [
-                { state: '進行中', id: 'geton' },
-                { state: '即將開始(已預先開放)', id: 'abouttostart' },
-                { state: '尚未開始', id: 'notyetstart' },
-                { state: '已結束', id: 'history' },
-            ],
+            selectVaccine: '',
+            selectDistrict: '',
+            selectVillage: '',
+            selectInstitution: '',
+            titleWord:'',      
         }),
         computed: {
-            //...mapState('user', ['moduleEnabled']),
-            //...mapState('config', ['configEnabled']),
+            ...mapGetters(['getHeaders', 'getDesserts', 'getVaccines', 'getDistricts', 'getVillages','getInstitutions']),
         },
         props: {
 
@@ -373,7 +260,26 @@
 
         },
         methods: {
-
+            searchForm: function (selectVaccine, selectDistrict, selectVillage, selectInstitution, titleWord) {
+                var comp = this;
+                var vaccine = selectVaccine.name;
+                var district = selectDistrict.name;
+                var village = selectVillage.name;
+                var institution = selectInstitution.name;
+                var results = this.getDesserts.filter((x) => x.district == district);
+                comp.getDesserts.splice(0);
+                results.forEach((r) => comp.getDesserts.push(r));
+                console.log(vaccine, district, village, institution, titleWord)
+            },
+            deleteSelected: function (item) {
+                console.log('delete',item)
+            },
+            manualInput: function () {
+                console.log('manualInput')
+            },
+            fileImport: function () {
+                console.log('fileImport')
+            }
         },
         components: {
             appLayout, appMenu, comTable
