@@ -12,7 +12,7 @@
                       :items-per-page="itemsPerPage"
                       :single-select="singleSelect"
                       :show-select="showSelect"
-                      class="elevation-1"
+                      class="elevation-0"
                       hide-default-footer>
 
             <template v-for="(header,index) in computedHeaders" v-slot:[header.templateName]="{item}">
