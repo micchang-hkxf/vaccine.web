@@ -275,6 +275,7 @@
                 page: page,
             };
             this.loadRegistForm(params).then((r) => {
+                this.totalCount = r.totalCount;
                 this.items.splice(0);
                 r.datas.forEach((x) => this.items.push(x));
             }).catch((e) => {
@@ -282,17 +283,11 @@
 
             });
         },
-        //searchForm: function (selectVaccine, selectDistrict, selectInstitution, selectVillage, titleWord) {
-        //        var comp = this;
-        //        var vaccine = selectVaccine.name;
-        //        var district = selectDistrict.name;
-        //        var village = selectVillage.name;
-        //        var institution = selectInstitution.name;
-        //        var results = this.getDesserts.filter((x) => x.district == district);
-        //        comp.getDesserts.splice(0);
-        //        results.forEach((r) => comp.getDesserts.push(r));
-        //        console.log(vaccine, district, village, institution, titleWord)
-        //    },
+        changePage: function (pager) {
+            console.log(pager);
+            ///{ page: 2, pageSize: 20}
+            this.getRegistForm(pager.page);
+        },
             deleteSelected: function (item) {
                 console.log('delete',item)
             },
