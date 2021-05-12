@@ -10,7 +10,7 @@
                 <v-btn color="primary" @click="show('two')">two</v-btn>
                 <com-dialog ref="dialogPanel" ref-key="two" width="60%">
                     <template v-slot:toolbar>
-                        公文管理環境檢測
+                        新增人員
                     </template>
                     <template v-slot:content>
 

@@ -7,6 +7,7 @@ import content_loading from 'components/main/contents/loading_content.vue'
 import content_steps from 'components/main/contents/steps_content.vue'
 import content_table from 'components/main/contents/table_content.vue'
 
+
 export default new VueRouter({
     routes: [
         { name: 'table', path: '/compoments/table', component: content_table },
