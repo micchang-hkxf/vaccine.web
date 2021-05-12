@@ -299,7 +299,11 @@
         },
         created: function () {
         },
-        methods: {         
+        methods: {
+            changePage: function (pager) {
+                console.log(pager);
+                ///{ page: 2, pageSize: 20}
+            },
             show: function (refKey) {
                 this.$bus.$emit(`${refKey}_switch`);
             },

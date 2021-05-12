@@ -96,7 +96,7 @@
 
 <script>
     export default {
-        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage', 'totalVisible', 'showSelect', 'disabledProp'],
+        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage', 'totalVisible','showSelect','disabledProp','changePage'],
         data: () => ({
             page:1,
             isShow: false,
@@ -106,6 +106,13 @@
            
         }),
         watch: {
+            page: function (value) {
+                if (!this.changePage) return;
+                this.changePage({
+                    page: value,
+                    pageSize: this.itemsPerPage
+                });
+            },
             selected: function (value) {
                 if (value == true) this.selectAll();
                 else {
