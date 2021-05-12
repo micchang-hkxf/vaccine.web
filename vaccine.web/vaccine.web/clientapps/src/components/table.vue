@@ -96,7 +96,7 @@
 
 <script>
     export default {
-        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage', 'totalVisible','showSelect','disabledProp'],
+        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage', 'totalVisible', 'showSelect', 'disabledProp'],
         data: () => ({
             page:1,
             isShow: false,
@@ -111,7 +111,7 @@
                 else {
                     this.cancelAll();
                 }
-            }
+            },
         },
         computed: {
             computedHeaders: function () {

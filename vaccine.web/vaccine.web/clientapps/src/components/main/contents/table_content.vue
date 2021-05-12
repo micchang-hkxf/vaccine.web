@@ -7,7 +7,7 @@
             <div id="app">
                 <!--<v-btn @click="show('table')">table</v-btn>-->
                 <com-table ref-key="table" :headers="headers" :items="desserts" :total-count="totalCount" disabled-prop="disabled"
-                           :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect">
+                           :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect" :change-page="changePage">
                     <template v-slot:item.date="{item}">
                         <div>{{item}}*</div>
                     </template>
@@ -290,7 +290,7 @@
             ],
         }),
         watch: {
-          
+         
         },
         computed: {
         },
@@ -299,7 +299,7 @@
         },
         created: function () {
         },
-        methods: {
+        methods: {         
             show: function (refKey) {
                 this.$bus.$emit(`${refKey}_switch`);
             },

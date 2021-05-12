@@ -20,7 +20,7 @@ export default new Vuex.Store({
     },
     modules: {
         user: userStore,
-        registered: registeredStore
+        registered: registeredStore,
         users: usersStore,
         //config: configStore
     }

@@ -3,11 +3,22 @@
 export default {
     namespaced: true,
     actions: {
-        //loadRegistForm: function ({ commit, state }) {
-        //    return new Promise((reslove, reject) => {
+        loadRegistForm: function ({ state},params) {
+            return new Promise((reslove) => {
+                var results = { datas: [], state: '', totalCount: 0 };
+                var query = state.desserts;
+                if (params.district) {
+                    query = query.filter((x) => x.district == params.district.name);
+                }
+                results.totalCount = query.length;
+                var start = (params.page - 1) * params.pageSize;
+                var end = start + params.pageSize;
+                query = query.slice(start, end);
+                results.datas = query;               
+                reslove(results);
 
-        //    })
-        //}
+            });
+        }
     },
     state: {
         ...siteConfig,

@@ -10,12 +10,13 @@
             <div id="app">
 
                 <v-card style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
-                    <com-table ref-key="table" :headers="getHeaders" :items="getDesserts" :total-count="totalCount"
+                    <com-table ref-key="table" :headers="getHeaders" :items="items" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               style="margin-left: 15px;padding-top: 15px;margin-right: 15px; box-shadow: none !important">
-                        <template v-slot:item.date="{item}">
+                               :change-page="changePage"
+                               style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
+                        <!--<template v-slot:item.date="{item}">
                             <div>{{item}}</div>
-                        </template>
+                        </template>-->
                         <template v-slot:item.quota>
                             <div>45/<span style="color:dimgrey">60</span></div>
                         </template>
@@ -84,10 +85,10 @@
                                         </v-select>
                                     </v-col>
                                     <v-col cols="2">
-                                        <v-text-field  v-model="titleWord" label="標題關鍵字" outlined dense clearable></v-text-field>
+                                        <v-text-field  v-model="keyWord" label="標題關鍵字" outlined dense clearable></v-text-field>
                                     </v-col>
                                     <v-btn icon color="#626781" style="top:5px;" :ripple="false"
-                                           @click="searchForm(selectVaccine,selectDistrict,selectVillage,selectInstitution,titleWord)">
+                                           @click="getRegistForm(1)">
                                         <v-icon>fas fa-search</v-icon>
                                     </v-btn>
                                 </v-row>
@@ -236,41 +237,62 @@
     import appMenu from 'components/admin/menu';
     import appLayout from 'components/admin/app_layout';
     import comTable from 'components/table'
-    import {  mapGetters } from 'vuex'
+    import { mapActions, mapGetters } from 'vuex'
     export default {
-        // routermapActions,,
+        // router,
         data: () => ({
             totalCount: 12,
-            itemsPerPage: 3,
+            itemsPerPage: 2,
             totalVisible: 4,
             showSelect: true,
             selectVaccine: '',
             selectDistrict: '',
             selectVillage: '',
             selectInstitution: '',
-            titleWord:'',      
+            keyWord: '',  
+            items:[]
         }),
         computed: {
-            ...mapGetters(['getHeaders', 'getDesserts', 'getVaccines', 'getDistricts', 'getVillages','getInstitutions']),
+            ...mapGetters('registered',['getHeaders','getVaccines', 'getDistricts', 'getVillages','getInstitutions']),
         },
         props: {
 
         },
         created: function () {
-
+            var page = 1;
+            this.getRegistForm(page);
         },
-        methods: {
-            searchForm: function (selectVaccine, selectDistrict, selectVillage, selectInstitution, titleWord) {
-                var comp = this;
-                var vaccine = selectVaccine.name;
-                var district = selectDistrict.name;
-                var village = selectVillage.name;
-                var institution = selectInstitution.name;
-                var results = this.getDesserts.filter((x) => x.district == district);
-                comp.getDesserts.splice(0);
-                results.forEach((r) => comp.getDesserts.push(r));
-                console.log(vaccine, district, village, institution, titleWord)
-            },
+    methods: {
+        ...mapActions('registered', ['loadRegistForm']),
+        getRegistForm: function (page) {
+            var params = {
+                vaccine: this.selectVaccine,
+                district: this.selectDistrict,
+                village: this.selectVillage,
+                institution: this.selectInstitution,
+                keyWord: this.keyWord,
+                pageSize: this.itemsPerPage,
+                page: page,
+            };
+            this.loadRegistForm(params).then((r) => {
+                this.items.splice(0);
+                r.datas.forEach((x) => this.items.push(x));
+            }).catch((e) => {
+                console.log(e);
+
+            });
+        },
+        //searchForm: function (selectVaccine, selectDistrict, selectInstitution, selectVillage, titleWord) {
+        //        var comp = this;
+        //        var vaccine = selectVaccine.name;
+        //        var district = selectDistrict.name;
+        //        var village = selectVillage.name;
+        //        var institution = selectInstitution.name;
+        //        var results = this.getDesserts.filter((x) => x.district == district);
+        //        comp.getDesserts.splice(0);
+        //        results.forEach((r) => comp.getDesserts.push(r));
+        //        console.log(vaccine, district, village, institution, titleWord)
+        //    },
             deleteSelected: function (item) {
                 console.log('delete',item)
             },
