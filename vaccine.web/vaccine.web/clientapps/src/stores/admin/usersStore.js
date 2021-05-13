@@ -21,8 +21,8 @@
                     if (data.uName) {
                         exists = exists.filter(f => f.uName == data.uName);
                     }
-                
-                    if (!exists) {
+
+                    if (exists.length==0) {
                         result.state = 'not_found';
                         resolve(result);
                         return;
@@ -43,22 +43,51 @@
 
             });
         },
-        createUser ({ state }, data) {
+        changeUser ({ state }, data) {
             return new Promise(function (resolve, reject) {
                 var result = true;
                 try {
                     console.log(data);
-                    state.items.push(data);
- 
+                    if (data.eidtMode) {
+                        var index = state.items.findIndex(f => f.acc == data.acc);
+
+                        state.items[index] = {
+                            acc: data.acc,
+                            uName: data.uName,
+                            email: data.email,
+                            mbNo: data.mbNo,
+                            unitName: data.unitName,
+                            userType: 1,//todo
+                            zones: ['1'],//todo
+                            isEnable: 'true',
+                        };
+                   
+                    } else { 
+                        state.items.push(data);
+                    }
                     resolve(result);
                 } catch (e) {
                     reject(result);
                 }
-
             });
            
+        },
+        removeUser({ state }, delKey) {
+            return new Promise(function (resolve, reject) {
+                var result = true;
+                try {
+                    console.log(delKey);
+                    var index = state.items.findIndex(f => f.acc == delKey);
+                    state.items.splice(index, 1);
+                    resolve(result);
+                } catch (e) {
+                    reject(result);
+                }
+            });
+
         }
     },
+
     state: {
         arealist: [
             {
@@ -238,6 +267,7 @@
     
     },
     mutations: {
+      
     },
     modules: {
 

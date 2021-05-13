@@ -78,10 +78,10 @@
 
                     <template v-slot:toolbar-action={}>
                         <!--<v-checkbox :ripple="false" hide-details @click="switchSelect"></v-checkbox>
-                    <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
-                        <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
-                    </v-btn>
-                    -->
+                <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
+                    <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
+                </v-btn>
+                -->
                         <v-spacer></v-spacer>
 
                         <v-menu bottom right offset-y>
@@ -138,7 +138,7 @@
                                         </v-btn>停用
                                     </v-list-item-action-text>
                                 </v-list-item>
-                                <v-list-item @click.stop="removeItem(item)">
+                                <v-list-item @click.stop="removeItemConfirm(item)">
                                     <v-list-item-action-text>
                                         <v-btn icon dense>
                                             <v-icon small>far fa-trash-alt</v-icon>
@@ -179,7 +179,7 @@
                     <v-btn @click="saveform">儲存</v-btn>
                 </template>
             </com-dialog>
-            <com-confirm ref-key="confirm" :right-click="confirmRightClick">
+            <com-confirm ref="alert" ref-key="alert" :right-click="alertClick">
                 <template v-slot:confirm-image>
                     <v-img src="/alert_success.svg"></v-img>
                 </template>
@@ -192,9 +192,27 @@
                 <template v-slot:confirm-right-btn-text>
                     確認
                 </template>
+            </com-confirm>
+            <com-confirm ref-key="confirm" :left-click="confirmLeftClick" :right-click="confirmRightClick">
+                <template v-slot:confirm-image>
+                    <v-img src="/alert_success.svg"></v-img>
+                </template>
+                <template v-slot:confirm-title>
+                    {{ alertTitle }}
+                </template>
+                <template v-slot:confirm-text>
+                    {{ alertMessage }}
+                </template>
+                <template v-slot:confirm-left-btn-text>
+                    取消
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    確認
+                </template>
 
 
             </com-confirm>
+
         </template>
 
 
@@ -222,6 +240,9 @@
     }
     .users-list .w02 {
         width: 600px;
+    }
+    .users-list .v-list-item__title{
+        color:black;
     }
 
 </style>
@@ -252,7 +273,8 @@
             alertMessage: "",
             alertTitle: "",
             editID: "",
-            isReadOnly:true,
+            isReadOnly: false,
+            delitem:null,
             formTitle:"新增人員",
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
@@ -293,7 +315,8 @@
         created: function () {
         },
         methods: {
-            ...mapActions('users', ['searchUser','createUser']),
+            ...mapActions('users', ['searchUser', 'changeUser', 'removeUser']),
+
             editItem(item) {
                 this.formTitle = "修改人員資料";
                 this.$bus.$emit('userform_show', true);
@@ -303,15 +326,34 @@
                 this.$set(this, "mbNo2", item.mbNo);
                 this.$set(this, "email", item.email);
                 this.$set(this, "unitName", item.unitName);
-                this.$set(this, "editID", item.acc);
                 this.$set(this, "isReadOnly", true);
                 
             },
             stopItem () {
                 alert('stop');
             },
-            removeItem () {
-                alert('remove');
+            removeItemConfirm(item) {
+                this.delitem = item;
+                this.$bus.$emit(`confirm_show`, true);
+            },
+            removeItem(item) {
+                var comp = this;
+                comp.removeUser(item.acc).then(function (result) {
+                    if (result) {
+                        console.log('刪除成功');
+                        comp.alertMessage = '刪除成功';
+                        comp.alertTitle = '刪除成功';
+                        comp.search();
+                    } else {
+                        console.log('刪除失敗');
+                        comp.alertTitle = '刪除失敗';
+                        comp.alertMessage = '刪除失敗，請稍後再試';
+                    }
+                    comp.$bus.$emit('alert_show', true);
+                }).catch(function () {
+                    comp.alertMessage = '網站異常，請稍後再試';
+                    comp.$bus.$emit('alert_show', true);
+                });
             },
             search() {
                 var filter = {};
@@ -359,12 +401,13 @@
             },
             close () {
             },
-            saveform () {
+            saveform() {
+                
                 if (this.$refs.form.validate()) {
                     this.$set(this, "alertTitle", '儲存成功');
                     this.$refs.dialogPanel.close();
                 } else if (this.mbNo != this.mbNo2) {
-                    this.$bus.$emit(`confirm_show`, true);
+                    this.$bus.$emit("alert", true);
                     this.$set(this, "alertTitle", '儲存失敗');
                     this.$set(this, "alertMessage", '手機輸入不一致');
                 } else {
@@ -372,7 +415,7 @@
                     this.$set(this, "alertMessage", 'xxxxxxxxxxxx');
                 }
                 var comp = this;
-                var newData = {
+                var setData = {
                     acc: this.acc,
                     uName: this.uName,
                     email: this.email,
@@ -381,16 +424,19 @@
                     userType: 2,//todo
                     zones: ['2', '3'], //todo
                     isEnable: 'true',
+                    eidtMode: this.isReadOnly,
                 };
-                comp.createUser(newData).then(function (result) {
+                var msg = (this.isReadOnly) ? "更新" : "新增";
+
+                comp.changeUser(setData).then(function (result) {
                     if (result) {
-                        console.log('新增成功');
-                        comp.alertMessage = '新增成功';
+                        console.log('成功');
+                        comp.alertMessage = msg+'成功';
                         comp.$bus.$emit('userform_show', false);
                         comp.search();
                     } else {
-                        console.log('新增失敗');
-                        comp.alertMessage = '新增失敗，請稍後再試';
+                        console.log('失敗');
+                        comp.alertMessage = msg+'失敗，請稍後再試';
                     }
                     comp.$bus.$emit('alert_show', true);
                 }).catch(function () {
@@ -398,9 +444,15 @@
                     comp.$bus.$emit('alert_show', true);
                 });
 
-        
             },
-            confirmRightClick () {
+            alertClick () {
+                this.$bus.$emit(`alert_show`, false);
+            },
+            confirmRightClick: function () {
+                this.$bus.$emit(`confirm_show`, false);
+                this.removeItem(this.delitem);
+            },
+            confirmLeftClick: function () {
                 this.$bus.$emit(`confirm_show`, false);
             },
             clear() {
