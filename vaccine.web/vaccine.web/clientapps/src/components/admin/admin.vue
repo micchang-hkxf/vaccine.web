@@ -3,6 +3,9 @@
         <template v-slot:navigation>
             <app-menu></app-menu>
         </template>
+        <template v-slot:content-title>
+            yteset
+        </template>
         <template v-slot:app-content>
             <div id="app">
                 main page @ vue <br />
@@ -33,7 +36,7 @@
     export default {
         // router,
         data: () => ({
- 
+
         }),
         computed: {
             //...mapState('user', ['moduleEnabled']),

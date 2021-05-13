@@ -48,6 +48,13 @@
             </v-list-item-content>
         </v-list-item>
 
+
+        <v-list-item @click="openPages('/admin/#/registed')">
+            <v-list-item-content>
+                <v-list-item-title>Registed</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+
         <v-divider></v-divider>
 
 
