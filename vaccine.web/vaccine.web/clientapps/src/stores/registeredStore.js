@@ -11,6 +11,7 @@ export default {
                     query = query.filter((x) => x.identity.slice(6,10) == params.keyWord);
                 }
                 results.totalCount = query.length;
+                
                 var start = (params.page - 1) * params.pageSize;
                 var end = start + params.pageSize;
                 query = query.slice(start, end);
@@ -27,7 +28,7 @@ export default {
             {
                 date: '2021/04/01 09:30',
                 name: '袁吉吉',
-                identity: 'B●●●●●8660',
+                identity: 'B128541236',
                 vaccination: '110年4月份新冠疫苗施打預先報名',
                 way: '事先里辦',
                 result: '合格',
@@ -36,7 +37,7 @@ export default {
             {
                 date: '2021/07/11 12:30',
                 name: '柯安安',
-                identity: 'B●●●●●1520',
+                identity: 'B125463987',
                 vaccination: '110年3月份新冠疫苗施打預先報名',
                 way: '事先網路',
                 result: '-',
@@ -45,7 +46,7 @@ export default {
             {
                 date: '2020/06/08 13:30',
                 name: '劉任任',
-                identity: 'B●●●●●5760',
+                identity: 'B198745632',
                 vaccination: '110年3月份新冠疫苗施打預先報名',
                 way: '現場',
                 result: '已取消',
@@ -54,7 +55,7 @@ export default {
             {
                 date: '2021/04/01 09:30',
                 name: '袁吉吉',
-                identity: 'B●●●●●7660',
+                identity: 'B225496321',
                 vaccination: '110年4月份新冠疫苗施打預先報名',
                 way: '事先里辦',
                 result: '合格',
@@ -63,7 +64,7 @@ export default {
             {
                 date: '2021/04/01 09:30',
                 name: '袁吉吉',
-                identity: 'B●●●●●2600',
+                identity: 'B125692600',
                 vaccination: '110年4月份新冠疫苗施打預先報名',
                 way: '事先里辦',
                 result: '合格',

@@ -12,11 +12,7 @@
                     <com-table ref-key="table" :headers="headers" :items="items" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
                                :change-page="changePage"
-                               style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
-
-                        <template v-slot:item.quota>
-                            <div>45/<span style="color:dimgrey">60</span></div>
-                        </template>
+                               style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">                       
                         <template v-slot:search-bar>
                             <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
                                 <v-row>
@@ -132,8 +128,13 @@
                 };
                 this.loadRegistData(params).then((r) => {
                     this.totalCount = r.totalCount;
-                    this.items.splice(0);
-                    r.datas.forEach((x) => this.items.push(x));
+                    this.items.splice(0);                   
+                    r.datas.forEach((x) => {
+                        var str = x.identity.substr(1, 5);
+                        var code = x.identity.replace(str, '●●●●●')
+                        x.identity=code
+                        this.items.push(x);
+                    })
                 }).catch((e) => {
                     console.log(e);
 
