@@ -7,7 +7,7 @@
         </v-list-item>
     </v-list>
 </template>
-
+ 
 <script>
     //import { mapState } from 'vuex'
 
@@ -65,11 +65,7 @@
 
     .menu-list {
         background: #626781 !important;
-
         height: 100vh !important;
     }
 
-    .v-list-item__title {
-        color: white;
-    }
 </style>

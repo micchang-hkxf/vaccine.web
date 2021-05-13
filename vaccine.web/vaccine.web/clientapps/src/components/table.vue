@@ -13,7 +13,7 @@
                       :single-select="singleSelect"
                       :show-select="showSelect"
                       :item-class="rowClass"
-                      class="elevation-1"
+                      class="elevation-0"
                       hide-default-footer>
 
 
@@ -118,7 +118,7 @@
                 else {
                     this.cancelAll();
                 }
-            }
+            },
         },
         computed: {
             computedHeaders: function () {
