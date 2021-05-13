@@ -4,7 +4,7 @@ Vue.use(Vuex)
 import userStore from "stores/userStore"
 import usersStore from "stores/admin/usersStore"
 //import configStore from "stores/configStore"
-import registeredStore from "stores/registeredStore"
+import registrationStore from "stores/registrationStore"
 
 export default new Vuex.Store({
     actions: {
@@ -20,7 +20,7 @@ export default new Vuex.Store({
     },
     modules: {
         user: userStore,
-        registered: registeredStore,
+        registration: registrationStore,
         users: usersStore,
         //config: configStore
     }

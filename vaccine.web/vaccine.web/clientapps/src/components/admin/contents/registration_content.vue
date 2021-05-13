@@ -253,7 +253,7 @@
             items:[]
         }),
         computed: {
-            ...mapGetters('registered',['getHeaders','getVaccines', 'getDistricts', 'getVillages','getInstitutions']),
+            ...mapGetters('registration',['getHeaders','getVaccines', 'getDistricts', 'getVillages','getInstitutions']),
         },
         props: {
 
@@ -263,7 +263,7 @@
             this.getRegistForm(page);
         },
     methods: {
-        ...mapActions('registered', ['loadRegistForm']),
+        ...mapActions('registration', ['loadRegistForm']),
         getRegistForm: function (page) {
             var params = {
                 vaccine: this.selectVaccine,
