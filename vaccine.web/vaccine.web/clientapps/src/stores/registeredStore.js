@@ -3,12 +3,12 @@
 export default {
     namespaced: true,
     actions: {
-        loadRegistForm: function ({ state }, params) {
+        loadRegistData: function ({ state }, params) {
             return new Promise((reslove) => {
                 var results = { datas: [], state: '', totalCount: 0 };
                 var query = state.desserts;
-                if (params.district) {
-                    query = query.filter((x) => x.district == params.district.name);
+                if (params.keyWord) {
+                    query = query.filter((x) => x.identity.slice(6,10) == params.keyWord);
                 }
                 results.totalCount = query.length;
                 var start = (params.page - 1) * params.pageSize;
@@ -22,15 +22,7 @@ export default {
     },
     state: {
         ...siteConfig,
-        headers: [
-            { text: '報名時間', value: 'date', align: 'start', sortable: true, flex: 6 },
-            { text: '姓名', value: 'name', sortable: false, flex: 6 },
-            { text: '身分證', value: 'identity', sortable: false, flex: 6 },
-            { text: '接種活動', value: 'vaccination', sortable: false, flex: 6 },
-            { text: '報名方式', value: 'way', sortable: false, flex: 6 },
-            { text: '複審結果', value: 'result', sortable: false, flex: 6 },
-            { text: '序號', value: 'number', sortable: false, flex: 6 },          
-        ],
+       
         desserts: [
             {
                 date: '2021/04/01 09:30',
@@ -44,7 +36,7 @@ export default {
             {
                 date: '2021/07/11 12:30',
                 name: '柯安安',
-                identity: 'B●●●●●8660',
+                identity: 'B●●●●●1520',
                 vaccination: '110年3月份新冠疫苗施打預先報名',
                 way: '事先網路',
                 result: '-',
@@ -53,7 +45,7 @@ export default {
             {
                 date: '2020/06/08 13:30',
                 name: '劉任任',
-                identity: 'B●●●●●8660',
+                identity: 'B●●●●●5760',
                 vaccination: '110年3月份新冠疫苗施打預先報名',
                 way: '現場',
                 result: '已取消',
@@ -62,7 +54,7 @@ export default {
             {
                 date: '2021/04/01 09:30',
                 name: '袁吉吉',
-                identity: 'B●●●●●8660',
+                identity: 'B●●●●●7660',
                 vaccination: '110年4月份新冠疫苗施打預先報名',
                 way: '事先里辦',
                 result: '合格',
@@ -71,7 +63,7 @@ export default {
             {
                 date: '2021/04/01 09:30',
                 name: '袁吉吉',
-                identity: 'B●●●●●8660',
+                identity: 'B●●●●●2600',
                 vaccination: '110年4月份新冠疫苗施打預先報名',
                 way: '事先里辦',
                 result: '合格',
