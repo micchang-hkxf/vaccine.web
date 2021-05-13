@@ -4,18 +4,23 @@ Vue.use(Vuex)
 import userStore from "stores/userStore"
 import usersStore from "stores/admin/usersStore"
 //import configStore from "stores/configStore"
+import registrationStore from "stores/registrationStore"
 
 export default new Vuex.Store({
     actions: {
+
     },
     state: {
+      
     },
     getters: {
+      
     },
     mutations: {
     },
     modules: {
         user: userStore,
+        registration: registrationStore,
         users: usersStore,
         //config: configStore
     }
