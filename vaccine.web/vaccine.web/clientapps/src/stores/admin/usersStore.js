@@ -1,26 +1,41 @@
 ﻿export default {
     namespaced: true,
     actions: {
-        filterData ({ state }, data) {
+        searchUser ({ state }, data) {
             return new Promise(function (resolve, reject) {
-         
-                var result = {acc: data.acc };
-                try {
-                    var exist = state.items.acc.find(f => f.acc == data.acc);
 
-                    if (!exist) {
-                        result.state = 'not found';
+                var result = {datas:[],totalCount:0,state:null };
+                try {
+                    var exists = state.items;
+                    
+                    if (data.userType) {
+                        exists = exists.filter(f => f.userType == data.userType);
+                    }
+                    if (data.zones) {
+                        var even = (element) => element == data.zones ;
+                        exists = exists.filter(f=>f.zones.some(even));
+                    }
+                    if (data.isEnable) {
+                        exists = exists.filter(f => f.isEnable == data.isEnable);
+                    }
+                    if (data.uName) {
+                        exists = exists.filter(f => f.uName == data.uName);
+                    }
+                
+                    if (!exists) {
+                        result.state = 'not_found';
                         resolve(result);
                         return;
                     }
-
-
-                    if (exist.state === 'network abnormal') {
-                        result.state = exist.state;
+                    if (exists.state === 'network_abnormal') {
+                        result.state = exists.state;
                         throw result;
                     }
-
-                    result.state = exist.state;
+                    result.datas = exists;
+        
+                    result.totalCount = exists.length;
+                    result.state = exists.state
+           
                     resolve(result);
                 } catch (e) {
                     reject(result);
@@ -28,27 +43,46 @@
 
             });
         },
+        createUser ({ state }, data) {
+            return new Promise(function (resolve, reject) {
+                var result = true;
+                try {
+                    console.log(data);
+                    state.items.push(data);
+ 
+                    resolve(result);
+                } catch (e) {
+                    reject(result);
+                }
+
+            });
+           
+        }
     },
     state: {
         arealist: [
             {
                 id: 1,
                 state: "A區"
-            },{
+            }, {
                 id: 2,
                 state: "B區"
-         
+            }, {
+                id: 3,
+                state: "C區"
+            }, {
+                id: 4,
+                state: "D區"
             }
         ],
         rolelist: [
             {
-                id: 'admin',
+                id: 1,
                 state: "系統管理員"
             }, {
-                id: 'areaadmin',
+                id: 2,
                 state: "轄區管理員"
-
-            }
+            }           
         ],
         userlist: [
             {
@@ -69,8 +103,8 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['11', '22'],
-                isEnable:true,
+                zones: ['1'],
+                isEnable:'true',
             },
             {
                 //checked: false,
@@ -80,8 +114,8 @@
                 mbNo: '0900000002',
                 unitName: 'XX單位2',
                 userType: 2,
-                zones: ['33', '44'],
-                isEnable: true,
+                zones: ['2', '3'],
+                isEnable: 'true',
             },
             {
                 //checked: false,
@@ -91,8 +125,8 @@
                 mbNo: '0900000003',
                 unitName: 'XX單位3',
                 userType: 2,
-                zones: ['11', '33'],
-                isEnable: true,
+                zones: ['3','4' ],
+                isEnable: 'true',
             },
             {
                 //checked: false,
@@ -102,8 +136,8 @@
                 mbNo: '0900000004',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['11', '22'],
-                isEnable: false,
+                zones: ['2'],
+                isEnable: 'false',
             },
             {
                 //checked: false,
@@ -113,8 +147,8 @@
                 mbNo: '0900000005',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['11', '22'],
-                isEnable: true,
+                zones: ['2'],
+                isEnable:'true',
             },
             {
                 //checked: false,
@@ -124,8 +158,8 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['11', '22'],
-                isEnable: true,
+                zones: ['3'],
+                isEnable: 'true',
             },
             {
                 //checked: false,
@@ -135,8 +169,8 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['11', '22'],
-                isEnable: true,
+                zones: ['4'],
+                isEnable: 'true',
             },
             {
                 //checked: false,
@@ -146,19 +180,19 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['11', '22'],
-                isEnable: true,
+                zones: ['3'],
+                isEnable: 'true',
             },
             {
                 //checked: false,
                 acc: 'u009',
-                uName: '姓名1',
+                uName: '姓名09',
                 email: 'u009@gmail.com',
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['11', '22'],
-                isEnable: true,
+                zones: [ '3','4'],
+                isEnable: 'false',
             },
             {
                 //checked: false,
@@ -168,8 +202,8 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['11', '22'],
-                isEnable: true,
+                zones: ['3', '4'],
+                isEnable: 'false',
             },
             {
                 //checked: false,
@@ -179,7 +213,7 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['11', '22'],
+                zones: ['2', '4'],
                 isEnable: true,
             },
             {
@@ -190,7 +224,7 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['11', '22'],
+                zones: ['3'],
                 isEnable: true,
             },
         ],
