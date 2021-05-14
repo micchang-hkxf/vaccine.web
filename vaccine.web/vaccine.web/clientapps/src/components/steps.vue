@@ -102,17 +102,21 @@
     }
 
     .grid.v-stepper--alt-labels .v-stepper__header .v-divider {
-        margin-top: 44px !important;
+        margin-top: 50px !important;
     }
 
     .grid .step-arrow::after {
         position: relative;
         content: '\25BA';
-        top: 26px;
+        top: 39px !important;
     }
 
     .grid.v-stepper--alt-labels .step-arrow::after {
         top: 32px;
+    }
+
+    .grid.v-stepper--alt-labels .v-stepper__step {
+        flex-basis: 130px;
     }
 
     .v-stepper .v-sheet.v-card:not(.v-sheet--outlined) {
@@ -125,5 +129,55 @@
 
     .v-stepper__content {
         padding: 0;
+    }
+
+    /* Extra small devices (portrait phones, less than 576px) */
+    @media (max-width: 575.98px) {
+        .grid.v-stepper--alt-labels .v-stepper__step {
+            flex-basis: 23%;
+        }
+
+        .grid.v-stepper:not(.v-stepper--vertical) .v-stepper__label {
+            display: flex;
+            font-size: 12px;
+        }
+
+        .grid .step-arrow::after {
+            content: '';
+        }
+
+        .grid .v-stepper__step {
+            padding: 24px 0;
+        }
+    }
+
+    /* Small devices (landscape phones, 576px and up) */
+    @media (min-width: 576px) and (max-width: 767.98px) {
+        .grid.v-stepper--alt-labels .v-stepper__step {
+            flex-basis: 105px;
+        }
+
+        .grid.v-stepper:not(.v-stepper--vertical) .v-stepper__label {
+            display: flex;
+        }
+
+        .grid .v-stepper__step {
+            padding: 24px 10px;
+        }
+    }
+
+    /** Medium devices (tablets, 768px and up) */
+    @media (min-width: 768px) and (max-width: 991.98px) {
+        .v-stepper:not(.v-stepper--vertical) .v-stepper__label {
+            display: flex;
+        }
+    }
+
+    /* Large devices (desktops, 992px and up) */
+    @media (min-width: 992px) and (max-width: 1199.98px) {
+    }
+
+    /* Extra large devices (large desktops, 1200px and up) */
+    @media (min-width: 1200px) {
     }
 </style>
