@@ -169,7 +169,7 @@
             </com-dialog>
             <com-confirm ref="alert" ref-key="alert" :right-click="alertClick">
                 <template v-slot:confirm-image>
-                    <v-img src="/alert_success.svg"></v-img>
+                    <v-img v-bind:src="alertImgSrc"></v-img>
                 </template>
                 <template v-slot:confirm-title>
                     {{ alertTitle }}
@@ -183,12 +183,14 @@
             </com-confirm>
             <com-confirm ref-key="confirm" :left-click="confirmLeftClick" :right-click="confirmRightClick">
                 <template v-slot:confirm-image>
-                    <v-img src="/alert_success.svg"></v-img>
+                    <v-img v-bind:src="confirmImgSrc"></v-img>
                 </template>
                 <template v-slot:confirm-title>
                     {{ confirmTitle }}
                 </template>
- 
+                <template v-slot:confirm-text>
+                    {{ confirmMessage }}
+                </template>
                 <template v-slot:confirm-left-btn-text>
                     取消
                 </template>
@@ -264,11 +266,16 @@
             valid: true,
             alertMessage: "",
             alertTitle: "",
-            confirmTitle: "您確定要刪除嗎?",
+            confirmTitle: "刪除人員?",
+            confirmMessage:"",
             editID: "",
             isReadOnly: false,
             delitem:null,
-            formTitle:"新增人員",
+            formTitle: "新增人員",
+            confirmImgSrc: "",
+            alertImgSrc: "",
+            successIcon: '/alert_success.svg', 
+            warningIcon: '/alert_warning.svg',
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
                 { text: '姓名', value: 'uName', align: 'start', sortable: true, flex: 6 },
@@ -326,35 +333,44 @@
                 var comp = this;
                 item.editMode = true;
                 item.isEnable = 'false';
-            
+          
+                comp.alertImgSrc = comp.warningIcon;
                 comp.changeUser(item).then(function (result) {
+                    
                     if (result) {
-                       
+                        comp.alertImgSrc = comp.successIcon;
                         comp.$bus.$emit('alert_show', true);
                         comp.alertTitle = '停止成功';
                         comp.search();
                     } else {
                         console.log('停止失敗');
                         comp.alertTitle = '停止失敗';
+                        this.alertImgSrc = this.alertIcon;
                         comp.$bus.$emit('alert_show', true);
+
                     }
 
                 }).catch(function () {
+                    this.alertImgSrc = this.alertIcon;
                     comp.alertMessage = '網站異常，請稍後再試';
                     comp.$bus.$emit('alert_show', true);
                 });
             },
             removeItemConfirm(item) {
                 this.delitem = item;
+                this.confirmImgSrc = this.warningIcon;
+                this.confirmMessage = item.uName;
                 this.$bus.$emit(`confirm_show`, true);
             },
             removeItem(item) {
                 var comp = this;
+                comp.alertImgSrc = comp.warningIcon;
                 comp.removeUser(item.acc).then(function (result) {
                     if (result) {
                         console.log('刪除成功');
                         comp.alertMessage = '刪除成功';
                         comp.alertTitle = '刪除成功';
+                        comp.alertImgSrc = comp.successIcon;
                         comp.search();
                     } else {
                         console.log('刪除失敗');
@@ -363,6 +379,7 @@
                     }
                     comp.$bus.$emit('alert_show', true);
                 }).catch(function () {
+                    
                     comp.alertMessage = '網站異常，請稍後再試';
                     comp.$bus.$emit('alert_show', true);
                 });
@@ -439,13 +456,14 @@
                     eidtMode: this.isReadOnly,
                 };
                 var msg = (this.isReadOnly) ? "更新" : "新增";
-
+                comp.alertImgSrc = comp.warningIcon;
                 comp.changeUser(setData).then(function (result) {
                     if (result) {
                         console.log('成功');
                         comp.alertMessage = msg + '成功';
                         comp.$set(comp, "alertTitle", msg + '成功');
                         comp.$bus.$emit('userform_show', false);
+                        comp.alertImgSrc = comp.successIcon;
                         comp.search();
                     } else {
                         console.log('失敗');
