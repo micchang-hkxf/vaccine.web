@@ -45,26 +45,28 @@
         },
         changeUser ({ state }, data) {
             return new Promise(function (resolve, reject) {
-                var result = true;
+                var result = true;//todo
                 try {
-                    console.log(data);
-                    if (data.eidtMode) {
+      
+                    if (data.editMode) {
                         var index = state.items.findIndex(f => f.acc == data.acc);
-
+              
                         state.items[index] = {
                             acc: data.acc,
                             uName: data.uName,
                             email: data.email,
                             mbNo: data.mbNo,
                             unitName: data.unitName,
-                            userType: 1,//todo
-                            zones: ['1'],//todo
-                            isEnable: 'true',
+                            userType:data.userType,
+                            zones:data.zones,
+                            isEnable: data.isEnable,
                         };
-                   
+            
+                        console.log(state.items[index]);
                     } else { 
                         state.items.push(data);
                     }
+         
                     resolve(result);
                 } catch (e) {
                     reject(result);
@@ -113,16 +115,7 @@
                 state: "轄區管理員"
             }           
         ],
-        userlist: [
-            {
-                id: 1,
-                state: "UserA/001"
-            }, {
-                id: 2,
-                state: "UserB/002"
-
-            }
-        ],
+       
         items: [
             {
                 //checked: false,
@@ -262,9 +255,7 @@
         getTableItems: state => state.items,
         getAreaItems: state => state.arealist,
         getRoleItems: state => state.rolelist,
-        getUserItems: state => state.userlist,
 
-    
     },
     mutations: {
       

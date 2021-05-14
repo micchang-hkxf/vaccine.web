@@ -52,19 +52,7 @@
                                           class="search-filter"
                                           return-object>
                                 </v-select>
-                                <v-select v-model="selectUser"
-                                          :items="getUserItems"
-                                          item-text="state"
-                                          item-value="id"
-                                          label="人員姓名/編號"
-                                          :menu-props="{ bottom: true, offsetY: true }"
-                                          outlined
-                                          clearable
-                                          style="margin-right: 10px;min-width:150px"
-                                          class="search-filter"
-                                          return-object>
-                                </v-select>
-
+                                <v-text-field  class="w03" solo label='人員姓名/編號' v-model="selectUser"></v-text-field>
 
                                 <v-btn icon color="#626781" style="top:10px" @click.stop="search()">
                                     <v-icon>fas fa-search</v-icon>
@@ -198,11 +186,9 @@
                     <v-img src="/alert_success.svg"></v-img>
                 </template>
                 <template v-slot:confirm-title>
-                    {{ alertTitle }}
+                    {{ confirmTitle }}
                 </template>
-                <template v-slot:confirm-text>
-                    {{ alertMessage }}
-                </template>
+ 
                 <template v-slot:confirm-left-btn-text>
                     取消
                 </template>
@@ -241,6 +227,12 @@
     .users-list .w02 {
         width: 600px;
     }
+    .users-list .w03 .v-input__control {
+        min-width: 200px !important;
+        min-height: 53px !important;
+    }
+   
+   
     .users-list .v-list-item__title{
         color:black;
     }
@@ -272,6 +264,7 @@
             valid: true,
             alertMessage: "",
             alertTitle: "",
+            confirmTitle: "您確定要刪除嗎?",
             editID: "",
             isReadOnly: false,
             delitem:null,
@@ -307,7 +300,7 @@
             }
         }),
         computed: {
-            ...mapGetters('users', ['getTableItems', 'getAreaItems', 'getRoleItems', 'getUserItems']),     
+            ...mapGetters('users', ['getTableItems', 'getAreaItems', 'getRoleItems']),     
         },
         props: {
 
@@ -329,8 +322,27 @@
                 this.$set(this, "isReadOnly", true);
                 
             },
-            stopItem () {
-                alert('stop');
+            stopItem(item) {
+                var comp = this;
+                item.editMode = true;
+                item.isEnable = 'false';
+            
+                comp.changeUser(item).then(function (result) {
+                    if (result) {
+                       
+                        comp.$bus.$emit('alert_show', true);
+                        comp.alertTitle = '停止成功';
+                        comp.search();
+                    } else {
+                        console.log('停止失敗');
+                        comp.alertTitle = '停止失敗';
+                        comp.$bus.$emit('alert_show', true);
+                    }
+
+                }).catch(function () {
+                    comp.alertMessage = '網站異常，請稍後再試';
+                    comp.$bus.$emit('alert_show', true);
+                });
             },
             removeItemConfirm(item) {
                 this.delitem = item;
@@ -376,7 +388,6 @@
                         case 'not_found':
                             comp.alertMessage = '查無資料';
                             break;
-         
                         default:
                             break;
                     }
@@ -423,7 +434,8 @@
                     unitName: this.unitName,
                     userType: 2,//todo
                     zones: ['2', '3'], //todo
-                    isEnable: 'true',
+                    isEnable: 'true',//todo
+                    stopit: false,
                     eidtMode: this.isReadOnly,
                 };
                 var msg = (this.isReadOnly) ? "更新" : "新增";
@@ -431,15 +443,18 @@
                 comp.changeUser(setData).then(function (result) {
                     if (result) {
                         console.log('成功');
-                        comp.alertMessage = msg+'成功';
+                        comp.alertMessage = msg + '成功';
+                        comp.$set(comp, "alertTitle", msg + '成功');
                         comp.$bus.$emit('userform_show', false);
                         comp.search();
                     } else {
                         console.log('失敗');
+                        comp.$set(comp, "alertTitle", msg+'失敗');
                         comp.alertMessage = msg+'失敗，請稍後再試';
                     }
                     comp.$bus.$emit('alert_show', true);
                 }).catch(function () {
+                    comp.$set(comp, "alertTitle", '操作失敗');
                     comp.alertMessage = '網站異常，請稍後再試';
                     comp.$bus.$emit('alert_show', true);
                 });
