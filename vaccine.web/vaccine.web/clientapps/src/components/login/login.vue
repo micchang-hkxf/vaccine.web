@@ -947,6 +947,37 @@
         body {
             background: var(--w);
         }
+
+        .rectangle {
+            top: 0;
+            width: 376px;
+            height: 800px;
+            margin: 0 0 0 -188px;
+        }
+
+        .rectangle .logo {
+            top: 78px;
+            margin-left: 139px;
+        }
+
+        .rectangle .title {
+            top: 103px;
+            margin-left: 44px;
+        }
+
+        .rectangle .content {
+            position: relative;
+            top: 127px;
+            margin: 0 24px;
+        }
+
+        .v-text-field .v-input__slot {
+            width: 328px;
+        }
+
+        .rectangle .forgt {
+            top: 200px;
+        }
     }
 
     /* Small devices (landscape phones, 576px and up) */
