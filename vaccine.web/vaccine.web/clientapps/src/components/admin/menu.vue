@@ -15,9 +15,9 @@
         // router,
         data: () => ({
             menus: [
-                { text: "aaa", active: true, key: "meetings", target: null },
+                { text: "報名表管理", active: false, key: "registration", target: "#/registration" },
                 { text: "bbb", active: false, key: "parameters", target: null },
-                { text: "ccc", active: false, key: "managers", target: null },
+                { text: "稽核", active: false, key: "audit", target: "#/audit" },
                 { text: "報名查詢", active: false, key: "registed", target: "#/registed" },
             ],
             currentContent: { text: "我的會議", active: true, key: "meetings" },

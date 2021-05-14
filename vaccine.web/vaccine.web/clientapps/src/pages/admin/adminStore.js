@@ -6,6 +6,7 @@ import usersStore from "stores/admin/usersStore"
 import registeredStore from "stores/registeredStore"
 //import configStore from "stores/configStore"
 import registrationStore from "stores/registrationStore"
+import auditStore from "stores/auditStore"
 
 export default new Vuex.Store({
     actions: {
@@ -23,7 +24,8 @@ export default new Vuex.Store({
         user: userStore,
         registration: registrationStore,
         users: usersStore,
-        registered: registeredStore
+        registered: registeredStore,
+        audit: auditStore
         //config: configStore
     }
 })
