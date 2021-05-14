@@ -55,9 +55,8 @@
     }
 </script>
 <style>
-    .grid .v-stepper, .v-stepper__header {
+    .v-stepper, .v-stepper__header {
         box-shadow: none !important;
-        margin: 0 24px;
     }
 
     .grid .v-stepper__step {
@@ -114,5 +113,17 @@
 
     .grid.v-stepper--alt-labels .step-arrow::after {
         top: 32px;
+    }
+
+    .v-stepper .v-sheet.v-card:not(.v-sheet--outlined) {
+        box-shadow: none;
+    }
+
+    .v-stepper__items {
+        margin-top: 10px;
+    }
+
+    .v-stepper__content {
+        padding: 0;
     }
 </style>

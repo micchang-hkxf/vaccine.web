@@ -60,15 +60,15 @@
                                               ref="verificationCode"
                                               @keyup.enter="checkAuthenticationVerificationCode"
                                               autocomplete="off"></v-text-field>
-                                <div class="verification-code-message">{{verificationCodeMessage}}</div>
+                                <div class="error-message">{{verificationCodeMessage}}</div>
                             </v-col>
                         </v-row>
                     </div>
                     <v-card-actions>
-                        <v-btn icon @click="reSendVerificationCode" ref="resendBtn" :class="sending ? 'disabled' : ''">
+                        <v-btn icon @click="resendVerificationCode" ref="resendBtn" :class="sending ? 'disabled' : ''">
                             <v-icon>mdi-reload</v-icon>
                         </v-btn>
-                        <span class="resend-message" :class="sending ? 'disabled' : ''" ref="resendMessage" @click="reSendVerificationCode">重新傳送驗證碼（{{verificationCodeSec}}s）</span>
+                        <span class="resend-message" :class="sending ? 'disabled' : ''" ref="resendMessage" @click="resendVerificationCode">重新傳送驗證碼（{{verificationCodeSec}}s）</span>
                         <v-spacer></v-spacer>
                         <v-btn @click="checkAuthenticationVerificationCode">
                             送出
@@ -92,7 +92,7 @@
                 </template>
             </com-confirm>
             <!---->
-            <com-dialog ref="dialogResetPw" ref-key="dialogResetPw" width="60%">
+            <com-dialog ref="dialogResetPw" ref-key="dialogResetPw" width="500px">
                 <template v-slot:toolbar>
                     重設密碼
                 </template>
@@ -141,12 +141,115 @@
                     確定
                 </template>
             </com-confirm>
+            <!---->
+            <com-dialog ref="dialogForget" ref-key="dialogForget" width="900px">
+                <template v-slot:toolbar>
+                    忘記密碼
+                </template>
+                <template v-slot:content>
+                    <com-steps ref-key="dialogForgetSteps"
+                                :steps="forgetSteps"
+                                :alt-labels="true"
+                                :arrow="true"
+                                stepType="grid">
+                        <template v-slot:step-1="{next}">
+                            <v-card height="250px">
+                                <v-form lazy-validation ref="forgetAuthenticationForm">
+                                    <div class="dialog-sub-title">
+                                        請輸入您的帳號以確認身份，系統將會傳送一組驗證碼至您的手機以進行重設密碼
+                                    </div>
+                                    <v-text-field v-model="forgetUid"
+                                                    label="帳號＊"
+                                                    placeholder="請輸入帳號"
+                                                    filled
+                                                    ref="forgetUid"
+                                                    :rules="[rules.required]"
+                                                    @keyup.enter="checkForgetUid(next)"
+                                                    autocomplete="off"></v-text-field>
+                                    <div class="error-message">{{forgetUidMessage}}</div>
+                                </v-form>
+                            </v-card>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn @click="checkForgetUid(next)">下一步</v-btn>
+                            </v-card-actions>
+                        </template>
+                        <template v-slot:step-2="{next}">
+                            <v-card height="250px">
+                                <div class="dialog-sub-title">
+                                    請輸入６位數驗證碼以完成身份確認（{{forgetAuthenticationSec}}s）
+                                </div>
+                                <v-text-field v-model="forgetVerificationCode"
+                                                label="驗證碼＊"
+                                                placeholder="請輸入驗證碼"
+                                                maxlength="6"
+                                                filled
+                                                ref="forgetVerificationCode"
+                                                @keyup.enter="checkForgetVerificationCode(next)"
+                                                autocomplete="off"></v-text-field>
+                                <div class="error-message">{{forgetVerificationCodeMessage}}</div>
+                            </v-card>
+                            <v-card-actions>
+                                <v-btn icon @click="forgetResendVerificationCode" ref="forgetResendBtn" :class="forgetSending ? 'disabled' : ''">
+                                    <v-icon>mdi-reload</v-icon>
+                                </v-btn>
+                                <span class="resend-message" :class="forgetSending ? 'disabled' : ''" ref="forgetResendMessage" @click="forgetResendVerificationCode">重新傳送驗證碼（{{forgetVerificationCodeSec}}s）</span>
+                                <v-spacer></v-spacer>
+                                <v-btn @click="checkForgetVerificationCode(next)">下一步</v-btn>
+                            </v-card-actions>
+                        </template>
+                        <template v-slot:step-3="{next}">
+                            <v-card height="250px">
+                                <v-form lazy-validation ref="forgetResetPwForm">
+                                    <div class="dialog-sub-title">
+                                        請重新輸入8位以上包含半形英文+數字作為新密碼
+                                    </div>
+                                    <v-text-field v-model="forgetNewUpd"
+                                                  label="新密碼＊"
+                                                  placeholder="請輸入新密碼"
+                                                  filled
+                                                  ref="forgetNewUpd"
+                                                  :rules="[rules.required, forgetPwNewUpdCheck]"
+                                                  :append-icon="forgetNewUpdShow ? 'mdi-eye' : 'mdi-eye-off'"
+                                                  :type="forgetNewUpdShow ? 'text' : 'password'"
+                                                  @click:append="forgetNewUpdShow = !forgetNewUpdShow"
+                                                  @keyup.enter="checkForgetResetPw(next)"
+                                                  autocomplete="off"></v-text-field>
+
+                                    <v-text-field v-model="forgetConfirmNewUpd"
+                                                  label="確認新密碼＊"
+                                                  placeholder="請再次輸入新密碼"
+                                                  filled
+                                                  ref="forgetConfirmNewUpd"
+                                                  :rules="[rules.required, forgetPwConfirmNewUpdCheck]"
+                                                  :append-icon="forgetConfirmNewUpdShow ? 'mdi-eye' : 'mdi-eye-off'"
+                                                  :type="forgetConfirmNewUpdShow ? 'text' : 'password'"
+                                                  @click:append="forgetConfirmNewUpdShow = !forgetConfirmNewUpdShow"
+                                                  @keyup.enter="checkForgetResetPw(next)"
+                                                  autocomplete="off"></v-text-field>
+                                </v-form>
+                            </v-card>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn @click="checkForgetResetPw(next)">送出</v-btn>
+                            </v-card-actions>
+                        </template>
+                        <template v-slot:step-4>
+                            <v-card height="250px">
+                            </v-card>
+                            <v-card-actions>
+                            </v-card-actions>
+                        </template>
+                    </com-steps>
+                </template>
+            </com-dialog>
         </v-main>
     </v-app>
 </template>
 <script>
     import comDialog from 'components/dialog'
     import comConfirm from 'components/confirm'
+    import comSteps from 'components/steps'
     import { mapActions } from 'vuex'
 
     export default {
@@ -178,7 +281,26 @@
             alertResetPwResetPwState: '',
             rules: {
                 required: v => !!v || '必填'
-            }
+            },
+            forgetSteps: [
+                { 'stepNum': 1, 'title': '驗證身分'},
+                { 'stepNum': 2, 'title': '輸入驗證碼' },
+                { 'stepNum': 3, 'title': '重設密碼' },
+                { 'stepNum': 4, 'title': '完成' }
+            ],
+            forgetUid: '',
+            forgetUidMessage: '',
+            forgetAuthenticationSec: 240,
+            forgetVerificationCodeSec: 60,
+            forgetVerificationCode: '',
+            forgetVerificationCodeMessage: '',
+            forgetSending: false,
+            forgetAuthenticationTiming: null,
+            forgetVerificationCodeTiming: null,
+            forgetNewUpd: '',
+            forgetNewUpdShow: false,
+            forgetConfirmNewUpd: '',
+            forgetConfirmNewUpdShow: false
         }),
         computed: {
 
@@ -188,58 +310,30 @@
         },
         created: function () {
             var comp = this;
-            var _authenticationSec   = comp.authenticationSec;
-            var _verificationCodeSec = comp.verificationCodeSec;
 
             // uid focus
             setTimeout(() => this.$refs.uid.focus(), 0); 
 
             comp.$bus.$on('authentication_dialog_show', function (isShow) {
                 comp.authenticationDialog = isShow;
+                
                 if (isShow) {
                     setTimeout(() => comp.$refs.verificationCode.focus(), 0);
-                    if (comp.authenticationTiming === null) {
-                        comp.authenticationTiming = setInterval(function () {
-                            comp.authenticationSec--;
-                            if (comp.authenticationSec === 0) {
-                                comp.reload();
-                            }
-                        }, 1000);
-                    }
-                    
-                    if (comp.verificationCodeTiming === null) {
-                        comp.verificationCodeTiming = setInterval(function () {
-                            comp.verificationCodeSec--;
-                            if (comp.verificationCodeSec === 0) {
-                                clearInterval(comp.verificationCodeTiming);
-                                comp.verificationCodeTiming = null;
-                                comp.verificationCodeSec = _verificationCodeSec;
-                                comp.sending = false;
-                            }
-                        }, 1000);
-                    }
+                    comp.authenticationTimingStart();
                 } else {
-                    setTimeout(function () {
-                        comp.verificationCode = '';
-
-                        if (comp.authenticationTiming !== null) {
-                            clearInterval(comp.authenticationTiming);
-                            comp.authenticationTiming = null;
-                            comp.authenticationSec = _authenticationSec;
-                        }
-
-                        if (comp.verificationCodeTiming !== null) {
-                            clearInterval(comp.verificationCodeTiming);
-                            comp.verificationCodeTiming = null;
-                            comp.verificationCodeSec = _verificationCodeSec;
-                            comp.sending = false;
-                        }
-                    }, 0);
+                    comp.authenticationTimingEnd();
                 }
             });
         },
         methods: {
-            ...mapActions(['checkLogin', 'checkVerificationCode', 'checkResetPw']),
+            ...mapActions([
+                'checkLogin',
+                'checkVerificationCode',
+                'checkResetPw',
+                'checkForgetPdUid',
+                'checkForgetPdVerificationCode',
+                'modifyPw'
+            ]),
             sendLoginForm: function () {
                 var comp = this;
                 var isvaild = comp.$refs.loginForm.validate();
@@ -274,8 +368,6 @@
                         }
 
                         if (result.state === 'not yet enabled') {
-                            // TODO: User/Login
-
                             comp.sending = true;
                             comp.$bus.$emit('authentication_dialog_show', true);
                             return;
@@ -286,14 +378,61 @@
                     .catch(function () {
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
-                    })
+                    });
             },
             alertClick: function () {
                 this.$bus.$emit('alert_show', false);
             },
-            reSendVerificationCode: function () {
+            authenticationTimingStart: function () {
+                var comp = this;
+                var _verificationCodeSec = comp.verificationCodeSec;
+
+                if (comp.authenticationTiming === null) {
+                    comp.authenticationTiming = setInterval(function () {
+                        comp.authenticationSec--;
+                        if (comp.authenticationSec === 0) {
+                            comp.reload();
+                        }
+                    }, 1000);
+                }
+
+                if (comp.verificationCodeTiming === null) {
+                    comp.verificationCodeTiming = setInterval(function () {
+                        comp.verificationCodeSec--;
+                        if (comp.verificationCodeSec === 0) {
+                            clearInterval(comp.verificationCodeTiming);
+                            comp.verificationCodeTiming = null;
+                            comp.verificationCodeSec = _verificationCodeSec;
+                            comp.sending = false;
+                        }
+                    }, 1000);
+                }
+            },
+            authenticationTimingEnd: function () {
+                var comp = this;
+                var _authenticationSec = comp.authenticationSec;
+                var _verificationCodeSec = comp.verificationCodeSec;
+
+                setTimeout(function () {
+                    comp.verificationCode = '';
+
+                    if (comp.authenticationTiming !== null) {
+                        clearInterval(comp.authenticationTiming);
+                        comp.authenticationTiming = null;
+                        comp.authenticationSec = _authenticationSec;
+                    }
+
+                    if (comp.verificationCodeTiming !== null) {
+                        clearInterval(comp.verificationCodeTiming);
+                        comp.verificationCodeTiming = null;
+                        comp.verificationCodeSec = _verificationCodeSec;
+                        comp.sending = false;
+                    }
+                }, 0);
+            },
+            resendVerificationCode: function () {
                 if (!this.sending) {
-                    this.check();
+                    this.sendLoginForm();
                     this.$bus.$emit('authentication_dialog_show', true);
                     this.sending = true;
                 }
@@ -319,7 +458,7 @@
                                 comp.verificationCodeMessage = '';
                                 break;
                         }
-                        
+
                         if (result.state !== 'pass') {
                             // verificationCode select
                             comp.$refs.verificationCode.$el.querySelector('input').select();
@@ -363,13 +502,13 @@
                     .catch(function () {
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
-                    })
+                    });
             },
             alertPwLeftClick: function () {
                 if (this.alertPwState === 'password is about to expire') {
                     location.replace('/admin');
                 } else {
-                    // TODO: 登出
+                    // TODO: 登出 Delete api/User/Login
 
                     this.reload();
                 }
@@ -420,19 +559,17 @@
                                 break;
                         }
 
-                        // TODO: User/Login
-
                         comp.alertResetPwResetPwState = result.state;
                         comp.$bus.$emit('alertResetPw_show', true);
                     })
                     .catch(function () {
                         comp.alertResetPwMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alertResetPw_show', true);
-                    })
+                    });
             },
             alertResetPwClick: function () {
                 if (this.alertResetPwResetPwState === 'pass') {
-                    // TODO: 登出
+                    // TODO: 登出 Delete api/User/Login
 
                     location.reload();
                 } else {
@@ -440,11 +577,179 @@
                 }
             },
             forgetUpd: function () {
-                // TODO: 忘記密碼
+                this.$bus.$emit('dialogForget_show', true);
+                setTimeout(() => this.$refs.forgetUid.focus(), 0); 
+            },
+            checkForgetUid: function (callback) {
+                var comp = this;
+                var isvaild = comp.$refs.forgetAuthenticationForm.validate();
+                if (!isvaild) return;
+                
+                comp.checkForgetPdUid({ uid: comp.forgetUid })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.forgetUidMessage = '輸入錯誤或此帳號未註冊！';
+                                break;
+                            case 'deactivate':
+                                comp.forgetUidMessage = '很抱歉，您的帳號已遭停用，所以暫時無法使用本系統，如有需要請聯絡相關人員給予協助';
+                                break;
+                            default:
+                                comp.forgetUidMessage = '';
+                                break;
+                        }
+
+                        if (result.state !== 'pass') {
+                            return;
+                        }
+
+                        comp.forgetSending = true;
+                        
+                        if (typeof callback === 'function') {
+                            callback();
+
+                            setTimeout(() => comp.$refs.forgetVerificationCode.focus(), 0);
+                            comp.forgetAuthenticationTimingStart();
+                        }
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
+            },
+            forgetAuthenticationTimingStart: function () {
+                var comp = this;
+                var _verificationCodeSec = comp.forgetVerificationCodeSec;
+
+                if (comp.forgetAuthenticationTiming === null) {
+                    comp.forgetAuthenticationTiming = setInterval(function () {
+                        comp.forgetAuthenticationSec--;
+                        if (comp.forgetAuthenticationSec === 0) {
+                            comp.reload();
+                        }
+                    }, 1000);
+                }
+
+                if (comp.forgetVerificationCodeTiming === null) {
+                    comp.forgetVerificationCodeTiming = setInterval(function () {
+                        comp.forgetVerificationCodeSec--;
+                        if (comp.forgetVerificationCodeSec === 0) {
+                            clearInterval(comp.forgetVerificationCodeTiming);
+                            comp.forgetVerificationCodeTiming = null;
+                            comp.forgetVerificationCodeSec = _verificationCodeSec;
+                            comp.forgetSending = false;
+                        }
+                    }, 1000);
+                }
+            },
+            forgetAuthenticationTimingEnd: function () {
+                var comp = this;
+                var _authenticationSec = comp.forgetAuthenticationSec;
+                var _verificationCodeSec = comp.forgetVerificationCodeSec;
+
+                setTimeout(function () {
+                    comp.forgetVerificationCode = '';
+
+                    if (comp.forgetAuthenticationTiming !== null) {
+                        clearInterval(comp.forgetAuthenticationTiming);
+                        comp.forgetAuthenticationTiming = null;
+                        comp.forgetAuthenticationSec = _authenticationSec;
+                    }
+
+                    if (comp.forgetVerificationCodeTiming !== null) {
+                        clearInterval(comp.forgetVerificationCodeTiming);
+                        comp.forgetVerificationCodeTiming = null;
+                        comp.forgetVerificationCodeSec = _verificationCodeSec;
+                        comp.forgetSending = false;
+                    }
+                }, 0);
+            },
+            forgetResendVerificationCode: function () {
+                if (!this.forgetSending) {
+                    this.checkForgetUid();
+                }
+            },
+            checkForgetVerificationCode: function (callback) {
+                var comp = this;
+                if (comp.forgetVerificationCode.length < 6) {
+                    return;
+                }
+                comp.checkForgetPdVerificationCode({ uid: comp.forgetUid, verificationCode: comp.forgetVerificationCode })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'invalid':
+                                comp.forgetVerificationCodeMessage = '驗證碼無效，請重新輸入！';
+                                break;
+                            default:
+                                comp.forgetVerificationCodeMessage = '';
+                                break;
+                        }
+
+                        if (result.state !== 'pass') {
+                            // verificationCode select
+                            comp.$refs.forgetVerificationCode.$el.querySelector('input').select();
+                            return;
+                        }
+
+                        if (typeof callback === 'function') {
+                            callback();
+
+                            comp.forgetAuthenticationTimingEnd();
+                            setTimeout(() => comp.$refs.forgetNewUpd.focus(), 0);
+                        }
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
+            },
+            forgetPwNewUpdCheck: function () {
+                var re = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+                if (!re.test(this.forgetNewUpd)) {
+                    return '密碼至少需8位半形英文+數字！';
+                }
+                return true;
+            },
+            forgetPwConfirmNewUpdCheck: function () {
+                if (this.forgetConfirmNewUpd !== this.forgetNewUpd) {
+                    return '密碼不一致，請重新輸入！';
+                }
+                return true;
+            },
+            checkForgetResetPw: function () {
+                var comp = this;
+                var isvaild = comp.$refs.forgetResetPwForm.validate();
+                if (!isvaild) return;
+
+                comp.modifyPw({ uid: comp.forgetUid, newUpd: comp.forgetNewUpd, verificationCode: comp.forgetVerificationCode })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertResetPwMessage = '帳號不存在';
+                                break;
+                            case 'pass':
+                                comp.alertResetPwMessage = '您的密碼已更新，請重新登入 !';
+                                break;
+                            case 'error':
+                                comp.alertResetPwMessage = '處理錯誤，請重新嘗試';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        comp.$bus.$emit('dialogForgetSteps_gotoStep', 4);
+
+                        comp.alertResetPwResetPwState = result.state;
+                        comp.$bus.$emit('alertResetPw_show', true);
+                    })
+                    .catch(function () {
+                        comp.alertResetPwMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alertResetPw_show', true);
+                    });
             }
         },
         components: {
-            comDialog, comConfirm
+            comDialog, comConfirm, comSteps
         }
     }
 </script>
@@ -618,7 +923,7 @@
         color: var(--bk) !important;
     }
 
-    .v-dialog .verification-code-message {
+    .v-dialog .error-message {
         color: #FF0000;
         min-height: 24px;
     }
