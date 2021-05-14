@@ -282,7 +282,7 @@
             selectRole: null,
             selectArea: null,
             selectPermission: null,
-            selectUser: null,
+            selectUser: "",
             permissionStatus: [
                 { state: '啟用', st: 'true' },
                 { state: '停用', st: 'false' },
@@ -379,7 +379,7 @@
                     filter.isEnable = this.selectPermission.st;
                 }
                 if (this.selectUser) {
-                    filter.uName = this.selectUser.id;
+                    filter.uName = this.selectUser;
                 }
                 var comp = this;
                 comp.alertMessage = '';

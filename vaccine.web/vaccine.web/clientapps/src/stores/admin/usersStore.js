@@ -19,7 +19,7 @@
                         exists = exists.filter(f => f.isEnable == data.isEnable);
                     }
                     if (data.uName) {
-                        exists = exists.filter(f => f.uName == data.uName);
+                        exists = exists.filter(f => (f.uName == data.uName || f.acc == data.uName));
                     }
 
                     if (exists.length==0) {
