@@ -37,7 +37,7 @@
                 </template>
             </com-confirm>
             <!---->
-            <v-dialog v-model="authenticationDialog" persistent max-width="500px">
+            <v-dialog v-model="authenticationDialog" persistent max-width="304px" max-height="392px" content-class="dialog">
                 <v-card>
                     <v-card-title>
                         <span>身份驗證（{{authenticationSec}}s）</span>
@@ -52,26 +52,28 @@
                                 <div class="dialog-sub-title">
                                     請輸入６位數驗證碼以完成身份確認
                                 </div>
-                                <v-text-field v-model="verificationCode"
-                                              label="驗證碼＊"
-                                              placeholder="請輸入驗證碼"
-                                              maxlength="6"
-                                              filled
-                                              ref="verificationCode"
-                                              @keyup.enter="checkAuthenticationVerificationCode"
-                                              autocomplete="off"></v-text-field>
+                                <div>
+                                    <v-label>驗證碼＊</v-label>
+                                    <v-text-field placeholder="請輸入驗證碼" v-model="verificationCode" ref="verificationCode" solo @keyup.enter="checkAuthenticationVerificationCode" autocomplete="off" maxlength="6"></v-text-field>
+                                </div>
                                 <div class="error-message">{{verificationCodeMessage}}</div>
+                                <div>
+                                    <v-btn icon @click="resendVerificationCode" ref="resendBtn" :class="sending ? 'disabled' : ''">
+                                        <v-icon>mdi-reload</v-icon>
+                                    </v-btn>
+                                    <span class="resend-message" :class="sending ? 'disabled' : ''" ref="resendMessage" @click="resendVerificationCode">重新傳送驗證碼（{{verificationCodeSec}}s）</span>
+                                </div>
                             </v-col>
                         </v-row>
                     </div>
+                    <hr />
                     <v-card-actions>
-                        <v-btn icon @click="resendVerificationCode" ref="resendBtn" :class="sending ? 'disabled' : ''">
-                            <v-icon>mdi-reload</v-icon>
+                        <v-btn @click="reload">
+                            取消
                         </v-btn>
-                        <span class="resend-message" :class="sending ? 'disabled' : ''" ref="resendMessage" @click="resendVerificationCode">重新傳送驗證碼（{{verificationCodeSec}}s）</span>
                         <v-spacer></v-spacer>
                         <v-btn @click="checkAuthenticationVerificationCode">
-                            送出
+                            確定送出
                         </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -92,9 +94,9 @@
                 </template>
             </com-confirm>
             <!---->
-            <com-dialog ref="dialogResetPw" ref-key="dialogResetPw" width="500px">
+            <com-dialog ref="dialogResetPw" ref-key="dialogResetPw" width="440px">
                 <template v-slot:toolbar>
-                    重設密碼
+                    修改密碼
                 </template>
                 <template v-slot:content>
                     <v-form lazy-validation ref="resetPwForm">
@@ -108,8 +110,8 @@
                                           @keyup.enter="sendResetPwForm"></v-text-field>
                         </div>
                         <div>
-                            <v-label>新密碼＊（請輸入8位以上包含半形英文+數字）</v-label>
-                            <v-text-field placeholder="請輸入新密碼" v-model="newUpd" ref="newUpd" solo
+                            <v-label>新密碼＊</v-label>
+                            <v-text-field placeholder="請輸入新密碼（請輸入8位以上包含半形英文+數字）" v-model="newUpd" ref="newUpd" solo
                                           :rules="[rules.required, alertPwNewUpdCheck]"
                                           :append-icon="newUpdShow ? 'mdi-eye' : 'mdi-eye-off'"
                                           :type="newUpdShow ? 'text' : 'password'"
@@ -117,7 +119,7 @@
                                           @keyup.enter="sendResetPwForm"></v-text-field>
                         </div>
                         <div>
-                            <v-label>確認新密碼＊</v-label>
+                            <v-label>確認密碼＊</v-label>
                             <v-text-field placeholder="請再次輸入新密碼" v-model="confirmNewUpd" ref="confirmNewUpd" solo
                                           :rules="[rules.required, alertPwConfirmNewUpdCheck]"
                                           :append-icon="confirmNewUpdShow ? 'mdi-eye' : 'mdi-eye-off'"
@@ -142,30 +144,30 @@
                 </template>
             </com-confirm>
             <!---->
-            <com-dialog ref="dialogForget" ref-key="dialogForget" width="900px">
+            <com-dialog ref="dialogForget" ref-key="dialogForget" width="472px">
                 <template v-slot:toolbar>
                     忘記密碼
                 </template>
                 <template v-slot:content>
                     <com-steps ref-key="dialogForgetSteps"
                                 :steps="forgetSteps"
-                                :alt-labels="true"
-                                :arrow="true"
-                                stepType="grid">
+                               stepType="circle">
                         <template v-slot:step-1="{next}">
                             <v-card height="250px">
                                 <v-form lazy-validation ref="forgetAuthenticationForm">
-                                    <div class="dialog-sub-title">
+                                    <div class="dialog-sub-title forget">
                                         請輸入您的帳號以確認身份，系統將會傳送一組驗證碼至您的手機以進行重設密碼
                                     </div>
-                                    <v-text-field v-model="forgetUid"
-                                                    label="帳號＊"
-                                                    placeholder="請輸入帳號"
-                                                    filled
-                                                    ref="forgetUid"
-                                                    :rules="[rules.required]"
-                                                    @keyup.enter="checkForgetUid(next)"
-                                                    autocomplete="off"></v-text-field>
+                                    <div>
+                                        <v-label>帳號＊</v-label>
+                                        <v-text-field v-model="forgetUid"
+                                                      placeholder="請輸入帳號"
+                                                      solo
+                                                      ref="forgetUid"
+                                                      :rules="[rules.required]"
+                                                      @keyup.enter="checkForgetUid(next)"
+                                                      autocomplete="off"></v-text-field>
+                                    </div>
                                     <div class="error-message">{{forgetUidMessage}}</div>
                                 </v-form>
                             </v-card>
@@ -176,24 +178,28 @@
                         </template>
                         <template v-slot:step-2="{next}">
                             <v-card height="250px">
-                                <div class="dialog-sub-title">
+                                <div class="dialog-sub-title forget">
                                     請輸入６位數驗證碼以完成身份確認（{{forgetAuthenticationSec}}s）
                                 </div>
-                                <v-text-field v-model="forgetVerificationCode"
-                                                label="驗證碼＊"
-                                                placeholder="請輸入驗證碼"
-                                                maxlength="6"
-                                                filled
-                                                ref="forgetVerificationCode"
-                                                @keyup.enter="checkForgetVerificationCode(next)"
-                                                autocomplete="off"></v-text-field>
+                                <div>
+                                    <v-label>驗證碼＊</v-label>
+                                    <v-text-field v-model="forgetVerificationCode"
+                                                  placeholder="請輸入驗證碼"
+                                                  maxlength="6"
+                                                  solo
+                                                  ref="forgetVerificationCode"
+                                                  @keyup.enter="checkForgetVerificationCode(next)"
+                                                  autocomplete="off"></v-text-field>
+                                </div>
                                 <div class="error-message">{{forgetVerificationCodeMessage}}</div>
+                                <div>
+                                    <v-btn icon @click="forgetResendVerificationCode" ref="forgetResendBtn" :class="forgetSending ? 'disabled' : ''">
+                                        <v-icon>mdi-reload</v-icon>
+                                    </v-btn>
+                                    <span class="resend-message" :class="forgetSending ? 'disabled' : ''" ref="forgetResendMessage" @click="forgetResendVerificationCode">重新傳送驗證碼（{{forgetVerificationCodeSec}}s）</span>
+                                </div>
                             </v-card>
                             <v-card-actions>
-                                <v-btn icon @click="forgetResendVerificationCode" ref="forgetResendBtn" :class="forgetSending ? 'disabled' : ''">
-                                    <v-icon>mdi-reload</v-icon>
-                                </v-btn>
-                                <span class="resend-message" :class="forgetSending ? 'disabled' : ''" ref="forgetResendMessage" @click="forgetResendVerificationCode">重新傳送驗證碼（{{forgetVerificationCodeSec}}s）</span>
                                 <v-spacer></v-spacer>
                                 <v-btn @click="checkForgetVerificationCode(next)">下一步</v-btn>
                             </v-card-actions>
@@ -201,43 +207,41 @@
                         <template v-slot:step-3="{next}">
                             <v-card height="250px">
                                 <v-form lazy-validation ref="forgetResetPwForm">
-                                    <div class="dialog-sub-title">
+                                    <div class="dialog-sub-title forget">
                                         請重新輸入8位以上包含半形英文+數字作為新密碼
                                     </div>
-                                    <v-text-field v-model="forgetNewUpd"
-                                                  label="新密碼＊"
-                                                  placeholder="請輸入新密碼"
-                                                  filled
-                                                  ref="forgetNewUpd"
-                                                  :rules="[rules.required, forgetPwNewUpdCheck]"
-                                                  :append-icon="forgetNewUpdShow ? 'mdi-eye' : 'mdi-eye-off'"
-                                                  :type="forgetNewUpdShow ? 'text' : 'password'"
-                                                  @click:append="forgetNewUpdShow = !forgetNewUpdShow"
-                                                  @keyup.enter="checkForgetResetPw(next)"
-                                                  autocomplete="off"></v-text-field>
-
-                                    <v-text-field v-model="forgetConfirmNewUpd"
-                                                  label="確認新密碼＊"
-                                                  placeholder="請再次輸入新密碼"
-                                                  filled
-                                                  ref="forgetConfirmNewUpd"
-                                                  :rules="[rules.required, forgetPwConfirmNewUpdCheck]"
-                                                  :append-icon="forgetConfirmNewUpdShow ? 'mdi-eye' : 'mdi-eye-off'"
-                                                  :type="forgetConfirmNewUpdShow ? 'text' : 'password'"
-                                                  @click:append="forgetConfirmNewUpdShow = !forgetConfirmNewUpdShow"
-                                                  @keyup.enter="checkForgetResetPw(next)"
-                                                  autocomplete="off"></v-text-field>
+                                    <div>
+                                        <v-label>新密碼＊</v-label>
+                                        <v-text-field v-model="forgetNewUpd"
+                                                      placeholder="請輸入新密碼"
+                                                      solo
+                                                      ref="forgetNewUpd"
+                                                      :rules="[rules.required, forgetPwNewUpdCheck]"
+                                                      :append-icon="forgetNewUpdShow ? 'mdi-eye' : 'mdi-eye-off'"
+                                                      :type="forgetNewUpdShow ? 'text' : 'password'"
+                                                      @click:append="forgetNewUpdShow = !forgetNewUpdShow"
+                                                      @keyup.enter="checkForgetResetPw(next)"
+                                                      autocomplete="off"></v-text-field>
+                                    </div>
+                                    <div>
+                                        <v-label>確認新密碼＊</v-label>
+                                        <v-text-field v-model="forgetConfirmNewUpd"
+                                                      label="確認新密碼＊"
+                                                      placeholder="請再次輸入新密碼"
+                                                      solo
+                                                      ref="forgetConfirmNewUpd"
+                                                      :rules="[rules.required, forgetPwConfirmNewUpdCheck]"
+                                                      :append-icon="forgetConfirmNewUpdShow ? 'mdi-eye' : 'mdi-eye-off'"
+                                                      :type="forgetConfirmNewUpdShow ? 'text' : 'password'"
+                                                      @click:append="forgetConfirmNewUpdShow = !forgetConfirmNewUpdShow"
+                                                      @keyup.enter="checkForgetResetPw(next)"
+                                                      autocomplete="off"></v-text-field>
+                                    </div>
                                 </v-form>
                             </v-card>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn @click="checkForgetResetPw(next)">送出</v-btn>
-                            </v-card-actions>
-                        </template>
-                        <template v-slot:step-4>
-                            <v-card height="250px">
-                            </v-card>
-                            <v-card-actions>
                             </v-card-actions>
                         </template>
                     </com-steps>
@@ -283,10 +287,9 @@
                 required: v => !!v || '必填'
             },
             forgetSteps: [
-                { 'stepNum': 1, 'title': '驗證身分'},
-                { 'stepNum': 2, 'title': '輸入驗證碼' },
-                { 'stepNum': 3, 'title': '重設密碼' },
-                { 'stepNum': 4, 'title': '完成' }
+                { 'stepNum': 1 },
+                { 'stepNum': 2 },
+                { 'stepNum': 3 }
             ],
             forgetUid: '',
             forgetUidMessage: '',
@@ -737,8 +740,6 @@
                                 break;
                         }
 
-                        comp.$bus.$emit('dialogForgetSteps_gotoStep', 4);
-
                         comp.alertResetPwResetPwState = result.state;
                         comp.$bus.$emit('alertResetPw_show', true);
                     })
@@ -842,8 +843,6 @@
     }
 
     .v-text-field .v-input__slot {
-        width: 352px;
-        height: 48px;
         background: var(--bk_06) 0% 0% no-repeat padding-box !important;
         border-radius: 8px;
         opacity: 1;
@@ -899,23 +898,60 @@
     }
 
     .dialog-sub-title {
-        display: flex;
-        color: var(--bk);
         font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-noto-sans-t-chinese);
+        letter-spacing: var(--unnamed-character-spacing-0);
+        color: var(--bk_4);
+        text-align: left;
         opacity: 1;
-        padding-top: 4px;
-        margin: 5px 0;
+        margin-bottom: 24px;
+    }
+
+    .dialog-sub-title.forget{
+        font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/28px var(--unnamed-font-family-noto-sans-t-chinese);
+        color: var(--bk);
+    }
+
+    .v-dialog.dialog .v-card__title {
+        background: var(--pri) 0% 0% no-repeat padding-box;
+        box-shadow: 0px 3px 6px #00000029;
+        font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) 20px/var(--unnamed-line-spacing-24) var(--unnamed-font-family-noto-sans-t-chinese);
+        letter-spacing: var(--unnamed-character-spacing-0);
+        color: var(--w);
+        text-align: left;
+        opacity: 1;
+    }
+
+    .v-dialog .mdi-close::before {
+        color: var(--w);
+        opacity: 1;
     }
 
     .v-dialog .dialog-content {
-        margin: 0 10px;
+        padding: 24px;
+    }
+
+    .v-dialog .mdi-reload::before {
+        width: 23px;
+        height: 19px;
+        margin-top: -8px;
+    }
+
+    .v-dialog hr {
+        margin: 0 24px;
+        border: 1px solid #DDDFE2;
+        opacity: 1;
+    }
+
+    .v-dialog .v-card__actions {
+        padding: 24px;
     }
 
     .v-dialog .v-text-field .v-input__slot {
         width: 100%;
     }
 
-    .v-dialog .v-text-field .v-input__slot:before, .v-dialog .v-text-field .v-input__slot:after {
+    .v-dialog .v-text-field .v-input__slot:before,
+    .v-dialog .v-text-field .v-input__slot:after {
         width: 0 !important;
     }
 
@@ -924,11 +960,21 @@
     }
 
     .v-dialog .error-message {
-        color: #FF0000;
-        min-height: 24px;
+        font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/28px var(--unnamed-font-family-noto-sans-t-chinese);
+        letter-spacing: var(--unnamed-character-spacing-0);
+        color: var(--dangerous);
+        text-align: left;
+        opacity: 1;
+        min-height: 28px;
+        margin-top: -25px;
     }
 
     .v-dialog .resend-message {
+        font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/28px var(--unnamed-font-family-noto-sans-t-chinese);
+        letter-spacing: var(--unnamed-character-spacing-0);
+        color: var(--bk_6);
+        text-align: left;
+        opacity: 1;
         -webkit-user-select: none;
         -moz-user-select: none;
         -o-user-select: none;
@@ -940,6 +986,10 @@
         cursor: not-allowed;
         pointer-events: none;
         color: var(--bk_4);
+    }
+
+    .dialogForgetSteps .v-stepper__step {
+        padding: 0;
     }
 
     /* Extra small devices (portrait phones, less than 576px) */
