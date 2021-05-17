@@ -17,7 +17,7 @@
                                       @click:append="show1 = !show1"></v-text-field>
                     </div>
                     <div>
-                        <v-btn block height="48px" @click="sendLoginForm">登入</v-btn>
+                        <v-btn block height="48px" @click="sendLoginForm" :ripple="false">登入</v-btn>
                     </div>
                 </div>
                 <div class="forgt">
@@ -42,8 +42,8 @@
                     <v-card-title>
                         <span>身份驗證（{{authenticationSec}}s）</span>
                         <v-spacer></v-spacer>
-                        <v-btn icon @click="reload">
-                            <v-icon>mdi-close</v-icon>
+                        <v-btn icon @click.stop="reload" :ripple="false">
+                            <v-icon color="white">fas fa-times</v-icon>
                         </v-btn>
                     </v-card-title>
                     <div class="dialog-content">
@@ -53,12 +53,12 @@
                                     請輸入６位數驗證碼以完成身份確認
                                 </div>
                                 <div>
-                                    <v-label>驗證碼＊</v-label>
+                                    <v-label>驗證碼 <span class="red--text">*</span></v-label>
                                     <v-text-field placeholder="請輸入驗證碼" v-model="verificationCode" ref="verificationCode" solo @keyup.enter="checkAuthenticationVerificationCode" autocomplete="off" maxlength="6"></v-text-field>
                                 </div>
                                 <div class="error-message">{{verificationCodeMessage}}</div>
                                 <div>
-                                    <v-btn icon @click="resendVerificationCode" ref="resendBtn" :class="sending ? 'disabled' : ''">
+                                    <v-btn icon @click="resendVerificationCode" ref="resendBtn" :class="sending ? 'disabled' : ''" :ripple="false">
                                         <v-icon>mdi-reload</v-icon>
                                     </v-btn>
                                     <span class="resend-message" :class="sending ? 'disabled' : ''" ref="resendMessage" @click="resendVerificationCode">重新傳送驗證碼（{{verificationCodeSec}}s）</span>
@@ -68,11 +68,11 @@
                     </div>
                     <hr />
                     <v-card-actions>
-                        <v-btn @click="reload">
+                        <v-btn @click="reload" :ripple="false" outlined color="rgba(50,65,80,0.2)">
                             取消
                         </v-btn>
                         <v-spacer></v-spacer>
-                        <v-btn @click="checkAuthenticationVerificationCode">
+                        <v-btn @click="checkAuthenticationVerificationCode" :ripple="false" color="primary">
                             確定送出
                         </v-btn>
                     </v-card-actions>
@@ -101,7 +101,7 @@
                 <template v-slot:content>
                     <v-form lazy-validation ref="resetPwForm">
                         <div>
-                            <v-label>舊密碼＊</v-label>
+                            <v-label>舊密碼 <span class="red--text">*</span></v-label>
                             <v-text-field placeholder="請輸入目前密碼" v-model="oldUpd" ref="oldUpd" solo
                                           :rules="[rules.required, alertPwOldUpdCheck]"
                                           :append-icon="oldUpdShow ? 'mdi-eye' : 'mdi-eye-off'"
@@ -110,7 +110,7 @@
                                           @keyup.enter="sendResetPwForm"></v-text-field>
                         </div>
                         <div>
-                            <v-label>新密碼＊</v-label>
+                            <v-label>新密碼 <span class="red--text">*</span></v-label>
                             <v-text-field placeholder="請輸入新密碼（請輸入8位以上包含半形英文+數字）" v-model="newUpd" ref="newUpd" solo
                                           :rules="[rules.required, alertPwNewUpdCheck]"
                                           :append-icon="newUpdShow ? 'mdi-eye' : 'mdi-eye-off'"
@@ -119,7 +119,7 @@
                                           @keyup.enter="sendResetPwForm"></v-text-field>
                         </div>
                         <div>
-                            <v-label>確認密碼＊</v-label>
+                            <v-label>確認密碼 <span class="red--text">*</span></v-label>
                             <v-text-field placeholder="請再次輸入新密碼" v-model="confirmNewUpd" ref="confirmNewUpd" solo
                                           :rules="[rules.required, alertPwConfirmNewUpdCheck]"
                                           :append-icon="confirmNewUpdShow ? 'mdi-eye' : 'mdi-eye-off'"
@@ -131,7 +131,7 @@
                 </template>
                 <template v-slot:action>
                     <v-spacer></v-spacer>
-                    <v-btn @click="sendResetPwForm">送出</v-btn>
+                    <v-btn @click="sendResetPwForm" :ripple="false">送出</v-btn>
                 </template>
             </com-dialog>
             <!---->
@@ -159,7 +159,7 @@
                                         請輸入您的帳號以確認身份，系統將會傳送一組驗證碼至您的手機以進行重設密碼
                                     </div>
                                     <div>
-                                        <v-label>帳號＊</v-label>
+                                        <v-label>帳號 <span class="red--text">*</span></v-label>
                                         <v-text-field v-model="forgetUid"
                                                       placeholder="請輸入帳號"
                                                       solo
@@ -173,7 +173,7 @@
                             </v-card>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn @click="checkForgetUid(next)">下一步</v-btn>
+                                <v-btn @click="checkForgetUid(next)" :ripple="false">下一步</v-btn>
                             </v-card-actions>
                         </template>
                         <template v-slot:step-2="{next}">
@@ -182,7 +182,7 @@
                                     請輸入６位數驗證碼以完成身份確認（{{forgetAuthenticationSec}}s）
                                 </div>
                                 <div>
-                                    <v-label>驗證碼＊</v-label>
+                                    <v-label>驗證碼 <span class="red--text">*</span></v-label>
                                     <v-text-field v-model="forgetVerificationCode"
                                                   placeholder="請輸入驗證碼"
                                                   maxlength="6"
@@ -193,7 +193,7 @@
                                 </div>
                                 <div class="error-message">{{forgetVerificationCodeMessage}}</div>
                                 <div>
-                                    <v-btn icon @click="forgetResendVerificationCode" ref="forgetResendBtn" :class="forgetSending ? 'disabled' : ''">
+                                    <v-btn icon @click="forgetResendVerificationCode" ref="forgetResendBtn" :class="forgetSending ? 'disabled' : ''" :ripple="false">
                                         <v-icon>mdi-reload</v-icon>
                                     </v-btn>
                                     <span class="resend-message" :class="forgetSending ? 'disabled' : ''" ref="forgetResendMessage" @click="forgetResendVerificationCode">重新傳送驗證碼（{{forgetVerificationCodeSec}}s）</span>
@@ -201,7 +201,7 @@
                             </v-card>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn @click="checkForgetVerificationCode(next)">下一步</v-btn>
+                                <v-btn @click="checkForgetVerificationCode(next)" :ripple="false">下一步</v-btn>
                             </v-card-actions>
                         </template>
                         <template v-slot:step-3="{next}">
@@ -211,7 +211,7 @@
                                         請重新輸入8位以上包含半形英文+數字作為新密碼
                                     </div>
                                     <div>
-                                        <v-label>新密碼＊</v-label>
+                                        <v-label>新密碼 <span class="red--text">*</span></v-label>
                                         <v-text-field v-model="forgetNewUpd"
                                                       placeholder="請輸入新密碼"
                                                       solo
@@ -224,9 +224,8 @@
                                                       autocomplete="off"></v-text-field>
                                     </div>
                                     <div>
-                                        <v-label>確認新密碼＊</v-label>
+                                        <v-label>確認新密碼 <span class="red--text">*</span></v-label>
                                         <v-text-field v-model="forgetConfirmNewUpd"
-                                                      label="確認新密碼＊"
                                                       placeholder="請再次輸入新密碼"
                                                       solo
                                                       ref="forgetConfirmNewUpd"
@@ -241,7 +240,7 @@
                             </v-card>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn @click="checkForgetResetPw(next)">送出</v-btn>
+                                <v-btn @click="checkForgetResetPw(next)" :ripple="false">送出</v-btn>
                             </v-card-actions>
                         </template>
                     </com-steps>
@@ -862,7 +861,7 @@
     }
 
     .rectangle .v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
-        background: var(--bk_4) 0% 0% no-repeat padding-box !important;
+        background: var(--v-primary-base) 0% 0% no-repeat padding-box !important;
         border-radius: 8px;
         font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-noto-sans-t-chinese);
         letter-spacing: var(--unnamed-character-spacing-0);
