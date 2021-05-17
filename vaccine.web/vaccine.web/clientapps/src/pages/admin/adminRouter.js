@@ -6,6 +6,9 @@ import content_registration from 'components/admin/contents/registration_content
 import content_registed from 'components/admin/contents/registed_content.vue'
 import content_audit from 'components/admin/contents/audit_content.vue'
 
+
+
+
 export default new VueRouter({
     routes: [
         { name: 'audit', path: '/audit', component: content_audit },

@@ -28,7 +28,7 @@
                                                   :items="getVaccines"
                                                   item-text="name"
                                                   item-value="name"
-                                                  label="所有疫苗類型"
+                                                  placeholder="所有疫苗類型"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
                                                   dense
@@ -43,7 +43,7 @@
                                                   :items="getDistricts"
                                                   item-text="name"
                                                   item-value="name"
-                                                  label="全部行政區"
+                                                  placeholder="全部行政區"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
                                                   dense
@@ -59,7 +59,7 @@
                                                   :items="getVillages"
                                                   item-text="name"
                                                   item-value="name"
-                                                  label="全部村里"
+                                                  placeholder="全部村里"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
                                                   dense
@@ -74,7 +74,7 @@
                                                   :items="getInstitutions"
                                                   item-text="name"
                                                   item-value="name"
-                                                  label="全部醫療院所"
+                                                  placeholder="全部醫療院所"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
                                                   dense
@@ -85,7 +85,7 @@
                                         </v-select>
                                     </v-col>
                                     <v-col cols="2">
-                                        <v-text-field v-model="keyWord" label="標題關鍵字" outlined dense clearable></v-text-field>
+                                        <v-text-field v-model="keyWord" placeholder="標題關鍵字" outlined dense clearable></v-text-field>
                                     </v-col>
                                     <v-btn icon color="#626781" style="top:5px;" :ripple="false"
                                            @click="getRegistForm(1)">

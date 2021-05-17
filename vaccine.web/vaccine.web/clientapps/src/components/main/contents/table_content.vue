@@ -25,7 +25,7 @@
                                               :items="options"
                                               item-text="state"
                                               item-value="state"
-                                              label="所有疫苗類型"
+                                              placeholder="所有疫苗類型"
                                               :menu-props="{ bottom: true, offsetY: true }"
                                               outlined
                                               dense
@@ -35,7 +35,7 @@
                                     </v-select>
                                 </v-col>
                                 <v-col cols="6">
-                                    <v-text-field label="人員姓名/帳號" outlined dense></v-text-field>
+                                    <v-text-field placeholder="人員姓名/帳號" outlined dense></v-text-field>
                                 </v-col>
                                 <v-btn icon color="#626781" style="top:5px;">
                                     <v-icon>fas fa-search</v-icon>

@@ -6,10 +6,12 @@ import content_confirm from 'components/main/contents/confirm_content.vue'
 import content_loading from 'components/main/contents/loading_content.vue'
 import content_steps from 'components/main/contents/steps_content.vue'
 import content_table from 'components/main/contents/table_content.vue'
+import content_form from 'components/main/contents/form_content.vue'
 
 
 export default new VueRouter({
-    routes: [
+    routes: [       
+        { name: 'form', path: '/compoments/form', component: content_form },
         { name: 'table', path: '/compoments/table', component: content_table },
         { name: 'steps', path: '/compoments/steps', component: content_steps },
         { name: 'confirm', path: '/compoments/confirm', component: content_confirm },

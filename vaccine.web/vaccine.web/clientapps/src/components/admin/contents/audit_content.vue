@@ -24,7 +24,7 @@
                                                   :items="getTypes"
                                                   item-text="name"
                                                   item-value="name"
-                                                  label="全部報表類型"
+                                                  placeholder="全部報表類型"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
                                                   dense
@@ -35,7 +35,7 @@
                                         </v-select>
                                     </v-col>
                                     <v-col cols="7">
-                                        <v-text-field v-model="keyWord" label="使用者/所屬單位/檔名關鍵字" outlined dense clearable></v-text-field>
+                                        <v-text-field v-model="keyWord" placeholder="使用者/所屬單位/檔名關鍵字" outlined dense clearable></v-text-field>
                                     </v-col>
                                     <v-btn icon color="#626781" style="top:5px;" :ripple="false"
                                            @click="getAudit(1)">
