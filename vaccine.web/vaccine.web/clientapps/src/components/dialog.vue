@@ -7,7 +7,7 @@
             <div class="dialog-content">
                 <slot name="content" :close="close"></slot>
             </div>
-            <v-card-actions>
+            <v-card-actions v-if="$slots['action']!=null">
                 <slot name="action" :close="close"></slot>
             </v-card-actions>
         </v-card>
