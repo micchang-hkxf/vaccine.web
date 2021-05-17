@@ -137,7 +137,7 @@
                 unitName: 'XX單位2',
                 userType: 2,
                 zones: ['2', '3'],
-                isEnable: 'true',
+                isEnable: 'false',
             },
             {
                 //checked: false,

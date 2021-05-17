@@ -10,9 +10,16 @@
             <div id="app" class="table-list">
                 <com-table ref-key="table" :headers="headers" :items="items" :total-count="totalCount" disabled-prop="disabled"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect">
-                    <template v-slot:item.quota>
-                        <div>45/<span style="color:dimgrey">60</span></div>
+                    <template v-slot:item.isEnable="items">
+                        <div>{{   items.item.isEnable=='true' ? "啟用" : "停用" }}</div>
                     </template>
+
+
+                    <template v-slot:item.area="items">
+                        <div>{{  Array.isArray(items.item.zones) ?  items.item.zones.join(",") : items.item.zones }}</div>
+                    </template>
+                   
+
                     <template v-slot:search-bar>
                         <v-row>
                             <v-col class="d-flex" cols="12" md="6" lg="6" sm="6" xs="6">
@@ -52,7 +59,7 @@
                                           class="search-filter"
                                           return-object>
                                 </v-select>
-                                <v-text-field  class="w03" solo label='人員姓名/編號' v-model="selectUser"></v-text-field>
+                                <v-text-field class="w03" label='人員姓名/編號' v-model="selectUser" outlined></v-text-field>
 
                                 <v-btn icon color="#626781" style="top:10px" @click.stop="search()">
                                     <v-icon>fas fa-search</v-icon>
@@ -66,10 +73,10 @@
 
                     <template v-slot:toolbar-action={}>
                         <!--<v-checkbox :ripple="false" hide-details @click="switchSelect"></v-checkbox>
-                <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
-                    <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
-                </v-btn>
-                -->
+        <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
+            <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
+        </v-btn>
+        -->
                         <v-spacer></v-spacer>
 
                         <v-menu bottom right offset-y>
@@ -147,17 +154,45 @@
                 <template v-slot:content>
                     <v-form v-model="valid" ref="form">
                         <v-label><span class="star">姓名</span></v-label>
-                        <v-text-field outlined class="w01" v-model="uName"></v-text-field>
+                        <v-text-field outlined placeholder="請輸入姓名" v-model="uName"></v-text-field>
                         <v-label><span class="star">帳號</span></v-label>
-                        <v-text-field outlined class="w02" v-model="acc" v-bind:readonly="isReadOnly"></v-text-field>
-                        <v-label><span class="star">email</span></v-label>
-                        <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>
+                        <v-text-field outlined class="w02" placeholder="請輸入帳號" v-model="acc" v-bind:readonly="isReadOnly"></v-text-field>
+                        <!--<v-label><span class="star">email</span></v-label>
+    <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>-->
                         <v-label><span class="star">手機</span></v-label>
-                        <v-text-field outlined class="w02" type="number" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
+                        <v-text-field outlined class="w02" placeholder="請輸入手機號碼" type="number" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
                         <v-label><span class="star">再次確認手機</span></v-label>
-                        <v-text-field outlined class="w02" type="number" v-model="mbNo2" :rules="[rules.mbNo.regex]"></v-text-field>
+                        <v-text-field outlined class="w02" placeholder="再次輸入手機號碼" type="number" v-model="mbNo2" :rules="[rules.mbNo.regex]"></v-text-field>
                         <v-label><span class="star">服務單位</span></v-label>
-                        <v-text-field outlined class="w02" v-model="unitName"></v-text-field>
+                        <v-text-field outlined class="w01" placeholder="請輸入單位名稱" v-model="unitName"></v-text-field>
+                        <v-label><span class="star">角色設定</span></v-label>
+                        <v-select v-model="setRole"
+                                  :items="getRoleItems"
+                                  item-text="state"
+                                  item-value="id"
+                                  :menu-props="{ bottom: true, offsetY: true }"
+                                  outlined
+                                  clearable
+                                  required
+                                  :rules="rules.select"
+                                  style="margin-right: 10px;min-width:150px"
+                                  class="search-filter w01"
+                                  return-object>
+                        </v-select>
+                        <v-label><span class="star">管理區域</span></v-label>
+                        <v-select v-model="setArea"
+                                  :items="getAreaItems"
+                                  item-text="state"
+                                  item-value="id"
+                                  :menu-props="{ bottom: true, offsetY: true }"
+                                  outlined
+                                  clearable
+                                  required
+                                  :rules="rules.select2"
+                                  style="margin-right: 10px;min-width:150px"
+                                  class="search-filter w01"
+                                  return-object>
+                        </v-select>
                         <v-text-field type="hidden" v-model="editID"></v-text-field>
                     </v-form>
                 </template>
@@ -212,7 +247,7 @@
     .users-list .table-list {
         background: var(--w) 0% 0% no-repeat padding-box !important;
         background: #FFFFFF 0% 0% no-repeat padding-box !important;
-        border: 1px solid #3642501A !important;
+       
         opacity: 1 !important;
         margin: 24px !important;
     }
@@ -227,18 +262,19 @@
         content: "*";
     }
     .users-list .w02 {
-        width: 600px;
+        /*width: 600px;*/
     }
     .users-list .w03 .v-input__control {
-        min-width: 200px !important;
+        min-width: 170px !important;
         min-height: 53px !important;
     }
-   
-   
     .users-list .v-list-item__title{
         color:black;
     }
-
+    .users-list .d-flex {
+        padding: 20px 00px 0px 0px !important;
+    }
+    
 </style>
 
 
@@ -276,13 +312,21 @@
             alertImgSrc: "",
             successIcon: '/alert_success.svg', 
             warningIcon: '/alert_warning.svg',
+            setRole: null,
+            setArea: null,
+
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
                 { text: '姓名', value: 'uName', align: 'start', sortable: true, flex: 6 },
                 { text: '帳號', value: 'acc', sortable: false, flex: 6 },
-                { text: 'email', value: 'email', sortable: false, flex: 6 },
-                { text: '手機', value: 'mbNo', sortable: false, flex: 6 },
-                { text: '服務單位', value: 'unitName', sortable: false, flex: 6 },
+                //{ text: 'email', value: 'email', sortable: false, flex: 6 },
+                { text: '角色', value: 'userType', sortable: false, flex: 6},
+                { text: '管轄區域', value: 'area', sortable: false, flex: 6 },
+                { text: '權限狀態', value: 'isEnable', sortable: false, flex: 6},
+                { text: '密碼更改時間', value: 'passwordChangeTime', sortable: false, flex: 6 },
+                { text: '最後存取時間', value: 'modifyTime', sortable: false, flex: 6 },
+                //{ text: '手機', value: 'mbNo', sortable: false, flex: 6 },
+                //{ text: '服務單位', value: 'unitName', sortable: false, flex: 6 },
                 { text: '', value: 'modify', sortable: false },
             ],
             items: [],
@@ -302,21 +346,27 @@
                 },
                 mbNo: {
                     required: v => !!v || '欄位必填.',
-                    regex: v => /^09\d{8}$/.test(v) || '手機號碼格式錯誤'
-                }
+                    regex: v => /^09\d{8}$/.test(v) || '輸入十位半形數字'
+                },
+                select: [(v) => !!v || "請選擇角色"],
+                select2: [(v) => !!v || "請選擇區域"],
             }
         }),
         computed: {
             ...mapGetters('users', ['getTableItems', 'getAreaItems', 'getRoleItems']),     
+      
         },
         props: {
 
         },
-        created: function () {
+        mounted: function(){
+            this.search();
+        },
+        created: {
         },
         methods: {
             ...mapActions('users', ['searchUser', 'changeUser', 'removeUser']),
-
+ 
             editItem(item) {
                 this.formTitle = "修改人員資料";
                 this.$bus.$emit('userform_show', true);
@@ -435,13 +485,18 @@
                     this.$set(this, "alertTitle", '儲存成功');
                     this.$refs.dialogPanel.close();
                 } else if (this.mbNo != this.mbNo2) {
-                    this.$bus.$emit("alert", true);
+                    this.$bus.$emit("alert_show", true);
+                    this.alertImgSrc = this.warningIcon;
                     this.$set(this, "alertTitle", '儲存失敗');
-                    this.$set(this, "alertMessage", '手機輸入不一致');
+                    this.$set(this, "alertMessage", '兩次輸入號碼不一致');
+                    return;
                 } else {
-                    this.$set(this, "alertTitle", '儲存失敗');
-                    this.$set(this, "alertMessage", 'xxxxxxxxxxxx');
+                    //this.$bus.$emit("alert_show", true);
+                    //this.$set(this, "alertTitle", '儲存失敗');
+                    //this.$set(this, "alertMessage", 'xxxxxxxxxxxx');
+                    return;
                 }
+          
                 var comp = this;
                 var setData = {
                     acc: this.acc,
