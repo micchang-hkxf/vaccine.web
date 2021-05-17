@@ -97,11 +97,13 @@
                                                scrollable>
                                     <v-spacer></v-spacer>
                                     <v-btn text
+                                           :ripple="false"
                                            color="primary"
                                            @click="menu = false">
                                         Cancel
                                     </v-btn>
                                     <v-btn text
+                                           :ripple="false"
                                            color="primary"
                                            @click="$refs.menu.save(date)">
                                         OK
@@ -119,14 +121,18 @@
         <template v-slot:action>
 
             <v-spacer></v-spacer>
-            <v-btn @click="cancel">取消</v-btn>
-            <v-btn @click="save">建立報名表</v-btn>
+            <v-btn @click="cancel" outlined :ripple="false"><span style="color:#626781;">取消</span></v-btn>
+            <v-btn color="primary" @click="save" :ripple="false"><span>建立報名表</span></v-btn>
 
         </template>     
     </com-dialog>
 
 </template>
 <style>
+    .v-btn--outlined {
+        border: thin solid rgba(98 ,103, 129 ,0.2) !important;
+    }
+
 </style>
 
 
@@ -150,6 +156,7 @@
             modal: false,
             menu2: false,
             model: {},
+
             //defaultItem: {
             //    regist_title: '',               
             //    regist_type: '',
