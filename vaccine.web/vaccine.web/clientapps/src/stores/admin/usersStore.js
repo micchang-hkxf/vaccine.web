@@ -125,7 +125,7 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['1'],
+                zones: [1],
                 isEnable:'true',
             },
             {
@@ -136,7 +136,7 @@
                 mbNo: '0900000002',
                 unitName: 'XX單位2',
                 userType: 2,
-                zones: ['2', '3'],
+                zones: [2,3],
                 isEnable: 'false',
             },
             {
@@ -147,7 +147,7 @@
                 mbNo: '0900000003',
                 unitName: 'XX單位3',
                 userType: 2,
-                zones: ['3','4' ],
+                zones: [3,4],
                 isEnable: 'true',
             },
             {
@@ -158,7 +158,7 @@
                 mbNo: '0900000004',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['2'],
+                zones: [2],
                 isEnable: 'false',
             },
             {
@@ -169,7 +169,7 @@
                 mbNo: '0900000005',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['2'],
+                zones: [2],
                 isEnable:'true',
             },
             {
@@ -180,7 +180,7 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['3'],
+                zones: [3],
                 isEnable: 'true',
             },
             {
@@ -191,7 +191,7 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['4'],
+                zones: [4],
                 isEnable: 'true',
             },
             {
@@ -202,7 +202,7 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['3'],
+                zones: [3],
                 isEnable: 'true',
             },
             {
@@ -213,7 +213,7 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: [ '3','4'],
+                zones: [3,4],
                 isEnable: 'false',
             },
             {
@@ -224,7 +224,7 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['3', '4'],
+                zones: [3, 4],
                 isEnable: 'false',
             },
             {
@@ -235,7 +235,7 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['2', '4'],
+                zones: [2, 4],
                 isEnable: true,
             },
             {
@@ -246,7 +246,7 @@
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: ['3'],
+                zones: [3],
                 isEnable: true,
             },
         ],

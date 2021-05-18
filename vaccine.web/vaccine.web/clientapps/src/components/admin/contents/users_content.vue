@@ -18,7 +18,7 @@
                     <template v-slot:item.area="items">
                         <div>{{  Array.isArray(items.item.zones) ?  items.item.zones.join(",") : items.item.zones }}</div>
                     </template>
-                   
+
 
                     <template v-slot:search-bar>
                         <v-row>
@@ -28,6 +28,7 @@
                                           item-text="state"
                                           item-value="id"
                                           label="全部角色"
+                                          dense
                                           :menu-props="{ bottom: true, offsetY: true }"
                                           outlined
                                           clearable
@@ -40,6 +41,7 @@
                                           item-text="state"
                                           item-value="id"
                                           label="有/無管轄區域"
+                                          dense
                                           :menu-props="{ bottom: true, offsetY: true }"
                                           outlined
                                           clearable
@@ -52,6 +54,7 @@
                                           item-text="state"
                                           item-value="st"
                                           label="權限啟用/停用"
+                                          dense
                                           :menu-props="{ bottom: true, offsetY: true }"
                                           outlined
                                           clearable
@@ -59,11 +62,18 @@
                                           class="search-filter"
                                           return-object>
                                 </v-select>
-                                <v-text-field class="w03" label='人員姓名/編號' v-model="selectUser" outlined></v-text-field>
+                                <v-text-field class="w03"
+                                              label='人員姓名/編號'
+                                              dense
+                                              v-model.trim="selectUser"
+                                              outlined>
+                                </v-text-field>
 
-                                <v-btn icon color="#626781" style="top:10px" @click.stop="search()">
-                                    <v-icon>fas fa-search</v-icon>
+                                <v-btn color="#626781" icon style="padding-left:2px;top:3px" @click.stop="search()">
+                                    <v-icon size="20">fas fa-search</v-icon>
                                 </v-btn>
+                                <v-file-input accept=".csv" style="display:none" ref="importfile">
+                                </v-file-input>
                             </v-col>
 
                         </v-row>
@@ -73,10 +83,10 @@
 
                     <template v-slot:toolbar-action={}>
                         <!--<v-checkbox :ripple="false" hide-details @click="switchSelect"></v-checkbox>
-        <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
-            <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
-        </v-btn>
-        -->
+                <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
+                    <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
+                </v-btn>
+                -->
                         <v-spacer></v-spacer>
 
                         <v-menu bottom right offset-y>
@@ -147,29 +157,32 @@
                 </com-table>
             </div>
 
-            <com-dialog ref="dialogPanel" ref-key="userform" width="60%">
+            <com-dialog ref="dialogPanel" ref-key="userform" width="40%">
                 <template v-slot:toolbar>
                     {{ formTitle }}
                 </template>
                 <template v-slot:content>
                     <v-form v-model="valid" ref="form">
                         <v-label><span class="star">姓名</span></v-label>
-                        <v-text-field outlined placeholder="請輸入姓名" v-model="uName"></v-text-field>
+                        <v-text-field dense outlined placeholder="請輸入姓名" v-model.trim="uName" :rules="[v => !!v || '必填']"></v-text-field>
                         <v-label><span class="star">帳號</span></v-label>
-                        <v-text-field outlined class="w02" placeholder="請輸入帳號" v-model="acc" v-bind:readonly="isReadOnly"></v-text-field>
+                        <v-text-field dense outlined class="w02" placeholder="請輸入帳號" v-model="acc" v-bind:readonly="isReadOnly" :rules="[v => !!v || '必填']"></v-text-field>
                         <!--<v-label><span class="star">email</span></v-label>
-    <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>-->
+                <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>-->
                         <v-label><span class="star">手機</span></v-label>
-                        <v-text-field outlined class="w02" placeholder="請輸入手機號碼" type="number" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
+                        <v-text-field dense outlined class="w02" placeholder="請輸入手機號碼" type="number" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
                         <v-label><span class="star">再次確認手機</span></v-label>
-                        <v-text-field outlined class="w02" placeholder="再次輸入手機號碼" type="number" v-model="mbNo2" :rules="[rules.mbNo.regex]"></v-text-field>
+                        <v-text-field dense outlined class="w02" placeholder="再次輸入手機號碼" type="number" v-model="mbNo2" :rules="[rules.mbNo.regex]"></v-text-field>
                         <v-label><span class="star">服務單位</span></v-label>
-                        <v-text-field outlined class="w01" placeholder="請輸入單位名稱" v-model="unitName"></v-text-field>
+                        <v-text-field dense outlined class="w01" placeholder="請輸入單位名稱" v-model="unitName" :rules="[v => !!v || '必填']"></v-text-field>
+                        <hr noshade size="1">
+                        <div style="height:20px"></div>
                         <v-label><span class="star">角色設定</span></v-label>
                         <v-select v-model="setRole"
                                   :items="getRoleItems"
                                   item-text="state"
                                   item-value="id"
+                                  dense
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   outlined
                                   clearable
@@ -184,6 +197,7 @@
                                   :items="getAreaItems"
                                   item-text="state"
                                   item-value="id"
+                                  dense
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   outlined
                                   clearable
@@ -197,9 +211,12 @@
                     </v-form>
                 </template>
                 <template v-slot:action="{close}">
-                    <v-btn @click="close">取消</v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn @click="saveform">儲存</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="close" outlined>取消</v-btn>
+                    <v-btn @click="createConfirm" color="primary" style="margin-left:20px">儲存</v-btn>
                 </template>
             </com-dialog>
             <com-confirm ref="alert" ref-key="alert" :right-click="alertClick">
@@ -226,16 +243,30 @@
                 <template v-slot:confirm-text>
                     {{ confirmMessage }}
                 </template>
-                <template v-slot:confirm-left-btn-text>
+                <template outlined v-slot:confirm-left-btn-text>
                     取消
                 </template>
                 <template v-slot:confirm-right-btn-text>
                     確認
                 </template>
-
-
             </com-confirm>
-
+           
+            <com-dialog ref="formSaveConfirmPanel" ref-key="formSaveConfirm" width="40%">
+                <template v-slot:toolbar>
+                    {{  createConfirmMessage }}
+                </template>
+                <template v-slot:content>
+               eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                </template>
+                <template v-slot:action="{close}">
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="newItem" outlined>修改</v-btn>
+                    <v-btn @click="saveform" color="primary" style="margin-left:20px">確定</v-btn>
+                </template>
+            </com-dialog>
         </template>
 
 
@@ -264,6 +295,7 @@
     .users-list .w02 {
         /*width: 600px;*/
     }
+
     .users-list .w03 .v-input__control {
         min-width: 170px !important;
         min-height: 53px !important;
@@ -274,7 +306,13 @@
     .users-list .d-flex {
         padding: 20px 00px 0px 0px !important;
     }
-    
+    .users-list .dialog-content {
+        padding-bottom: 0px !important;
+    }
+    .users-list .v-text-field {
+        padding-top: 0px !important;
+        margin-top: 0px !important;
+    }
 </style>
 
 
@@ -314,7 +352,7 @@
             warningIcon: '/alert_warning.svg',
             setRole: null,
             setArea: null,
-
+            fromSaveConfirmTitle:"",
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
                 { text: '姓名', value: 'uName', align: 'start', sortable: true, flex: 6 },
@@ -334,6 +372,7 @@
             selectArea: null,
             selectPermission: null,
             selectUser: "",
+            createConfirmMessage:"",
             permissionStatus: [
                 { state: '啟用', st: 'true' },
                 { state: '停用', st: 'false' },
@@ -359,14 +398,14 @@
         props: {
 
         },
-        mounted: function(){
+        mounted(){
             this.search();
         },
-        created: {
+        created() {
         },
         methods: {
             ...mapActions('users', ['searchUser', 'changeUser', 'removeUser']),
- 
+
             editItem(item) {
                 this.formTitle = "修改人員資料";
                 this.$bus.$emit('userform_show', true);
@@ -377,16 +416,19 @@
                 this.$set(this, "email", item.email);
                 this.$set(this, "unitName", item.unitName);
                 this.$set(this, "isReadOnly", true);
-                
+
+                this.setRole = { id: item.userType };
+                this.setArea = { id: item.zones[0] };//multiple todo
+
             },
             stopItem(item) {
                 var comp = this;
                 item.editMode = true;
                 item.isEnable = 'false';
-          
+
                 comp.alertImgSrc = comp.warningIcon;
                 comp.changeUser(item).then(function (result) {
-                    
+
                     if (result) {
                         comp.alertImgSrc = comp.successIcon;
                         comp.$bus.$emit('alert_show', true);
@@ -429,17 +471,17 @@
                     }
                     comp.$bus.$emit('alert_show', true);
                 }).catch(function () {
-                    
+
                     comp.alertMessage = '網站異常，請稍後再試';
                     comp.$bus.$emit('alert_show', true);
                 });
             },
             search() {
                 var filter = {};
-                if (this.selectRole ) {
+                if (this.selectRole) {
                     filter.userType = this.selectRole.id;
                 }
-                if (this.selectArea ) {
+                if (this.selectArea) {
                     filter.zones = this.selectArea.id;
                 }
                 if (this.selectPermission) {
@@ -450,10 +492,11 @@
                 }
                 var comp = this;
                 comp.alertMessage = '';
+
                 comp.searchUser(filter).then(function (result) {
                     switch (result.state) {
                         case 'not_found':
-                            comp.alertMessage = '查無資料';
+                            comp.alertMessage = '';
                             break;
                         default:
                             break;
@@ -470,17 +513,21 @@
                     comp.$bus.$emit('alert_show', true);
                 })
             },
-            newItem () {
+            newItem() {
                 this.$bus.$emit('userform_show', true);
                 this.$set(this, "isReadOnly", false);
+
+                this.setRole = { id: 2 };
+                this.setArea = { id: 1 };
             },
-            importItem () {
-                alert('import');
+            importItem() {
+                this.$refs.importfile.$refs.input.click();
             },
-            close () {
+            close() {
             },
-            saveform() {
-                
+
+            createConfirm() {
+
                 if (this.$refs.form.validate()) {
                     this.$set(this, "alertTitle", '儲存成功');
                     this.$refs.dialogPanel.close();
@@ -496,7 +543,13 @@
                     //this.$set(this, "alertMessage", 'xxxxxxxxxxxx');
                     return;
                 }
-          
+
+                this.confirmImgSrc = this.warningIcon;
+                this.fromSaveConfirmTitle = "確認人員新增資訊";
+                this.$bus.$emit('formSaveConfirm_show', true);
+            },
+            saveform() {
+
                 var comp = this;
                 var setData = {
                     acc: this.acc,
@@ -518,6 +571,7 @@
                         comp.alertMessage = msg + '成功';
                         comp.$set(comp, "alertTitle", msg + '成功');
                         comp.$bus.$emit('userform_show', false);
+                        comp.$bus.$emit('formSaveConfirm_show', false);
                         comp.alertImgSrc = comp.successIcon;
                         comp.search();
                     } else {
