@@ -48,21 +48,21 @@
                         </template>
 
                         <template v-slot:toolbar-action>
-                          <span> 檔案下載紀錄 : </span>
-                            <v-spacer></v-spacer>                           
-                                <template>
-                                    <v-btn v-on="on" color="#626781" :ripple="false" @click.stop="addFile">
-                                        <v-icon left color='white' size="15">fas fa-plus</v-icon>
-                                        <span style="color:white">新增案件抽查表</span>
-                                    </v-btn>
-                                </template>
+                            <span> 檔案下載紀錄 : </span>
+                            <v-spacer></v-spacer>
+                            <template>
+                                <v-btn v-on="on" color="#626781" :ripple="false" @click.stop="addFile">
+                                    <v-icon left color='white' size="15">fas fa-plus</v-icon>
+                                    <span style="color:white">新增案件抽查表</span>
+                                </v-btn>
                             </template>
-                        <template v-slot:item.modify>                          
+                        </template>
+                        <template v-slot:item.modify>
                             <template>
                                 <!--<v-btn dark icon v-on="on" @click.stop="downloadFile">
-                                    <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
-                                    <span style="color:white">下載</span>
-                                </v-btn>-->
+                            <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
+                            <span style="color:white">下載</span>
+                        </v-btn>-->
                                 <v-btn v-on="on" color="#736DB9" @click.stop="downloadFile" :ripple="false">
                                     <v-icon left color='white' size="15">
                                         mdi-arrow-down
@@ -70,11 +70,58 @@
                                     <span style="color:white">下載</span>
                                 </v-btn>
                             </template>
-
                         </template>
                     </com-table>
                 </v-card>
             </div>
+            <!---->
+            <editor ref="auditEditor" ref-key="auditEditor" width="688" :title="title" :action="formAction"></editor>
+            <!---->
+            <com-dialog ref="auditViewer" ref-key="auditViewer" width="688">
+                <template v-slot:toolbar>
+                    {{viewerTitle}}
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click.stop="close" :ripple="false">
+                        <v-icon color="white">fas fa-times</v-icon>
+                    </v-btn>
+                </template>
+                <template v-slot:content>
+                    <div class="confirm-description">請確認抽查條件內容無誤。</div>
+                    <v-divider></v-divider>
+                    <div class="confirm-content">
+                        <v-row>
+                            <v-col cols="12">
+                                <label>查詢時間（民國年）</label>
+                                <div>{{result.model.audit_year}}</div>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12">
+                                <label>查詢時間（月）</label>
+                                <div>{{result.model.audit_month}}</div>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12">
+                                <label>抽查類型</label>
+                                <div>{{result.model.audit_type.state}}</div>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12">
+                                <label>下載事由</label>
+                                <div>{{result.model.audit_reason}}</div>
+                            </v-col>
+                        </v-row>
+                    </div>
+                    <v-divider></v-divider>
+                </template>
+                <template v-slot:action>
+                    <v-spacer></v-spacer>
+                    <v-btn outlined :ripple="false" @click="backToEdit"><span style="color:#626781;">修改</span></v-btn>
+                    <v-btn @click="save" color="primary" :ripple="false">確定</v-btn>
+                </template>
+            </com-dialog>
         </template>
     </app-layout>
 </template>
@@ -116,15 +163,36 @@
         color: rgba(0, 0, 0, 0.6);
         background: rgba(98, 103, 129, 0.06);
     }
+
+    .confirm-description {
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781;
+        text-align: left;
+        opacity: 1;
+        margin-bottom: 10px;
+    }
+
+    .confirm-content {
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781;
+        text-align: left;
+        opacity: 1;
+        margin: 10px 0;
+    }
+
+    .confirm-content label {
+        color: #62678166;
+    }
 </style>
-
-
-
 
 <script>
     import appMenu from 'components/admin/menu';
     import appLayout from 'components/admin/app_layout';
     import comTable from 'components/table'
+    import editor from 'components/admin/forms/audit_editor'
+    import comDialog from 'components/dialog'
     import { mapActions, mapGetters } from 'vuex'
     export default {
         // router,
@@ -146,6 +214,15 @@
                 { text: '下載事由', value: 'download', sortable: false, flex: 6 },
                 { text: '操作', value: 'modify', sortable: false, flex: 6 },
             ],
+            title: '',
+            model: {
+                audit_year: '',
+                audit_month: '',
+                audit_type: '',
+                audit_reason: ''
+            },
+            result: {},
+            viewerTitle: '',
         }),
         computed: {
             ...mapGetters('audit', ['getTypes']),
@@ -167,41 +244,64 @@
             var page = 1;
             this.getAudit(page);
         },
-    methods: {
-        ...mapActions('audit', ['loadAudit']),
-        getAudit: function (page) {
-            var params = {
-                type: this.selectType,
-                keyWord: this.keyWord,
-                pageSize: this.itemsPerPage,
-                page: page,
-            };
-            this.loadAudit(params).then((r) => {
-                this.totalCount = r.totalCount;
-                this.items.splice(0);
-                r.datas.forEach((x) => this.items.push(x));
-            }).catch((e) => {
-                console.log(e);
+        methods: {
+            ...mapActions('audit', ['loadAudit']),
+            getAudit: function (page) {
+                var params = {
+                    type: this.selectType,
+                    keyWord: this.keyWord,
+                    pageSize: this.itemsPerPage,
+                    page: page,
+                };
+                this.loadAudit(params).then((r) => {
+                    this.totalCount = r.totalCount;
+                    this.items.splice(0);
+                    r.datas.forEach((x) => this.items.push(x));
+                }).catch((e) => {
+                    console.log(e);
 
-            });
-        },
-        changePage: function (pager) {
-            console.log(pager);
-            ///{ page: 2, pageSize: 20}
-            this.getAudit(pager.page);
-          },
-           addFile: function () {
-               console.log('addFile')
+                });
             },
-            manualInput: function () {
-                console.log('manualInput')
+            changePage: function (pager) {
+                console.log(pager);
+                ///{ page: 2, pageSize: 20}
+                this.getAudit(pager.page);
+            },
+            addFile: function () {
+                this.title = '新增戶籍資料案件抽查表';
+                this.viewerTitle = '確認抽查條件';
+                this.$refs.auditEditor.open();
             },
             downloadFile: function () {
                 console.log('downloadFile')
+            },
+            formAction: function (result) {
+                Object.assign(this.result, result);
+                switch (result.action) {
+                    case 'save':
+                        this.$refs.auditViewer.open();
+                        break;
+
+                    case 'cancel':
+                        console.log('cancel', result)
+                        break;
+                }
+            },
+            close: function () {
+                this.$refs.auditViewer.close();
+                this.$refs.auditEditor.cancel();
+            },
+            save: function () {
+                console.log('result', this.result);
+                this.close();
+            },
+            backToEdit: function () {
+                this.$refs.auditViewer.close();
+                this.$refs.auditEditor.show();
             }
         },
         components: {
-            appLayout, appMenu, comTable
+            appLayout, appMenu, comTable, editor, comDialog
         }
     };
 </script>
