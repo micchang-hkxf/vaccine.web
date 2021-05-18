@@ -19,6 +19,27 @@ export default {
                 reslove(results);
 
             });
+        },
+        saveAudit: function ({ state }, data) {
+            return new Promise(function (resolve, reject) {
+                // TODO:
+                var result = true; 
+                try {
+                    //data.audit_type.id;
+                    state.desserts.push({
+                        date: new Date().toISOString().substr(0, 16).replace('T', ' ').replace(/-/g, '/'),
+                        name: '袁吉吉',
+                        affiliation: '衛生局',
+                        type: '案件抽查表',
+                        title: data.audit_year + '年' + parseInt(data.audit_month, 10) + '月份－案件抽查表（' + data.audit_type.state + '）',
+                        count: '5000',
+                        download: data.audit_reason,    
+                    });
+                    resolve(result);
+                } catch (e) {
+                    reject(result);
+                }
+            });
         }
     },
     state: {

@@ -74,6 +74,18 @@
                     </com-table>
                 </v-card>
             </div>
+            <!--共用 alert -->
+            <com-confirm ref="alert" ref-key="alert" :right-click="alertClick">
+                <template v-slot:confirm-image>
+                    <v-img src="/alert_warning.svg"></v-img>
+                </template>
+                <template v-slot:confirm-text>
+                    {{alertMessage}}
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    返回
+                </template>
+            </com-confirm>
             <!---->
             <editor ref="auditEditor" ref-key="auditEditor" width="688" :title="title" :action="formAction"></editor>
             <!---->
@@ -193,6 +205,7 @@
     import comTable from 'components/table'
     import editor from 'components/admin/forms/audit_editor'
     import comDialog from 'components/dialog'
+    import comConfirm from 'components/confirm'
     import { mapActions, mapGetters } from 'vuex'
     export default {
         // router,
@@ -223,6 +236,7 @@
             },
             result: {},
             viewerTitle: '',
+            alertMessage: '',
         }),
         computed: {
             ...mapGetters('audit', ['getTypes']),
@@ -245,7 +259,7 @@
             this.getAudit(page);
         },
         methods: {
-            ...mapActions('audit', ['loadAudit']),
+            ...mapActions('audit', ['loadAudit', 'saveAudit']),
             getAudit: function (page) {
                 var params = {
                     type: this.selectType,
@@ -292,16 +306,28 @@
                 this.$refs.auditEditor.cancel();
             },
             save: function () {
-                console.log('result', this.result);
-                this.close();
+                var comp = this;
+                console.log('result', comp.result);
+                comp.saveAudit(comp.result.model)
+                    .then(function (result) {
+                        console.log(result);
+                        comp.close();
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
             },
             backToEdit: function () {
                 this.$refs.auditViewer.close();
                 this.$refs.auditEditor.show();
+            },
+            alertClick: function () {
+                this.$bus.$emit('alert_show', false);
             }
         },
         components: {
-            appLayout, appMenu, comTable, editor, comDialog
+            appLayout, appMenu, comTable, editor, comDialog, comConfirm
         }
     };
 </script>
