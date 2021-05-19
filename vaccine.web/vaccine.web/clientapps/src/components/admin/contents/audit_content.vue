@@ -288,6 +288,7 @@
             },
             downloadFile: function (item) {
                 var comp = this;
+                comp.alertMessage = '';
                 comp.downloadAudit(item)
                     .then(function (result) {
                         switch (result.state) {
