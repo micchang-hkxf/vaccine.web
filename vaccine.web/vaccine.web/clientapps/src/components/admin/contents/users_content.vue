@@ -7,6 +7,7 @@
             人員管理
         </template>
         <template v-slot:app-content>
+            <com-loading ref-key="type1"></com-loading>
             <div id="app" class="table-list">
                 <com-table ref-key="table" :headers="headers" :items="items" :total-count="totalCount" disabled-prop="disabled"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect">
@@ -124,7 +125,7 @@
                     <template v-slot:item.modify="{item}">
                         <v-menu bottom right offset-y>
                             <template v-slot:activator="{ on }">
-                                <v-btn dark icon v-on="on" @click.stop="">
+                                <v-btn dark icon v-on="on" @click.stop="showOptMenu(item)">
                                     <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
                                 </v-btn>
                             </template>
@@ -140,7 +141,7 @@
                                     <v-list-item-action-text>
                                         <v-btn icon dense>
                                             <v-icon small>far fa-eye-slash</v-icon>
-                                        </v-btn>停用
+                                        </v-btn>{{ changeStatus }}
                                     </v-list-item-action-text>
                                 </v-list-item>
                                 <v-list-item @click.stop="removeItemConfirm(item)">
@@ -233,6 +234,18 @@
                     確認
                 </template>
             </com-confirm>
+            <com-confirm ref="duplicatAlert" ref-key="duplicatAlert" :right-click="backClick">
+                <template v-slot:confirm-image>
+                    <v-img v-bind:src="alertImgSrc"></v-img>
+                </template>
+                <template v-slot:confirm-text>
+                    此帳號已註冊，
+                    請重新輸入
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    返回
+                </template>
+            </com-confirm>
             <com-confirm ref-key="confirm" :left-click="confirmLeftClick" :right-click="confirmRightClick">
                 <template v-slot:confirm-image>
                     <v-img v-bind:src="confirmImgSrc"></v-img>
@@ -250,25 +263,39 @@
                     確認
                 </template>
             </com-confirm>
-           
+
             <com-dialog ref="formSaveConfirmPanel" ref-key="formSaveConfirm" width="40%">
                 <template v-slot:toolbar>
-                    {{  createConfirmMessage }}
+                    {{ fromSaveConfirmTitle }}
                 </template>
                 <template v-slot:content>
-               eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                    {{  fromSaveConfirmMessage }}
+                    <hr noshade size="1">
+                    <div class="showname">姓名</div>
+                    {{ uName }}
+                    <div class="showname">帳號</div>
+                    {{ acc }}
+                    <div class="showname">手機</div>
+                    {{ mbNo }}
+                    <div class="showname">服務單位</div>
+                    {{ unitName }}
+                    <div class="showname">角色設定</div>
+                    {{ setRoleState }}
+                    <div class="showname">管理區域 </div>
+                    {{ setAreaState }}
+
                 </template>
                 <template v-slot:action="{close}">
                     <v-spacer></v-spacer>
                     <v-spacer></v-spacer>
                     <v-spacer></v-spacer>
                     <v-spacer></v-spacer>
-                    <v-btn @click="newItem" outlined>修改</v-btn>
+                    <v-btn @click="close" outlined>修改</v-btn>
                     <v-btn @click="saveform" color="primary" style="margin-left:20px">確定</v-btn>
                 </template>
             </com-dialog>
         </template>
-
+        
 
     </app-layout>
 </template>
@@ -313,6 +340,10 @@
         padding-top: 0px !important;
         margin-top: 0px !important;
     }
+    .users-list .showname {
+        color: #62678166 !important;
+        padding-top: 15px !important;
+    }
 </style>
 
 
@@ -323,6 +354,7 @@
     import comDialog from 'components/dialog'
     import { mapGetters, mapActions } from 'vuex'
     import comConfirm from 'components/confirm'
+    import comLoading from 'components/loading'
     //import usersStore  from 'stores/admin/usersStore'
 
     export default {
@@ -352,7 +384,12 @@
             warningIcon: '/alert_warning.svg',
             setRole: null,
             setArea: null,
-            fromSaveConfirmTitle:"",
+            setRoleState: "",
+            setAreaState: "",
+            itle: "",
+            fromSaveConfirmMessage: "",
+            fromSaveConfirmTitle: "",
+            changeStatus:null,
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
                 { text: '姓名', value: 'uName', align: 'start', sortable: true, flex: 6 },
@@ -417,14 +454,17 @@
                 this.$set(this, "unitName", item.unitName);
                 this.$set(this, "isReadOnly", true);
 
-                this.setRole = { id: item.userType };
+                this.setRole = { id: item.userType  };
                 this.setArea = { id: item.zones[0] };//multiple todo
+ 
 
+                this.fromSaveConfirmTitle = "確認人員更新資訊";
+                this.fromSaveConfirmMessage = " 請確認內容無誤後點選「確定」完成更新";
             },
             stopItem(item) {
                 var comp = this;
                 item.editMode = true;
-                item.isEnable = 'false';
+                item.isEnable = (item.isEnable == 'true') ? 'false' : 'true';
 
                 comp.alertImgSrc = comp.warningIcon;
                 comp.changeUser(item).then(function (result) {
@@ -432,11 +472,11 @@
                     if (result) {
                         comp.alertImgSrc = comp.successIcon;
                         comp.$bus.$emit('alert_show', true);
-                        comp.alertTitle = '停止成功';
+                        comp.alertTitle = comp.changeStatus+'成功';
                         comp.search();
                     } else {
-                        console.log('停止失敗');
-                        comp.alertTitle = '停止失敗';
+                       
+                        comp.alertTitle = comp.changeStatus+'失敗';
                         this.alertImgSrc = this.alertIcon;
                         comp.$bus.$emit('alert_show', true);
 
@@ -459,15 +499,15 @@
                 comp.alertImgSrc = comp.warningIcon;
                 comp.removeUser(item.acc).then(function (result) {
                     if (result) {
-                        console.log('刪除成功');
-                        comp.alertMessage = '刪除成功';
+                        //console.log('刪除成功');
+                        //comp.alertMessage = '刪除成功';
                         comp.alertTitle = '刪除成功';
                         comp.alertImgSrc = comp.successIcon;
                         comp.search();
                     } else {
-                        console.log('刪除失敗');
+                        //console.log('刪除失敗');
                         comp.alertTitle = '刪除失敗';
-                        comp.alertMessage = '刪除失敗，請稍後再試';
+                        //comp.alertMessage = '刪除失敗，請稍後再試';
                     }
                     comp.$bus.$emit('alert_show', true);
                 }).catch(function () {
@@ -491,12 +531,11 @@
                     filter.uName = this.selectUser;
                 }
                 var comp = this;
-                comp.alertMessage = '';
-
+         
                 comp.searchUser(filter).then(function (result) {
                     switch (result.state) {
                         case 'not_found':
-                            comp.alertMessage = '';
+                            comp.alertTitle = 'not found data';
                             break;
                         default:
                             break;
@@ -504,49 +543,57 @@
                     comp.totalCount = result.totalCount;
                     comp.items = [];
                     result.datas.forEach(f => comp.items.push(f))
-                    if (comp.alertMessage !== '') {
+                    if (comp.alertTitle !== '') {
                         comp.$bus.$emit('alert_show', true);
                         return;
                     }
                 }).catch(function () {
-                    comp.alertMessage = '網站異常，請稍後再試';
+                    comp.alertTitle = '網站異常，請稍後再試';
                     comp.$bus.$emit('alert_show', true);
                 })
             },
             newItem() {
                 this.$bus.$emit('userform_show', true);
                 this.$set(this, "isReadOnly", false);
-
-                this.setRole = { id: 2 };
-                this.setArea = { id: 1 };
+                this.fromSaveConfirmTitle = "確認人員新增資訊";
+                this.fromSaveConfirmMessage = " 請確認內容無誤後點選「確定」完成新增";
+                this.setRole = { id: 2 ,state:"轄區管理員"};
+                this.setArea = { id: 1, state: "A區" };
             },
             importItem() {
                 this.$refs.importfile.$refs.input.click();
             },
             close() {
             },
-
+            backClick() {
+                this.$bus.$emit('duplicatAlert_show', false);
+                this.$bus.$emit('formSaveConfirm_show', false);
+            },
             createConfirm() {
 
                 if (this.$refs.form.validate()) {
-                    this.$set(this, "alertTitle", '儲存成功');
-                    this.$refs.dialogPanel.close();
+                    //this.$set(this, "alertTitle", '儲存成功');
+                    console.log("儲存成功");
+                    //this.$refs.dialogPanel.close();
                 } else if (this.mbNo != this.mbNo2) {
                     this.$bus.$emit("alert_show", true);
                     this.alertImgSrc = this.warningIcon;
-                    this.$set(this, "alertTitle", '儲存失敗');
-                    this.$set(this, "alertMessage", '兩次輸入號碼不一致');
+                    this.$set(this, "alertTitle", '兩次輸入號碼不一致');
+                    //this.$set(this, "alertMessage", '兩次輸入號碼不一致');
                     return;
                 } else {
                     //this.$bus.$emit("alert_show", true);
                     //this.$set(this, "alertTitle", '儲存失敗');
-                    //this.$set(this, "alertMessage", 'xxxxxxxxxxxx');
+    
                     return;
                 }
 
                 this.confirmImgSrc = this.warningIcon;
-                this.fromSaveConfirmTitle = "確認人員新增資訊";
+   
                 this.$bus.$emit('formSaveConfirm_show', true);
+                this.setRoleState = this.setRole.state;
+                this.setAreaState = this.setArea.state;
+                
             },
             saveform() {
 
@@ -557,32 +604,34 @@
                     email: this.email,
                     mbNo: this.mbNo,
                     unitName: this.unitName,
-                    userType: 2,//todo
-                    zones: ['2', '3'], //todo
+                    userType: this.setRole.id,
+                    //zones: [this.setArea], //multi todo
+                    zones: [this.setArea.id], 
                     isEnable: 'true',//todo
                     stopit: false,
-                    eidtMode: this.isReadOnly,
+                    editMode: this.isReadOnly,
                 };
-                var msg = (this.isReadOnly) ? "更新" : "新增";
+                var msg = (this.isReadOnly) ? "更新" : "建立";
                 comp.alertImgSrc = comp.warningIcon;
+  
+                comp.$bus.$emit('type1_show3', "資料處理中...");
+                var saveMsg = comp.uName + "\n" + comp.acc + "\n" + comp.setRole.state+"\n";
                 comp.changeUser(setData).then(function (result) {
                     if (result) {
-                        console.log('成功');
-                        comp.alertMessage = msg + '成功';
-                        comp.$set(comp, "alertTitle", msg + '成功');
+
+                        comp.$set(comp, "alertTitle", saveMsg+'人員' + msg + '成功');
                         comp.$bus.$emit('userform_show', false);
                         comp.$bus.$emit('formSaveConfirm_show', false);
                         comp.alertImgSrc = comp.successIcon;
                         comp.search();
                     } else {
-                        console.log('失敗');
-                        comp.$set(comp, "alertTitle", msg+'失敗');
-                        comp.alertMessage = msg+'失敗，請稍後再試';
+                        comp.$bus.$emit('duplicatAlert_show', true);
                     }
-                    comp.$bus.$emit('alert_show', true);
+                    comp.$bus.$emit('type1_hide3');
+                   
                 }).catch(function () {
-                    comp.$set(comp, "alertTitle", '操作失敗');
-                    comp.alertMessage = '網站異常，請稍後再試';
+                    comp.$bus.$emit('type1_hide3');
+                    comp.$set(comp, "alertTitle", '網站異常，請稍後再試');
                     comp.$bus.$emit('alert_show', true);
                 });
 
@@ -600,10 +649,14 @@
             clear() {
                 this.$refs.form.reset()
             },
+            showOptMenu(item) {
+                this.$set(this, "changeStatus", (item.isEnable=='true') ? "停用" : "啟用");
+
+            },
           
         },
         components: {
-            appLayout, appMenu, comTable, comDialog, comConfirm
+            appLayout, appMenu, comTable, comDialog, comConfirm, comLoading
         }
     }
 

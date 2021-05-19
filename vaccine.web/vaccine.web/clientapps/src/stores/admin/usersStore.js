@@ -47,10 +47,11 @@
             return new Promise(function (resolve, reject) {
                 var result = true;//todo
                 try {
-      
+                    var index = state.items.findIndex(f => f.acc == data.acc);
+                   
                     if (data.editMode) {
-                        var index = state.items.findIndex(f => f.acc == data.acc);
-              
+                 
+                       
                         state.items[index] = {
                             acc: data.acc,
                             uName: data.uName,
@@ -64,7 +65,11 @@
             
                         console.log(state.items[index]);
                     } else { 
-                        state.items.push(data);
+                        if (index == -1) {
+                            state.items.push(data);
+                        } else {
+                            result = false;
+                        }
                     }
          
                     resolve(result);
