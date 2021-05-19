@@ -19,6 +19,47 @@ export default {
                 reslove(results);
 
             });
+        },
+        saveAudit: function ({ state }, data) {
+            return new Promise(function (resolve, reject) {
+                // TODO:
+                var result = true; 
+                try {
+                    //data.audit_type.id;
+                    state.desserts.push({
+                        id: 6,
+                        date: new Date().toISOString().substr(0, 16).replace('T', ' ').replace(/-/g, '/'),
+                        name: '袁吉吉',
+                        affiliation: '衛生局',
+                        type: '案件抽查表',
+                        title: data.audit_year + '年' + parseInt(data.audit_month, 10) + '月份－案件抽查表（' + data.audit_type.state + '）',
+                        count: '5000',
+                        download: data.audit_reason,    
+                    });
+                    resolve(result);
+                } catch (e) {
+                    reject(result);
+                }
+            });
+        },
+        downloadAudit: function ({ state }, data) {
+            return new Promise(function (resolve, reject) {
+                // TODO:
+                var result = { id: data.id, state: '' };
+                try {
+                    var exist = state.desserts.find(f => f.id == data.id);
+
+                    if (!exist) {
+                        result.state = 'not found';
+                        resolve(result);
+                        return;
+                    }
+
+                    resolve(result);
+                } catch (e) {
+                    reject(result);
+                }
+            });
         }
     },
     state: {
@@ -26,6 +67,7 @@ export default {
        
         desserts: [
             {
+                id: 1,
                 date: '2021/04/01 09:30',
                 name: '袁吉吉',
                 affiliation:'衛生局',
@@ -35,6 +77,7 @@ export default {
                 download: '（..事由文字..）',                      
             },
             {
+                id: 2,
                 date: '2021/04/01 09:30',
                 name: '廖廷廷',
                 affiliation: '健康中心',
@@ -44,6 +87,7 @@ export default {
                 download: '（..事由文字..）',
             },
             {
+                id: 3,
                 date: '2021/04/01 09:30',
                 name: '劉任任',
                 affiliation: '健康中心',
@@ -53,6 +97,7 @@ export default {
                 download: '（..事由文字..）', 
             },
             {
+                id: 4,
                 date: '2021/04/01 09:30',
                 name: '柯安安',
                 affiliation: 'XXXX單位',
@@ -62,6 +107,7 @@ export default {
                 download: '（..事由文字..）',   
             },
             {
+                id: 5,
                 date: '2021/04/01 09:30',
                 name: '許動動',
                 affiliation: 'XXXX單位',
