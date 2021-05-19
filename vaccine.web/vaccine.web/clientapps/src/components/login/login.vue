@@ -334,7 +334,8 @@
                 'checkResetPw',
                 'checkForgetPdUid',
                 'checkForgetPdVerificationCode',
-                'modifyPw'
+                'modifyPw',
+                'logout'
             ]),
             sendLoginForm: function () {
                 var comp = this;
@@ -443,7 +444,29 @@
                 this.$bus.$emit('authentication_dialog_show', false);
             },
             reload: function () {
-                location.reload();
+                var comp = this;
+                comp.alertMessage = '';
+                comp.logout({ uid: comp.uid })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '帳號不存在';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        location.reload();
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
             },
             checkAuthenticationVerificationCode: function () {
                 var comp = this;
@@ -510,8 +533,6 @@
                 if (this.alertPwState === 'password is about to expire') {
                     location.replace('/admin');
                 } else {
-                    // TODO: 登出 Delete api/User/Login
-
                     this.reload();
                 }
             },
@@ -571,9 +592,7 @@
             },
             alertResetPwClick: function () {
                 if (this.alertResetPwResetPwState === 'pass') {
-                    // TODO: 登出 Delete api/User/Login
-
-                    location.reload();
+                    this.reload();
                 } else {
                     location.reload();
                 }
