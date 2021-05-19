@@ -57,13 +57,13 @@
                                 </v-btn>
                             </template>
                         </template>
-                        <template v-slot:item.modify>
+                        <template v-slot:item.modify="{item}">
                             <template>
                                 <!--<v-btn dark icon v-on="on" @click.stop="downloadFile">
                             <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
                             <span style="color:white">下載</span>
                         </v-btn>-->
-                                <v-btn v-on="on" color="#736DB9" @click.stop="downloadFile" :ripple="false">
+                                <v-btn v-on="on" color="#736DB9" @click.stop="downloadFile(item)" :ripple="false">
                                     <v-icon left color='white' size="15">
                                         mdi-arrow-down
                                     </v-icon>
@@ -259,7 +259,7 @@
             this.getAudit(page);
         },
         methods: {
-            ...mapActions('audit', ['loadAudit', 'saveAudit']),
+            ...mapActions('audit', ['loadAudit', 'saveAudit', 'downloadAudit']),
             getAudit: function (page) {
                 var params = {
                     type: this.selectType,
@@ -286,8 +286,29 @@
                 this.viewerTitle = '確認抽查條件';
                 this.$refs.auditEditor.open();
             },
-            downloadFile: function () {
-                console.log('downloadFile')
+            downloadFile: function (item) {
+                var comp = this;
+                comp.downloadAudit(item)
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '紀錄不存在';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        console.log(result);
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
             },
             formAction: function (result) {
                 Object.assign(this.result, result);
