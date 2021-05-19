@@ -807,7 +807,7 @@
         margin-left: 180px;
         width: 120px;
         height: 120px;
-        background: var(--pri) -25px -15px no-repeat padding-box url("/login/login_logo.svg");
+        background: transparent url('/login/login_logo.svg') 0% 0% no-repeat padding-box;
         opacity: 1;
     }
 
@@ -932,7 +932,16 @@
     .v-dialog .mdi-reload::before {
         width: 23px;
         height: 19px;
-        margin-top: -8px;
+        margin-top: -14px;
+        transform: scale(.7);
+    }
+
+    .v-dialog .mdi-reload::before {
+        content: url('/login/login_reverse.svg');
+    }
+
+    .v-dialog .v-btn.v-btn--icon.disabled .mdi-reload::before {
+        content: url('/login/login_reverse_disabled.svg');
     }
 
     .v-dialog hr {
