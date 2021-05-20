@@ -7,7 +7,7 @@
             人員管理
         </template>
         <template v-slot:app-content>
-            <div id="app" class="table-list">
+            <div class="table-list">
                 <com-table ref-key="table" :headers="headers" :items="items" :total-count="totalCount" disabled-prop="disabled"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect">
                     <template v-slot:item.quota>

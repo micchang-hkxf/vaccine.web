@@ -1,5 +1,5 @@
 ﻿{
-  "apiRoot": "https://tpwv.gov.taipei:8080/",
+  "apiRoot": "https://vaccine.gov.taipei:8080/",
   "configEnabled": "Releasee整合組態設定已啟用"
 
 }

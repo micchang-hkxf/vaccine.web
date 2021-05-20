@@ -15,10 +15,10 @@
         // router,
         data: () => ({
             menus: [
-                { text: "報名表管理", active: false, key: "registration", target: "#/registration" },
-                { text: "bbb", active: false, key: "parameters", target: null },
-                { text: "稽核", active: false, key: "audit", target: "#/audit" },
-                { text: "報名查詢", active: false, key: "registed", target: "#/registed" },
+                { text: "報名表管理", active: false, key: "registration", target: null },
+                { text: "人員管理", active: false, key: "users", target: null },
+                { text: "稽核管理", active: false, key: "audit", target: null},
+                { text: "報名查詢", active: false, key: "registed", target: null },
             ],
             currentContent: { text: "我的會議", active: true, key: "meetings" },
 
@@ -44,6 +44,7 @@
                 }
                 window.location.hash = "";
                 this.currentContent = menu;
+                this.$router.push({ name: menu.key });
             },
             menuItemActive: function (menu) {
                 return {

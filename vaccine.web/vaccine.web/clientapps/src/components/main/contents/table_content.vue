@@ -6,7 +6,7 @@
         <template v-slot:app-content>
             <div id="app">
                 <!--<v-btn @click="show('table')">table</v-btn>-->
-                <com-table ref-key="table" :headers="headers" :items="desserts" :total-count="totalCount" disabled-prop="disabled"
+                <com-table ref-key="table" :headers="headers" :items="computedItems" :total-count="totalCount" disabled-prop="disabled"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect" :change-page="changePage">
                     <template v-slot:item.date="{item}">
                         <div>{{item}}*</div>
@@ -200,7 +200,6 @@
                     registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
                     quota: '425/670',
                     qualified: '423',
-                    disabled:true
                 },
                 {
                     date: '2021/04/03',
@@ -293,6 +292,9 @@
          
         },
         computed: {
+            computedItems: function () {
+                return this.desserts.map(m => { return { ...m, disabled: m.date == '2021/04/08' }; });
+            }
         },
         props: {
 
