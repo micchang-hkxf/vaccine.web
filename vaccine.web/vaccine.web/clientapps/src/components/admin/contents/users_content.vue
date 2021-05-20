@@ -631,7 +631,7 @@
                 var msg = (this.isReadOnly) ? "更新" : "建立";
                 comp.alertImgSrc = comp.warningIcon;
   
-                comp.$bus.$emit('type1_show3', "資料處理中...");
+                comp.$bus.$emit('type1_show4', "資料處理中...");
                 var saveMsg = comp.uName + "\n" + comp.acc + "\n" + comp.setRole.state+"\n";
                 comp.changeUser(setData).then(function (result) {
                     if (result) {
@@ -644,10 +644,10 @@
                     } else {
                         comp.$bus.$emit('duplicatAlert_show', true);
                     }
-                    comp.$bus.$emit('type1_hide3');
+                    comp.$bus.$emit('type1_hide4');
                    
                 }).catch(function () {
-                    comp.$bus.$emit('type1_hide3');
+                    comp.$bus.$emit('type1_hide4');
                     comp.$set(comp, "alertTitle", '處理錯誤，請重新嘗試');
                     comp.$bus.$emit('alert_show', true);
                 });
