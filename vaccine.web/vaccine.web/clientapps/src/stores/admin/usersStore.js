@@ -1,48 +1,102 @@
-﻿export default {
+﻿import axios from 'axios';
+export default {
     namespaced: true,
     actions: {
-        searchUser ({ state }, data) {
+       searchUser ({ state }, data) {
             return new Promise(function (resolve, reject) {
+                var datas;
+                axios.get('/testUserList.json')
+                    .then(response => {
+                        datas = response.data;
 
-                var result = {datas:[],totalCount:0,state:null };
-                try {
-                    var exists = state.items;
-                    
-                    if (data.userType) {
-                        exists = exists.filter(f => f.userType == data.userType);
-                    }
-                    if (data.zones) {
-                        var even = (element) => element == data.zones ;
-                        exists = exists.filter(f=>f.zones.some(even));
-                    }
-                    if (data.isEnable) {
-                        exists = exists.filter(f => f.isEnable == data.isEnable);
-                    }
-                    if (data.uName) {
-                        exists = exists.filter(f => (f.uName == data.uName || f.acc == data.uName));
-                    }
+                        var result = { datas: [], totalCount: 0, state: null };
+                        try {
+                            var testmode = false;
+                            var exists = (testmode) ? state.items : datas.data;
 
-                    if (exists.length==0) {
-                        result.state = 'not_found';
-                        resolve(result);
-                        return;
-                    }
-                    if (exists.state === 'network_abnormal') {
-                        result.state = exists.state;
-                        throw result;
-                    }
-                    result.datas = exists;
-        
-                    result.totalCount = exists.length;
-                    result.state = exists.state
-           
-                    resolve(result);
-                } catch (e) {
-                    reject(result);
-                }
+                            if (data.userType) {
+                                exists = exists.filter(f => f.userType == data.userType);
+                            }
+                            if (data.zones) {
+                                var even = (element) => element == data.zones;
+                                exists = exists.filter(f => f.zones.some(even));
+                            }
+                            if (data.isEnable) {
+                                exists = exists.filter(f => f.isEnable == data.isEnable);
+                            }
+                            if (data.uName) {
+                                exists = exists.filter(f => (f.uName == data.uName || f.acc == data.uName));
+                            }
+
+                            if (exists.length == 0) {
+                                result.state = 'not_found';
+                                resolve(result);
+                                return;
+                            }
+                            if (exists.state === 'network_abnormal') {
+                                result.state = exists.state;
+                                throw result;
+                            }
+                            result.datas = exists;
+
+                            result.totalCount = exists.length;
+                            result.state = exists.state
+
+                            resolve(result);
+                        } catch (e) {
+                            reject(result);
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
 
             });
         },
+        //searchUser2({ state }, data) {
+        //    return new Promise(function (resolve, reject) {
+              
+        //        var result = { datas: [], totalCount: 0, state: null };
+        //        try {
+        
+        //            var exists = state.items;
+
+        //            if (data.userType) {
+        //                exists = exists.filter(f => f.userType == data.userType);
+        //            }
+        //            if (data.zones) {
+        //                var even = (element) => element == data.zones;
+        //                exists = exists.filter(f => f.zones.some(even));
+        //            }
+        //            if (data.isEnable) {
+        //                exists = exists.filter(f => f.isEnable == data.isEnable);
+        //            }
+        //            if (data.uName) {
+        //                exists = exists.filter(f => (f.uName == data.uName || f.acc == data.uName));
+        //            }
+
+        //            if (exists.length == 0) {
+        //                result.state = 'not_found';
+        //                resolve(result);
+        //                return;
+        //            }
+        //            if (exists.state === 'network_abnormal') {
+        //                result.state = exists.state;
+        //                throw result;
+        //            }
+        //            result.datas = exists;
+
+        //            result.totalCount = exists.length;
+        //            result.state = exists.state
+
+        //            resolve(result);
+        //        } catch (e) {
+        //            reject(result);
+        //        }
+
+        //    });
+        //},
+
         changeUser ({ state }, data) {
             return new Promise(function (resolve, reject) {
                 var result = true;//todo

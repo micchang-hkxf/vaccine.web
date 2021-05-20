@@ -500,8 +500,8 @@
                     }
 
                 }).catch(function () {
-                    this.alertImgSrc = this.alertIcon;
-                    comp.alertMessage = '處理錯誤，請重新嘗試';
+                    comp.alertImgSrc = comp.alertIcon;
+                    comp.alertMessage = '處理錯誤，請重新嘗試456';
                     comp.$bus.$emit('alert_show', true);
                 });
             },
@@ -530,6 +530,7 @@
                 }).catch(function () {
 
                     comp.alertMessage = '處理錯誤，請重新嘗試';
+                    comp.alertImgSrc = comp.warningIcon;
                     comp.$bus.$emit('alert_show', true);
                 });
             },
@@ -566,6 +567,7 @@
                     }
                 }).catch(function () {
                     comp.alertTitle = '處理錯誤，請重新嘗試';
+                    comp.alertImgSrc = comp.warningIcon;
                     comp.$bus.$emit('alert_show', true);
                 })
             },
