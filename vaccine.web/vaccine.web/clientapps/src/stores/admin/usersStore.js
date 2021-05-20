@@ -260,7 +260,12 @@
         getTableItems: state => state.items,
         getAreaItems: state => state.arealist,
         getRoleItems: state => state.rolelist,
-
+        getRoleListById: state => (id) => {
+            return state.rolelist.find(f => f.id === id)
+        },
+        getAreaListById: state => (id) => {
+            return state.arealist.find(f => f.id === id)
+        }
     },
     mutations: {
       

@@ -220,12 +220,13 @@
                     <v-btn @click="createConfirm" color="primary" style="margin-left:20px">儲存</v-btn>
                 </template>
             </com-dialog>
-            <com-confirm ref="alert" ref-key="alert" :right-click="alertClick">
+            <com-confirm ref="alert"  ref-key="alert" :right-click="alertClick" >
+
                 <template v-slot:confirm-image>
                     <v-img v-bind:src="alertImgSrc"></v-img>
                 </template>
                 <template v-slot:confirm-title>
-                    {{ alertTitle }}
+                    <span class="alertTitle">{{ alertTitle }}</span>
                 </template>
                 <template v-slot:confirm-text>
                     {{ alertMessage }}
@@ -233,8 +234,9 @@
                 <template v-slot:confirm-right-btn-text>
                     確認
                 </template>
+         
             </com-confirm>
-            <com-confirm ref="duplicatAlert" ref-key="duplicatAlert" :right-click="backClick">
+            <com-confirm ref="duplicatAlert"  ref-key="duplicatAlert" :right-click="backClick">
                 <template v-slot:confirm-image>
                     <v-img v-bind:src="alertImgSrc"></v-img>
                 </template>
@@ -344,6 +346,16 @@
         color: #62678166 !important;
         padding-top: 15px !important;
     }
+    /*.users-list .v-btn:not(.v-btn--round).v-size--default {
+        min-width: 200px !important;
+    }
+    .users-list .v-btn:not(.v-btn--round).v-size--large {
+        min-width: 2000px !important;
+    }*/
+    .userlist .alertTitle{
+        font-size:8px;
+
+    }
 </style>
 
 
@@ -429,7 +441,7 @@
             }
         }),
         computed: {
-            ...mapGetters('users', ['getTableItems', 'getAreaItems', 'getRoleItems']),     
+            ...mapGetters('users', ['getTableItems', 'getAreaItems', 'getRoleItems', 'getRoleListById', 'getAreaListById']),     
       
         },
         props: {
@@ -454,10 +466,15 @@
                 this.$set(this, "unitName", item.unitName);
                 this.$set(this, "isReadOnly", true);
 
-                this.setRole = { id: item.userType  };
-                this.setArea = { id: item.zones[0] };//multiple todo
- 
-
+                var r = this.$store.getters["users/getRoleListById"](item.userType).state;
+                var a = this.$store.getters["users/getAreaListById"](item.zones[0]).state
+                this.$set(this, "setRole", { id: item.userType ,state:r});
+                this.$set(this, "setArea", { id: item.zones[0],state:a });
+          
+               // this.setRole = { id: item.userType  };
+               // this.setArea = { id: item.zones[0] };//multiple todo
+             
+       
                 this.fromSaveConfirmTitle = "確認人員更新資訊";
                 this.fromSaveConfirmMessage = " 請確認內容無誤後點選「確定」完成更新";
             },
@@ -484,7 +501,7 @@
 
                 }).catch(function () {
                     this.alertImgSrc = this.alertIcon;
-                    comp.alertMessage = '網站異常，請稍後再試';
+                    comp.alertMessage = '處理錯誤，請重新嘗試';
                     comp.$bus.$emit('alert_show', true);
                 });
             },
@@ -512,7 +529,7 @@
                     comp.$bus.$emit('alert_show', true);
                 }).catch(function () {
 
-                    comp.alertMessage = '網站異常，請稍後再試';
+                    comp.alertMessage = '處理錯誤，請重新嘗試';
                     comp.$bus.$emit('alert_show', true);
                 });
             },
@@ -548,7 +565,7 @@
                         return;
                     }
                 }).catch(function () {
-                    comp.alertTitle = '網站異常，請稍後再試';
+                    comp.alertTitle = '處理錯誤，請重新嘗試';
                     comp.$bus.$emit('alert_show', true);
                 })
             },
@@ -631,7 +648,7 @@
                    
                 }).catch(function () {
                     comp.$bus.$emit('type1_hide3');
-                    comp.$set(comp, "alertTitle", '網站異常，請稍後再試');
+                    comp.$set(comp, "alertTitle", '處理錯誤，請重新嘗試');
                     comp.$bus.$emit('alert_show', true);
                 });
 
