@@ -538,7 +538,8 @@
                                            'getCompleteFile', 
                                            'getSignUpFile', 
                                            'getVaccinationFile', 
-                                           'getAgreeFile'
+                                           'getAgreeFile',
+                                           'execCheck'
                                            ]),
             getRegistForm: function (page) {
                 var params = {
@@ -669,7 +670,29 @@
                 });
             },
             againCheck: function () {
-                console.log('againCheck ' + this.detailId);
+                var comp = this;
+                comp.alertMessage = '';
+                comp.execCheck({ id: comp.detailId })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '不存在';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        comp.detailAbnormalCnt = result.cnt;
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
             },
             downloadCompleteFile: function () {
                 var comp = this;

@@ -81,6 +81,18 @@ export default {
                 }
             });
         },
+        execCheck: function ({ state }, data) {
+            return new Promise(function (resolve, reject) {
+                // TODO:
+                var result = { id: data.id, state: state, cnt: 2 };
+                try {
+                    resolve(result);
+                    alert('已執行 (' + data.id + ')');
+                } catch (e) {
+                    reject(result);
+                }
+            });
+        },
     },
     state: {
         ...siteConfig,
