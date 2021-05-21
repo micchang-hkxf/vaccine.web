@@ -33,6 +33,54 @@ export default {
                 reslove(results);
             });
         },
+        getCompleteFile: function ({ state }, data) {
+            return new Promise(function (resolve, reject) {
+                // TODO:
+                var result = { id: data.id, state: state };
+                try {
+                    resolve(result);
+                    alert('下載完成 (' + data.id + ')');
+                } catch (e) {
+                    reject(result);
+                }
+            });
+        },
+        getSignUpFile: function ({ state }, data) {
+            return new Promise(function (resolve, reject) {
+                // TODO:
+                var result = { id: data.id, state: state };
+                try {
+                    resolve(result);
+                    alert('下載完成 (' + data.id + ')');
+                } catch (e) {
+                    reject(result);
+                }
+            });
+        },
+        getVaccinationFile: function ({ state }, data) {
+            return new Promise(function (resolve, reject) {
+                // TODO:
+                var result = { id: data.id, state: state };
+                try {
+                    resolve(result);
+                    alert('下載完成 (' + data.id + ')');
+                } catch (e) {
+                    reject(result);
+                }
+            });
+        },
+        getAgreeFile: function ({ state }, data) {
+            return new Promise(function (resolve, reject) {
+                // TODO:
+                var result = { id: data.id, state: state };
+                try {
+                    resolve(result);
+                    alert('下載完成 (' + data.id + ')');
+                } catch (e) {
+                    reject(result);
+                }
+            });
+        },
     },
     state: {
         ...siteConfig,
@@ -62,12 +110,12 @@ export default {
                 instutionDistrict: '內湖區',
                 stationTime: '2021/05/08 08:30 - 11:30',
                 registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
-                cntQuota: '425',
+                cntQuota: '670',
                 totalQuota: '670',
                 qualified: '423',
                 abnormalCnt: '0',
-                checkTime: '2021/05/06',
-                checkPassCnt: '10',
+                checkTime: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),
+                checkPassCnt: '0',
             },
             {
                 id: '2',
@@ -83,8 +131,8 @@ export default {
                 cntQuota: '425',
                 totalQuota: '670',
                 qualified: '423',
-                abnormalCnt: '2',
-                checkTime: '2021/05/21',
+                abnormalCnt: '0',
+                checkTime: '2021/05/20',
                 checkPassCnt: '224',
             },
             {
@@ -101,7 +149,7 @@ export default {
                 cntQuota: '425',
                 totalQuota: '670',
                 qualified: '423',
-                abnormalCnt: '0',
+                abnormalCnt: '1',
                 checkTime: '2021/05/06',
                 checkPassCnt: '224',
             },
@@ -239,7 +287,7 @@ export default {
                 phone: '0910123456',
                 censusRegister: '北市',
                 type: '現場',
-                result: '合格',
+                result: '',
             },
             {
                 id: '451',
