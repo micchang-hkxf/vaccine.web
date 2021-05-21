@@ -27,9 +27,29 @@
                 </template>
                 <v-card :tile="true">
                     <v-card-title><span class="personal_fontcolor">個人資訊&nbsp;:</span></v-card-title>
-                    <v-card-text>
-
-                    </v-card-text>
+                    <v-list>
+                        <v-list-item @click.stop="toPersonal(item)">
+                            <v-list-item-action-text>
+                                <v-btn icon dense>
+                                    <v-icon small>far fa-edit</v-icon>
+                                </v-btn>個人資訊
+                            </v-list-item-action-text>
+                        </v-list-item>
+                        <v-list-item @click.stop="toModifyPwd(item)">
+                            <v-list-item-action-text>
+                                <v-btn icon dense>
+                                    <v-icon small>far fa-trash-alt</v-icon>
+                                </v-btn>修改密碼
+                            </v-list-item-action-text>
+                        </v-list-item>
+                        <v-list-item @click.stop="toLogout(item)">
+                            <v-list-item-action-text>
+                                <v-btn icon dense>
+                                    <v-icon small>far fa-edit</v-icon>
+                                </v-btn>登出
+                            </v-list-item-action-text>
+                        </v-list-item>
+                    </v-list>
                 </v-card>
             </v-menu>
         </v-app-bar>
@@ -84,7 +104,15 @@
         created: function () {
         },
         methods: {
+            toPersonal: function () {
 
+            },
+            toModifyPwd: function () {
+
+            },
+            toLogout: function () {
+
+            },
         }
     }
 </script>
