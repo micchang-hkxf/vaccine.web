@@ -268,8 +268,8 @@
                                             <v-icon>fas fa-search</v-icon>
                                         </v-btn>
                                         <div class="detail-rebound-info">
-                                            <div>複檢時間：2021/05/06</div>
-                                            <div>複檢通過人數：224</div>
+                                            <div>複檢時間：{{detailCheckTime}}</div>
+                                            <div>複檢通過人數：{{detailCheckPassCnt}}</div>
                                         </div>
                                         <div class="detail-action">
                                             <v-btn v-on="on" @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
@@ -488,6 +488,8 @@
             detailTotalVisible: 4,
             detailKeyWord: '',
             detailAbnormalCnt: 0,
+            detailCheckTime: 0,
+            detailCheckPassCnt: 0,
         }),
         computed: {
             ...mapGetters('registration', ['getHeaders', 'getVaccines', 'getDistricts', 'getVillages', 'getInstitutions', 'getRegistrationHeaders']),
@@ -591,6 +593,8 @@
                 this.detailCntQuota = item.cntQuota;
                 this.detailTotalQuota = item.totalQuota;
                 this.detailAbnormalCnt = item.abnormalCnt;
+                this.detailCheckTime = item.checkTime;
+                this.detailCheckPassCnt = item.checkPassCnt;
 
                 this.$bus.$emit('dialogDetail_show', true);
 

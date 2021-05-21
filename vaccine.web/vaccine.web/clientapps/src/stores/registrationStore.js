@@ -66,6 +66,8 @@ export default {
                 totalQuota: '670',
                 qualified: '423',
                 abnormalCnt: '0',
+                checkTime: '2021/05/06',
+                checkPassCnt: '10',
             },
             {
                 id: '2',
@@ -82,6 +84,8 @@ export default {
                 totalQuota: '670',
                 qualified: '423',
                 abnormalCnt: '2',
+                checkTime: '2021/05/21',
+                checkPassCnt: '224',
             },
             {
                 id: '3',
@@ -98,6 +102,8 @@ export default {
                 totalQuota: '670',
                 qualified: '423',
                 abnormalCnt: '0',
+                checkTime: '2021/05/06',
+                checkPassCnt: '224',
             },
             {
                 id: '4',
@@ -114,6 +120,8 @@ export default {
                 totalQuota: '670',
                 qualified: '423',
                 abnormalCnt: '0',
+                checkTime: '2021/05/06',
+                checkPassCnt: '224',
             },
             {
                 id: '5',
@@ -130,6 +138,8 @@ export default {
                 totalQuota: '670',
                 qualified: '423',
                 abnormalCnt: '0',
+                checkTime: '2021/05/06',
+                checkPassCnt: '224',
             },
             {
                 id: '6',
@@ -146,6 +156,8 @@ export default {
                 totalQuota: '670',
                 qualified: '423',
                 abnormalCnt: '0',
+                checkTime: '2021/05/06',
+                checkPassCnt: '224',
             },
             {
                 id: '7',
@@ -162,6 +174,8 @@ export default {
                 totalQuota: '670',
                 qualified: '423',
                 abnormalCnt: '0',
+                checkTime: '2021/05/06',
+                checkPassCnt: '224',
             },
             {
                 id: '8',
@@ -178,6 +192,8 @@ export default {
                 totalQuota: '670',
                 qualified: '423',
                 abnormalCnt: '0',
+                checkTime: '2021/05/06',
+                checkPassCnt: '224',
             }
         ],
         vaccines: [
