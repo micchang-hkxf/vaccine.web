@@ -20,7 +20,7 @@
                         <v-row>
                             <v-col cols="12" class="confirm-btns">
                                 <v-btn class="confirm-center-btn"
-                                       color="primary"
+                                       color="#2EB6C7"
                                        :ripple="false"
                                        @click="rightBtnAction">
                                     <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
@@ -46,7 +46,7 @@
                             </v-col>
                             <v-col cols="6" class="confirm-btns">
                                 <v-btn class="confirm-right-btn"
-                                       color="primary"
+                                       color="#2EB6C7"
                                        :ripple="false"
                                        @click="rightBtnAction">
                                     <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
@@ -196,7 +196,9 @@
             leftBtnAction: function () {
                 this.leftClick();
             },
-
+            hasSlot: function (templateName) {
+                return this.$slots[templateName] != null || this.$scopedSlots[templateName] != null;
+            },
         },
         //components: {
         //}

@@ -56,6 +56,7 @@ export default {
                     }
 
                     resolve(result);
+                    alert('下載完成 (' + data.id + ')');
                 } catch (e) {
                     reject(result);
                 }
