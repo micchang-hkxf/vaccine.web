@@ -14,13 +14,9 @@
                     <template v-slot:item.isEnable="items">
                         <div>{{   items.item.isEnable=='true' ? "啟用" : "停用" }}</div>
                     </template>
-
-
                     <template v-slot:item.area="items">
-                        <div>{{  Array.isArray(items.item.zones) ?  items.item.zones.join(",") : items.item.zones }}</div>
+                        <div>{{  getZonesData(items.item) }}</div>
                     </template>
-
-
                     <template v-slot:search-bar>
                         <v-row>
                             <v-col class="d-flex" cols="12" md="6" lg="6" sm="6" xs="6">
@@ -84,10 +80,10 @@
 
                     <template v-slot:toolbar-action={}>
                         <!--<v-checkbox :ripple="false" hide-details @click="switchSelect"></v-checkbox>
-                <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
-                    <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
-                </v-btn>
-                -->
+        <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
+            <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
+        </v-btn>
+        -->
                         <v-spacer></v-spacer>
 
                         <v-menu bottom right offset-y>
@@ -169,7 +165,7 @@
                         <v-label><span class="star">帳號</span></v-label>
                         <v-text-field dense outlined class="w02" placeholder="請輸入帳號" v-model="acc" v-bind:readonly="isReadOnly" :rules="[v => !!v || '必填']"></v-text-field>
                         <!--<v-label><span class="star">email</span></v-label>
-                <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>-->
+    <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>-->
                         <v-label><span class="star">手機</span></v-label>
                         <v-text-field dense outlined class="w02" placeholder="請輸入手機號碼" type="number" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
                         <v-label><span class="star">再次確認手機</span></v-label>
@@ -208,6 +204,7 @@
                                   class="search-filter w01"
                                   return-object>
                         </v-select>
+                        <v-checkbox v-model="setEnable" label="啟用"></v-checkbox>
                         <v-text-field type="hidden" v-model="editID"></v-text-field>
                     </v-form>
                 </template>
@@ -272,20 +269,33 @@
                 </template>
                 <template v-slot:content>
                     {{  fromSaveConfirmMessage }}
+                    <br>
+                    <br>
                     <hr noshade size="1">
+
                     <div class="showname">姓名</div>
                     {{ uName }}
                     <div class="showname">帳號</div>
                     {{ acc }}
                     <div class="showname">手機</div>
                     {{ mbNo }}
+
                     <div class="showname">服務單位</div>
                     {{ unitName }}
+                    <br>
+                    <br>
+                    <hr noshade size="1">
+
                     <div class="showname">角色設定</div>
                     {{ setRoleState }}
                     <div class="showname">管理區域 </div>
                     {{ setAreaState }}
-
+                    <div class="showname">啟用狀態 </div>
+                    {{ setEnableState }}
+                    <br>
+                    <br>
+                    <hr noshade size="1">
+                    <br>
                 </template>
                 <template v-slot:action="{close}">
                     <v-spacer></v-spacer>
@@ -396,8 +406,10 @@
             warningIcon: '/alert_warning.svg',
             setRole: null,
             setArea: null,
+            setEnable: null,
             setRoleState: "",
             setAreaState: "",
+            setEnableState: "",
             itle: "",
             fromSaveConfirmMessage: "",
             fromSaveConfirmTitle: "",
@@ -407,11 +419,11 @@
                 { text: '姓名', value: 'uName', align: 'start', sortable: true, flex: 6 },
                 { text: '帳號', value: 'acc', sortable: false, flex: 6 },
                 //{ text: 'email', value: 'email', sortable: false, flex: 6 },
-                { text: '角色', value: 'userType', sortable: false, flex: 6},
+                { text: '角色', value: 'userTypeDesc', sortable: false, flex: 6},
                 { text: '管轄區域', value: 'area', sortable: false, flex: 6 },
                 { text: '權限狀態', value: 'isEnable', sortable: false, flex: 6},
-                { text: '密碼更改時間', value: 'passwordChangeTime', sortable: false, flex: 6 },
-                { text: '最後存取時間', value: 'modifyTime', sortable: false, flex: 6 },
+                { text: '密碼更改時間', value: 'pdExpTime', sortable: false, flex: 6 },
+                { text: '最後存取時間', value: 'lastAccessTime', sortable: false, flex: 6 },
                 //{ text: '手機', value: 'mbNo', sortable: false, flex: 6 },
                 //{ text: '服務單位', value: 'unitName', sortable: false, flex: 6 },
                 { text: '', value: 'modify', sortable: false },
@@ -465,12 +477,14 @@
                 this.$set(this, "email", item.email);
                 this.$set(this, "unitName", item.unitName);
                 this.$set(this, "isReadOnly", true);
-
+               
                 var r = this.$store.getters["users/getRoleListById"](item.userType).state;
-                var a = this.$store.getters["users/getAreaListById"](item.zones[0]).state
+                //var a = this.$store.getters["users/getAreaListById"](item.zones[0].cityId).state
                 this.$set(this, "setRole", { id: item.userType ,state:r});
-                this.$set(this, "setArea", { id: item.zones[0],state:a });
-          
+                this.$set(this, "setArea", { id: parseInt(item.zones[0].data[0].distId), state: item.zones[0].data[0].distName });
+     
+                this.$set(this, "setEnable", item.isEnable == 'true');
+        
                // this.setRole = { id: item.userType  };
                // this.setArea = { id: item.zones[0] };//multiple todo
              
@@ -540,7 +554,8 @@
                     filter.userType = this.selectRole.id;
                 }
                 if (this.selectArea) {
-                    filter.zones = this.selectArea.id;
+                    //filter.zones = this.selectArea.id;
+                    filter.zones = this.selectArea.state;
                 }
                 if (this.selectPermission) {
                     filter.isEnable = this.selectPermission.st;
@@ -551,9 +566,11 @@
                 var comp = this;
          
                 comp.searchUser(filter).then(function (result) {
+                    var finddata = true;
                     switch (result.state) {
                         case 'not_found':
-                            comp.alertTitle = 'not found data';
+                            comp.alertTitle = '查無資料';
+                            finddata = false;
                             break;
                         default:
                             break;
@@ -561,7 +578,7 @@
                     comp.totalCount = result.totalCount;
                     comp.items = [];
                     result.datas.forEach(f => comp.items.push(f))
-                    if (comp.alertTitle !== '') {
+                    if (!finddata ) {
                         comp.$bus.$emit('alert_show', true);
                         return;
                     }
@@ -612,7 +629,7 @@
                 this.$bus.$emit('formSaveConfirm_show', true);
                 this.setRoleState = this.setRole.state;
                 this.setAreaState = this.setArea.state;
-                
+                this.setEnableState = this.setEnable ? "啟用" : "停用";
             },
             saveform() {
 
@@ -626,10 +643,11 @@
                     userType: this.setRole.id,
                     //zones: [this.setArea], //multi todo
                     zones: [this.setArea.id], 
-                    isEnable: 'true',//todo
+                    isEnable: this.setEnable,
                     stopit: false,
                     editMode: this.isReadOnly,
                 };
+        
                 var msg = (this.isReadOnly) ? "更新" : "建立";
                 comp.alertImgSrc = comp.warningIcon;
   
@@ -637,11 +655,11 @@
                 var saveMsg = comp.uName + "\n" + comp.acc + "\n" + comp.setRole.state+"\n";
                 comp.changeUser(setData).then(function (result) {
                     if (result) {
-
                         comp.$set(comp, "alertTitle", saveMsg+'人員' + msg + '成功');
                         comp.$bus.$emit('userform_show', false);
                         comp.$bus.$emit('formSaveConfirm_show', false);
                         comp.alertImgSrc = comp.successIcon;
+
                         comp.search();
                     } else {
                         comp.$bus.$emit('duplicatAlert_show', true);
@@ -671,6 +689,12 @@
             showOptMenu(item) {
                 this.$set(this, "changeStatus", (item.isEnable=='true') ? "停用" : "啟用");
 
+            },
+            getZonesData(item) {
+                //暫時只有北市
+                var z = [];
+                item.zones[0].data.forEach(f => z.push(f.distName))
+                return z.join(",");
             },
           
         },
