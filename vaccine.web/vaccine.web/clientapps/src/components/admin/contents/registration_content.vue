@@ -257,7 +257,7 @@
                             <!---->
                             <com-table ref-key="detailTable" :headers="getRegistrationHeaders" :items="detailItems" :total-count="detailTotalCount"
                                        :items-per-page="detailItemsPerPage" :total-visible="detailTotalVisible" :show-select="false"
-                                       :change-page="detailChangePage"
+                                       :change-page="detailChangePage" disabled-prop="disabled"
                                        style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
 
                                 <template v-slot:search-bar>
@@ -272,8 +272,8 @@
                                             <div>複檢通過人數：224</div>
                                         </div>
                                         <div class="detail-action">
-                                            <v-btn :ripple="false">
-                                                <span>再次執行複檢（0）</span>
+                                            <v-btn v-on="on" @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
+                                                <span :style="detailAbnormalCnt > 0 ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
                                             </v-btn>
                                             <v-btn v-on="on" color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false">
                                                 <v-icon left color='white' size="15">
@@ -308,11 +308,14 @@
 
                                 <template v-slot:item.modify="{item}">
                                     <template>
-                                        <v-btn v-on="on" color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false">
+                                        <v-btn v-on="on" color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false" :disabled="item.disabled" :class="item.result === '系統異常' ? 'hidden' : ''">
                                             <v-icon left color='white' size="15">
                                                 mdi-arrow-down
                                             </v-icon>
                                             <span style="color:white">下載同意書</span>
+                                        </v-btn>
+                                        <v-btn v-on="on" color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled" :class="item.result !== '系統異常' ? 'hidden' : ''" class="btn-warning">
+                                            <span style="color:white">人工複檢</span>
                                         </v-btn>
                                     </template>
                                 </template>
@@ -409,10 +412,28 @@
     }
 
     .detail-result-abnormal {
-        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        /*font: normal normal normal 16px/24px Noto Sans T Chinese;*/
         letter-spacing: 0px;
         color: #F0524B;
         text-align: center;
+        opacity: 1;
+    }
+
+    .item-disabled {
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #62678166;
+        text-align: center;
+        opacity: 1;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    .btn-warning {
+        background: #FCBF5E 0% 0% no-repeat padding-box !important;
+        border-radius: 4px;
         opacity: 1;
     }
 </style>
@@ -466,6 +487,7 @@
             detailItemsPerPage: 2,
             detailTotalVisible: 4,
             detailKeyWord: '',
+            detailAbnormalCnt: 0,
         }),
         computed: {
             ...mapGetters('registration', ['getHeaders', 'getVaccines', 'getDistricts', 'getVillages', 'getInstitutions', 'getRegistrationHeaders']),
@@ -568,6 +590,7 @@
                 this.detailRegistrationTime = item.registrationTime;
                 this.detailCntQuota = item.cntQuota;
                 this.detailTotalQuota = item.totalQuota;
+                this.detailAbnormalCnt = item.abnormalCnt;
 
                 this.$bus.$emit('dialogDetail_show', true);
 
@@ -590,23 +613,34 @@
                 this.loadDetailForm(params).then((r) => {
                     this.detailTotalCount = r.totalCount;
                     this.detailItems.splice(0);
-                    r.datas.forEach((x) => this.detailItems.push(x));
+                    r.datas.forEach((x) => {
+                        if (['不合格', '已取消'].includes(x.result)) {
+                            x['disabled'] = true;
+                        }
+                        this.detailItems.push(x)
+                    });
                 }).catch((e) => {
                     console.log(e);
                 });
             },
+            againCheck: function () {
+                console.log('againCheck ' + this.detailId);
+            },
             downloadCompleteFile: function () {
-                console.log('downloadCompleteFile');
+                console.log('downloadCompleteFile ' + this.detailId);
             },
             downloadSignUpFile: function () {
-                console.log('downloadSignUpFile');
+                console.log('downloadSignUpFile ' + this.detailId);
             },
             downloadVaccinationFile: function () {
-                console.log('downloadSignUpFile');
+                console.log('downloadSignUpFile ' + this.detailId);
             },
             downloadAgreeFile: function (item) {
                 console.log('downloadAgreeFile ' + item.id);
-            }
+            },
+            artificialAction: function (item) {
+                console.log('artificialAction ' + item.id);
+            },
         },
 
         components: {

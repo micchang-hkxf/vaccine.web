@@ -65,6 +65,7 @@ export default {
                 cntQuota: '425',
                 totalQuota: '670',
                 qualified: '423',
+                abnormalCnt: '0',
             },
             {
                 id: '2',
@@ -80,6 +81,7 @@ export default {
                 cntQuota: '425',
                 totalQuota: '670',
                 qualified: '423',
+                abnormalCnt: '2',
             },
             {
                 id: '3',
@@ -95,6 +97,7 @@ export default {
                 cntQuota: '425',
                 totalQuota: '670',
                 qualified: '423',
+                abnormalCnt: '0',
             },
             {
                 id: '4',
@@ -110,6 +113,7 @@ export default {
                 cntQuota: '425',
                 totalQuota: '670',
                 qualified: '423',
+                abnormalCnt: '0',
             },
             {
                 id: '5',
@@ -125,6 +129,7 @@ export default {
                 cntQuota: '425',
                 totalQuota: '670',
                 qualified: '423',
+                abnormalCnt: '0',
             },
             {
                 id: '6',
@@ -140,6 +145,7 @@ export default {
                 cntQuota: '425',
                 totalQuota: '670',
                 qualified: '423',
+                abnormalCnt: '0',
             },
             {
                 id: '7',
@@ -155,6 +161,7 @@ export default {
                 cntQuota: '425',
                 totalQuota: '670',
                 qualified: '423',
+                abnormalCnt: '0',
             },
             {
                 id: '8',
@@ -170,6 +177,7 @@ export default {
                 cntQuota: '425',
                 totalQuota: '670',
                 qualified: '423',
+                abnormalCnt: '0',
             }
         ],
         vaccines: [
@@ -254,7 +262,7 @@ export default {
                 phone: '0910123490',
                 censusRegister: '北市',
                 type: '事先網路',
-                result: '不合格',
+                result: '已取消',
             },
             {
                 id: '448',
