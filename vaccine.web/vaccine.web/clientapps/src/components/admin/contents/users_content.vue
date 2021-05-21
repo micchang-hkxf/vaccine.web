@@ -632,7 +632,7 @@
                 this.setEnableState = this.setEnable ? "啟用" : "停用";
             },
             saveform() {
-
+   
                 var comp = this;
                 var setData = {
                     acc: this.acc,
@@ -641,8 +641,11 @@
                     mbNo: this.mbNo,
                     unitName: this.unitName,
                     userType: this.setRole.id,
+                    userTypeDesc: this.setRole.state,
                     //zones: [this.setArea], //multi todo
                     //zones: [this.setArea.id], 
+                    lastAccessTime: "2021-05-20 08:26:43",
+                    pdExpTime: "2021-05-20 08:26:43",
                     zones: [
                         {
                             "cityId": "1",

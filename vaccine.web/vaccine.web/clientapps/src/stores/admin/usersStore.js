@@ -132,6 +132,9 @@ export default {
                             mbNo: data.mbNo,
                             unitName: data.unitName,
                             userType: data.userType,
+                            userTypeDesc: data.userTypeDesc,
+                            lastAccessTime: "2021-05-20 08:26:43",
+                            pdExpTime: "2021-05-20 08:26:43",
                             zones: [
                                 {
                                     "cityId": "1",
