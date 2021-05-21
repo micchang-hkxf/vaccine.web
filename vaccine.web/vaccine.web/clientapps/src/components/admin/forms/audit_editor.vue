@@ -68,6 +68,7 @@
                     <v-row>
                         <v-col cols="12">
                             <div>下載事由 <span class="red--text">*</span></div>
+                            <!--
                             <v-text-field v-model="defaultItem.audit_reason"
                                           :rules="[rules.required]"
                                           placeholder="請輸入下載事由（限30字內）"
@@ -76,6 +77,16 @@
                                           dense
                                           maxlength="30">
                             </v-text-field>
+                            -->
+                            <v-textarea v-model="defaultItem.audit_reason"
+                                        :rules="[rules.required, rules.maxlength30]"
+                                        placeholder="請輸入下載事由（限30字內）"
+                                        required
+                                        outlined
+                                        dense
+                                        rows="2"
+                                        counter="30">
+                            </v-textarea>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -140,7 +151,8 @@
             year: [],
             month: [],
             rules: {
-                required: v => !!v || '必填'
+                required: v => !!v || '必填',
+                maxlength30: v => (v || '').length <= 30 || '超過限制'
             }
         }),
         computed: {
