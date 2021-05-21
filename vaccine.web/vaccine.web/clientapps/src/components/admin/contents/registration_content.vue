@@ -18,7 +18,7 @@
             <div>{{item}}</div>
         </template>-->
                         <template v-slot:item.quota="{item}">
-                            <div>{{item.cntQuota}}/<span style="color:#626781">{{item.totalQuota}}</span></div>
+                            <div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>
                         </template>
                         <template v-slot:search-bar>
                             <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
@@ -235,6 +235,18 @@
 
                         </template>
                     </com-table>
+                    <!--共用 alert -->
+                    <com-confirm ref="alert" ref-key="alert" :right-click="alertClick">
+                        <template v-slot:confirm-image>
+                            <v-img src="/alert_warning.svg"></v-img>
+                        </template>
+                        <template v-slot:confirm-text>
+                            {{alertMessage}}
+                        </template>
+                        <template v-slot:confirm-right-btn-text>
+                            返回
+                        </template>
+                    </com-confirm>
                     <!---->
                     <com-dialog ref="dialogDetail" ref-key="dialogDetail" width="100%">
                         <template v-slot:toolbar>
@@ -245,15 +257,15 @@
                             </v-btn>
                         </template>
                         <template v-slot:content>
-                            <div class="detail-title">{{detailTitle}}</div>
+                            <div class="detail-title">{{detailTitle}}<span :class="detailCntQuota < detailTotalQuota ? 'hidden' : ''">名額已滿</span></div>
                             <div class="detail-sub-title">{{detailDistrict}}－{{detailVillage}}｜{{detailType}}</div>
                             <div class="detail-title-desc">
                                 <div>設站時間：{{detailStationTime}}</div>
                                 <div>報名開放時間：{{detailRegistrationTime}}</div>
-                                <div>報名名額：{{detailCntQuota}}/{{detailTotalQuota}}</div>
+                                <div>報名名額：<span :class="detailCntQuota >= detailTotalQuota ? 'color-red' : ''">{{detailCntQuota}}</span>/<span style="color:#626781">{{detailTotalQuota}}</span></div>
                                 <div>承辦醫院：{{detailInstitution}}（{{detailInstutionDistrict}}）</div>
                             </div>
-                            <hr/>
+                            <hr />
                             <!---->
                             <com-table ref-key="detailTable" :headers="getRegistrationHeaders" :items="detailItems" :total-count="detailTotalCount"
                                        :items-per-page="detailItemsPerPage" :total-visible="detailTotalVisible" :show-select="false"
@@ -269,25 +281,25 @@
                                         </v-btn>
                                         <div class="detail-rebound-info">
                                             <div>複檢時間：{{detailCheckTime}}</div>
-                                            <div>複檢通過人數：{{detailCheckPassCnt}}</div>
+                                            <div>複檢通過人數：{{detailCheckPassCnt == '0' ? '-' : detailCheckPassCnt}}</div>
                                         </div>
                                         <div class="detail-action">
                                             <v-btn v-on="on" @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
                                                 <span :style="detailAbnormalCnt > 0 ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
                                             </v-btn>
-                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false">
+                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false" :disabled="lessCheckTime">
                                                 <v-icon left color='white' size="15">
                                                     mdi-arrow-down
                                                 </v-icon>
                                                 <span style="color:white">下載完整接種同意書</span>
                                             </v-btn>
-                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false">
+                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">
                                                 <v-icon left color='white' size="15">
                                                     mdi-arrow-down
                                                 </v-icon>
                                                 <span style="color:white">下載報名清冊</span>
                                             </v-btn>
-                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false">
+                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false" :disabled="lessCheckTime">
                                                 <v-icon left color='white' size="15">
                                                     mdi-arrow-down
                                                 </v-icon>
@@ -303,18 +315,18 @@
                                 </template>
 
                                 <template v-slot:item.result="{item}">
-                                    <div :class="item.result === '系統異常' ? 'detail-result-abnormal' : ''">{{item.result}}</div>
+                                    <div :class="item.result === '系統異常' ? 'detail-result-abnormal' : ''">{{item.result == '' ? '-' : item.result}}</div>
                                 </template>
 
                                 <template v-slot:item.modify="{item}">
                                     <template>
-                                        <v-btn v-on="on" color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false" :disabled="item.disabled" :class="item.result === '系統異常' ? 'hidden' : ''">
+                                        <v-btn v-on="on" color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result === '系統異常' ? 'hidden' : ''">
                                             <v-icon left color='white' size="15">
                                                 mdi-arrow-down
                                             </v-icon>
                                             <span style="color:white">下載同意書</span>
                                         </v-btn>
-                                        <v-btn v-on="on" color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled" :class="item.result !== '系統異常' ? 'hidden' : ''" class="btn-warning">
+                                        <v-btn v-on="on" color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result !== '系統異常' ? 'hidden' : ''" class="btn-warning">
                                             <span style="color:white">人工複檢</span>
                                         </v-btn>
                                     </template>
@@ -373,6 +385,13 @@
         color: #736DB9;
         text-align: left;
         opacity: 1;
+    }
+
+    .detail-title span {
+        font: normal normal normal 24px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #F0524B;
+        margin: 0 10px;
     }
 
     .detail-sub-title {
@@ -436,6 +455,10 @@
         border-radius: 4px;
         opacity: 1;
     }
+
+    .color-red {
+        color: #F0524B;
+    }
 </style>
 
 <script>
@@ -490,9 +513,17 @@
             detailAbnormalCnt: 0,
             detailCheckTime: 0,
             detailCheckPassCnt: 0,
+            alertMessage: '',
+            lessCheckTime: false,
         }),
         computed: {
-            ...mapGetters('registration', ['getHeaders', 'getVaccines', 'getDistricts', 'getVillages', 'getInstitutions', 'getRegistrationHeaders']),
+            ...mapGetters('registration', ['getHeaders',
+                                           'getVaccines',
+                                           'getDistricts',
+                                           'getVillages',
+                                           'getInstitutions',
+                                           'getRegistrationHeaders'
+                                           ]),
         },
         props: {
 
@@ -502,7 +533,14 @@
             this.getRegistForm(page);
         },
         methods: {
-            ...mapActions('registration', ['loadRegistForm', 'loadDetailForm']),
+            ...mapActions('registration', ['loadRegistForm',
+                                           'loadDetailForm',
+                                           'getCompleteFile', 
+                                           'getSignUpFile', 
+                                           'getVaccinationFile', 
+                                           'getAgreeFile',
+                                           'execCheck'
+                                           ]),
             getRegistForm: function (page) {
                 var params = {
                     vaccine: this.selectVaccine,
@@ -596,6 +634,10 @@
                 this.detailCheckTime = item.checkTime;
                 this.detailCheckPassCnt = item.checkPassCnt;
 
+                var today = new Date().toISOString().substr(0, 10).replace(/-/g, '');
+                var checkTime = item.checkTime.substr(0, 10).replace(/\//g, '');
+                this.lessCheckTime = (today <= checkTime);
+
                 this.$bus.$emit('dialogDetail_show', true);
 
                 this.getDetailForm(1);
@@ -628,22 +670,135 @@
                 });
             },
             againCheck: function () {
-                console.log('againCheck ' + this.detailId);
+                var comp = this;
+                comp.alertMessage = '';
+                comp.execCheck({ id: comp.detailId })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '不存在';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        comp.detailAbnormalCnt = result.cnt;
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
             },
             downloadCompleteFile: function () {
-                console.log('downloadCompleteFile ' + this.detailId);
+                var comp = this;
+                comp.alertMessage = '';
+                comp.getCompleteFile({ id: comp.detailId })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '檔案不存在';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        console.log(result);
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
             },
             downloadSignUpFile: function () {
-                console.log('downloadSignUpFile ' + this.detailId);
+                var comp = this;
+                comp.alertMessage = '';
+                comp.getSignUpFile({ id: comp.detailId })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '檔案不存在';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        console.log(result);
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
             },
             downloadVaccinationFile: function () {
-                console.log('downloadSignUpFile ' + this.detailId);
+                var comp = this;
+                comp.alertMessage = '';
+                comp.getVaccinationFile({ id: comp.detailId })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '檔案不存在';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        console.log(result);
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
             },
             downloadAgreeFile: function (item) {
-                console.log('downloadAgreeFile ' + item.id);
+                var comp = this;
+                comp.alertMessage = '';
+                comp.getAgreeFile({ id: item.id })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '檔案不存在';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        console.log(result);
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
             },
             artificialAction: function (item) {
                 console.log('artificialAction ' + item.id);
+            },
+            alertClick: function () {
+                this.$bus.$emit('alert_show', false);
             },
         },
 
