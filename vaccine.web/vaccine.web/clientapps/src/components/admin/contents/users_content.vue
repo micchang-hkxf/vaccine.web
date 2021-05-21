@@ -642,7 +642,28 @@
                     unitName: this.unitName,
                     userType: this.setRole.id,
                     //zones: [this.setArea], //multi todo
-                    zones: [this.setArea.id], 
+                    //zones: [this.setArea.id], 
+                    zones: [
+                        {
+                            "cityId": "1",
+                            "cityName": "台北市",
+                            "hasAuth": true,
+                            "data": [
+                                {
+                                    "distId": this.setArea.id,
+                                    "distName": this.setArea.state,
+                                    "hasAuth": true,
+                                    "data": [
+                                        {
+                                            "villageId": "string",
+                                            "villageName": "string",
+                                            "hasAuth": true
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
                     isEnable: this.setEnable,
                     stopit: false,
                     editMode: this.isReadOnly,
@@ -659,7 +680,7 @@
                         comp.$bus.$emit('userform_show', false);
                         comp.$bus.$emit('formSaveConfirm_show', false);
                         comp.alertImgSrc = comp.successIcon;
-
+                        comp.$bus.$emit('alert_show', true);
                         comp.search();
                     } else {
                         comp.$bus.$emit('duplicatAlert_show', true);
