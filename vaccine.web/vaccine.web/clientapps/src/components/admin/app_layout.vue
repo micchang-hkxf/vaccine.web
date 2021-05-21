@@ -91,6 +91,7 @@
 <style>
     .app-content-card {
         margin: 20px !important;
+        padding: 20px !important;
     }
 
     .app-content-container {

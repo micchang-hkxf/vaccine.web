@@ -199,6 +199,32 @@ export default new Vuex.Store({
                     reject(result);
                 }
             });
+        },
+        logout: function ({ state }, account) {
+            console.log('logout');
+            return new Promise(function (resolve, reject) {
+                var result = { uid: account.uid, state: '' };
+                try {
+                    // TODO: 登出 Delete api/User/Login
+                    var exist = state.loginFake.accounts.find(f => f.uid == account.uid);
+
+                    if (!exist) {
+                        result.state = 'not found';
+                        resolve(result);
+                        return;
+                    }
+
+                    if (exist.state === 'network abnormal') {
+                        result.state = exist.state;
+                        throw result;
+                    }
+
+                    result.state = 'success';
+                    resolve(result);
+                } catch (e) {
+                    reject(result);
+                }
+            });
         }
     },
     state: {

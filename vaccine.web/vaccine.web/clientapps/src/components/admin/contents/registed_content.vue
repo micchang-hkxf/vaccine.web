@@ -7,31 +7,29 @@
             報名者序號查詢
         </template>
         <template v-slot:app-content>
-            <div id="app">
-                <v-card style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
-                    <com-table ref-key="table" :headers="headers" :items="items" :total-count="totalCount"
-                               :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               :change-page="changePage"
-                               style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">                       
-                        <template v-slot:search-bar>
-                            <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
-                                <v-row>
-                                    <v-col cols="12">
-                                        <v-text-field v-model="keyWord" label="身分證後四碼" outlined dense clearable></v-text-field>
-                                    </v-col>
-                                    <v-btn icon color="#626781" style="top:5px;" :ripple="false"
-                                           @click="getRegistData(1)">
-                                        <v-icon>fas fa-search</v-icon>
-                                    </v-btn>
-                                </v-row>
-                            </div>
+            <v-card>
+                <com-table ref-key="table" :headers="headers" :items="items" :total-count="totalCount"
+                           :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
+                           :change-page="changePage"
+                           style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
+                    <template v-slot:search-bar>
+                        <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-text-field v-model="keyWord" placeholder="身分證後四碼" outlined dense clearable></v-text-field>
+                                </v-col>
+                                <v-btn icon color="#626781" style="top:5px;" :ripple="false"
+                                       @click="getRegistData(1)">
+                                    <v-icon>fas fa-search</v-icon>
+                                </v-btn>
+                            </v-row>
+                        </div>
 
 
-                        </template>
+                    </template>
 
-                    </com-table>
-                </v-card>
-            </div>
+                </com-table>
+            </v-card>
         </template>
     </app-layout>
 </template>

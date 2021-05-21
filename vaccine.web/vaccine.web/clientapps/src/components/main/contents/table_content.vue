@@ -6,7 +6,7 @@
         <template v-slot:app-content>
             <div id="app">
                 <!--<v-btn @click="show('table')">table</v-btn>-->
-                <com-table ref-key="table" :headers="headers" :items="desserts" :total-count="totalCount" disabled-prop="disabled"
+                <com-table ref-key="table" :headers="headers" :items="computedItems" :total-count="totalCount" disabled-prop="disabled"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect" :change-page="changePage">
                     <template v-slot:item.date="{item}">
                         <div>{{item}}*</div>
@@ -25,7 +25,7 @@
                                               :items="options"
                                               item-text="state"
                                               item-value="state"
-                                              label="所有疫苗類型"
+                                              placeholder="所有疫苗類型"
                                               :menu-props="{ bottom: true, offsetY: true }"
                                               outlined
                                               dense
@@ -35,7 +35,7 @@
                                     </v-select>
                                 </v-col>
                                 <v-col cols="6">
-                                    <v-text-field label="人員姓名/帳號" outlined dense></v-text-field>
+                                    <v-text-field placeholder="人員姓名/帳號" outlined dense></v-text-field>
                                 </v-col>
                                 <v-btn icon color="#626781" style="top:5px;">
                                     <v-icon>fas fa-search</v-icon>
@@ -200,7 +200,6 @@
                     registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
                     quota: '425/670',
                     qualified: '423',
-                    disabled:true
                 },
                 {
                     date: '2021/04/03',
@@ -293,6 +292,9 @@
          
         },
         computed: {
+            computedItems: function () {
+                return this.desserts.map(m => { return { ...m, disabled: m.date == '2021/04/08' }; });
+            }
         },
         props: {
 

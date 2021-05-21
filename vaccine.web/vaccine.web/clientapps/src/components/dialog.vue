@@ -7,7 +7,7 @@
             <div class="dialog-content">
                 <slot name="content" :close="close"></slot>
             </div>
-            <v-card-actions>
+            <v-card-actions v-if="$slots['action']!=null">
                 <slot name="action" :close="close"></slot>
             </v-card-actions>
         </v-card>
@@ -23,10 +23,10 @@
         padding: 16px;
     }
     .dialog-toolbar {
-        font-size:20px!important;
-        color:white!important;
+        font-size: 20px !important;
+        color: white !important;
         height: 56px;
-        background: #2EB6C7 0% 0% no-repeat padding-box !important;
+        background: #736DB9 0% 0% no-repeat padding-box !important;
         border-radius: 8px 8px 0px 0px;
         opacity: 1;
     }

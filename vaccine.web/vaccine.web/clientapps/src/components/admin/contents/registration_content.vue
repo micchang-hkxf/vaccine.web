@@ -5,188 +5,231 @@
         </template>
         <template v-slot:content-title>
             報名表管理
-
         </template>
         <template v-slot:app-content>
-            <div id="app">
-                <v-card style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
-                    <com-table ref-key="table" :headers="getHeaders" :items="items" :total-count="totalCount"
-                               :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               :change-page="changePage"
-                               style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
-                        <!--<template v-slot:item.date="{item}">
-                    <div>{{item}}</div>
-                </template>-->
-                        <template v-slot:item.quota>
-                            <div>45/<span style="color:dimgrey">60</span></div>
-                        </template>
-                        <template v-slot:search-bar>
-                            <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
-                                <v-row>
-                                    <v-col cols="2">
-                                        <v-select v-model="selectVaccine"
-                                                  :items="getVaccines"
-                                                  item-text="name"
-                                                  item-value="name"
-                                                  label="所有疫苗類型"
-                                                  :menu-props="{ bottom: true, offsetY: true }"
-                                                  outlined
-                                                  dense
-                                                  clearable
-                                                  style="margin-right: 10px;"
-                                                  class="search-filter"
-                                                  return-object>
-                                        </v-select>
-                                    </v-col>
-                                    <v-col cols="2">
-                                        <v-select v-model="selectDistrict"
-                                                  :items="getDistricts"
-                                                  item-text="name"
-                                                  item-value="name"
-                                                  label="全部行政區"
-                                                  :menu-props="{ bottom: true, offsetY: true }"
-                                                  outlined
-                                                  dense
-                                                  clearable
-                                                  style="margin-right: 10px;"
-                                                  class="search-filter"
-                                                  return-object>
-                                        </v-select>
-                                    </v-col>
+            <v-card>
+                <com-table ref-key="table" :headers="getHeaders" :items="items" :total-count="totalCount"
+                           :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
+                           :change-page="changePage"
+                           style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
+                    <!--<template v-slot:item.date="{item}">
+                <div>{{item}}</div>
+            </template>-->
+                    <template v-slot:item.quota>
+                        <div>45/<span style="color:dimgrey">60</span></div>
+                    </template>
+                    <template v-slot:search-bar>
+                        <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
+                            <v-row>
+                                <v-col cols="2">
+                                    <v-select v-model="selectVaccine"
+                                              :items="getVaccines"
+                                              item-text="name"
+                                              item-value="name"
+                                              placeholder="所有疫苗類型"
+                                              :menu-props="{ bottom: true, offsetY: true }"
+                                              outlined
+                                              dense
+                                              clearable
+                                              style="margin-right: 10px;"
+                                              class="search-filter"
+                                              return-object>
+                                    </v-select>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-select v-model="selectDistrict"
+                                              :items="getDistricts"
+                                              item-text="name"
+                                              item-value="name"
+                                              placeholder="全部行政區"
+                                              :menu-props="{ bottom: true, offsetY: true }"
+                                              outlined
+                                              dense
+                                              clearable
+                                              style="margin-right: 10px;"
+                                              class="search-filter"
+                                              return-object>
+                                    </v-select>
+                                </v-col>
 
-                                    <v-col cols="2">
-                                        <v-select v-model="selectVillage"
-                                                  :items="getVillages"
-                                                  item-text="name"
-                                                  item-value="name"
-                                                  label="全部村里"
-                                                  :menu-props="{ bottom: true, offsetY: true }"
-                                                  outlined
-                                                  dense
-                                                  clearable
-                                                  style="margin-right: 10px;"
-                                                  class="search-filter"
-                                                  return-object>
-                                        </v-select>
-                                    </v-col>
-                                    <v-col cols="2">
-                                        <v-select v-model="selectInstitution"
-                                                  :items="getInstitutions"
-                                                  item-text="name"
-                                                  item-value="name"
-                                                  label="全部醫療院所"
-                                                  :menu-props="{ bottom: true, offsetY: true }"
-                                                  outlined
-                                                  dense
-                                                  clearable
-                                                  style="margin-right: 10px;"
-                                                  class="search-filter"
-                                                  return-object>
-                                        </v-select>
-                                    </v-col>
-                                    <v-col cols="2">
-                                        <v-text-field v-model="keyWord" label="標題關鍵字" outlined dense clearable></v-text-field>
-                                    </v-col>
-                                    <v-btn icon color="#626781" style="top:5px;" :ripple="false"
-                                           @click="getRegistForm(1)">
-                                        <v-icon>fas fa-search</v-icon>
-                                    </v-btn>
-                                </v-row>
-                            </div>
-
-
-                        </template>
-
-                        <template v-slot:toolbar-action={selectAll,deleteSelected,selectedItems,selected}>
-                            <v-btn color="#F0524B" :disabled="selected.length<=0 " @click="deleteSelected(selected)">
-                                <span style="color:white">刪除選取項目 ({{selected.length}})</span>
-                            </v-btn>
-                            <v-spacer></v-spacer>
-
-                            <v-menu bottom right offset-y>
-                                <template v-slot:activator="{ on }">
-                                    <v-btn v-on="on" color="#626781" @click.stop="">
-                                        <v-icon left color='white' size="15">fas fa-plus</v-icon>
-                                        <span style="color:white">新增報名表</span>
-                                    </v-btn>
-                                </template>
-                                <v-list>
-                                    <v-list-item @click.stop="">
-                                        <v-list-item-action-text>
-                                            選擇新增方式:
-                                        </v-list-item-action-text>
-                                    </v-list-item>
-                                    <v-list-item @click.stop="manualInput">
-                                        <v-list-item-action-text>
-                                            <v-btn icon dense>
-                                                <v-icon small>far fa-edit</v-icon>
-                                            </v-btn>手動輸入
-                                        </v-list-item-action-text>
-                                    </v-list-item>
-                                    <v-list-item @click.stop="fileImport">
-                                        <v-list-item-action-text>
-                                            <v-btn icon dense>
-                                                <v-icon small>far fa-trash-alt</v-icon>
-                                            </v-btn>檔案匯入
-                                        </v-list-item-action-text>
-                                    </v-list-item>
-
-                                </v-list>
-                            </v-menu>
+                                <v-col cols="2">
+                                    <v-select v-model="selectVillage"
+                                              :items="getVillages"
+                                              item-text="name"
+                                              item-value="name"
+                                              placeholder="全部村里"
+                                              :menu-props="{ bottom: true, offsetY: true }"
+                                              outlined
+                                              dense
+                                              clearable
+                                              style="margin-right: 10px;"
+                                              class="search-filter"
+                                              return-object>
+                                    </v-select>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-select v-model="selectInstitution"
+                                              :items="getInstitutions"
+                                              item-text="name"
+                                              item-value="name"
+                                              placeholder="全部醫療院所"
+                                              :menu-props="{ bottom: true, offsetY: true }"
+                                              outlined
+                                              dense
+                                              clearable
+                                              style="margin-right: 10px;"
+                                              class="search-filter"
+                                              return-object>
+                                    </v-select>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-text-field v-model="keyWord" placeholder="標題關鍵字" outlined dense clearable></v-text-field>
+                                </v-col>
+                                <v-btn icon color="#626781" style="top:5px;" :ripple="false"
+                                       @click="getRegistForm(1)">
+                                    <v-icon>fas fa-search</v-icon>
+                                </v-btn>
+                            </v-row>
+                        </div>
 
 
-                        </template>
+                    </template>
 
-                        <template v-slot:item.modify>
-                            <v-menu bottom right offset-y>
-                                <template v-slot:activator="{ on }">
-                                    <v-btn dark icon v-on="on" @click.stop="">
-                                        <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
-                                    </v-btn>
-                                </template>
-                                <v-list>
-                                    <v-list-item @click.stop="editItem(item)">
-                                        <v-list-item-action-text>
-                                            <v-btn icon dense>
-                                                <v-icon small>far fa-edit</v-icon>
-                                            </v-btn>編輯
-                                        </v-list-item-action-text>
-                                    </v-list-item>
-                                    <v-list-item @click.stop="editItem(item)">
-                                        <v-list-item-action-text>
-                                            <v-btn icon dense>
-                                                <v-icon small>far fa-trash-alt</v-icon>
-                                            </v-btn>刪除
-                                        </v-list-item-action-text>
-                                    </v-list-item>
-                                    <v-list-item @click.stop="editItem(item)">
-                                        <v-list-item-action-text>
-                                            <v-btn icon dense>
-                                                <v-icon small>mdi-arrow-down</v-icon>
-                                            </v-btn>完整下載接種同意書
-                                        </v-list-item-action-text>
-                                    </v-list-item>
-                                    <v-list-item @click.stop="editItem(item)">
-                                        <v-list-item-action-text>
-                                            <v-btn icon dense>
-                                                <v-icon small>mdi-arrow-down</v-icon>
-                                            </v-btn>下載報名清冊
-                                        </v-list-item-action-text>
-                                    </v-list-item>
-                                    <v-list-item @click.stop="editItem(item)">
-                                        <v-list-item-action-text>
-                                            <v-btn icon dense>
-                                                <v-icon small>mdi-arrow-down</v-icon>
-                                            </v-btn>下載施打清冊
-                                        </v-list-item-action-text>
-                                    </v-list-item>
-                                </v-list>
-                            </v-menu>
+                    <template v-slot:toolbar-action={selectAll,deleteSelected,selectedItems,selected}>
+                        <v-btn color="#F0524B" :disabled="selected.length<=0 " @click="deleteSelected(selected)" :ripple="false">
+                            <span style="color:white">刪除選取項目 ({{selected.length}})</span>
+                        </v-btn>
+                        <v-spacer></v-spacer>
 
-                        </template>
-                    </com-table>
-                </v-card>
-            </div>
+                        <v-menu bottom right offset-y>
+                            <template v-slot:activator="{ on }">
+                                <v-btn v-on="on" color="#626781" @click.stop="" :ripple="false">
+                                    <v-icon left color='white' size="15">fas fa-plus</v-icon>
+                                    <span style="color:white">新增報名表</span>
+                                </v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item @click.stop="">
+                                    <v-list-item-action-text>
+                                        選擇新增方式:
+                                    </v-list-item-action-text>
+
+                                </v-list-item>
+                                <v-divider></v-divider>
+                                <v-list-item @click.stop="manualInput">
+                                    <v-list-item-action-text>
+                                        <v-btn icon dense :ripple="false">
+                                            <v-icon small>far fa-edit</v-icon>
+                                        </v-btn>手動輸入
+                                    </v-list-item-action-text>
+                                </v-list-item>
+                                <v-list-item @click.stop="fileImport">
+                                    <v-list-item-action-text>
+                                        <v-btn icon dense :ripple="false">
+                                            <v-icon small>far fa-trash-alt</v-icon>
+                                        </v-btn>檔案匯入
+                                    </v-list-item-action-text>
+                                </v-list-item>
+
+                            </v-list>
+                        </v-menu>
+
+                        <editor ref="registEditor" ref-key="two" width="60%" :title="title" :action="formAction"></editor>
+
+                        <com-dialog ref="registViewer" ref-key="two" width="60%">
+                            <template v-slot:toolbar>
+                                {{viewerTitle}}
+                                <v-spacer></v-spacer>
+                                <v-btn icon @click.stop="colse" :ripple="false">
+                                    <v-icon color="white">fas fa-times</v-icon>
+                                </v-btn>
+                            </template>
+                            <template v-slot:content>
+                                點選「確定」後本報名表將立即生效，請再次確認內容無誤。
+                                <v-divider></v-divider>
+                                {{result}}
+                            </template>
+                            <template v-slot:action>
+
+                                <v-spacer></v-spacer>
+                                <v-btn outlined :ripple="false" @click="backToEdit"><span style="color:#626781;">修改</span></v-btn>
+                                <v-btn @click="save" color="primary" :ripple="false">確定</v-btn>
+                            </template>
+                        </com-dialog>
+
+                        <com-confirm ref="registAlert" ref-key="confirm" :right-click="alertRightClick">
+                            <template v-slot:confirm-image>
+                                <v-img src="/alert_success.svg"></v-img>
+                            </template>
+                            <template v-slot:confirm-title>
+                                {{alertTitle}}
+
+                            </template>
+                            <template v-slot:confirm-text>
+                                {{alertText}}
+                            </template>
+
+                            <template v-slot:confirm-right-btn-text>
+                                確認
+                            </template>
+
+
+                        </com-confirm>
+
+                    </template>
+
+                    <template v-slot:item.modify>
+                        <v-menu bottom right offset-y>
+                            <template v-slot:activator="{ on }">
+                                <v-btn dark icon v-on="on" @click.stop="">
+                                    <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
+                                </v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item-action-text>
+                                        <v-btn icon dense>
+                                            <v-icon small>far fa-edit</v-icon>
+                                        </v-btn>編輯
+                                    </v-list-item-action-text>
+                                </v-list-item>
+                                <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item-action-text>
+                                        <v-btn icon dense>
+                                            <v-icon small>far fa-trash-alt</v-icon>
+                                        </v-btn>刪除
+                                    </v-list-item-action-text>
+                                </v-list-item>
+                                <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item-action-text>
+                                        <v-btn icon dense>
+                                            <v-icon small>mdi-arrow-down</v-icon>
+                                        </v-btn>完整下載接種同意書
+                                    </v-list-item-action-text>
+                                </v-list-item>
+                                <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item-action-text>
+                                        <v-btn icon dense>
+                                            <v-icon small>mdi-arrow-down</v-icon>
+                                        </v-btn>下載報名清冊
+                                    </v-list-item-action-text>
+                                </v-list-item>
+                                <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item-action-text>
+                                        <v-btn icon dense>
+                                            <v-icon small>mdi-arrow-down</v-icon>
+                                        </v-btn>下載施打清冊
+                                    </v-list-item-action-text>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+
+                    </template>
+
+
+
+                </com-table>
+            </v-card>
         </template>
     </app-layout>
 </template>
@@ -201,7 +244,7 @@
     .app-content {
         background-color: #F2F3F7;
     }
-    
+
     .content-bar {
         font-size: 16px;
         /*margin-top: 80px;*/
@@ -209,7 +252,7 @@
         padding: 0px !important;
     }
 
-    .v-toolbar, .v-card{
+    .v-toolbar, .v-card {
         border-radius: 0px !important;
         box-shadow: none !important;
     }
@@ -237,6 +280,9 @@
     import appMenu from 'components/admin/menu';
     import appLayout from 'components/admin/app_layout';
     import comTable from 'components/table'
+    import editor from 'components/admin/forms/regist_editor'
+    import comDialog from 'components/dialog'
+    import comConfirm from 'components/confirm'
     import { mapActions, mapGetters } from 'vuex'
     export default {
         // router,
@@ -249,11 +295,23 @@
             selectDistrict: '',
             selectVillage: '',
             selectInstitution: '',
-            keyWord: '',  
-            items:[]
+            keyWord: '',
+            items: [],
+            title: '',
+            model: {
+                regist_title: '',
+                regist_type: '',
+                regist_district: '',
+                regist_village: '',
+                regist_date: new Date().toISOString().substr(0, 10),
+            },
+            result: {},
+            viewerTitle:'',
+            alertTitle: '',
+            alertText: '',
         }),
         computed: {
-            ...mapGetters('registration',['getHeaders','getVaccines', 'getDistricts', 'getVillages','getInstitutions']),
+            ...mapGetters('registration', ['getHeaders', 'getVaccines', 'getDistricts', 'getVillages', 'getInstitutions']),
         },
         props: {
 
@@ -262,44 +320,89 @@
             var page = 1;
             this.getRegistForm(page);
         },
-    methods: {
-        ...mapActions('registration', ['loadRegistForm']),
-        getRegistForm: function (page) {
-            var params = {
-                vaccine: this.selectVaccine,
-                district: this.selectDistrict,
-                village: this.selectVillage,
-                institution: this.selectInstitution,
-                keyWord: this.keyWord,
-                pageSize: this.itemsPerPage,
-                page: page,
-            };
-            this.loadRegistForm(params).then((r) => {
-                this.totalCount = r.totalCount;
-                this.items.splice(0);
-                r.datas.forEach((x) => this.items.push(x));
-            }).catch((e) => {
-                console.log(e);
+        methods: {
+            ...mapActions('registration', ['loadRegistForm']),
+            getRegistForm: function (page) {
+                var params = {
+                    vaccine: this.selectVaccine,
+                    district: this.selectDistrict,
+                    village: this.selectVillage,
+                    institution: this.selectInstitution,
+                    keyWord: this.keyWord,
+                    pageSize: this.itemsPerPage,
+                    page: page,
+                };
+                this.loadRegistForm(params).then((r) => {
+                    this.totalCount = r.totalCount;
+                    this.items.splice(0);
+                    r.datas.forEach((x) => this.items.push(x));
+                }).catch((e) => {
+                    console.log(e);
 
-            });
-        },
-        changePage: function (pager) {
-            console.log(pager);
-            ///{ page: 2, pageSize: 20}
-            this.getRegistForm(pager.page);
-        },
+                });
+            },
+            changePage: function (pager) {
+                console.log(pager);
+                ///{ page: 2, pageSize: 20}
+                this.getRegistForm(pager.page);
+            },
             deleteSelected: function (item) {
-                console.log('delete',item)
+                console.log('delete', item)
             },
             manualInput: function () {
+                this.title = '建立報名表';
+                this.viewerTitle = '確認新增報名資訊';
+                this.$refs.registEditor.open();
                 console.log('manualInput')
             },
             fileImport: function () {
                 console.log('fileImport')
+            },
+            formAction: function (result) {
+                Object.assign(this.result, result);
+                switch (result.action) {
+                    case 'save':
+                        this.$refs.registViewer.open();
+                        console.log('save', result)
+                        break;
+
+                    case 'cancel':
+                        console.log('cancel', result)
+                        break;
+                }
+            },
+            colse: function () {
+                this.$refs.registEditor.close();
+            },
+            save: function () {
+                console.log('result', this.result)
+                this.alertTitle = '110年五月份新冠疫苗施打預先報名';
+                this.alertText = '成功建立報名表';
+                //switch (this.result.mode) {
+                //    case 'new':
+                //        this.alertTitle = '110年五月份新冠疫苗施打預先報名';
+                //        this.alertText = '成功建立報名表';
+                //        break;
+
+                //    case 'edit':
+                //        this.alertTitle = '110年五月份新冠疫苗施打預先報名';
+                //        this.alertText = '已成功變更報名表'
+                //}
+
+                this.$refs.registViewer.close();
+                this.$refs.registAlert.open();
+            },
+            backToEdit: function () {
+                this.$refs.registViewer.close();
+                this.$refs.registEditor.show();
+            },
+            alertRightClick: function () {
+                this.$bus.$emit(`confirm_show`, false);
             }
         },
+
         components: {
-            appLayout, appMenu, comTable
+            appLayout, appMenu, comTable, editor, comDialog, comConfirm
         }
     };
 </script>
