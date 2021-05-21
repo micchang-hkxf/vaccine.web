@@ -91,6 +91,14 @@
             </v-list-item-content>
         </v-list-item>
 
+        <v-divider></v-divider>
+        
+        <v-list-item @click="toPages('api')">
+            <v-list-item-content>
+                <v-list-item-title>API</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+
     </v-list>
 </template>
 

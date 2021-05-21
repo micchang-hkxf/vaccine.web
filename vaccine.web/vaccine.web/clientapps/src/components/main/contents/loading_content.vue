@@ -11,8 +11,8 @@
                 <v-btn @click="hide2('type1')">type2 hide</v-btn>
                 <v-btn @click="setrate('type1',50)">type2 setvalue</v-btn>
                 <v-btn @click="show3('type1')">type3 show</v-btn>
-
-
+                <v-btn @click="show4('type1')">type4 show</v-btn>
+        
                 <com-loading ref-key="type1"></com-loading>
             </div>
         </template>
@@ -61,7 +61,14 @@
                     s.$emit(`${refKey}_hide3`);
                 },3000);
             },
-
+            show4: function (refKey) {
+                var s = this.$bus;
+                s.$bus.$emit(`${refKey}_show4`,'資料處理中...');
+                setTimeout(function () {
+                    s.$emit(`${refKey}_hide4`);
+                }, 3000);
+            },
+        
            
      
         },

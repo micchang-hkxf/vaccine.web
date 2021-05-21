@@ -7,12 +7,20 @@
             人員管理
         </template>
         <template v-slot:app-content>
+            <com-loading ref-key="type1"></com-loading>
             <div id="app" class="table-list">
                 <com-table ref-key="table" :headers="headers" :items="items" :total-count="totalCount" disabled-prop="disabled"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect">
-                    <template v-slot:item.quota>
-                        <div>45/<span style="color:dimgrey">60</span></div>
+                    <template v-slot:item.isEnable="items">
+                        <div>{{   items.item.isEnable=='true' ? "啟用" : "停用" }}</div>
                     </template>
+
+
+                    <template v-slot:item.area="items">
+                        <div>{{  Array.isArray(items.item.zones) ?  items.item.zones.join(",") : items.item.zones }}</div>
+                    </template>
+
+
                     <template v-slot:search-bar>
                         <v-row>
                             <v-col class="d-flex" cols="12" md="6" lg="6" sm="6" xs="6">
@@ -21,6 +29,7 @@
                                           item-text="state"
                                           item-value="id"
                                           label="全部角色"
+                                          dense
                                           :menu-props="{ bottom: true, offsetY: true }"
                                           outlined
                                           clearable
@@ -33,6 +42,7 @@
                                           item-text="state"
                                           item-value="id"
                                           label="有/無管轄區域"
+                                          dense
                                           :menu-props="{ bottom: true, offsetY: true }"
                                           outlined
                                           clearable
@@ -45,6 +55,7 @@
                                           item-text="state"
                                           item-value="st"
                                           label="權限啟用/停用"
+                                          dense
                                           :menu-props="{ bottom: true, offsetY: true }"
                                           outlined
                                           clearable
@@ -52,11 +63,18 @@
                                           class="search-filter"
                                           return-object>
                                 </v-select>
-                                <v-text-field  class="w03" solo label='人員姓名/編號' v-model="selectUser"></v-text-field>
+                                <v-text-field class="w03"
+                                              label='人員姓名/編號'
+                                              dense
+                                              v-model.trim="selectUser"
+                                              outlined>
+                                </v-text-field>
 
-                                <v-btn icon color="#626781" style="top:10px" @click.stop="search()">
-                                    <v-icon>fas fa-search</v-icon>
+                                <v-btn color="#626781" icon style="padding-left:2px;top:3px" @click.stop="search()">
+                                    <v-icon size="20">fas fa-search</v-icon>
                                 </v-btn>
+                                <v-file-input accept=".csv" style="display:none" ref="importfile">
+                                </v-file-input>
                             </v-col>
 
                         </v-row>
@@ -107,7 +125,7 @@
                     <template v-slot:item.modify="{item}">
                         <v-menu bottom right offset-y>
                             <template v-slot:activator="{ on }">
-                                <v-btn dark icon v-on="on" @click.stop="">
+                                <v-btn dark icon v-on="on" @click.stop="showOptMenu(item)">
                                     <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
                                 </v-btn>
                             </template>
@@ -123,7 +141,7 @@
                                     <v-list-item-action-text>
                                         <v-btn icon dense>
                                             <v-icon small>far fa-eye-slash</v-icon>
-                                        </v-btn>停用
+                                        </v-btn>{{ changeStatus }}
                                     </v-list-item-action-text>
                                 </v-list-item>
                                 <v-list-item @click.stop="removeItemConfirm(item)">
@@ -140,39 +158,75 @@
                 </com-table>
             </div>
 
-            <com-dialog ref="dialogPanel" ref-key="userform" width="60%">
+            <com-dialog ref="dialogPanel" ref-key="userform" width="40%">
                 <template v-slot:toolbar>
                     {{ formTitle }}
                 </template>
                 <template v-slot:content>
                     <v-form v-model="valid" ref="form">
                         <v-label><span class="star">姓名</span></v-label>
-                        <v-text-field outlined class="w01" v-model="uName"></v-text-field>
+                        <v-text-field dense outlined placeholder="請輸入姓名" v-model.trim="uName" :rules="[v => !!v || '必填']"></v-text-field>
                         <v-label><span class="star">帳號</span></v-label>
-                        <v-text-field outlined class="w02" v-model="acc" v-bind:readonly="isReadOnly"></v-text-field>
-                        <v-label><span class="star">email</span></v-label>
-                        <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>
+                        <v-text-field dense outlined class="w02" placeholder="請輸入帳號" v-model="acc" v-bind:readonly="isReadOnly" :rules="[v => !!v || '必填']"></v-text-field>
+                        <!--<v-label><span class="star">email</span></v-label>
+                <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>-->
                         <v-label><span class="star">手機</span></v-label>
-                        <v-text-field outlined class="w02" type="number" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
+                        <v-text-field dense outlined class="w02" placeholder="請輸入手機號碼" type="number" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
                         <v-label><span class="star">再次確認手機</span></v-label>
-                        <v-text-field outlined class="w02" type="number" v-model="mbNo2" :rules="[rules.mbNo.regex]"></v-text-field>
+                        <v-text-field dense outlined class="w02" placeholder="再次輸入手機號碼" type="number" v-model="mbNo2" :rules="[rules.mbNo.regex]"></v-text-field>
                         <v-label><span class="star">服務單位</span></v-label>
-                        <v-text-field outlined class="w02" v-model="unitName"></v-text-field>
+                        <v-text-field dense outlined class="w01" placeholder="請輸入單位名稱" v-model="unitName" :rules="[v => !!v || '必填']"></v-text-field>
+                        <hr noshade size="1">
+                        <div style="height:20px"></div>
+                        <v-label><span class="star">角色設定</span></v-label>
+                        <v-select v-model="setRole"
+                                  :items="getRoleItems"
+                                  item-text="state"
+                                  item-value="id"
+                                  dense
+                                  :menu-props="{ bottom: true, offsetY: true }"
+                                  outlined
+                                  clearable
+                                  required
+                                  :rules="rules.select"
+                                  style="margin-right: 10px;min-width:150px"
+                                  class="search-filter w01"
+                                  return-object>
+                        </v-select>
+                        <v-label><span class="star">管理區域</span></v-label>
+                        <v-select v-model="setArea"
+                                  :items="getAreaItems"
+                                  item-text="state"
+                                  item-value="id"
+                                  dense
+                                  :menu-props="{ bottom: true, offsetY: true }"
+                                  outlined
+                                  clearable
+                                  required
+                                  :rules="rules.select2"
+                                  style="margin-right: 10px;min-width:150px"
+                                  class="search-filter w01"
+                                  return-object>
+                        </v-select>
                         <v-text-field type="hidden" v-model="editID"></v-text-field>
                     </v-form>
                 </template>
                 <template v-slot:action="{close}">
-                    <v-btn @click="close">取消</v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn @click="saveform">儲存</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="close" outlined>取消</v-btn>
+                    <v-btn @click="createConfirm" color="primary" style="margin-left:20px">儲存</v-btn>
                 </template>
             </com-dialog>
-            <com-confirm ref="alert" ref-key="alert" :right-click="alertClick">
+            <com-confirm ref="alert"  ref-key="alert" :right-click="alertClick" >
+
                 <template v-slot:confirm-image>
-                    <v-img src="/alert_success.svg"></v-img>
+                    <v-img v-bind:src="alertImgSrc"></v-img>
                 </template>
                 <template v-slot:confirm-title>
-                    {{ alertTitle }}
+                    <span class="alertTitle">{{ alertTitle }}</span>
                 </template>
                 <template v-slot:confirm-text>
                     {{ alertMessage }}
@@ -180,27 +234,70 @@
                 <template v-slot:confirm-right-btn-text>
                     確認
                 </template>
+         
+            </com-confirm>
+            <com-confirm ref="duplicatAlert"  ref-key="duplicatAlert" :right-click="backClick">
+                <template v-slot:confirm-image>
+                    <v-img v-bind:src="alertImgSrc"></v-img>
+                </template>
+                <template v-slot:confirm-text>
+                    此帳號已註冊，
+                    請重新輸入
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    返回
+                </template>
             </com-confirm>
             <com-confirm ref-key="confirm" :left-click="confirmLeftClick" :right-click="confirmRightClick">
                 <template v-slot:confirm-image>
-                    <v-img src="/alert_success.svg"></v-img>
+                    <v-img v-bind:src="confirmImgSrc"></v-img>
                 </template>
                 <template v-slot:confirm-title>
                     {{ confirmTitle }}
                 </template>
- 
-                <template v-slot:confirm-left-btn-text>
+                <template v-slot:confirm-text>
+                    {{ confirmMessage }}
+                </template>
+                <template outlined v-slot:confirm-left-btn-text>
                     取消
                 </template>
                 <template v-slot:confirm-right-btn-text>
                     確認
                 </template>
-
-
             </com-confirm>
 
-        </template>
+            <com-dialog ref="formSaveConfirmPanel" ref-key="formSaveConfirm" width="40%">
+                <template v-slot:toolbar>
+                    {{ fromSaveConfirmTitle }}
+                </template>
+                <template v-slot:content>
+                    {{  fromSaveConfirmMessage }}
+                    <hr noshade size="1">
+                    <div class="showname">姓名</div>
+                    {{ uName }}
+                    <div class="showname">帳號</div>
+                    {{ acc }}
+                    <div class="showname">手機</div>
+                    {{ mbNo }}
+                    <div class="showname">服務單位</div>
+                    {{ unitName }}
+                    <div class="showname">角色設定</div>
+                    {{ setRoleState }}
+                    <div class="showname">管理區域 </div>
+                    {{ setAreaState }}
 
+                </template>
+                <template v-slot:action="{close}">
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="close" outlined>修改</v-btn>
+                    <v-btn @click="saveform" color="primary" style="margin-left:20px">確定</v-btn>
+                </template>
+            </com-dialog>
+        </template>
+        
 
     </app-layout>
 </template>
@@ -210,7 +307,7 @@
     .users-list .table-list {
         background: var(--w) 0% 0% no-repeat padding-box !important;
         background: #FFFFFF 0% 0% no-repeat padding-box !important;
-        border: 1px solid #3642501A !important;
+       
         opacity: 1 !important;
         margin: 24px !important;
     }
@@ -225,18 +322,40 @@
         content: "*";
     }
     .users-list .w02 {
-        width: 600px;
+        /*width: 600px;*/
     }
+
     .users-list .w03 .v-input__control {
-        min-width: 200px !important;
+        min-width: 170px !important;
         min-height: 53px !important;
     }
-   
-   
     .users-list .v-list-item__title{
         color:black;
     }
+    .users-list .d-flex {
+        padding: 20px 00px 0px 0px !important;
+    }
+    .users-list .dialog-content {
+        padding-bottom: 0px !important;
+    }
+    .users-list .v-text-field {
+        padding-top: 0px !important;
+        margin-top: 0px !important;
+    }
+    .users-list .showname {
+        color: #62678166 !important;
+        padding-top: 15px !important;
+    }
+    /*.users-list .v-btn:not(.v-btn--round).v-size--default {
+        min-width: 200px !important;
+    }
+    .users-list .v-btn:not(.v-btn--round).v-size--large {
+        min-width: 2000px !important;
+    }*/
+    .userlist .alertTitle{
+        font-size:8px;
 
+    }
 </style>
 
 
@@ -247,6 +366,7 @@
     import comDialog from 'components/dialog'
     import { mapGetters, mapActions } from 'vuex'
     import comConfirm from 'components/confirm'
+    import comLoading from 'components/loading'
     //import usersStore  from 'stores/admin/usersStore'
 
     export default {
@@ -264,18 +384,36 @@
             valid: true,
             alertMessage: "",
             alertTitle: "",
-            confirmTitle: "您確定要刪除嗎?",
+            confirmTitle: "刪除人員?",
+            confirmMessage:"",
             editID: "",
             isReadOnly: false,
             delitem:null,
-            formTitle:"新增人員",
+            formTitle: "新增人員",
+            confirmImgSrc: "",
+            alertImgSrc: "",
+            successIcon: '/alert_success.svg', 
+            warningIcon: '/alert_warning.svg',
+            setRole: null,
+            setArea: null,
+            setRoleState: "",
+            setAreaState: "",
+            itle: "",
+            fromSaveConfirmMessage: "",
+            fromSaveConfirmTitle: "",
+            changeStatus:null,
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
                 { text: '姓名', value: 'uName', align: 'start', sortable: true, flex: 6 },
                 { text: '帳號', value: 'acc', sortable: false, flex: 6 },
-                { text: 'email', value: 'email', sortable: false, flex: 6 },
-                { text: '手機', value: 'mbNo', sortable: false, flex: 6 },
-                { text: '服務單位', value: 'unitName', sortable: false, flex: 6 },
+                //{ text: 'email', value: 'email', sortable: false, flex: 6 },
+                { text: '角色', value: 'userType', sortable: false, flex: 6},
+                { text: '管轄區域', value: 'area', sortable: false, flex: 6 },
+                { text: '權限狀態', value: 'isEnable', sortable: false, flex: 6},
+                { text: '密碼更改時間', value: 'passwordChangeTime', sortable: false, flex: 6 },
+                { text: '最後存取時間', value: 'modifyTime', sortable: false, flex: 6 },
+                //{ text: '手機', value: 'mbNo', sortable: false, flex: 6 },
+                //{ text: '服務單位', value: 'unitName', sortable: false, flex: 6 },
                 { text: '', value: 'modify', sortable: false },
             ],
             items: [],
@@ -283,6 +421,7 @@
             selectArea: null,
             selectPermission: null,
             selectUser: "",
+            createConfirmMessage:"",
             permissionStatus: [
                 { state: '啟用', st: 'true' },
                 { state: '停用', st: 'false' },
@@ -295,17 +434,23 @@
                 },
                 mbNo: {
                     required: v => !!v || '欄位必填.',
-                    regex: v => /^09\d{8}$/.test(v) || '手機號碼格式錯誤'
-                }
+                    regex: v => /^09\d{8}$/.test(v) || '輸入十位半形數字'
+                },
+                select: [(v) => !!v || "請選擇角色"],
+                select2: [(v) => !!v || "請選擇區域"],
             }
         }),
         computed: {
-            ...mapGetters('users', ['getTableItems', 'getAreaItems', 'getRoleItems']),     
+            ...mapGetters('users', ['getTableItems', 'getAreaItems', 'getRoleItems', 'getRoleListById', 'getAreaListById']),     
+      
         },
         props: {
 
         },
-        created: function () {
+        mounted(){
+            this.search();
+        },
+        created() {
         },
         methods: {
             ...mapActions('users', ['searchUser', 'changeUser', 'removeUser']),
@@ -320,59 +465,81 @@
                 this.$set(this, "email", item.email);
                 this.$set(this, "unitName", item.unitName);
                 this.$set(this, "isReadOnly", true);
-                
+
+                var r = this.$store.getters["users/getRoleListById"](item.userType).state;
+                var a = this.$store.getters["users/getAreaListById"](item.zones[0]).state
+                this.$set(this, "setRole", { id: item.userType ,state:r});
+                this.$set(this, "setArea", { id: item.zones[0],state:a });
+          
+               // this.setRole = { id: item.userType  };
+               // this.setArea = { id: item.zones[0] };//multiple todo
+             
+       
+                this.fromSaveConfirmTitle = "確認人員更新資訊";
+                this.fromSaveConfirmMessage = " 請確認內容無誤後點選「確定」完成更新";
             },
             stopItem(item) {
                 var comp = this;
                 item.editMode = true;
-                item.isEnable = 'false';
-            
+                item.isEnable = (item.isEnable == 'true') ? 'false' : 'true';
+
+                comp.alertImgSrc = comp.warningIcon;
                 comp.changeUser(item).then(function (result) {
+
                     if (result) {
-                       
+                        comp.alertImgSrc = comp.successIcon;
                         comp.$bus.$emit('alert_show', true);
-                        comp.alertTitle = '停止成功';
+                        comp.alertTitle = comp.changeStatus+'成功';
                         comp.search();
                     } else {
-                        console.log('停止失敗');
-                        comp.alertTitle = '停止失敗';
+                       
+                        comp.alertTitle = comp.changeStatus+'失敗';
+                        this.alertImgSrc = this.alertIcon;
                         comp.$bus.$emit('alert_show', true);
+
                     }
 
                 }).catch(function () {
-                    comp.alertMessage = '網站異常，請稍後再試';
+                    comp.alertImgSrc = comp.alertIcon;
+                    comp.alertMessage = '處理錯誤，請重新嘗試456';
                     comp.$bus.$emit('alert_show', true);
                 });
             },
             removeItemConfirm(item) {
                 this.delitem = item;
+                this.confirmImgSrc = this.warningIcon;
+                this.confirmMessage = item.uName;
                 this.$bus.$emit(`confirm_show`, true);
             },
             removeItem(item) {
                 var comp = this;
+                comp.alertImgSrc = comp.warningIcon;
                 comp.removeUser(item.acc).then(function (result) {
                     if (result) {
-                        console.log('刪除成功');
-                        comp.alertMessage = '刪除成功';
+                        //console.log('刪除成功');
+                        //comp.alertMessage = '刪除成功';
                         comp.alertTitle = '刪除成功';
+                        comp.alertImgSrc = comp.successIcon;
                         comp.search();
                     } else {
-                        console.log('刪除失敗');
+                        //console.log('刪除失敗');
                         comp.alertTitle = '刪除失敗';
-                        comp.alertMessage = '刪除失敗，請稍後再試';
+                        //comp.alertMessage = '刪除失敗，請稍後再試';
                     }
                     comp.$bus.$emit('alert_show', true);
                 }).catch(function () {
-                    comp.alertMessage = '網站異常，請稍後再試';
+
+                    comp.alertMessage = '處理錯誤，請重新嘗試';
+                    comp.alertImgSrc = comp.warningIcon;
                     comp.$bus.$emit('alert_show', true);
                 });
             },
             search() {
                 var filter = {};
-                if (this.selectRole ) {
+                if (this.selectRole) {
                     filter.userType = this.selectRole.id;
                 }
-                if (this.selectArea ) {
+                if (this.selectArea) {
                     filter.zones = this.selectArea.id;
                 }
                 if (this.selectPermission) {
@@ -382,11 +549,11 @@
                     filter.uName = this.selectUser;
                 }
                 var comp = this;
-                comp.alertMessage = '';
+         
                 comp.searchUser(filter).then(function (result) {
                     switch (result.state) {
                         case 'not_found':
-                            comp.alertMessage = '查無資料';
+                            comp.alertTitle = 'not found data';
                             break;
                         default:
                             break;
@@ -394,37 +561,61 @@
                     comp.totalCount = result.totalCount;
                     comp.items = [];
                     result.datas.forEach(f => comp.items.push(f))
-                    if (comp.alertMessage !== '') {
+                    if (comp.alertTitle !== '') {
                         comp.$bus.$emit('alert_show', true);
                         return;
                     }
                 }).catch(function () {
-                    comp.alertMessage = '網站異常，請稍後再試';
+                    comp.alertTitle = '處理錯誤，請重新嘗試';
+                    comp.alertImgSrc = comp.warningIcon;
                     comp.$bus.$emit('alert_show', true);
                 })
             },
-            newItem () {
+            newItem() {
                 this.$bus.$emit('userform_show', true);
                 this.$set(this, "isReadOnly", false);
+                this.fromSaveConfirmTitle = "確認人員新增資訊";
+                this.fromSaveConfirmMessage = " 請確認內容無誤後點選「確定」完成新增";
+                this.setRole = { id: 2 ,state:"轄區管理員"};
+                this.setArea = { id: 1, state: "A區" };
             },
-            importItem () {
-                alert('import');
+            importItem() {
+                this.$refs.importfile.$refs.input.click();
             },
-            close () {
+            close() {
+            },
+            backClick() {
+                this.$bus.$emit('duplicatAlert_show', false);
+                this.$bus.$emit('formSaveConfirm_show', false);
+            },
+            createConfirm() {
+
+                if (this.$refs.form.validate()) {
+                    //this.$set(this, "alertTitle", '儲存成功');
+                    console.log("儲存成功");
+                    //this.$refs.dialogPanel.close();
+                } else if (this.mbNo != this.mbNo2) {
+                    this.$bus.$emit("alert_show", true);
+                    this.alertImgSrc = this.warningIcon;
+                    this.$set(this, "alertTitle", '兩次輸入號碼不一致');
+                    //this.$set(this, "alertMessage", '兩次輸入號碼不一致');
+                    return;
+                } else {
+                    //this.$bus.$emit("alert_show", true);
+                    //this.$set(this, "alertTitle", '儲存失敗');
+    
+                    return;
+                }
+
+                this.confirmImgSrc = this.warningIcon;
+   
+                this.$bus.$emit('formSaveConfirm_show', true);
+                this.setRoleState = this.setRole.state;
+                this.setAreaState = this.setArea.state;
+                
             },
             saveform() {
-                
-                if (this.$refs.form.validate()) {
-                    this.$set(this, "alertTitle", '儲存成功');
-                    this.$refs.dialogPanel.close();
-                } else if (this.mbNo != this.mbNo2) {
-                    this.$bus.$emit("alert", true);
-                    this.$set(this, "alertTitle", '儲存失敗');
-                    this.$set(this, "alertMessage", '手機輸入不一致');
-                } else {
-                    this.$set(this, "alertTitle", '儲存失敗');
-                    this.$set(this, "alertMessage", 'xxxxxxxxxxxx');
-                }
+
                 var comp = this;
                 var setData = {
                     acc: this.acc,
@@ -432,30 +623,34 @@
                     email: this.email,
                     mbNo: this.mbNo,
                     unitName: this.unitName,
-                    userType: 2,//todo
-                    zones: ['2', '3'], //todo
+                    userType: this.setRole.id,
+                    //zones: [this.setArea], //multi todo
+                    zones: [this.setArea.id], 
                     isEnable: 'true',//todo
                     stopit: false,
-                    eidtMode: this.isReadOnly,
+                    editMode: this.isReadOnly,
                 };
-                var msg = (this.isReadOnly) ? "更新" : "新增";
-
+                var msg = (this.isReadOnly) ? "更新" : "建立";
+                comp.alertImgSrc = comp.warningIcon;
+  
+                comp.$bus.$emit('type1_show4', "資料處理中...");
+                var saveMsg = comp.uName + "\n" + comp.acc + "\n" + comp.setRole.state+"\n";
                 comp.changeUser(setData).then(function (result) {
                     if (result) {
-                        console.log('成功');
-                        comp.alertMessage = msg + '成功';
-                        comp.$set(comp, "alertTitle", msg + '成功');
+
+                        comp.$set(comp, "alertTitle", saveMsg+'人員' + msg + '成功');
                         comp.$bus.$emit('userform_show', false);
+                        comp.$bus.$emit('formSaveConfirm_show', false);
+                        comp.alertImgSrc = comp.successIcon;
                         comp.search();
                     } else {
-                        console.log('失敗');
-                        comp.$set(comp, "alertTitle", msg+'失敗');
-                        comp.alertMessage = msg+'失敗，請稍後再試';
+                        comp.$bus.$emit('duplicatAlert_show', true);
                     }
-                    comp.$bus.$emit('alert_show', true);
+                    comp.$bus.$emit('type1_hide4');
+                   
                 }).catch(function () {
-                    comp.$set(comp, "alertTitle", '操作失敗');
-                    comp.alertMessage = '網站異常，請稍後再試';
+                    comp.$bus.$emit('type1_hide4');
+                    comp.$set(comp, "alertTitle", '處理錯誤，請重新嘗試');
                     comp.$bus.$emit('alert_show', true);
                 });
 
@@ -473,10 +668,14 @@
             clear() {
                 this.$refs.form.reset()
             },
+            showOptMenu(item) {
+                this.$set(this, "changeStatus", (item.isEnable=='true') ? "停用" : "啟用");
+
+            },
           
         },
         components: {
-            appLayout, appMenu, comTable, comDialog, comConfirm
+            appLayout, appMenu, comTable, comDialog, comConfirm, comLoading
         }
     }
 

@@ -1,62 +1,64 @@
 ﻿<template>
-    <div>
-        <template>
-            <slot name="search-bar"></slot>
+    <v-data-table v-model="selected"
+                  :headers="computedHeaders"
+                  :items="items"
+                  item-key="date"
+                  :page.sync="page"
+                  :items-per-page="itemsPerPage"
+                  :single-select="singleSelect"
+                  :show-select="showSelect"
+                  :item-class="rowClass"
+                  class="elevation-0"
+                  hide-default-footer>
+
+
+        <template v-for="(header,index) in computedHeaders" v-slot:[header.headerTemplateName]>
+
+            <span :key="index" v-if="!header.hasHeaderTemplate"> {{header.text}}</span>
+
+            <slot :name="header.headerTemplateName" v-if="header.hasHeaderTemplate" :header="header"></slot>
+
         </template>
 
-        <v-data-table v-model="selected"
-                      :headers="computedHeaders"
-                      :items="items"
-                      item-key="date"
-                      :page.sync="page"
-                      :items-per-page="itemsPerPage"
-                      :single-select="singleSelect"
-                      :show-select="showSelect"
-                      :item-class="rowClass"
-                      class="elevation-0"
-                      hide-default-footer>
 
+        <template v-for="(header,index) in computedHeaders" v-slot:[header.templateName]="{item}">
 
-            <template v-for="(header,index) in computedHeaders" v-slot:[header.headerTemplateName]>
+            <span :key="index" v-if="!header.hasTemplate"> {{item[header.value]}}</span>
 
-                <span :key="index" v-if="!header.hasHeaderTemplate"> {{header.text}}</span>
+            <slot :name="header.templateName" v-if="header.hasTemplate" :item="item"></slot>
 
-                <slot :name="header.headerTemplateName" v-if="header.hasHeaderTemplate" :header="header"></slot>
+        </template>
+        <!--<template v-slot:item.checked="{ item }">
+            <v-checkbox v-model="item.checked" :ripple="false"></v-checkbox>
+        </template>-->
+        <template v-slot:top>
 
+            <template>
+                <slot name="search-bar" v-if="hasSlot('search-bar')"></slot>
             </template>
 
-
-            <template v-for="(header,index) in computedHeaders" v-slot:[header.templateName]="{item}">
-
-                <span :key="index" v-if="!header.hasTemplate"> {{item[header.value]}}</span>
-
-                <slot :name="header.templateName" v-if="header.hasTemplate" :item="item"></slot>
-
-            </template>
-            <!--<template v-slot:item.checked="{ item }">
-        <v-checkbox v-model="item.checked" :ripple="false"></v-checkbox>
-    </template>-->
-            <template v-slot:top>
-
-                <v-toolbar flat color="white">
-                    <slot name="toolbar-action" :selectedItems="selectedItems" :selectAll="selectAll"
-                          :deleteSelected="deleteSelected" :switchSelect="switchSelect" :selected="selected"></slot>
-                </v-toolbar>
+            <v-toolbar flat color="white" v-if="hasSlot('toolbar-action')">
+                <slot name="toolbar-action" :selectedItems="selectedItems" :selectAll="selectAll"
+                      :deleteSelected="deleteSelected" :switchSelect="switchSelect" :selected="selected"></slot>
+            </v-toolbar>
 
 
-            </template>
+        </template>
 
 
-        </v-data-table>
+        <template v-slot:footer>
 
-        <div class="text-center pt-2">
-            <v-pagination v-model="page"
-                          :length="computedPageCount"
-                          :total-visible="totalVisible"
-                          color="white"></v-pagination>
+            <div class="text-center pt-2">
+                <v-pagination v-model="page"
+                              :length="computedPageCount"
+                              :total-visible="totalVisible"
+                              color="white"></v-pagination>
+            </div>
 
-        </div>
-    </div>
+        </template>
+
+    </v-data-table>
+
 </template>
   
 
@@ -156,7 +158,7 @@
                 return item[this.disabledProp] ? "item-disabled" : "" ;
             },
             hasSlot: function (templateName) {
-                return this.$slots[templateName] != null;
+                return this.$slots[templateName] != null || this.$scopedSlots[templateName]!=null  ;
             },
             deleteSelected: function (item) {
                 console.log('selected', item);
