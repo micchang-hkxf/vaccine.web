@@ -11,15 +11,36 @@ export default {
 
                         var result = { datas: [], totalCount: 0, state: null };
                         try {
-                            var testmode = false;
+                            var testmode = true;
                             var exists = (testmode) ? state.items : datas.data;
 
                             if (data.userType) {
                                 exists = exists.filter(f => f.userType == data.userType);
                             }
+                            //if (data.zones) {
+                            //    var even = (element) => element == data.zones;
+                            //    exists = exists.filter(f => f.zones.some(even));
+                            //}
+                     
+                       
                             if (data.zones) {
-                                var even = (element) => element == data.zones;
-                                exists = exists.filter(f => f.zones.some(even));
+                                const containsDeep = (text) => (value) => {
+                                    if (!value) return false;
+                                    const valueType = typeof value;
+
+                                    if (valueType === 'string') {
+                                        return value.toLowerCase().indexOf(text.toLowerCase()) > -1;
+                                    }
+                                    if (Array.isArray(value)) {
+                                        return value.some(containsDeep(text));
+                                    }
+                                    if (valueType === 'object') {
+                                        return Object.values(value).some(containsDeep(text));
+                                    }
+                                    return false;
+                                };
+                                exists = exists.filter(containsDeep(data.zones));
+                             
                             }
                             if (data.isEnable) {
                                 exists = exists.filter(f => f.isEnable == data.isEnable);
@@ -102,19 +123,38 @@ export default {
                 var result = true;//todo
                 try {
                     var index = state.items.findIndex(f => f.acc == data.acc);
-                   
+                
                     if (data.editMode) {
-                 
-                       
                         state.items[index] = {
                             acc: data.acc,
                             uName: data.uName,
                             email: data.email,
                             mbNo: data.mbNo,
                             unitName: data.unitName,
-                            userType:data.userType,
-                            zones:data.zones,
-                            isEnable: data.isEnable,
+                            userType: data.userType,
+                            zones: [
+                                {
+                                    "cityId": "1",
+                                    "cityName": "台北市",
+                                    "hasAuth": true,
+                                    "data": [
+                                        {
+                                            "distId": data.zones,
+                                            "distName": "xx區",
+                                            "hasAuth": true,
+                                            "data": [
+                                                {
+                                                    "villageId": "string",
+                                                    "villageName": "string",
+                                                    "hasAuth": true
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            //zones:data.zones,
+                            isEnable: data.isEnable.toString(),
                         };
             
                         console.log(state.items[index]);
@@ -184,7 +224,30 @@ export default {
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: [1],
+                userTypeDesc: "系統管理員",
+                lastAccessTime: "2021-05-20 08:26:43",
+                pdExpTime: "2021-05-20 08:26:43",
+                zones: [
+                    {
+                        "cityId": "1",
+                        "cityName": "台北市",
+                        "hasAuth": true,
+                        "data": [
+                            {
+                                "distId": "1",
+                                "distName": "A區",
+                                "hasAuth": true,
+                                "data": [
+                                    {
+                                        "villageId": "string",
+                                        "villageName": "string",
+                                        "hasAuth": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
                 isEnable:'true',
             },
             {
@@ -195,7 +258,31 @@ export default {
                 mbNo: '0900000002',
                 unitName: 'XX單位2',
                 userType: 2,
-                zones: [2,3],
+                userTypeDesc: "轄區管理員",
+                lastAccessTime: "2021-05-20 08:26:43",
+                pdExpTime: "2021-05-20 08:26:43",
+                //zones: [2,3],
+                zones: [
+                    {
+                        "cityId": "1",
+                        "cityName": "台北市",
+                        "hasAuth": true,
+                        "data": [
+                            {
+                                "distId": "2",
+                                "distName": "B區",
+                                "hasAuth": true,
+                                "data": [
+                                    {
+                                        "villageId": "string",
+                                        "villageName": "string",
+                                        "hasAuth": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
                 isEnable: 'false',
             },
             {
@@ -206,7 +293,31 @@ export default {
                 mbNo: '0900000003',
                 unitName: 'XX單位3',
                 userType: 2,
-                zones: [3,4],
+                userTypeDesc: "轄區管理員",
+                lastAccessTime: "2021-05-20 08:26:43",
+                pdExpTime: "2021-05-20 08:26:43",
+                //zones: [3,4],
+                zones: [
+                    {
+                        "cityId": "1",
+                        "cityName": "台北市",
+                        "hasAuth": true,
+                        "data": [
+                            {
+                                "distId": "3",
+                                "distName": "C區",
+                                "hasAuth": true,
+                                "data": [
+                                    {
+                                        "villageId": "string",
+                                        "villageName": "string",
+                                        "hasAuth": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
                 isEnable: 'true',
             },
             {
@@ -216,8 +327,44 @@ export default {
                 email: 'u004@gmail.com',
                 mbNo: '0900000004',
                 unitName: 'XX單位1',
-                userType: 1,
-                zones: [2],
+                userType: 2,
+                userTypeDesc: "轄區管理員",
+                lastAccessTime: "2021-05-20 08:26:43",
+                pdExpTime: "2021-05-20 08:26:43",
+                //zones: [2],
+                zones: [
+                    {
+                        "cityId": "1",
+                        "cityName": "台北市",
+                        "hasAuth": true,
+                        "data": [
+                            {
+                                "distId": "1",
+                                "distName": "A區",
+                                "hasAuth": true,
+                                "data": [
+                                    {
+                                        "villageId": "string",
+                                        "villageName": "string",
+                                        "hasAuth": true
+                                    }
+                                ]
+                            },
+                            {
+                                "distId": "2",
+                                "distName": "B區",
+                                "hasAuth": true,
+                                "data": [
+                                    {
+                                        "villageId": "string",
+                                        "villageName": "string",
+                                        "hasAuth": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
                 isEnable: 'false',
             },
             {
@@ -228,7 +375,31 @@ export default {
                 mbNo: '0900000005',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: [2],
+                userTypeDesc: "系統管理員",
+                lastAccessTime: "2021-05-20 08:26:43",
+                pdExpTime: "2021-05-20 08:26:43",
+                //zones: [2],
+                zones: [
+                    {
+                        "cityId": "1",
+                        "cityName": "台北市",
+                        "hasAuth": true,
+                        "data": [
+                            {
+                                "distId": "4",
+                                "distName": "D區",
+                                "hasAuth": true,
+                                "data": [
+                                    {
+                                        "villageId": "string",
+                                        "villageName": "string",
+                                        "hasAuth": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
                 isEnable:'true',
             },
             {
@@ -239,7 +410,31 @@ export default {
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
                 userType: 1,
-                zones: [3],
+                userTypeDesc: "系統管理員",
+                lastAccessTime: "2021-05-20 08:26:43",
+                pdExpTime: "2021-05-20 08:26:43",
+                //zones: [3],
+                zones: [
+                    {
+                        "cityId": "1",
+                        "cityName": "台北市",
+                        "hasAuth": true,
+                        "data": [
+                            {
+                                "distId": "2",
+                                "distName": "B區",
+                                "hasAuth": true,
+                                "data": [
+                                    {
+                                        "villageId": "string",
+                                        "villageName": "string",
+                                        "hasAuth": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
                 isEnable: 'true',
             },
             {
@@ -249,8 +444,32 @@ export default {
                 email: 'u007@gmail.com',
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
-                userType: 1,
-                zones: [4],
+                userType: 2,
+                userTypeDesc: "轄區管理員",
+                lastAccessTime: "2021-05-20 08:26:43",
+                pdExpTime: "2021-05-20 08:26:43",
+                //zones: [4],
+                zones: [
+                    {
+                        "cityId": "1",
+                        "cityName": "台北市",
+                        "hasAuth": true,
+                        "data": [
+                            {
+                                "distId": "1",
+                                "distName": "A區",
+                                "hasAuth": true,
+                                "data": [
+                                    {
+                                        "villageId": "string",
+                                        "villageName": "string",
+                                        "hasAuth": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
                 isEnable: 'true',
             },
             {
@@ -260,8 +479,32 @@ export default {
                 email: 'u008@gmail.com',
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
-                userType: 1,
-                zones: [3],
+                userType: 2,
+                userTypeDesc: "轄區管理員",
+                lastAccessTime: "2021-05-20 08:26:43",
+                pdExpTime: "2021-05-20 08:26:43",
+                //zones: [3],
+                zones: [
+                    {
+                        "cityId": "1",
+                        "cityName": "台北市",
+                        "hasAuth": true,
+                        "data": [
+                            {
+                                "distId": "1",
+                                "distName": "A區",
+                                "hasAuth": true,
+                                "data": [
+                                    {
+                                        "villageId": "string",
+                                        "villageName": "string",
+                                        "hasAuth": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
                 isEnable: 'true',
             },
             {
@@ -271,8 +514,32 @@ export default {
                 email: 'u009@gmail.com',
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
-                userType: 1,
-                zones: [3,4],
+                userType: 2,
+                userTypeDesc: "轄區管理員",
+                lastAccessTime: "2021-05-20 08:26:43",
+                pdExpTime: "2021-05-20 08:26:43",
+                //zones: [3,4],
+                zones: [
+                    {
+                        "cityId": "1",
+                        "cityName": "台北市",
+                        "hasAuth": true,
+                        "data": [
+                            {
+                                "distId": "1",
+                                "distName": "A區",
+                                "hasAuth": true,
+                                "data": [
+                                    {
+                                        "villageId": "string",
+                                        "villageName": "string",
+                                        "hasAuth": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
                 isEnable: 'false',
             },
             {
@@ -282,8 +549,32 @@ export default {
                 email: 'u001@gmail.com',
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
-                userType: 1,
-                zones: [3, 4],
+                userType: 2,
+                //zones: [3, 4],
+                zones: [
+                    {
+                        "cityId": "1",
+                        "cityName": "台北市",
+                        "hasAuth": true,
+                        "data": [
+                            {
+                                "distId": "1",
+                                "distName": "A區",
+                                "hasAuth": true,
+                                "data": [
+                                    {
+                                        "villageId": "string",
+                                        "villageName": "string",
+                                        "hasAuth": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                userTypeDesc: "轄區管理員",
+                lastAccessTime: "2021-05-20 08:26:43",
+                pdExpTime: "2021-05-20 08:26:43",
                 isEnable: 'false',
             },
             {
@@ -293,8 +584,32 @@ export default {
                 email: 'u001@gmail.com',
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
-                userType: 1,
-                zones: [2, 4],
+                userType: 2,
+                userTypeDesc: "轄區管理員",
+                lastAccessTime: "2021-05-20 08:26:43",
+                pdExpTime: "2021-05-20 08:26:43",
+                //zones: [2, 4],
+                zones: [
+                    {
+                        "cityId": "1",
+                        "cityName": "台北市",
+                        "hasAuth": true,
+                        "data": [
+                            {
+                                "distId": "1",
+                                "distName": "A區",
+                                "hasAuth": true,
+                                "data": [
+                                    {
+                                        "villageId": "string",
+                                        "villageName": "string",
+                                        "hasAuth": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
                 isEnable: true,
             },
             {
@@ -304,8 +619,32 @@ export default {
                 email: 'u012@gmail.com',
                 mbNo: '0900000001',
                 unitName: 'XX單位1',
-                userType: 1,
-                zones: [3],
+                userType: 2,
+                userTypeDesc: "轄區管理員",
+                lastAccessTime: "2021-05-20 08:26:43",
+                pdExpTime: "2021-05-20 08:26:43",
+                //zones: [3],
+                zones: [
+                    {
+                        "cityId": "1",
+                        "cityName": "台北市",
+                        "hasAuth": true,
+                        "data": [
+                            {
+                                "distId": "1",
+                                "distName": "A區",
+                                "hasAuth": true,
+                                "data": [
+                                    {
+                                        "villageId": "string",
+                                        "villageName": "string",
+                                        "hasAuth": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
                 isEnable: true,
             },
         ],
