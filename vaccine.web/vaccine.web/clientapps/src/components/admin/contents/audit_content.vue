@@ -7,73 +7,71 @@
             稽核
         </template>
         <template v-slot:app-content>
-            <div id="app">
-                <v-card style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
-                    <com-table ref-key="table" :headers="headers" :items="items" :total-count="totalCount"
-                               :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               :change-page="changePage"
-                               style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
-                        <template v-slot:item.quota>
-                            <div>45/<span style="color:dimgrey">60</span></div>
-                        </template>
-                        <template v-slot:search-bar>
-                            <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
-                                <v-row>
-                                    <v-col cols="7">
-                                        <v-select v-model="selectType"
-                                                  :items="getTypes"
-                                                  item-text="name"
-                                                  item-value="name"
-                                                  placeholder="全部報表類型"
-                                                  :menu-props="{ bottom: true, offsetY: true }"
-                                                  outlined
-                                                  dense
-                                                  clearable
-                                                  style="margin-right: 10px;"
-                                                  class="search-filter"
-                                                  return-object>
-                                        </v-select>
-                                    </v-col>
-                                    <v-col cols="7">
-                                        <v-text-field v-model="keyWord" placeholder="使用者/所屬單位/檔名關鍵字" outlined dense clearable></v-text-field>
-                                    </v-col>
-                                    <v-btn icon color="#626781" style="top:5px;" :ripple="false"
-                                           @click="getAudit(1)">
-                                        <v-icon>fas fa-search</v-icon>
-                                    </v-btn>
-                                </v-row>
-                            </div>
-
-
-                        </template>
-
-                        <template v-slot:toolbar-action>
-                            <span> 檔案下載紀錄 : </span>
-                            <v-spacer></v-spacer>
-                            <template>
-                                <v-btn v-on="on" color="#626781" :ripple="false" @click.stop="addFile">
-                                    <v-icon left color='white' size="15">fas fa-plus</v-icon>
-                                    <span style="color:white">新增案件抽查表</span>
+            <v-card>
+                <com-table ref-key="table" :headers="headers" :items="items" :total-count="totalCount"
+                           :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
+                           :change-page="changePage"
+                           style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
+                    <template v-slot:item.quota>
+                        <div>45/<span style="color:dimgrey">60</span></div>
+                    </template>
+                    <template v-slot:search-bar>
+                        <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
+                            <v-row>
+                                <v-col cols="7">
+                                    <v-select v-model="selectType"
+                                              :items="getTypes"
+                                              item-text="name"
+                                              item-value="name"
+                                              placeholder="全部報表類型"
+                                              :menu-props="{ bottom: true, offsetY: true }"
+                                              outlined
+                                              dense
+                                              clearable
+                                              style="margin-right: 10px;"
+                                              class="search-filter"
+                                              return-object>
+                                    </v-select>
+                                </v-col>
+                                <v-col cols="7">
+                                    <v-text-field v-model="keyWord" placeholder="使用者/所屬單位/檔名關鍵字" outlined dense clearable></v-text-field>
+                                </v-col>
+                                <v-btn icon color="#626781" style="top:5px;" :ripple="false"
+                                       @click="getAudit(1)">
+                                    <v-icon>fas fa-search</v-icon>
                                 </v-btn>
-                            </template>
+                            </v-row>
+                        </div>
+
+
+                    </template>
+
+                    <template v-slot:toolbar-action>
+                        <span> 檔案下載紀錄 : </span>
+                        <v-spacer></v-spacer>
+                        <template>
+                            <v-btn v-on="on" color="#626781" :ripple="false" @click.stop="addFile">
+                                <v-icon left color='white' size="15">fas fa-plus</v-icon>
+                                <span style="color:white">新增案件抽查表</span>
+                            </v-btn>
                         </template>
-                        <template v-slot:item.modify="{item}">
-                            <template>
-                                <!--<v-btn dark icon v-on="on" @click.stop="downloadFile">
-                            <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
-                            <span style="color:white">下載</span>
-                        </v-btn>-->
-                                <v-btn v-on="on" color="#736DB9" @click.stop="downloadFile(item)" :ripple="false">
-                                    <v-icon left color='white' size="15">
-                                        mdi-arrow-down
-                                    </v-icon>
-                                    <span style="color:white">下載</span>
-                                </v-btn>
-                            </template>
+                    </template>
+                    <template v-slot:item.modify="{item}">
+                        <template>
+                            <!--<v-btn dark icon v-on="on" @click.stop="downloadFile">
+                        <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
+                        <span style="color:white">下載</span>
+                    </v-btn>-->
+                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadFile(item)" :ripple="false">
+                                <v-icon left color='white' size="15">
+                                    mdi-arrow-down
+                                </v-icon>
+                                <span style="color:white">下載</span>
+                            </v-btn>
                         </template>
-                    </com-table>
-                </v-card>
-            </div>
+                    </template>
+                </com-table>
+            </v-card>
             <!--共用 alert -->
             <com-confirm ref="alert" ref-key="alert" :right-click="alertClick">
                 <template v-slot:confirm-image>

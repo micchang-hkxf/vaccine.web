@@ -7,7 +7,7 @@
             <div class="dialog-content">
                 <slot name="content" :close="close"></slot>
             </div>
-            <v-card-actions v-if="$slots['action']!=null">
+            <v-card-actions v-if="hasSlot('action')">
                 <slot name="action" :close="close"></slot>
             </v-card-actions>
         </v-card>
@@ -51,6 +51,9 @@
             });
         },
         methods: {
+            hasSlot: function (templateName) {
+                return this.$slots[templateName] != null || this.$scopedSlots[templateName] != null;
+            },
             close: function () {
                 this.$set(this, 'isShow', false);
             },
