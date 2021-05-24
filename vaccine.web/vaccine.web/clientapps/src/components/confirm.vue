@@ -196,7 +196,9 @@
             leftBtnAction: function () {
                 this.leftClick();
             },
-
+            close: function () {
+                this.$set(this, 'isShow', false);
+            },
         },
         //components: {
         //}

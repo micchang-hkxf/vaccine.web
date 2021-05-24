@@ -14,6 +14,7 @@
                       :show-select="showSelect"
                       :item-class="rowClass"
                       class="elevation-0"
+                      @click:row="innerRowClick"
                       hide-default-footer>
 
 
@@ -39,8 +40,8 @@
             <template v-slot:top>
 
                 <v-toolbar flat color="white">
-                    <slot name="toolbar-action" :selectedItems="selectedItems" :selectAll="selectAll"
-                          :deleteSelected="deleteSelected" :switchSelect="switchSelect" :selected="selected"></slot>
+                    <slot name="toolbar-action" :selectedItems="selected" :selectAll="selectAll"
+                          :deleteSelected="deleteSelected" :switchSelect="switchSelect"></slot>
                 </v-toolbar>
 
 
@@ -96,7 +97,7 @@
 
 <script>
     export default {
-        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage', 'totalVisible','showSelect','disabledProp','changePage'],
+        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage', 'totalVisible', 'showSelect', 'disabledProp', 'changePage','rowClick'],
         data: () => ({
             page:1,
             isShow: false,
@@ -170,6 +171,12 @@
             switchSelect: function () {
                 var comp = this;
                 comp.selected =! comp.selected;
+            },
+            innerRowClick: function (a, item) {
+                if (this.rowClick)
+                this.rowClick(item);
+               //console.log('a', a);
+               // console.log('row', item);
             }
         },
         components: {
