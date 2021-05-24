@@ -274,37 +274,41 @@
 
                                 <template v-slot:search-bar>
                                     <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
-                                        <v-text-field v-model="detailKeyWord" placeholder="請輸入報名者姓名或身分證" outlined dense clearable class="detail-search-input"></v-text-field>
-                                        <v-btn icon color="#626781" style="top:5px;" :ripple="false"
-                                               @click="getDetailForm(1)">
-                                            <v-icon>fas fa-search</v-icon>
-                                        </v-btn>
-                                        <div class="detail-rebound-info">
-                                            <div>複檢時間：{{detailCheckTime}}</div>
-                                            <div>複檢通過人數：{{detailCheckPassCnt == '0' ? '-' : detailCheckPassCnt}}</div>
+                                        <div class="detail-search-block">
+                                            <v-text-field v-model="detailKeyWord" placeholder="請輸入報名者姓名或身分證" outlined dense clearable class="detail-search-input"></v-text-field>
+                                            <v-btn icon color="#626781" style="top:5px;" :ripple="false"
+                                                   @click="getDetailForm(1)">
+                                                <v-icon>fas fa-search</v-icon>
+                                            </v-btn>
                                         </div>
                                         <div class="detail-action">
-                                            <v-btn v-on="on" @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
-                                                <span :style="detailAbnormalCnt > 0 ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
-                                            </v-btn>
-                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false" :disabled="lessCheckTime">
-                                                <v-icon left color='white' size="15">
-                                                    mdi-arrow-down
-                                                </v-icon>
-                                                <span style="color:white">下載完整接種同意書</span>
-                                            </v-btn>
-                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">
-                                                <v-icon left color='white' size="15">
-                                                    mdi-arrow-down
-                                                </v-icon>
-                                                <span style="color:white">下載報名清冊</span>
-                                            </v-btn>
-                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false" :disabled="lessCheckTime">
-                                                <v-icon left color='white' size="15">
-                                                    mdi-arrow-down
-                                                </v-icon>
-                                                <span style="color:white">下載接種清冊</span>
-                                            </v-btn>
+                                            <div class="detail-rebound-info">
+                                                <div>複檢時間：{{detailCheckTime}}</div>
+                                                <div>複檢通過人數：{{detailCheckPassCnt == '0' ? '-' : detailCheckPassCnt}}</div>
+                                            </div>
+                                            <div class="detail-action-btn">
+                                                <v-btn v-on="on" @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
+                                                    <span :style="detailAbnormalCnt > 0 ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
+                                                </v-btn>
+                                                <v-btn v-on="on" color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false" :disabled="lessCheckTime">
+                                                    <v-icon left color='white' size="15">
+                                                        mdi-arrow-down
+                                                    </v-icon>
+                                                    <span style="color:white">下載完整接種同意書</span>
+                                                </v-btn>
+                                                <v-btn v-on="on" color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">
+                                                    <v-icon left color='white' size="15">
+                                                        mdi-arrow-down
+                                                    </v-icon>
+                                                    <span style="color:white">下載報名清冊</span>
+                                                </v-btn>
+                                                <v-btn v-on="on" color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false" :disabled="lessCheckTime">
+                                                    <v-icon left color='white' size="15">
+                                                        mdi-arrow-down
+                                                    </v-icon>
+                                                    <span style="color:white">下載接種清冊</span>
+                                                </v-btn>
+                                            </div>
                                         </div>
                                     </div>
                                 </template>
@@ -333,6 +337,63 @@
                                 </template>
 
                             </com-table>
+                        </template>
+                    </com-dialog>
+                    <!---->
+                    <com-dialog ref="dialogDoubleCheck" ref-key="dialogDoubleCheck" width="368">
+                        <template v-slot:toolbar>
+                            人工複檢作業
+                            <v-spacer></v-spacer>
+                            <v-btn icon @click.stop="cancelDoubleCheck" :ripple="false">
+                                <v-icon color="white">fas fa-times</v-icon>
+                            </v-btn>
+                        </template>
+                        <template v-slot:content>
+                            <v-form lazy-validation ref="doubleCheckForm">
+                                <div class="double-check">
+                                    <div class="subtitle">人工複檢結果合格者，可下載個人接種同意書</div>
+                                    <hr>
+                                    <v-row>
+                                        <v-col cols="12">
+                                            <label>姓名</label>
+                                            <div>{{artificialName}}</div>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col cols="12">
+                                            <label>生日</label>
+                                            <div>{{artificialBirthday}}</div>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col cols="12">
+                                            <label>身分證</label>
+                                            <div>{{artificialIdentity}}</div>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col cols="12">
+                                            <v-select v-model="artificialResult"
+                                                      :rules="[rules.required]"
+                                                      :items="artificialOptions"
+                                                      item-text="state"
+                                                      item-value="state"
+                                                      placeholder="請選擇人工複檢結果"
+                                                      :menu-props="{ bottom: true, offsetY: true }"
+                                                      outlined
+                                                      dense
+                                                      return-object>
+                                            </v-select>
+                                        </v-col>
+                                    </v-row>
+                                </div>
+                                <hr>
+                            </v-form>
+                        </template>
+                        <template v-slot:action>
+                            <v-spacer></v-spacer>
+                            <v-btn @click="cancelDoubleCheck" outlined :ripple="false"><span style="color:#626781;">取消</span></v-btn>
+                            <v-btn color="primary" @click="confirmDoubleCheck" :ripple="false"><span>確定</span></v-btn>
                         </template>
                     </com-dialog>
                 </v-card>
@@ -420,14 +481,19 @@
         opacity: 1;
         white-space: nowrap;
         margin: -5px 30px 0 30px;
+        display: inline-block;
     }
 
     .detail-search-input {
         width: 220px;
     }
 
+    .detail-action {
+        display: inline-flex;
+    }
+
     .detail-action .v-btn {
-        margin: 1px 5px;
+        margin: 3px 5px;
     }
 
     .detail-result-abnormal {
@@ -436,6 +502,11 @@
         color: #F0524B;
         text-align: center;
         opacity: 1;
+    }
+
+    .detail-search-block {
+        white-space: nowrap;
+        display: inline-flex;
     }
 
     .item-disabled {
@@ -458,6 +529,72 @@
 
     .color-red {
         color: #F0524B;
+    }
+
+    .double-check .subtitle {
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781;
+        text-align: left;
+        opacity: 1;
+    }
+
+    .double-check label {
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #62678166;
+        text-align: left;
+        opacity: 1;
+    }
+
+    .double-check hr {
+        margin: 24px 0;
+    }
+
+    .double-check .row {
+        margin-bottom: 16px !important;
+    }
+
+    .v-btn--outlined {
+        border: thin solid rgba(98,103, 129,0.2) !important;
+    }
+
+    /* Extra small devices (portrait phones, less than 576px) */
+    @media (max-width: 575.98px) {
+        .v-data-table > div {
+            display: grid !important;
+        }
+
+        .v-data-table > header > .v-toolbar__content .spacer {
+            flex-grow: unset !important;
+        }
+
+        .detail-rebound-info {
+            margin-left: 5px;
+        }
+
+        .detail-action {
+            display: inline-block;
+        }
+    }
+
+    /* Small devices (landscape phones, 576px and up) */
+    @media (min-width: 576px) and (max-width: 767.98px) {
+        .detail-action {
+            display: inline-block;
+        }
+    }
+
+    /** Medium devices (tablets, 768px and up) */
+    @media (min-width: 768px) and (max-width: 991.98px) {
+    }
+
+    /* Large devices (desktops, 992px and up) */
+    @media (min-width: 992px) and (max-width: 1199.98px) {
+    }
+
+    /* Extra large devices (large desktops, 1200px and up) */
+    @media (min-width: 1200px) {
     }
 </style>
 
@@ -515,15 +652,27 @@
             detailCheckPassCnt: 0,
             alertMessage: '',
             lessCheckTime: false,
+            artificialId: '',
+            artificialName: '',
+            artificialBirthday: '',
+            artificialIdentity: '',
+            artificialResult: '',
+            artificialOptions: [
+                { state: '複檢合格', id: 'pass' },
+                { state: '複檢不合格', id: 'nopass' },
+            ],
+            rules: {
+                required: v => !!v || '必填'
+            },
         }),
         computed: {
-            ...mapGetters('registration', ['getHeaders',
-                                           'getVaccines',
-                                           'getDistricts',
-                                           'getVillages',
-                                           'getInstitutions',
-                                           'getRegistrationHeaders'
-                                           ]),
+            ...mapGetters('registration', [ 'getHeaders',
+                                            'getVaccines',
+                                            'getDistricts',
+                                            'getVillages',
+                                            'getInstitutions',
+                                            'getRegistrationHeaders'
+                                          ]),
         },
         props: {
 
@@ -533,14 +682,15 @@
             this.getRegistForm(page);
         },
         methods: {
-            ...mapActions('registration', ['loadRegistForm',
-                                           'loadDetailForm',
-                                           'getCompleteFile', 
-                                           'getSignUpFile', 
-                                           'getVaccinationFile', 
-                                           'getAgreeFile',
-                                           'execCheck'
-                                           ]),
+            ...mapActions('registration', [ 'loadRegistForm',
+                                            'loadDetailForm',
+                                            'getCompleteFile', 
+                                            'getSignUpFile', 
+                                            'getVaccinationFile', 
+                                            'getAgreeFile',
+                                            'execCheck',
+                                            'doubleCheck'
+                                          ]),
             getRegistForm: function (page) {
                 var params = {
                     vaccine: this.selectVaccine,
@@ -660,9 +810,14 @@
                     this.detailTotalCount = r.totalCount;
                     this.detailItems.splice(0);
                     r.datas.forEach((x) => {
-                        if (['不合格', '已取消'].includes(x.result)) {
+                        var str = x.identity.substr(1, 5);
+                        var code = x.identity.replace(str, '●●●●●');
+                        x.identity = code;
+
+                        if (['不合格', '已取消'].includes(x.result) || x.result.indexOf('不合格') !== -1) {
                             x['disabled'] = true;
                         }
+
                         this.detailItems.push(x)
                     });
                 }).catch((e) => {
@@ -795,11 +950,49 @@
                     });
             },
             artificialAction: function (item) {
-                console.log('artificialAction ' + item.id);
+                this.artificialId = item.id;
+                this.artificialName = item.name;
+                this.artificialBirthday = item.birthday;
+                this.artificialIdentity = item.identity;
+
+                this.$bus.$emit('dialogDoubleCheck_show', true);
+
+                this.$refs.doubleCheckForm.reset();
             },
             alertClick: function () {
                 this.$bus.$emit('alert_show', false);
             },
+            confirmDoubleCheck: function () {
+                var comp = this;
+                var isvaild = comp.$refs.doubleCheckForm.validate();
+                if (!isvaild) return;
+                
+                comp.alertMessage = '';
+                comp.doubleCheck({ id: comp.artificialId, result: comp.artificialResult })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '不存在';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        comp.$bus.$emit('dialogDoubleCheck_show', false);
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
+            },
+            cancelDoubleCheck: function () {
+                this.$bus.$emit('dialogDoubleCheck_show', false);
+            }
         },
 
         components: {
