@@ -93,6 +93,21 @@ export default {
                 }
             });
         },
+        doubleCheck: function ({ state }, data) {
+            return new Promise(function (resolve, reject) {
+                // TODO:
+                var result = { id: data.id, state: state };
+                try {
+                    console.log(data.result.id);
+                    console.log(data.result.state);
+
+                    resolve(result);
+                    alert('人工複檢 (' + data.result.state + ')');
+                } catch (e) {
+                    reject(result);
+                }
+            });
+        },
     },
     state: {
         ...siteConfig,
@@ -365,6 +380,19 @@ export default {
                 censusRegister: '北市',
                 type: '事先里辦',
                 result: '系統異常',
+            },
+            {
+                id: '446',
+                date: '2021/04/11 11:15',
+                name: '阿吉吉',
+                serialNumber: '446',
+                gender: 'F',
+                birthday: '1978/01/12',
+                identity: 'A125463882',
+                phone: '0910123462',
+                censusRegister: '北市',
+                type: '事先里辦',
+                result: '不合格(人工複檢)',
             },
         ],
     },
