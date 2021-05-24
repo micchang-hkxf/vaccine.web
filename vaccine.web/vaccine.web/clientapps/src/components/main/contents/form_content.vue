@@ -7,7 +7,7 @@
             <div id="app">
                 <v-btn color="primary" @click="create">create</v-btn>
                 <v-btn color="primary" @click="open">open</v-btn>
-                <editor ref="editor" ref-key="two" width="60%" :title="title" :action="formAction"></editor>
+                <editor ref="editor" ref-key="two" width="40%" :title="title" :action="formAction"></editor>
             </div>
             <com-dialog ref="viewer" ref-key="two" width="60%">
                 <template v-slot:toolbar>

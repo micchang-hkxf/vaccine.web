@@ -98,7 +98,7 @@
 
 <script>
     export default {
-        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage', 'totalVisible','showSelect','disabledProp','changePage'],
+        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage', 'totalVisible', 'showSelect', 'disabledProp', 'changePage','rowClick'],
         data: () => ({
             page:1,
             isShow: false,
@@ -172,6 +172,12 @@
             switchSelect: function () {
                 var comp = this;
                 comp.selected =! comp.selected;
+            },
+            innerRowClick: function (a, item) {
+                if (this.rowClick)
+                this.rowClick(item);
+               //console.log('a', a);
+               // console.log('row', item);
             }
         },
         components: {

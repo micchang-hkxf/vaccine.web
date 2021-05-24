@@ -6,8 +6,11 @@
         <template v-slot:app-content>
             <div id="app">
                 <!--<v-btn @click="show('table')">table</v-btn>-->
-                <com-table ref-key="table" :headers="headers" :items="computedItems" :total-count="totalCount" disabled-prop="disabled"
-                           :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect" :change-page="changePage">
+                <com-table  ref="tablePanel" ref-key="table" :headers="headers" :items="desserts" :total-count="totalCount" disabled-prop="disabled"
+                           :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect" :change-page="changePage"
+                            :row-click="handleRowClick">
+                <!--<com-table ref-key="table" :headers="headers" :items="computedItems" :total-count="totalCount" disabled-prop="disabled"
+                           :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect" :change-page="changePage">-->
                     <template v-slot:item.date="{item}">
                         <div>{{item}}*</div>
                     </template>
@@ -312,6 +315,10 @@
             editItem: function (item) {
                 console.log(item);
             },
+            handleRowClick: function (item) {
+               
+                console.log('item', item);
+            }
             //confirmRightClick: function () {
             //    this.$bus.$emit(`confirm_show`, false);
             //},
