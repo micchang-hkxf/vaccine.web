@@ -123,44 +123,23 @@ export default {
                 var result = true;//todo
                 try {
                     var index = state.items.findIndex(f => f.acc == data.acc);
-                
+  
                     if (data.editMode) {
-                        state.items[index] = {
-                            acc: data.acc,
-                            uName: data.uName,
-                            email: data.email,
-                            mbNo: data.mbNo,
-                            unitName: data.unitName,
-                            userType: data.userType,
-                            userTypeDesc: data.userTypeDesc,
-                            lastAccessTime: "2021-05-20 08:26:43",
-                            pdExpTime: "2021-05-20 08:26:43",
-                            zones: [
-                                {
-                                    "cityId": "1",
-                                    "cityName": "台北市",
-                                    "hasAuth": true,
-                                    "data": [
-                                        {
-                                            "distId": data.zones,
-                                            "distName": "xx區",
-                                            "hasAuth": true,
-                                            "data": [
-                                                {
-                                                    "villageId": "string",
-                                                    "villageName": "string",
-                                                    "hasAuth": true
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ],
-                            //zones:data.zones,
-                            isEnable: data.isEnable.toString(),
-                        };
-            
-                        console.log(state.items[index]);
+                        //state.items[index] = {
+                        //    acc: data.acc,
+                        //    uName: data.uName,
+                        //    email: data.email,
+                        //    mbNo: data.mbNo,
+                        //    unitName: data.unitName,
+                        //    userType: data.userType,
+                        //    userTypeDesc: data.userTypeDesc,
+                        //    lastAccessTime: "2021-05-20 08:26:43",//應API,非前台儲存時間
+                        //    pdExpTime: "2021-05-20 08:26:43",//應API,非前台儲存時間
+                        //    zones:data.zones,
+                        //    isEnable: data.isEnable.toString(),
+                        //};
+                        state.items[index] = data;
+
                     } else { 
                         if (index == -1) {
                             state.items.push(data);

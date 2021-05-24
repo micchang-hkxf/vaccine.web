@@ -19,7 +19,7 @@
                     </template>
                     <template v-slot:search-bar>
                         <v-row>
-                            <v-col class="d-flex" cols="12" md="6" lg="6" sm="6" xs="6">
+                            <v-col class="d-flex  justify-content-end" cols="12" md="6" lg="6" sm="6" xs="6">
                                 <v-select v-model="selectRole"
                                           :items="getRoleItems"
                                           item-text="state"
@@ -119,13 +119,14 @@
                     </template>
 
                     <template v-slot:item.modify="{item}">
-                        <v-menu bottom right offset-y>
+
+                        <v-menu bottom right offset-y >
                             <template v-slot:activator="{ on }">
                                 <v-btn dark icon v-on="on" @click.stop="showOptMenu(item)">
                                     <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
                                 </v-btn>
                             </template>
-                            <v-list>
+                            <v-list >
                                 <v-list-item @click.stop="editItem(item)">
                                     <v-list-item-action-text>
                                         <v-btn icon dense>
@@ -147,9 +148,10 @@
                                         </v-btn>刪除
                                     </v-list-item-action-text>
                                 </v-list-item>
+                             
                             </v-list>
                         </v-menu>
-
+         
                     </template>
                 </com-table>
             </div>
@@ -366,6 +368,9 @@
         font-size:8px;
 
     }
+
+
+
 </style>
 
 
@@ -667,7 +672,7 @@
                             ]
                         }
                     ],
-                    isEnable: this.setEnable,
+                    isEnable: this.setEnable.toString(),
                     stopit: false,
                     editMode: this.isReadOnly,
                 };
