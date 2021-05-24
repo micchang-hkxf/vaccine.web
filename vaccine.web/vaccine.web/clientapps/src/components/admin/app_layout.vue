@@ -16,22 +16,35 @@
             <v-app-bar-nav-icon class="d-md-none" @click.stop="toggleDrawer"></v-app-bar-nav-icon>
 
             <v-toolbar-title class="system-title">疫苗管理系統</v-toolbar-title>
-
             <v-spacer></v-spacer>
+                    <v-menu offset-y>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn v-bind="attrs"
+                                   v-on="on"
+                                   class="usertitle"
+                                   color="primary"
+                                   icon>
+                                <v-icon>mdi-account-outline</v-icon>
+                                {{(user)?user.name:''}}
+                            </v-btn>
+                        </template>
 
-            <v-menu open-on-hover offset-y bottom min-width="70" nudge-width="100" max-height="600" nudge-bottom="23" nudge-right="50">
-                <template v-slot:activator="{ on }">
-                    <v-toolbar-title class="user-title" v-on="on">
-                        {{(user)?user.name:''}}
-                    </v-toolbar-title>
-                </template>
+                        <v-list>
+                            <v-list-item v-for="(item, index) in menulist"
+                                         :key="index"
+                                         @click="handleClick(index)">
+                                <v-list-item-icon>
+                                    <v-icon v-text="item.icon"></v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+
                 <v-card :tile="true">
-                    <v-card-title><span class="personal_fontcolor">個人資訊&nbsp;:</span></v-card-title>
-                    <v-card-text>
-
-                    </v-card-text>
+           
                 </v-card>
-            </v-menu>
+    
         </v-app-bar>
         <v-main class="app-content" v-if="$slots['app-content']">
             <v-toolbar elevation="0" height="72px">
@@ -59,7 +72,7 @@
         // router,
         data: () => ({
             drawer: true,
-            user: { name: 'todo' },
+            user: { name: '王小明 ' },
             menus: [],
             toolbar: {
                 //
@@ -67,6 +80,29 @@
                 // sets if the toolbar contents is leaving space for drawer (false) or not (true)
                 clippedLeft: true,
             },
+            menulist: [
+                {
+                    title: '個人資訊',
+                    icon: 'mdi-account-outline',
+                    click() {
+                        console.log('profile')
+                    }
+                },
+                {
+                    title: '修改密碼',
+                    icon: 'mdi-lock-outline',
+                    click() {
+                        console.log('modify password')
+                    }
+                },
+                {
+                    title: '登出',
+                    icon: 'mdi-logout',
+                    click() {
+                        console.log('logout')
+                    }
+                }
+            ],
         }),
         computed: {
             showNavi: {
@@ -84,7 +120,9 @@
         created: function () {
         },
         methods: {
-
+            handleClick(index) {
+                this.menulist[index].click.call(this)
+            }
         }
     }
 </script>
