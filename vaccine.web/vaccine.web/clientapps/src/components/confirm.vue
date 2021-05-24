@@ -196,6 +196,9 @@
             leftBtnAction: function () {
                 this.leftClick();
             },
+            close: function () {
+                this.$set(this, 'isShow', false);
+            },
             hasSlot: function (templateName) {
                 return this.$slots[templateName] != null || this.$scopedSlots[templateName] != null;
             },

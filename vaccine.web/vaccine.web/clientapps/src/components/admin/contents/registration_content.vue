@@ -12,13 +12,13 @@
                 <v-card style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
                     <com-table ref-key="table" :headers="getHeaders" :items="items" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               :change-page="changePage"
+                               :change-page="changePage"  :row-click="handleRowClick"
                                style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
                         <!--<template v-slot:item.date="{item}">
             <div>{{item}}</div>
         </template>-->
                         <template v-slot:item.quota="{item}">
-                            <div>{{item.cntQuota}}/<span style="color:#626781">{{item.totalQuota}}</span></div>
+                            <div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>
                         </template>
                         <template v-slot:search-bar>
                             <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
@@ -97,39 +97,39 @@
 
                         </template>
 
-                        <template v-slot:toolbar-action={selectAll,deleteSelected,selectedItems,selected}>
-                            <v-btn color="#F0524B" :disabled="selected.length<=0 " @click="deleteSelected(selected)" :ripple="false">
-                                <span style="color:white">刪除選取項目 ({{selected.length}})</span>
+                        <template v-slot:toolbar-action={selectAll,selectedItems}>
+                            <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selectedItems)" :ripple="false">
+                                <span style="color:white">刪除選取項目 ({{selectedItems.length}})</span>
                             </v-btn>
                             <v-spacer></v-spacer>
 
                             <v-menu bottom right offset-y>
                                 <template v-slot:activator="{ on }">
                                     <v-btn v-on="on" color="#626781" @click.stop="" :ripple="false">
-                                        <v-icon left color='white' size="15">fas fa-plus</v-icon>
-                                        <span style="color:white">新增報名表</span>
+                                        <img src="/addregist.svg">
+                                        <span class="add-btn-text">新增報名表</span>
                                     </v-btn>
+
                                 </template>
                                 <v-list>
                                     <v-list-item @click.stop="">
                                         <v-list-item-action-text>
-                                            選擇新增方式:
+                                            <span class="action-option-text">選擇新增方式 :</span>
                                         </v-list-item-action-text>
-
                                     </v-list-item>
                                     <v-divider></v-divider>
-                                    <v-list-item @click.stop="manualInput">
+                                    <v-list-item @click.stop="manualInput" class="menu-list-item">
                                         <v-list-item-action-text>
                                             <v-btn icon dense :ripple="false">
-                                                <v-icon small>far fa-edit</v-icon>
-                                            </v-btn>手動輸入
+                                                <img src="/pen.svg">
+                                            </v-btn> <span class="modify-btn-text">手動輸入</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
                                     <v-list-item @click.stop="fileImport">
                                         <v-list-item-action-text>
                                             <v-btn icon dense :ripple="false">
-                                                <v-icon small>far fa-trash-alt</v-icon>
-                                            </v-btn>檔案匯入
+                                                <img src="/file.svg">
+                                            </v-btn><span class="modify-btn-text">檔案匯入</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
 
@@ -137,6 +137,50 @@
                             </v-menu>
 
                             <editor ref="registEditor" ref-key="two" width="60%" :title="title" :action="formAction"></editor>
+
+                            <com-dialog ref="fileViewer" ref-key="two" width="25%">
+                                <template v-slot:toolbar>
+                                    建立報名表-檔案匯入
+                                    <v-spacer></v-spacer>
+                                    <v-btn icon @click.stop="cancelFile" :ripple="false">
+                                        <v-icon color="white">fas fa-times</v-icon>
+                                    </v-btn>
+                                </template>
+                                <template v-slot:content>
+                                    <div>
+                                        <div class="file-text">
+                                            請下載EXCEL範本並輸入『建立報名表單』所需完整的資料後上傳。
+                                        </div>
+
+                                        <div class="file-text-warn">
+                                            請注意，資料不完整或檔案格式錯誤都將導致無法成功上傳。
+                                        </div>
+
+                                        <div class="file-btn-container">
+                                            <v-btn color="secondary">
+                                                <img src="/upload.svg">
+
+                                                <span class="file-btn-text">上傳報名表檔案</span>
+                                            </v-btn>
+
+                                            <v-spacer></v-spacer>
+
+                                            <v-btn color="secondary">
+                                                <v-img src="/download.svg"></v-img>
+                                                <span>下載報名表格式範本</span>
+                                            </v-btn>
+                                        </div>
+
+                                        <v-divider></v-divider>
+                                    </div>
+                                </template>
+                                <template v-slot:action>
+                                    <v-spacer></v-spacer>
+                                    <v-btn outlined :ripple="false" @click="cancelFile"><span style="color:#626781;">取消</span></v-btn>
+                                    <v-btn @click="saveFile" color="primary" :ripple="false">確定送出</v-btn>
+                                </template>
+                            </com-dialog>
+
 
                             <com-dialog ref="registViewer" ref-key="two" width="60%">
                                 <template v-slot:toolbar>
@@ -159,6 +203,9 @@
                                 </template>
                             </com-dialog>
 
+
+
+
                             <com-confirm ref="registAlert" ref-key="confirm" :right-click="alertRightClick">
                                 <template v-slot:confirm-image>
                                     <v-img src="/alert_success.svg"></v-img>
@@ -174,32 +221,83 @@
                                 <template v-slot:confirm-right-btn-text>
                                     確認
                                 </template>
+                            </com-confirm>
+
+
+                            <com-confirm ref="removeAlert" ref-key="confirm" :right-click="removeRightClick" :left-click="removeLeftClick">
+                                <template v-slot:confirm-image>
+                                    <v-img src="/alert_remove.svg"></v-img>
+                                </template>
+
+                                <template v-slot:confirm-text>
+                                    <span> 確定刪除選取 <span style="color:#F0524B"> {{compSelectedItems.length}}</span>  個報名表單？</span>
+                                </template>
+                                <template v-slot:confirm-left-btn-text>
+                                    取消
+                                </template>
+                                <template v-slot:confirm-right-btn-text>
+                                    確認
+                                </template>
 
 
                             </com-confirm>
+
+
+                            <com-confirm ref="successUploadAlert" ref-key="confirm" :right-click="successUploadRightClick">
+                                <template v-slot:confirm-image>
+                                    <v-img src="/alert_success.svg"></v-img>
+                                </template>
+                                <template v-slot:confirm-title>
+                                    <span style="color:#736DB9">{{alertTitle}}</span>
+
+                                </template>
+                                <template v-slot:confirm-text>
+                                    <span style="color:#626781">{{alertText}}</span>
+                                </template>
+
+                                <template v-slot:confirm-right-btn-text>
+                                    確認
+                                </template>
+                            </com-confirm>
+
+                            <editor ref="registEditEditor" ref-key="two" width="60%" :title="title" :action="formAction"></editor>
+
+
+
 
                         </template>
 
                         <template v-slot:item.modify="{item}">
                             <v-menu bottom right offset-y>
                                 <template v-slot:activator="{ on }">
-                                    <v-btn dark icon v-on="on" @click.stop="">
+                                    <v-btn dark icon v-on="on" @click.stop="" :ripple="false">
                                         <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
                                     </v-btn>
                                 </template>
                                 <v-list>
-                                    <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item @click.stop="viewitem(item)"  class="modify-list-item">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
-                                                <v-icon small>far fa-edit</v-icon>
-                                            </v-btn>編輯
+                                                <img src="/view.svg">
+                                            </v-btn>
+                                            <span class="modify-btn-text">查看</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item @click.stop="editItem(item)" class="modify-list-item">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
-                                                <v-icon small>far fa-trash-alt</v-icon>
-                                            </v-btn>刪除
+                                                <img src="/pen.svg">
+
+                                            </v-btn>
+                                            <span class="modify-btn-text">編輯</span>
+                                        </v-list-item-action-text>
+                                    </v-list-item>
+                                    <v-list-item @click.stop="removeItem(item)" class="modify-list-item">
+                                        <v-list-item-action-text>
+                                            <v-btn icon dense>
+                                                <img src="/trash.svg">
+                                            </v-btn>
+                                            <span class="modify-btn-text">刪除</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
                                     <v-list-item @click.stop="detailItem(item)">
@@ -212,22 +310,27 @@
                                     <v-list-item @click.stop="editItem(item)">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
-                                                <v-icon small>mdi-arrow-down</v-icon>
-                                            </v-btn>完整下載接種同意書
+                                                <img src="/download2.svg">
+
+                                            </v-btn>
+                                            <span class="modify-btn-text">下載完整接種同意書</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item @click.stop="dowloadRegistItem(item)" class="modify-list-item">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
-                                                <v-icon small>mdi-arrow-down</v-icon>
-                                            </v-btn>下載報名清冊
+                                                <img src="/download2.svg">
+                                            </v-btn>
+                                            <span class="modify-btn-text">下載報名清冊</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item @click.stop="dowloadList(item)" class="modify-list-item">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
-                                                <v-icon small>mdi-arrow-down</v-icon>
-                                            </v-btn>下載施打清冊
+                                                <img src="/download2.svg">
+
+                                            </v-btn>
+                                            <span class="modify-btn-text">下載施打清冊</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
                                 </v-list>
@@ -235,6 +338,18 @@
 
                         </template>
                     </com-table>
+                    <!--共用 alert -->
+                    <com-confirm ref="alert" ref-key="alert" :right-click="alertClick">
+                        <template v-slot:confirm-image>
+                            <v-img src="/alert_warning.svg"></v-img>
+                        </template>
+                        <template v-slot:confirm-text>
+                            {{alertMessage}}
+                        </template>
+                        <template v-slot:confirm-right-btn-text>
+                            返回
+                        </template>
+                    </com-confirm>
                     <!---->
                     <com-dialog ref="dialogDetail" ref-key="dialogDetail" width="100%">
                         <template v-slot:toolbar>
@@ -245,15 +360,15 @@
                             </v-btn>
                         </template>
                         <template v-slot:content>
-                            <div class="detail-title">{{detailTitle}}</div>
+                            <div class="detail-title">{{detailTitle}}<span :class="detailCntQuota < detailTotalQuota ? 'hidden' : ''">名額已滿</span></div>
                             <div class="detail-sub-title">{{detailDistrict}}－{{detailVillage}}｜{{detailType}}</div>
                             <div class="detail-title-desc">
                                 <div>設站時間：{{detailStationTime}}</div>
                                 <div>報名開放時間：{{detailRegistrationTime}}</div>
-                                <div>報名名額：{{detailCntQuota}}/{{detailTotalQuota}}</div>
+                                <div>報名名額：<span :class="detailCntQuota >= detailTotalQuota ? 'color-red' : ''">{{detailCntQuota}}</span>/<span style="color:#626781">{{detailTotalQuota}}</span></div>
                                 <div>承辦醫院：{{detailInstitution}}（{{detailInstutionDistrict}}）</div>
                             </div>
-                            <hr/>
+                            <hr />
                             <!---->
                             <com-table ref-key="detailTable" :headers="getRegistrationHeaders" :items="detailItems" :total-count="detailTotalCount"
                                        :items-per-page="detailItemsPerPage" :total-visible="detailTotalVisible" :show-select="false"
@@ -269,25 +384,25 @@
                                         </v-btn>
                                         <div class="detail-rebound-info">
                                             <div>複檢時間：{{detailCheckTime}}</div>
-                                            <div>複檢通過人數：{{detailCheckPassCnt}}</div>
+                                            <div>複檢通過人數：{{detailCheckPassCnt == '0' ? '-' : detailCheckPassCnt}}</div>
                                         </div>
                                         <div class="detail-action">
                                             <v-btn v-on="on" @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
                                                 <span :style="detailAbnormalCnt > 0 ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
                                             </v-btn>
-                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false">
+                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false" :disabled="lessCheckTime">
                                                 <v-icon left color='white' size="15">
                                                     mdi-arrow-down
                                                 </v-icon>
                                                 <span style="color:white">下載完整接種同意書</span>
                                             </v-btn>
-                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false">
+                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">
                                                 <v-icon left color='white' size="15">
                                                     mdi-arrow-down
                                                 </v-icon>
                                                 <span style="color:white">下載報名清冊</span>
                                             </v-btn>
-                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false">
+                                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false" :disabled="lessCheckTime">
                                                 <v-icon left color='white' size="15">
                                                     mdi-arrow-down
                                                 </v-icon>
@@ -303,18 +418,18 @@
                                 </template>
 
                                 <template v-slot:item.result="{item}">
-                                    <div :class="item.result === '系統異常' ? 'detail-result-abnormal' : ''">{{item.result}}</div>
+                                    <div :class="item.result === '系統異常' ? 'detail-result-abnormal' : ''">{{item.result == '' ? '-' : item.result}}</div>
                                 </template>
 
                                 <template v-slot:item.modify="{item}">
                                     <template>
-                                        <v-btn v-on="on" color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false" :disabled="item.disabled" :class="item.result === '系統異常' ? 'hidden' : ''">
+                                        <v-btn v-on="on" color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result === '系統異常' ? 'hidden' : ''">
                                             <v-icon left color='white' size="15">
                                                 mdi-arrow-down
                                             </v-icon>
                                             <span style="color:white">下載同意書</span>
                                         </v-btn>
-                                        <v-btn v-on="on" color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled" :class="item.result !== '系統異常' ? 'hidden' : ''" class="btn-warning">
+                                        <v-btn v-on="on" color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result !== '系統異常' ? 'hidden' : ''" class="btn-warning">
                                             <span style="color:white">人工複檢</span>
                                         </v-btn>
                                     </template>
@@ -367,12 +482,60 @@
         background: rgba(98, 103, 129, 0.06);
     }
 
+    .file-text {
+        color: #626781;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+    }
+
+    .file-text-warn {
+        color: #F0524B;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+    }
+
+
+    .file-btn-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    .file-btn-text {
+        padding-left: 10px;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        color:#ffffff;
+    }
+
+    .modify-btn-text {
+        color: #626781;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+    }
+
+    .modify-list-item {
+        min-height: 20px !important;
+    }
+
+    .action-option-text {
+        color: #626781;
+    }
+
     .detail-title {
         font: normal normal normal 24px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #736DB9;
         text-align: left;
         opacity: 1;
+    }
+    .add-btn-text {
+        color: white;
+        padding-left: 5px;
+    }
+
+    .detail-title span {
+        font: normal normal normal 24px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #F0524B;
+        margin: 0 10px;
     }
 
     .detail-sub-title {
@@ -436,6 +599,10 @@
         border-radius: 4px;
         opacity: 1;
     }
+
+    .color-red {
+        color: #F0524B;
+    }
 </style>
 
 <script>
@@ -490,9 +657,17 @@
             detailAbnormalCnt: 0,
             detailCheckTime: 0,
             detailCheckPassCnt: 0,
+            alertMessage: '',
+            lessCheckTime: false,
         }),
         computed: {
-            ...mapGetters('registration', ['getHeaders', 'getVaccines', 'getDistricts', 'getVillages', 'getInstitutions', 'getRegistrationHeaders']),
+            ...mapGetters('registration', ['getHeaders',
+                                           'getVaccines',
+                                           'getDistricts',
+                                           'getVillages',
+                                           'getInstitutions',
+                                           'getRegistrationHeaders'
+                                           ]),
         },
         props: {
 
@@ -502,7 +677,14 @@
             this.getRegistForm(page);
         },
         methods: {
-            ...mapActions('registration', ['loadRegistForm', 'loadDetailForm']),
+            ...mapActions('registration', ['loadRegistForm',
+                                           'loadDetailForm',
+                                           'getCompleteFile', 
+                                           'getSignUpFile', 
+                                           'getVaccinationFile', 
+                                           'getAgreeFile',
+                                           'execCheck'
+                                           ]),
             getRegistForm: function (page) {
                 var params = {
                     vaccine: this.selectVaccine,
@@ -527,16 +709,22 @@
                 ///{ page: 2, pageSize: 20}
                 this.getRegistForm(pager.page);
             },
-            deleteSelected: function (item) {
-                console.log('delete', item)
+            deleteSelected: function (items) {
+                this.compSelectedItems.splice(0);
+                items.forEach((x) => this.compSelectedItems.push(x));
+                this.$forceUpdate();
+                this.$refs.removeAlert.open();                
+                console.log('delete', items)
+               
             },
             manualInput: function () {
                 this.title = '建立報名表';
                 this.viewerTitle = '確認新增報名資訊';
-                this.$refs.registEditor.open();
+                this.$refs.registEditor.create();
                 console.log('manualInput')
             },
             fileImport: function () {
+                this.$refs.fileViewer.open();
                 console.log('fileImport')
             },
             formAction: function (result) {
@@ -569,7 +757,7 @@
                 //        this.alertTitle = '110年五月份新冠疫苗施打預先報名';
                 //        this.alertText = '已成功變更報名表'
                 //}
-
+                
                 this.$refs.registViewer.close();
                 this.$refs.registAlert.open();
             },
@@ -595,6 +783,10 @@
                 this.detailAbnormalCnt = item.abnormalCnt;
                 this.detailCheckTime = item.checkTime;
                 this.detailCheckPassCnt = item.checkPassCnt;
+
+                var today = new Date().toISOString().substr(0, 10).replace(/-/g, '');
+                var checkTime = item.checkTime.substr(0, 10).replace(/\//g, '');
+                this.lessCheckTime = (today <= checkTime);
 
                 this.$bus.$emit('dialogDetail_show', true);
 
@@ -628,22 +820,135 @@
                 });
             },
             againCheck: function () {
-                console.log('againCheck ' + this.detailId);
+                var comp = this;
+                comp.alertMessage = '';
+                comp.execCheck({ id: comp.detailId })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '不存在';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        comp.detailAbnormalCnt = result.cnt;
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
             },
             downloadCompleteFile: function () {
-                console.log('downloadCompleteFile ' + this.detailId);
+                var comp = this;
+                comp.alertMessage = '';
+                comp.getCompleteFile({ id: comp.detailId })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '檔案不存在';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        console.log(result);
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
             },
             downloadSignUpFile: function () {
-                console.log('downloadSignUpFile ' + this.detailId);
+                var comp = this;
+                comp.alertMessage = '';
+                comp.getSignUpFile({ id: comp.detailId })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '檔案不存在';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        console.log(result);
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
             },
             downloadVaccinationFile: function () {
-                console.log('downloadSignUpFile ' + this.detailId);
+                var comp = this;
+                comp.alertMessage = '';
+                comp.getVaccinationFile({ id: comp.detailId })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '檔案不存在';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        console.log(result);
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
             },
             downloadAgreeFile: function (item) {
-                console.log('downloadAgreeFile ' + item.id);
+                var comp = this;
+                comp.alertMessage = '';
+                comp.getAgreeFile({ id: item.id })
+                    .then(function (result) {
+                        switch (result.state) {
+                            case 'not found':
+                                comp.alertMessage = '檔案不存在';
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (comp.alertMessage !== '') {
+                            comp.$bus.$emit('alert_show', true);
+                            return;
+                        }
+
+                        console.log(result);
+                    })
+                    .catch(function () {
+                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('alert_show', true);
+                    });
             },
             artificialAction: function (item) {
                 console.log('artificialAction ' + item.id);
+            },
+            alertClick: function () {
+                this.$bus.$emit('alert_show', false);
             },
         },
 

@@ -51,7 +51,7 @@ export default new Vuetify({
         themes: {
             dark: {
                 primary: '#736DB9',
-                secondary: '#364250',
+                secondary: '#626781',
                 accent: '#82B1FF',
                 error: '#F0524B',
                 info: '#2196F3',
@@ -60,7 +60,7 @@ export default new Vuetify({
             },
             light: {
                 primary: '#736DB9',
-                secondary: '#364250',
+                secondary:'#626781',
                 accent: '#82B1FF',
                 error: '#F0524B',
                 info: '#2196F3',
