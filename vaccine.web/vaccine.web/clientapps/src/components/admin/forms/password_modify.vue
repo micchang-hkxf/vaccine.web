@@ -15,7 +15,7 @@
                         <v-text-field v-model="oldPassword"
                                       placeholder="請輸入目前密碼"
                                       :type="show1 ? 'text' : 'password'"
-                                      :rules="[rules.required, rules.min]"
+                                      :rules="[rules.code]"
                                       required
                                       outlined
                                       dense>
@@ -24,7 +24,7 @@
                         <v-text-field v-model="newPassword"
                                       placeholder="請輸入8位以上包含半形英文+數字"
                                       :type="show2 ? 'text' : 'password'"
-                                      :rules="[rules.required, rules.min]"
+                                      :rules="[rules.code]"
                                       required
                                       outlined
                                       dense>
@@ -34,7 +34,7 @@
                         <v-text-field v-model="newPassword2"
                                       placeholder="請輸入8位以上包含半形英文+數字"
                                       :type="show3 ? 'text' : 'password'"
-                                      :rules="[rules.required, rules.min, passwordConfirmationRule]"
+                                      :rules="[rules.code, passwordConfirmationRule]"
                                       required
                                       outlined
                                       dense>
@@ -85,11 +85,8 @@
             newPassword: '',
             newPassword2: '',
             oldPassword:'',
-
             rules: {
-                required: value => !!value || '密碼至少需8位半形英文+數字',
-                min: v => v.length >= 8 || '密碼至少需8位半形英文+數字',
-   
+                code: v => /^[a-zA-Z0-9]{8,}$/.test(v) || '密碼至少需8位半形英文+數字',
             },
 
             model: {},
