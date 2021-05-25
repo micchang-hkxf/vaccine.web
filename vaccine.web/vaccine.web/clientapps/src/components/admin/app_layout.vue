@@ -25,6 +25,7 @@
                            icon>
                         <v-icon>mdi-account-outline</v-icon>
                         {{(user)?user.name:''}}
+                        <v-icon>mdi-chevron-right</v-icon>
                     </v-btn>
                 </template>
 
@@ -197,7 +198,7 @@
             },
             save: function () {
 
-                this.alertText = '密碼修改完成';
+                this.alertText = '您的密碼已更新，請重新登入';
                 this.$refs.modifyViewer.close();
                 this.$refs.changeAlert.open();
             },
