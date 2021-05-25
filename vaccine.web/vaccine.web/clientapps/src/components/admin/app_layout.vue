@@ -65,13 +65,11 @@
             </div>
         </v-footer>
         <modify ref="passwordEditor" ref-key="pwd" width="60%" :title="title" :action="formAction"></modify>
+        <profile ref="profileViewer" ref-key="pf" width="40%" :title="title2" ></profile>
         <com-dialog ref="modifyViewer" ref-key="pwd" width="60%">
             <template v-slot:toolbar>
                 {{modifyTitle}}
                 <v-spacer></v-spacer>
-                <v-btn icon @click.stop="colse" :ripple="false">
-                    <v-icon color="white">fas fa-times</v-icon>
-                </v-btn>
             </template>
             <template v-slot:content>
                 點選「確定」後新密碼立即生效。
@@ -79,7 +77,6 @@
                 {{result}}
             </template>
             <template v-slot:action>
-
                 <v-spacer></v-spacer>
                 <v-btn outlined :ripple="false" @click="backToEdit"><span style="color:#626781;">修改</span></v-btn>
                 <v-btn @click="save" color="primary" :ripple="false">確定</v-btn>
@@ -109,6 +106,7 @@
 
 <script>
     import modify from 'components/admin/forms/password_modify'
+    import profile from 'components/admin/contents/profile_content'
     import comConfirm from 'components/confirm'
     import comDialog from 'components/dialog'
     //import appMenu from 'components/main/menu'
@@ -122,9 +120,11 @@
             user: { name: '王小明 ' },
             menus: [],
             modifyTitle: '',
+            profileTitle: '',
             alertTitle:'',
             alertText:'',
-            title: '',
+            title: '修改密碼',
+            title2: '個人資訊',
             result:'',
             toolbar: {
                 //
@@ -137,7 +137,9 @@
                     title: '個人資訊',
                     icon: 'mdi-account-outline',
                     click() {
-                        console.log('profile')
+                       
+                        this.profileTitle = '個人資訊';
+                        this.$refs.profileViewer.create();
                     }
                 },
                 {
@@ -152,7 +154,7 @@
                     title: '登出',
                     icon: 'mdi-logout',
                     click() {
-                        console.log('logout')
+                        alert('logout');
                     }
                 }
             ],
@@ -207,7 +209,7 @@
             },
         },
         components: {
-            modify, comDialog, comConfirm
+            modify, comDialog, comConfirm, profile
         }
     }
 </script>
