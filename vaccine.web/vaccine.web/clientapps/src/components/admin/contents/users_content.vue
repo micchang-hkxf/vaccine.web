@@ -468,9 +468,10 @@
             this.search();
         },
         created() {
+            this.getAreaList();
         },
         methods: {
-            ...mapActions('users', ['searchUser', 'changeUser', 'removeUser']),
+            ...mapActions('users', ['searchUser', 'changeUser', 'removeUser','getAreaList']),
 
             editItem(item) {
                 this.formTitle = "修改人員資料";
@@ -651,27 +652,28 @@
                     //zones: [this.setArea.id], 
                     lastAccessTime: "2021-05-20 08:26:43",
                     pdExpTime: "2021-05-20 08:26:43",
-                    zones: [
-                        {
-                            "cityId": "1",
-                            "cityName": "台北市",
-                            "hasAuth": true,
-                            "data": [
-                                {
-                                    "distId": this.setArea.id,
-                                    "distName": this.setArea.state,
-                                    "hasAuth": true,
-                                    "data": [
-                                        {
-                                            "villageId": "string",
-                                            "villageName": "string",
-                                            "hasAuth": true
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
+                    zones: [ 200 ,this.setArea.id],
+                    //zones: [
+                    //    {
+                    //        "cityId": "1",
+                    //        "cityName": "台北市",
+                    //        "hasAuth": true,
+                    //        "data": [
+                    //            {
+                    //                "distId": this.setArea.id,
+                    //                "distName": this.setArea.state,
+                    //                "hasAuth": true,
+                    //                "data": [
+                    //                    {
+                    //                        "villageId": "string",
+                    //                        "villageName": "string",
+                    //                        "hasAuth": true
+                    //                    }
+                    //                ]
+                    //            }
+                    //        ]
+                    //    }
+                    //],
                     isEnable: this.setEnable.toString(),
                     stopit: false,
                     editMode: this.isReadOnly,

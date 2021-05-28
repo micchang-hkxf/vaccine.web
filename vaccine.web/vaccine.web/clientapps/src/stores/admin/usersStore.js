@@ -2,15 +2,15 @@
 export default {
     namespaced: true,
     actions: {
-       searchUser ({ state }, data) {
+        searchUser({ state }, data) {
             return new Promise(function (resolve, reject) {
                 var datas;
-                axios.get('/testUserList.json')
-                    .then(response => {
-                        datas = response.data;
+                try {
+                    var result = { datas: [], totalCount: 0, state: null };
+                    axios.get('/testUserList.json')
+                        .then(response => {
+                            datas = response.data;
 
-                        var result = { datas: [], totalCount: 0, state: null };
-                        try {
                             var testmode = true;
                             var exists = (testmode) ? state.items : datas.data;
 
@@ -21,8 +21,8 @@ export default {
                             //    var even = (element) => element == data.zones;
                             //    exists = exists.filter(f => f.zones.some(even));
                             //}
-                     
-                       
+
+
                             if (data.zones) {
                                 const containsDeep = (text) => (value) => {
                                     if (!value) return false;
@@ -40,7 +40,7 @@ export default {
                                     return false;
                                 };
                                 exists = exists.filter(containsDeep(data.zones));
-                             
+
                             }
                             if (data.isEnable) {
                                 exists = exists.filter(f => f.isEnable == data.isEnable);
@@ -64,96 +64,77 @@ export default {
                             result.state = exists.state
 
                             resolve(result);
-                        } catch (e) {
-                            reject(result);
-                        }
+                   
                     })
                     .catch(error => {
                         console.log(error);
-                    })
+                        })
+                } catch (e) {
+                    reject(result);
+                }
 
             });
         },
-        //searchUser2({ state }, data) {
-        //    return new Promise(function (resolve, reject) {
-              
-        //        var result = { datas: [], totalCount: 0, state: null };
-        //        try {
-        
-        //            var exists = state.items;
 
-        //            if (data.userType) {
-        //                exists = exists.filter(f => f.userType == data.userType);
-        //            }
-        //            if (data.zones) {
-        //                var even = (element) => element == data.zones;
-        //                exists = exists.filter(f => f.zones.some(even));
-        //            }
-        //            if (data.isEnable) {
-        //                exists = exists.filter(f => f.isEnable == data.isEnable);
-        //            }
-        //            if (data.uName) {
-        //                exists = exists.filter(f => (f.uName == data.uName || f.acc == data.uName));
-        //            }
 
-        //            if (exists.length == 0) {
-        //                result.state = 'not_found';
-        //                resolve(result);
-        //                return;
-        //            }
-        //            if (exists.state === 'network_abnormal') {
-        //                result.state = exists.state;
-        //                throw result;
-        //            }
-        //            result.datas = exists;
-
-        //            result.totalCount = exists.length;
-        //            result.state = exists.state
-
-        //            resolve(result);
-        //        } catch (e) {
-        //            reject(result);
-        //        }
-
-        //    });
-        //},
-
-        changeUser ({ state }, data) {
+        changeUser({ state }, data) {
             return new Promise(function (resolve, reject) {
-                var result = true;//todo
+                var result = {}
                 try {
                     var index = state.items.findIndex(f => f.acc == data.acc);
-  
-                    if (data.editMode) {
-                        //state.items[index] = {
-                        //    acc: data.acc,
-                        //    uName: data.uName,
-                        //    email: data.email,
-                        //    mbNo: data.mbNo,
-                        //    unitName: data.unitName,
-                        //    userType: data.userType,
-                        //    userTypeDesc: data.userTypeDesc,
-                        //    lastAccessTime: "2021-05-20 08:26:43",//應API,非前台儲存時間
-                        //    pdExpTime: "2021-05-20 08:26:43",//應API,非前台儲存時間
-                        //    zones:data.zones,
-                        //    isEnable: data.isEnable.toString(),
-                        //};
-                        state.items[index] = data;
 
-                    } else { 
+                    if (data.editMode) {
+                        state.items[index] = data;
+                    } else {
                         if (index == -1) {
-                            state.items.push(data);
+                           state.items.push(data); //寫入資料到測試store
                         } else {
-                            result = false;
+                            result.state ='error';
                         }
                     }
-         
                     resolve(result);
                 } catch (e) {
                     reject(result);
                 }
+                //try {
+                //    console.log(state)
+                //    if (data.editMode) {
+                //        //todo
+                //    } else {
+                //        var setdata = {
+                //            "acc": "012",
+                //            "uName": "test012",
+                //            "email": "012@gmail.com",
+                //            "mbNo": "0900000012",
+                //            "unitName": "衛生局",
+                //            "userType": 0,
+                //            "zones": [
+                //                "200", "2004"
+                //            ]
+                //        };
+                           
+                //        axios({
+                //            method: 'post',
+                //            url: 'https://vaccine.gov.taipei:8080/api/User?api-version=1.0',
+                //            data: setdata,
+                //            responseType: 'json',
+                //            headers: {
+                //                "X-Token": "AP18cdecef93d03485d8755735be7f358f7",
+                //            }
+                //        }).then(function (response) {
+                //            console.log(response.status)
+
+                //        });
+                         
+                    
+                //    }
+
+                //    resolve(result);
+                //} catch (e) {
+                //    reject(result);
+                //}
             });
-           
+
         },
         removeUser({ state }, delKey) {
             return new Promise(function (resolve, reject) {
@@ -168,23 +149,43 @@ export default {
                 }
             });
 
-        }
+        },
+        getAreaList: function ({ commit }) {
+
+            axios({
+                method: 'get',
+                url: 'https://vaccine.gov.taipei:8080/api/DataItem/ZoneMap?api-version=1.0',
+                data: {},
+                headers: {
+                    "X-Token": "AP18cdecef93d03485d8755735be7f358f7",
+                },
+                responseType: 'json',
+            }).then(function (res) {
+                commit('getAreaList', res.data)
+  
+   
+            });
+
+        },
     },
 
     state: {
         arealist: [
             {
-                id: 1,
+                id: 2001,
                 state: "A區"
             }, {
-                id: 2,
+                id: 2002,
                 state: "B區"
             }, {
-                id: 3,
+                id: 2003,
                 state: "C區"
             }, {
-                id: 4,
+                id: 2004,
                 state: "D區"
+            }, {
+                id: 2005,
+                state: "E區"
             }
         ],
         rolelist: [
@@ -194,9 +195,9 @@ export default {
             }, {
                 id: 2,
                 state: "轄區管理員"
-            }           
+            }
         ],
-       
+
         items: [
             {
                 //checked: false,
@@ -230,7 +231,7 @@ export default {
                         ]
                     }
                 ],
-                isEnable:'true',
+                isEnable: 'true',
             },
             {
                 //checked: false,
@@ -382,7 +383,7 @@ export default {
                         ]
                     }
                 ],
-                isEnable:'true',
+                isEnable: 'true',
             },
             {
                 //checked: false,
@@ -634,6 +635,8 @@ export default {
     getters: {
         getTableItems: state => state.items,
         getAreaItems: state => state.arealist,
+
+        
         getRoleItems: state => state.rolelist,
         getRoleListById: state => (id) => {
             return state.rolelist.find(f => f.id === id)
@@ -643,7 +646,13 @@ export default {
         }
     },
     mutations: {
-      
+        getAreaList: function (state, data) {
+            var result = [];
+            data[0].data.forEach(function (item) {
+               result.push({ id: item.distId, state: item.distName });
+            });
+            state.arealist = result;
+        }
     },
     modules: {
 
