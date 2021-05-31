@@ -85,7 +85,7 @@
 
         <com-confirm ref="changeAlert" ref-key="confirm" :right-click="alertRightClick">
             <template v-slot:confirm-image>
-                <v-img src="/alert_success.svg"></v-img>
+                <v-img v-bind:src="alertImgSrc"></v-img>
             </template>
             <template v-slot:confirm-title>
                 {{alertTitle}}
@@ -109,6 +109,7 @@
     import profile from 'components/admin/contents/profile_content'
     import comConfirm from 'components/confirm'
     import comDialog from 'components/dialog'
+    import { mapActions } from 'vuex'
     //import appMenu from 'components/main/menu'
     //import appLayout from 'components/app_layout'
     //import { Object } from 'core-js';
@@ -122,7 +123,10 @@
             modifyTitle: '',
             profileTitle: '',
             alertTitle:'',
-            alertText:'',
+            alertText: '',
+            alertImgSrc:'',
+            successIcon: '/alert_success.svg',
+            warningIcon: '/alert_warning.svg',
             title: '修改密碼',
             title2: '個人資訊',
             result:'',
@@ -175,6 +179,7 @@
         created: function () {
         },
         methods: {
+            ...mapActions('users', ['modifyPassword']),
             handleClick(index) {
                 this.menulist[index].click.call(this)
             },
@@ -199,10 +204,28 @@
                 this.$refs.passwordEditor.show();
             },
             save: function () {
+               
+                var setdata = {
+                    "acc": "u001",//todo
+                    "oriPd": this.$refs.passwordEditor.oldPassword,
+                    "newPd": this.$refs.passwordEditor.newPassword
+                };
+             
+                var comp = this;
+                comp.modifyPassword(setdata).then(function (result) {
+                    console.log(result);
+                    comp.alertImgSrc = comp.successIcon;
+                    comp.alertText = '您的密碼已更新，請重新登入';
+                    comp.$refs.modifyViewer.close();
+                    comp.$refs.changeAlert.open();
+                }).catch(function () {
+                    comp.alertImgSrc = comp.warningIcon;
+                    comp.alertText = '處理錯誤，請重新嘗試';
+                    comp.$refs.modifyViewer.close();
+                    comp.$refs.changeAlert.open();
+                });
 
-                this.alertText = '您的密碼已更新，請重新登入';
-                this.$refs.modifyViewer.close();
-                this.$refs.changeAlert.open();
+                
             },
             alertRightClick: function () {
                 this.$bus.$emit(`confirm_show`, false);
