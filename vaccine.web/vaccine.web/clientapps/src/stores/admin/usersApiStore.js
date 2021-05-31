@@ -76,8 +76,30 @@ export default {
             });
         },
 
-        modifyPassword() {
-            alert('passwd change');
+        modifyPassword({ state }, setdata) {
+            return new Promise(function (resolve, reject) {
+                var results = { datas: [], state: '' };
+                console.log(state);
+                axios({
+                    method: 'put',
+                    url: 'https://vaccine.gov.taipei:8080/api/User/Login?api-version=1.0',
+                    data: setdata,
+                    responseType: 'json',
+                    headers: {
+                        "X-Token": "AP2db4e3bfd97f44f809bd381fcc8ce49d8",
+                    }
+                }).then(res => {
+                    results.datas = res;
+                    resolve(results);
+                 }).catch(ex => {
+                    results.state = 'error';
+                    results.datas = ex;
+                    reject(results);
+                 });
+
+
+            });
+
         },
         changeUser({ state }, data) {
             return new Promise(function (resolve,reject) {
