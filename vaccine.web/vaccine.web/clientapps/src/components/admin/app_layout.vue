@@ -64,7 +64,7 @@
                 <slot name="app-footer" />
             </div>
         </v-footer>
-        <modify ref="passwordEditor" ref-key="pwd" width="60%" :title="title" :action="formAction"></modify>
+        <modify ref="passwordEditor" ref-key="pwd" width="40%" :title="title" :action="formAction"></modify>
         <profile ref="profileViewer" ref-key="pf" width="40%" :title="title2" ></profile>
         <com-dialog ref="modifyViewer" ref-key="pwd" width="60%">
             <template v-slot:toolbar>
