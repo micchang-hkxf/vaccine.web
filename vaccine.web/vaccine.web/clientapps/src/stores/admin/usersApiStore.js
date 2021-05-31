@@ -76,77 +76,82 @@ export default {
             });
         },
 
-
+        modifyPassword() {
+            alert('passwd change');
+        },
         changeUser({ state }, data) {
-            return new Promise(function (resolve, reject) {
-                var result = {}
-                try {
-                    var index = state.items.findIndex(f => f.acc == data.acc);
+            return new Promise(function (resolve,reject) {
+                var results = { datas: [], state: '' };
+                console.log(state);
+                //var setdata = {
+                //    "acc": "012",
+                //    "uName": "test012",
+                //    "email": "012@gmail.com",
+                //    "mbNo": "0900000012",
+                //    "unitName": "衛生局",
+                //    "userType": 0,
+                //    "zones": [
+                //        "200", "2004"
+                //    ]
+                //};
 
-                    if (data.editMode) {
-                        state.items[index] = data;
-                    } else {
-                        if (index == -1) {
-                           state.items.push(data); //寫入資料到測試store
-                        } else {
-                            result.state ='error';
-                        }
-                    }
-                    resolve(result);
-                } catch (e) {
-                    reject(result);
+                var setdata = {
+                    "acc": data.acc,
+                    "uName": data.uName,
+                    "email": "test@gmail.com",//todo
+                    "mbNo": data.mbNo,
+                    "unitName": data.unitName,
+                    "userType": data.userType,
+                    "isEnable": data.isEnable,
+                    "zones": data.zones
+                };
+                var method = "post";//new user
+                if (data.editMode) {
+                    method = "put";//update user
                 }
-                //try {
-                //    console.log(state)
-                //    if (data.editMode) {
-                //        //todo
-                //    } else {
-                //        var setdata = {
-                //            "acc": "012",
-                //            "uName": "test012",
-                //            "email": "012@gmail.com",
-                //            "mbNo": "0900000012",
-                //            "unitName": "衛生局",
-                //            "userType": 0,
-                //            "zones": [
-                //                "200", "2004"
-                //            ]
-                //        };
-                           
-                //        axios({
-                //            method: 'post',
-                //            url: 'https://vaccine.gov.taipei:8080/api/User?api-version=1.0',
-                //            data: setdata,
-                //            responseType: 'json',
-                //            headers: {
-                //                "X-Token": "AP18cdecef93d03485d8755735be7f358f7",
-                //            }
-                //        }).then(function (response) {
-                //            console.log(response.status)
-
-                //        });
-                         
-                    
-                //    }
-
-                //    resolve(result);
-                //} catch (e) {
-                //    reject(result);
-                //}
+                 
+                axios({
+                    method: method,
+                    url: 'https://vaccine.gov.taipei:8080/api/User?api-version=1.0',
+                    data: setdata,
+                    responseType: 'json',
+                    headers: {
+                        "X-Token": "AP2db4e3bfd97f44f809bd381fcc8ce49d8",
+                    }
+                }).then(res => {
+                    results.datas = res;
+                    resolve(results);
+                }).catch(ex => {
+                    results.state = 'error';
+                    results.datas = ex;
+                    reject(results);
+                });
+        
+          
             });
 
         },
         removeUser({ state }, delKey) {
+            console.log(state);
             return new Promise(function (resolve, reject) {
-                var result = true;
-                try {
-                    console.log(delKey);
-                    var index = state.items.findIndex(f => f.acc == delKey);
-                    state.items.splice(index, 1);
-                    resolve(result);
-                } catch (e) {
-                    reject(result);
-                }
+                var results = { datas: [], state: '' };
+                axios({
+                    method: 'delete',
+                    url: 'https://vaccine.gov.taipei:8080/api/User?api-version=1.0&acc=' + delKey,
+            
+                    responseType: 'json',
+                    headers: {
+                        "X-Token": "AP2db4e3bfd97f44f809bd381fcc8ce49d8",
+                    }
+                }).then(res => {
+                    results.datas = res;
+                    resolve(results);
+                }).catch(ex => {
+                    results.state = 'error';
+                    results.datas = ex;
+                    reject(results);
+                });
+
             });
 
         },
@@ -157,13 +162,11 @@ export default {
                 url: 'https://vaccine.gov.taipei:8080/api/DataItem/ZoneMap?api-version=1.0',
                 data: {},
                 headers: {
-                    "X-Token": "AP18cdecef93d03485d8755735be7f358f7",
+                    "X-Token": "AP2db4e3bfd97f44f809bd381fcc8ce49d8",
                 },
                 responseType: 'json',
             }).then(function (res) {
                 commit('getAreaList', res.data)
-  
-   
             });
 
         },
@@ -646,13 +649,13 @@ export default {
         }
     },
     mutations: {
-        getAreaList: function (state, data) {
-            var result = [];
-            data[0].data.forEach(function (item) {
-               result.push({ id: item.distId, state: item.distName });
-            });
-            state.arealist = result;
-        }
+        //getAreaList: function (state, data) {
+        //    var result = [];
+        //    data[0].data.forEach(function (item) {
+        //       result.push({ id: item.distId, state: item.distName });
+        //    });
+        //    state.arealist = result;
+        //}
     },
     modules: {
 

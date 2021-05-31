@@ -2,7 +2,8 @@
 import Vuex from 'vuex'
 Vue.use(Vuex)
 import userStore from "stores/userStore"
-import usersStore from "stores/admin/usersStore"
+//import usersStore from "stores/admin/usersStore"
+import usersStore from "stores/admin/usersApiStore"
 import registeredStore from "stores/registeredStore"
 //import configStore from "stores/configStore"
 import registrationStore from "stores/registrationStore"
