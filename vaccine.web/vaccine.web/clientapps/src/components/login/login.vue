@@ -36,6 +36,8 @@
                     了解
                 </template>
             </com-confirm>
+            <!--共用 loading -->
+            <com-loading ref-key="loading"></com-loading>
             <!---->
             <v-dialog v-model="authenticationDialog" persistent max-width="304px" max-height="392px" content-class="dialog">
                 <v-card>
@@ -150,7 +152,7 @@
                 </template>
                 <template v-slot:content>
                     <com-steps ref-key="dialogForgetSteps"
-                                :steps="forgetSteps"
+                               :steps="forgetSteps"
                                stepType="circle">
                         <template v-slot:step-1="{next}">
                             <v-card height="250px">
@@ -253,6 +255,7 @@
     import comDialog from 'components/dialog'
     import comConfirm from 'components/confirm'
     import comSteps from 'components/steps'
+    import comLoading from 'components/loading'
     import { mapActions } from 'vuex'
 
     export default {
@@ -342,9 +345,13 @@
                 var isvaild = comp.$refs.loginForm.validate();
                 if (!isvaild) return;
 
+                comp.$bus.$emit('loading_show4', '資料處理中...');
+
                 comp.alertMessage = '';
                 comp.checkLogin({ uid: comp.uid, upd: comp.upd })
                     .then(function (result) {
+                        comp.$bus.$emit('loading_hide4');
+
                         switch (result.state) {
                             case 'not found':
                                 comp.alertMessage = '帳號不存在';
@@ -370,16 +377,19 @@
                             return;
                         }
 
-                        if (result.state === 'not yet enabled') {
+                        if (result.state === 'not yet enabled' || result.state === '') {
                             comp.sending = true;
                             comp.$bus.$emit('authentication_dialog_show', true);
                             return;
                         }
 
-                        location.replace('/admin');
+                        //location.replace('/admin');
                     })
                     .catch(function () {
-                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.$bus.$emit('loading_hide4');
+
+                        //comp.alertMessage = '網站異常，請稍後再試';
+                        comp.alertMessage = '帳號密碼錯誤';
                         comp.$bus.$emit('alert_show', true);
                     });
             },
@@ -473,8 +483,13 @@
                 if (comp.verificationCode.length < 6) {
                     return;
                 }
+
+                comp.$bus.$emit('loading_show4', '資料處理中...');
+
                 comp.checkVerificationCode({ uid: comp.uid, verificationCode: comp.verificationCode })
                     .then(function (result) {
+                        comp.$bus.$emit('loading_hide4');
+
                         switch (result.state) {
                             case 'invalid':
                                 comp.verificationCodeMessage = '驗證碼無效，請重新輸入！';
@@ -525,6 +540,8 @@
                         }
                     })
                     .catch(function () {
+                        comp.$bus.$emit('loading_hide4');
+
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
@@ -564,10 +581,14 @@
                 var comp = this;
                 var isvaild = comp.$refs.resetPwForm.validate();
                 if (!isvaild) return;
-                
+
+                comp.$bus.$emit('loading_show4', '資料處理中...');
+
                 comp.alertResetPwMessage = '';
                 comp.checkResetPw({ uid: comp.uid, upd: comp.upd, newUpd: comp.newUpd })
                     .then(function (result) {
+                        comp.$bus.$emit('loading_hide4');
+
                         switch (result.state) {
                             case 'not found':
                                 comp.alertResetPwMessage = '帳號不存在';
@@ -586,6 +607,8 @@
                         comp.$bus.$emit('alertResetPw_show', true);
                     })
                     .catch(function () {
+                        comp.$bus.$emit('loading_hide4');
+
                         comp.alertResetPwMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alertResetPw_show', true);
                     });
@@ -605,9 +628,13 @@
                 var comp = this;
                 var isvaild = comp.$refs.forgetAuthenticationForm.validate();
                 if (!isvaild) return;
-                
+
+                comp.$bus.$emit('loading_show4', '資料處理中...');
+
                 comp.checkForgetPdUid({ uid: comp.forgetUid })
                     .then(function (result) {
+                        comp.$bus.$emit('loading_hide4');
+
                         switch (result.state) {
                             case 'not found':
                                 comp.forgetUidMessage = '輸入錯誤或此帳號未註冊！';
@@ -634,6 +661,8 @@
                         }
                     })
                     .catch(function () {
+                        comp.$bus.$emit('loading_hide4');
+
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
@@ -695,8 +724,13 @@
                 if (comp.forgetVerificationCode.length < 6) {
                     return;
                 }
+
+                comp.$bus.$emit('loading_show4', '資料處理中...');
+
                 comp.checkForgetPdVerificationCode({ uid: comp.forgetUid, verificationCode: comp.forgetVerificationCode })
                     .then(function (result) {
+                        comp.$bus.$emit('loading_hide4');
+
                         switch (result.state) {
                             case 'invalid':
                                 comp.forgetVerificationCodeMessage = '驗證碼無效，請重新輸入！';
@@ -720,6 +754,8 @@
                         }
                     })
                     .catch(function () {
+                        comp.$bus.$emit('loading_hide4');
+
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
@@ -742,8 +778,12 @@
                 var isvaild = comp.$refs.forgetResetPwForm.validate();
                 if (!isvaild) return;
 
+                comp.$bus.$emit('loading_show4', '資料處理中...');
+
                 comp.modifyPw({ uid: comp.forgetUid, newUpd: comp.forgetNewUpd, verificationCode: comp.forgetVerificationCode })
                     .then(function (result) {
+                        comp.$bus.$emit('loading_hide4');
+
                         switch (result.state) {
                             case 'not found':
                                 comp.alertResetPwMessage = '帳號不存在';
@@ -762,13 +802,15 @@
                         comp.$bus.$emit('alertResetPw_show', true);
                     })
                     .catch(function () {
+                        comp.$bus.$emit('loading_hide4');
+
                         comp.alertResetPwMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alertResetPw_show', true);
                     });
             }
         },
         components: {
-            comDialog, comConfirm, comSteps
+            comDialog, comConfirm, comSteps, comLoading
         }
     }
 </script>
