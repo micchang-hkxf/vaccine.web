@@ -247,7 +247,7 @@
                     返回
                 </template>
             </com-confirm>
-            <com-confirm ref-key="confirm" :left-click="confirmLeftClick" :right-click="confirmRightClick">
+            <com-confirm ref-key="confirmAction" :left-click="confirmLeftClick" :right-click="confirmRightClick">
                 <template v-slot:confirm-image>
                     <v-img v-bind:src="confirmImgSrc"></v-img>
                 </template>
@@ -382,7 +382,7 @@
     import { mapGetters, mapActions } from 'vuex'
     import comConfirm from 'components/confirm'
     import comLoading from 'components/loading'
-    //import usersStore  from 'stores/admin/usersStore'
+
 
     export default {
         data: () => ({
@@ -468,10 +468,10 @@
             this.search();
         },
         created() {
-            this.getAreaList();
+            //this.getAreaList();
         },
         methods: {
-            ...mapActions('users', ['searchUser', 'changeUser', 'removeUser','getAreaList']),
+            ...mapActions('users', ['searchUser', 'changeUser', 'removeUser', 'getAreaList']),
 
             editItem(item) {
                 this.formTitle = "修改人員資料";
@@ -501,27 +501,28 @@
             stopItem(item) {
                 var comp = this;
                 item.editMode = true;
+       
                 item.isEnable = (item.isEnable == 'true') ? 'false' : 'true';
-
+                item.zones = ["200", item.zones[0].data[0].distId];//todo
                 comp.alertImgSrc = comp.warningIcon;
-                comp.changeUser(item).then(function (result) {
 
+                comp.changeUser(item).then(function (result) {
+                  
                     if (result) {
                         comp.alertImgSrc = comp.successIcon;
                         comp.$bus.$emit('alert_show', true);
                         comp.alertTitle = comp.changeStatus+'成功';
                         comp.search();
                     } else {
-                       
                         comp.alertTitle = comp.changeStatus+'失敗';
                         this.alertImgSrc = this.alertIcon;
                         comp.$bus.$emit('alert_show', true);
 
                     }
-
+   
                 }).catch(function () {
                     comp.alertImgSrc = comp.alertIcon;
-                    comp.alertMessage = '處理錯誤，請重新嘗試456';
+                    comp.alertMessage = '處理錯誤，請重新嘗試';
                     comp.$bus.$emit('alert_show', true);
                 });
             },
@@ -529,7 +530,7 @@
                 this.delitem = item;
                 this.confirmImgSrc = this.warningIcon;
                 this.confirmMessage = item.uName;
-                this.$bus.$emit(`confirm_show`, true);
+                this.$bus.$emit(`confirmAction_show`, true);
             },
             removeItem(item) {
                 var comp = this;
@@ -652,28 +653,8 @@
                     //zones: [this.setArea.id], 
                     lastAccessTime: "2021-05-20 08:26:43",
                     pdExpTime: "2021-05-20 08:26:43",
-                    zones: [ 200 ,this.setArea.id],
-                    //zones: [
-                    //    {
-                    //        "cityId": "1",
-                    //        "cityName": "台北市",
-                    //        "hasAuth": true,
-                    //        "data": [
-                    //            {
-                    //                "distId": this.setArea.id,
-                    //                "distName": this.setArea.state,
-                    //                "hasAuth": true,
-                    //                "data": [
-                    //                    {
-                    //                        "villageId": "string",
-                    //                        "villageName": "string",
-                    //                        "hasAuth": true
-                    //                    }
-                    //                ]
-                    //            }
-                    //        ]
-                    //    }
-                    //],
+                    zones: ["200", this.setArea.id.toString()],
+
                     isEnable: this.setEnable.toString(),
                     stopit: false,
                     editMode: this.isReadOnly,
@@ -685,19 +666,22 @@
                 comp.$bus.$emit('type1_show4', "資料處理中...");
                 var saveMsg = comp.uName + "\n" + comp.acc + "\n" + comp.setRole.state+"\n";
                 comp.changeUser(setData).then(function (result) {
-                    if (result) {
-                        comp.$set(comp, "alertTitle", saveMsg+'人員' + msg + '成功');
+
+                    if (result.datas.status == "201") {
+                        comp.$bus.$emit('duplicatAlert_show', true);
+                    } else { 
+                        comp.$set(comp, "alertTitle", saveMsg + '人員' + msg + '成功');
+                        comp.alertImgSrc = comp.successIcon;
                         comp.$bus.$emit('userform_show', false);
                         comp.$bus.$emit('formSaveConfirm_show', false);
-                        comp.alertImgSrc = comp.successIcon;
                         comp.$bus.$emit('alert_show', true);
                         comp.search();
-                    } else {
-                        comp.$bus.$emit('duplicatAlert_show', true);
                     }
+
                     comp.$bus.$emit('type1_hide4');
                    
-                }).catch(function () {
+                }).catch(function (r) {
+                    console.log(r.datas.response.status);
                     comp.$bus.$emit('type1_hide4');
                     comp.$set(comp, "alertTitle", '處理錯誤，請重新嘗試');
                     comp.$bus.$emit('alert_show', true);
@@ -708,11 +692,11 @@
                 this.$bus.$emit(`alert_show`, false);
             },
             confirmRightClick: function () {
-                this.$bus.$emit(`confirm_show`, false);
+                this.$bus.$emit(`confirmAction_show` ,false);
                 this.removeItem(this.delitem);
             },
             confirmLeftClick: function () {
-                this.$bus.$emit(`confirm_show`, false);
+                this.$bus.$emit(`confirmAction_show`, false);
             },
             clear() {
                 this.$refs.form.reset()
