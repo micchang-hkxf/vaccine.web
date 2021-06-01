@@ -9,8 +9,9 @@ import sha256 from 'crypto-js/sha256';
 import Base64 from 'crypto-js/enc-base64';
 
 export default new Vuex.Store({
+    namespaced: true,
     actions: {
-        checkLogin: function ({ state }, params) {
+        checkLogin: function ({ state, commit }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login`;
                 var results = { datas: [], state: '' };
@@ -33,7 +34,7 @@ export default new Vuex.Store({
                         return;
                     }
 
-                    // TODO: res.data.sessionId
+                    commit('setSessionId', res.data.sessionId);
                     results.datas = res.data;
                     reslove(results);
                 }).catch(ex => {
@@ -43,7 +44,7 @@ export default new Vuex.Store({
                 });
             });
         },
-        checkVerificationCode: function ({ state }, params) {
+        checkVerificationCode: function ({ state, getters, commit }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login`;
                 var results = { datas: [], state: '', state1: '' };
@@ -52,7 +53,7 @@ export default new Vuex.Store({
                     params: {
                         acc: params.uid,
                         otp: params.verificationCode,
-                        sessionId: '123456', // TODO
+                        sessionId: getters.getSessionId,
                         requestSystem: state.requestSystem,
                         deviceKey: navigator.userAgent
                     }
@@ -70,7 +71,9 @@ export default new Vuex.Store({
                         reslove(results);
                         return;
                     }
-                    res.data.requirePdChange = true;
+
+                    commit('setToken', res.data.token);
+                    
                     // 需要修改密碼
                     if (res.data.requirePdChange) {
                         // 密碼未使用超過三個月
@@ -85,13 +88,12 @@ export default new Vuex.Store({
                         } else if (d3 <= 0) {
                             results.state1 = 'password has expired';
                         }
-                        results.state1 = 'first login'; // TODO: 測試完要移除
+                        
                         results.state = 'not yet enabled';
                         reslove(results);
                         return;
                     }
                     
-                    // TODO: res.data.token
                     results.state = 'pass';
                     results.datas = res.data;
                     reslove(results);
@@ -102,7 +104,7 @@ export default new Vuex.Store({
                 });
             });
         },
-        checkResetPw: function ({ state }, params) {
+        checkResetPw: function ({ state, getters }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login`;
                 var results = { datas: [], state: '' };
@@ -118,7 +120,7 @@ export default new Vuex.Store({
                     newPd: newPd
                 }, {
                     headers: {
-                        'x-token': 'AP1b46bcedb69524af9b84f6fc81de56a69' // TODO
+                        'x-token': getters.getToken
                     }
                 }).then(res => {
                     results.state = 'pass';
@@ -151,14 +153,14 @@ export default new Vuex.Store({
                 });
             });
         },
-        checkForgetPdVerificationCode: function ({ state }, params) {
+        checkForgetPdVerificationCode: function ({ state, getters }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login/ForgetPd`;
                 var results = { datas: [], state: '' };
 
                 axios.post(apiUrl, {
                     acc: params.uid,
-                    sessionId: '123456', // TODO
+                    sessionId: getters.getSessionId,
                     otp: params.verificationCode
                 }).then(res => {
                     results.state = 'pass';
@@ -171,7 +173,7 @@ export default new Vuex.Store({
                 });
             });
         },
-        modifyPw: function ({ state }, params) {
+        modifyPw: function ({ state, getters }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login/ForgetPd`;
                 var results = { datas: [], state: '' };
@@ -181,7 +183,7 @@ export default new Vuex.Store({
 
                 axios.put(apiUrl, {
                     acc: params.uid,
-                    sessionId: '123456', // TODO
+                    sessionId: getters.getSessionId,
                     otp: params.verificationCode,
                     newPd: newUpd
                 }).then(res => {
@@ -195,31 +197,36 @@ export default new Vuex.Store({
                 });
             });
         },
-        logout: function ({ state }, params) {
+        logout: function ({ state, getters }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login`;
-                var results = { uid: params.uid, state: '', datas: [] };
+                var results = { datas: [], state: '' };
                 
-                // TODO: token 存在則登出
-                axios.delete(apiUrl, {
-                    headers: {
-                        'x-token': 'AP1b46bcedb69524af9b84f6fc81de56a69' // TODO
-                    },
-                    params: {
-                        acc: params.uid
-                    }
-                }).then(res => {
-                    results.state = 'success';
-                    results.datas = res.data;
-                    reslove(results);
-                }).catch(ex => {
-                    results.state = 'error';
-                    results.datas = ex;
-                    reject(results);
-                });
+                var token = getters.getToken;
+                if (token !== null) {
+                    axios.delete(apiUrl, {
+                        headers: {
+                            'x-token': token
+                        },
+                        params: {
+                            acc: params.uid
+                        }
+                    }).then(res => {
+                        results.state = 'success';
+                        results.datas = res.data;
+                        reslove(results);
+                    }).catch(ex => {
+                        results.state = 'error';
+                        results.datas = ex;
+                        reject(results);
+                    });
 
-                results.state = 'success';
-                reslove(results);
+                    // 清除
+                    getters.clear;
+                } else {
+                    results.state = 'success';
+                    reslove(results);
+                }
             });
         }
     },
@@ -227,8 +234,23 @@ export default new Vuex.Store({
         ...siteConfig
     },
     getters: {
+        getSessionId: () => {
+            return window.sessionStorage.getItem('sessionId');
+        },
+        getToken: () => {
+            return window.sessionStorage.getItem('x_token');
+        },
+        clear: () => {
+            return window.sessionStorage.clear();
+        }
     },
     mutations: {
+        setSessionId: (state, sessionId) => {
+            window.sessionStorage.setItem('sessionId', sessionId);
+        },
+        setToken: (state, token) => {
+            window.sessionStorage.setItem('x_token', token);
+        }
     },
     modules: {
         user: userStore,
