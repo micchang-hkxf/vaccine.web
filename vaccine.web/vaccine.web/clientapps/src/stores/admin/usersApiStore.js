@@ -242,7 +242,7 @@ export default {
                 id: 0,
                 state: "系統管理員"
             }, {
-                id: 2,
+                id: 1,
                 state: "轄區管理員"
             }
         ],
