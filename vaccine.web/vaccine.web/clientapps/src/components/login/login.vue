@@ -368,6 +368,9 @@
                             case 'deactivate':
                                 comp.alertMessage = '很抱歉，您的帳號已遭停用，所以暫時無法使用本系統，如有需要請聯絡相關人員給予協助';
                                 break;
+                            case 'not allow login':
+                                comp.alertMessage = result.datas.message;
+                                break;
                             default:
                                 break;
                         }
@@ -498,13 +501,7 @@
                                 comp.verificationCodeMessage = '';
                                 break;
                         }
-
-                        if (result.state !== 'pass') {
-                            // verificationCode select
-                            comp.$refs.verificationCode.$el.querySelector('input').select();
-                            return;
-                        }
-
+                        
                         comp.closeAuthenticationDialog();
 
                         if (result.state1 === 'first login') {
@@ -538,6 +535,8 @@
                             comp.alertPwRightClick();
                             return;
                         }
+
+                        location.replace('/admin');
                     })
                     .catch(function () {
                         comp.$bus.$emit('loading_hide4');

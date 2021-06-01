@@ -25,6 +25,15 @@ export default new Vuex.Store({
                     deviceKey: navigator.userAgent,
                     isChiefOfVillage: false
                 }).then(res => {
+                    // 是否允許登入
+                    if (!res.data.isAllowLogin) {
+                        results.state = 'not allow login';
+                        results.datas = res.data;
+                        reslove(results);
+                        return;
+                    }
+
+                    // TODO: res.data.sessionId
                     results.datas = res.data;
                     reslove(results);
                 }).catch(ex => {
@@ -37,15 +46,52 @@ export default new Vuex.Store({
         checkVerificationCode: function ({ state }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login`;
-                var results = { datas: [], state: '' };
+                var results = { datas: [], state: '', state1: '' };
 
                 axios.get(apiUrl, {
-                    acc: params.uid,
-                    otp: params.verificationCode,
-                    sessionId: '',
-                    requestSystem: state.requestSystem,
-                    deviceKey: navigator.userAgent
+                    params: {
+                        acc: params.uid,
+                        otp: params.verificationCode,
+                        sessionId: '123456', // TODO
+                        requestSystem: state.requestSystem,
+                        deviceKey: navigator.userAgent
+                    }
                 }).then(res => {
+                    // 無管理區域
+                    if (res.data.zones.length == 0) {
+                        results.state = 'no management area';
+                        reslove(results);
+                        return;
+                    }
+                    
+                    // 帳號停用
+                    if (!res.data.isEnable) {
+                        results.state = 'deactivate';
+                        reslove(results);
+                        return;
+                    }
+                    res.data.requirePdChange = true;
+                    // 需要修改密碼
+                    if (res.data.requirePdChange) {
+                        // 密碼未使用超過三個月
+                        var d1 = new Date(res.data.pdExpTime);
+                        var d2 = new Date();
+                        var d3 = (d1 - d2) / 86400000;
+                        
+                        if (d3 >= 90) {
+                            results.state1 = 'first login';
+                        } else if (d3 > 0 && d3 < 90) {
+                            results.state1 = 'password is about to expire';
+                        } else if (d3 <= 0) {
+                            results.state1 = 'password has expired';
+                        }
+                        results.state1 = 'first login'; // TODO: 測試完要移除
+                        results.state = 'not yet enabled';
+                        reslove(results);
+                        return;
+                    }
+                    
+                    // TODO: res.data.token
                     results.state = 'pass';
                     results.datas = res.data;
                     reslove(results);
@@ -60,20 +106,19 @@ export default new Vuex.Store({
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login`;
                 var results = { datas: [], state: '' };
-
+                
                 var oriPd = Base64.stringify(sha256(params.uid.toLowerCase() + params.upd));
                 //console.log(oriPd);
                 var newPd = Base64.stringify(sha256(params.uid.toLowerCase() + params.newUpd));
                 //console.log(newPd);
 
                 axios.put(apiUrl, {
+                    acc: params.uid,
+                    oriPd: oriPd,
+                    newPd: newPd
+                }, {
                     headers: {
-                        'x-token': ''
-                    },
-                    data: {
-                        acc: params.uid,
-                        oriPd: oriPd,
-                        newPd: newPd
+                        'x-token': 'AP1b46bcedb69524af9b84f6fc81de56a69' // TODO
                     }
                 }).then(res => {
                     results.state = 'pass';
@@ -92,7 +137,9 @@ export default new Vuex.Store({
                 var results = { datas: [], state: '' };
 
                 axios.get(apiUrl, {
-                    acc: params.uid
+                    params: {
+                        acc: params.uid
+                    }
                 }).then(res => {
                     results.state = 'pass';
                     results.datas = res.data;
@@ -111,7 +158,7 @@ export default new Vuex.Store({
 
                 axios.post(apiUrl, {
                     acc: params.uid,
-                    sessionId: '',
+                    sessionId: '123456', // TODO
                     otp: params.verificationCode
                 }).then(res => {
                     results.state = 'pass';
@@ -134,7 +181,7 @@ export default new Vuex.Store({
 
                 axios.put(apiUrl, {
                     acc: params.uid,
-                    sessionId: '',
+                    sessionId: '123456', // TODO
                     otp: params.verificationCode,
                     newPd: newUpd
                 }).then(res => {
@@ -152,13 +199,13 @@ export default new Vuex.Store({
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login`;
                 var results = { uid: params.uid, state: '', datas: [] };
-
-                // token 存在則登出
+                
+                // TODO: token 存在則登出
                 axios.delete(apiUrl, {
                     headers: {
-                        'x-token': ''
+                        'x-token': 'AP1b46bcedb69524af9b84f6fc81de56a69' // TODO
                     },
-                    data: {
+                    params: {
                         acc: params.uid
                     }
                 }).then(res => {
