@@ -10,9 +10,10 @@
             <com-loading ref-key="type1"></com-loading>
             <div id="app" class="table-list">
                 <com-table ref-key="table" :headers="headers" :items="items" :total-count="totalCount" disabled-prop="disabled"
-                           :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect">
+                           :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
+                           :change-page="changePage" style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
                     <template v-slot:item.isEnable="items">
-                        <div>{{   items.item.isEnable=='true' ? "啟用" : "停用" }}</div>
+                        <div>{{   items.item.isEnable.toString()=='true' ? "啟用" : "停用" }}</div>
                     </template>
                     <template v-slot:item.area="items">
                         <div>{{  getZonesData(items.item) }}</div>
@@ -66,7 +67,7 @@
                                               outlined>
                                 </v-text-field>
 
-                                <v-btn color="#626781" icon style="padding-left:2px;top:3px" @click.stop="search()">
+                                <v-btn color="#626781" icon style="padding-left:2px;top:3px" @click.stop="search(1)">
                                     <v-icon size="20">fas fa-search</v-icon>
                                 </v-btn>
                                 <v-file-input accept=".csv" style="display:none" ref="importfile">
@@ -386,9 +387,10 @@
 
     export default {
         data: () => ({
-            totalCount: 12,
-            itemsPerPage: 30,
-            totalVisible: 4,
+            totalCount: 10,
+            itemsPerPage: 20,
+            totalVisible: 8,
+            inpage:1,
             uName: null,
             acc: null,
             email: null,
@@ -465,7 +467,7 @@
 
         },
         mounted(){
-            this.search();
+            this.search(1);
         },
         created() {
             //this.getAreaList();
@@ -488,8 +490,8 @@
                 //var a = this.$store.getters["users/getAreaListById"](item.zones[0].cityId).state
                 this.$set(this, "setRole", { id: item.userType ,state:r});
                 this.$set(this, "setArea", { id: parseInt(item.zones[0].data[0].distId), state: item.zones[0].data[0].distName });
-     
-                this.$set(this, "setEnable", item.isEnable == 'true');
+
+                this.$set(this, "setEnable", item.isEnable.toString() == 'true');
         
                // this.setRole = { id: item.userType  };
                // this.setArea = { id: item.zones[0] };//multiple todo
@@ -502,7 +504,7 @@
                 var comp = this;
                 item.editMode = true;
        
-                item.isEnable = (item.isEnable == 'true') ? 'false' : 'true';
+                item.isEnable = (item.isEnable.toString() == 'true') ? 'false' : 'true';
                 item.zones = ["200", item.zones[0].data[0].distId];//todo
                 comp.alertImgSrc = comp.warningIcon;
 
@@ -512,7 +514,7 @@
                         comp.alertImgSrc = comp.successIcon;
                         comp.$bus.$emit('alert_show', true);
                         comp.alertTitle = comp.changeStatus+'成功';
-                        comp.search();
+                        comp.search(comp.inpage);
                     } else {
                         comp.alertTitle = comp.changeStatus+'失敗';
                         this.alertImgSrc = this.alertIcon;
@@ -541,7 +543,7 @@
                         //comp.alertMessage = '刪除成功';
                         comp.alertTitle = '刪除成功';
                         comp.alertImgSrc = comp.successIcon;
-                        comp.search();
+                        comp.search(1);
                     } else {
                         //console.log('刪除失敗');
                         comp.alertTitle = '刪除失敗';
@@ -555,8 +557,11 @@
                     comp.$bus.$emit('alert_show', true);
                 });
             },
-            search() {
-                var filter = {};
+            search(page) {
+                var filter = {
+                    page: page,
+                    rows: 10
+                };
                 if (this.selectRole) {
                     filter.userType = this.selectRole.id;
                 }
@@ -636,7 +641,7 @@
                 this.$bus.$emit('formSaveConfirm_show', true);
                 this.setRoleState = this.setRole.state;
                 this.setAreaState = this.setArea.state;
-                this.setEnableState = this.setEnable ? "啟用" : "停用";
+                this.setEnableState = this.setEnable.toString()=="true" ? "啟用" : "停用";
             },
             saveform() {
    
@@ -675,7 +680,7 @@
                         comp.$bus.$emit('userform_show', false);
                         comp.$bus.$emit('formSaveConfirm_show', false);
                         comp.$bus.$emit('alert_show', true);
-                        comp.search();
+                        comp.search(1);
                     }
 
                     comp.$bus.$emit('type1_hide4');
@@ -702,7 +707,7 @@
                 this.$refs.form.reset()
             },
             showOptMenu(item) {
-                this.$set(this, "changeStatus", (item.isEnable=='true') ? "停用" : "啟用");
+                this.$set(this, "changeStatus", (item.isEnable.toString()=='true') ? "停用" : "啟用");
 
             },
             getZonesData(item) {
@@ -710,6 +715,11 @@
                 var z = [];
                 item.zones[0].data.forEach(f => z.push(f.distName))
                 return z.join(",");
+            },
+            changePage: function (pager) {
+                console.log(pager);
+                this.inpage = pager.page;
+                this.search(pager.page);
             },
           
         },
