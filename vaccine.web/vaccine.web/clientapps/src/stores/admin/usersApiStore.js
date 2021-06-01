@@ -2,28 +2,43 @@
 export default {
     namespaced: true,
     actions: {
-        searchUser({ state }, data) {
+        searchUser({ state }, params) {
+            console.log(state);
             return new Promise(function (resolve, reject) {
-                var datas;
+                var datas, testmode = false;
+      
                 try {
-                    var result = { datas: [], totalCount: 0, state: null };
-                    axios.get('/testUserList.json')
-                        .then(response => {
-                            datas = response.data;
+                    var apiUrl = (testmode) ? '/testUserList.json':'https://vaccine.gov.taipei:8080/api/User?page=1&rows=100&api-version=1.0',
+                        result = { datas: [], state: '', totalCount: 0, page: 0, rows: 0 };
+                    axios({
+                        method: 'get',
+                        url: apiUrl,
+                        responseType: 'json',
+                        headers: {
+                            "X-Token": "AP2c2d806ab80db44f9b4320694406cd7d1",
+                        },
+                        params: {
+                            page: params.page,
+                            rows: params.rows,
+                            userTypeFilter: params.userType,
+                            statusFilter: params.isEnable,
+                            keyword: params.uName,
+                        },
+                    }).then(response => {
+                        datas = response.data;
 
-                            var testmode = true;
-                            var exists = (testmode) ? state.items : datas.data;
-
-                            if (data.userType) {
-                                exists = exists.filter(f => f.userType == data.userType);
+                        var exists = [];
+            
+                        if (testmode) {
+                            exists = state.items;
+                            if (params.userType) {
+                                exists = exists.filter(f => f.userType == params.userType);
                             }
                             //if (data.zones) {
                             //    var even = (element) => element == data.zones;
                             //    exists = exists.filter(f => f.zones.some(even));
                             //}
-
-
-                            if (data.zones) {
+                            if (params.zones) {
                                 const containsDeep = (text) => (value) => {
                                     if (!value) return false;
                                     const valueType = typeof value;
@@ -39,14 +54,14 @@ export default {
                                     }
                                     return false;
                                 };
-                                exists = exists.filter(containsDeep(data.zones));
+                                exists = exists.filter(containsDeep(params.zones));
 
                             }
-                            if (data.isEnable) {
-                                exists = exists.filter(f => f.isEnable == data.isEnable);
+                            if (params.isEnable) {
+                                exists = exists.filter(f => f.isEnable == params.isEnable);
                             }
-                            if (data.uName) {
-                                exists = exists.filter(f => (f.uName == data.uName || f.acc == data.uName));
+                            if (params.uName) {
+                                exists = exists.filter(f => (f.uName == params.uName || f.acc == params.uName));
                             }
 
                             if (exists.length == 0) {
@@ -58,12 +73,21 @@ export default {
                                 result.state = exists.state;
                                 throw result;
                             }
-                            result.datas = exists;
+                        } else {
+                            exists = datas.data;
+                            exists.forEach(function (obj) {
+                                obj.unitName = obj.unit;
+                                delete obj.unit;
+                            });
 
-                            result.totalCount = exists.length;
-                            result.state = exists.state
+                        }
+                       
+                        result.datas = exists;
 
-                            resolve(result);
+                        result.totalCount = exists.length;
+                        result.state = exists.state
+
+                        resolve(result);
                    
                     })
                     .catch(error => {
@@ -86,7 +110,7 @@ export default {
                     data: setdata,
                     responseType: 'json',
                     headers: {
-                        "X-Token": "AP2db4e3bfd97f44f809bd381fcc8ce49d8",
+                        "X-Token": "AP2c2d806ab80db44f9b4320694406cd7d1",
                     }
                 }).then(res => {
                     results.datas = res;
@@ -124,7 +148,7 @@ export default {
                     "mbNo": data.mbNo,
                     "unitName": data.unitName,
                     "userType": data.userType,
-                    "isEnable": data.isEnable,
+                    "isEnable": data.isEnable=="true",
                     "zones": data.zones
                 };
                 var method = "post";//new user
@@ -138,7 +162,7 @@ export default {
                     data: setdata,
                     responseType: 'json',
                     headers: {
-                        "X-Token": "AP2db4e3bfd97f44f809bd381fcc8ce49d8",
+                        "X-Token": "AP2c2d806ab80db44f9b4320694406cd7d1",
                     }
                 }).then(res => {
                     results.datas = res;
@@ -163,7 +187,7 @@ export default {
             
                     responseType: 'json',
                     headers: {
-                        "X-Token": "AP2db4e3bfd97f44f809bd381fcc8ce49d8",
+                        "X-Token": "AP2c2d806ab80db44f9b4320694406cd7d1",
                     }
                 }).then(res => {
                     results.datas = res;
@@ -184,7 +208,7 @@ export default {
                 url: 'https://vaccine.gov.taipei:8080/api/DataItem/ZoneMap?api-version=1.0',
                 data: {},
                 headers: {
-                    "X-Token": "AP2db4e3bfd97f44f809bd381fcc8ce49d8",
+                    "X-Token": "AP2c2d806ab80db44f9b4320694406cd7d1",
                 },
                 responseType: 'json',
             }).then(function (res) {
@@ -215,7 +239,7 @@ export default {
         ],
         rolelist: [
             {
-                id: 1,
+                id: 0,
                 state: "系統管理員"
             }, {
                 id: 2,
@@ -683,4 +707,5 @@ export default {
 
     }
 }
+
 
