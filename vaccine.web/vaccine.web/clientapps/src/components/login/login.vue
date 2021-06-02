@@ -697,8 +697,6 @@
                 var _verificationCodeSec = comp.forgetVerificationCodeSec;
 
                 setTimeout(function () {
-                    comp.forgetVerificationCode = '';
-
                     if (comp.forgetAuthenticationTiming !== null) {
                         clearInterval(comp.forgetAuthenticationTiming);
                         comp.forgetAuthenticationTiming = null;
@@ -778,7 +776,7 @@
                 if (!isvaild) return;
 
                 comp.$bus.$emit('loading_show4', '資料處理中...');
-
+                
                 comp.modifyPw({ uid: comp.forgetUid, newUpd: comp.forgetNewUpd, verificationCode: comp.forgetVerificationCode })
                     .then(function (result) {
                         comp.$bus.$emit('loading_hide4');

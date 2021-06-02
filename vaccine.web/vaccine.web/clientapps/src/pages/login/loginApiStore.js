@@ -133,7 +133,7 @@ export default new Vuex.Store({
                 });
             });
         },
-        checkForgetPdUid: function ({ state }, params) {
+        checkForgetPdUid: function ({ state, commit }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login/ForgetPd`;
                 var results = { datas: [], state: '' };
@@ -143,6 +143,7 @@ export default new Vuex.Store({
                         acc: params.uid
                     }
                 }).then(res => {
+                    commit('setSessionId', res.data.sessionId);
                     results.state = 'pass';
                     results.datas = res.data;
                     reslove(results);
