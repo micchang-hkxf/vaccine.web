@@ -6,7 +6,7 @@
                 <v-card-title>
                     <div class="confirm-image d-flex justify-center">
                         <div >
-                            <slot name="confirm-image"></slot>
+                           <slot name="confirm-image"></slot>
                         </div>
                     </div>
                     <div class="confirm-text-container justify-center">
@@ -21,8 +21,9 @@
                         <v-row>
                             <v-cols cols="12" class="confirm-btns">
                                 <v-btn class="confirm-center-btn"
-                                       color="#2EB6C7"
+                                       :color="setRightColor"
                                        :ripple="false"
+                                       :outlined="setRighOutlined"
                                        @click="rightBtnAction">
                                     <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
 
@@ -38,17 +39,18 @@
                         <v-row>
                             <v-cols cols="6" class="confirm-btns">
                                 <v-btn class="confirm-left-btn"
-                                       color="rgba(50,65,80,0.2)"
+                                       :color="setLeftColor"
                                        :ripple="false"
-                                       outlined
+                                       :outlined="setLeftOutlined"
                                        @click="leftBtnAction">
                                     <span class="confirm-left-btns-text"><slot name="confirm-left-btn-text"></slot></span>
                                 </v-btn>
                             </v-cols>
                             <v-cols cols="6" class="confirm-btns">
                                 <v-btn class="confirm-right-btn"
-                                       color="#2EB6C7"
+                                       :color="setRightColor"
                                        :ripple="false"
+                                       :outlined="setRightOutlined"
                                        @click="rightBtnAction">
                                     <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
 
@@ -173,14 +175,27 @@
 
 <script>
     export default {
-        props: ['refKey','rightClick','leftClick'],
+        props: ['refKey', 'rightClick', 'leftClick', 'leftColor', 'rightColor', 'leftOutlined', 'rightOutlined'],
         data: () => ({
-            isShow: false
+            isShow: false,
+            setLeftColor:"rgba(50,65,80,0.2)",
+            setRightColor: "#2EB6C7",
+            setLeftOutlined:true,
+            setRightOutlined:false,
+
         }),
         computed: {
         },      
         created: function () {
             var comp = this;
+
+            comp.$set(comp, "setLeftColor", comp.leftColor);
+            comp.$set(comp, "setRightColor", comp.rightColor);
+
+            comp.$set(comp, "setLeftOutlined", comp.leftOutlined=="on");
+            comp.$set(comp, "setRightOutlined", comp.rightOutlined=="on");
+
+
             this.$bus.$on(`${comp.refKey}_show`, function (isShow) {
                 comp.$set(comp, "isShow", isShow);
             });
@@ -194,7 +209,8 @@
             },
             leftBtnAction: function () {
                 this.leftClick();
-            }
+            },
+     
         },
         //components: {
         //}

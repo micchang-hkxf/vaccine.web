@@ -7,7 +7,7 @@
         <template v-slot:app-content>
             <div id="app">
                 <v-btn @click="show('confirm')">confirm</v-btn>
-                <com-confirm ref-key="confirm"  :left-click="confirmLeftClick" :right-click="confirmRightClick">
+                <com-confirm  left-color="#2EB6C7" left-outlined="on"  right-color="green" right-outlined="" ref-key="confirm"  :left-click="confirmLeftClick" :right-click="confirmRightClick">
                     <template v-slot:confirm-image>
                         <v-img src="/alert_success.svg"></v-img>                     
                     </template>
