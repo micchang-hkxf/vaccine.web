@@ -181,10 +181,10 @@
                 {                    
                     date: '2021/04/01',
                     title: '110年5月份新冠疫苗 接種',
-                    type: '新冠肺炎',
-                    district: '內湖區',
+                    type: '新冠肺炎',                
+                    district: '內湖區',                  
                     village: '西康里',
-                    institution: '王慶森診所',
+                    institution: '王慶森診所',                
                     instutionDistrict: '內湖區',
                     stationTime:'2021/05/08 08:30 - 11:30',
                     registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
