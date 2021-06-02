@@ -1,4 +1,6 @@
 ﻿import siteConfig from "project/site.config"
+import { Promise } from "core-js";
+
 
 export default {
     namespaced: true,
@@ -19,7 +21,8 @@ export default {
                 reslove(results);
 
             });
-        }
+        },
+       
     },
     state: {
         ...siteConfig,
@@ -84,7 +87,8 @@ export default {
         villages: [
             { id: 'xikang', name: '西康里' }
         ],
-        institutions: [{ id: 'wang', name: '王慶森診所' }, { id: 'wang2', name: '王慶森2診所' }, { id: 'wang3', name: '王慶森3診所' }]
+        institutions: [{ id: 'wang', name: '王慶森診所' }, { id: 'wang2', name: '王慶森2診所' }, { id: 'wang3', name: '王慶森3診所' }],
+       
     },
     getters: {
         getHeaders: state => {
