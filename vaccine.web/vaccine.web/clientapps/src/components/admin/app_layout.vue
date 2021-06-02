@@ -109,6 +109,7 @@
     import profile from 'components/admin/contents/profile_content'
     import comConfirm from 'components/confirm'
     import comDialog from 'components/dialog'
+    import crypto from "crypto"
     import { mapActions } from 'vuex'
     //import appMenu from 'components/main/menu'
     //import appLayout from 'components/app_layout'
@@ -204,11 +205,17 @@
                 this.$refs.passwordEditor.show();
             },
             save: function () {
-               
+                //todo
+                var loginAccount = "kkk",
+                    accMobile = "0900000000";
+
+                var oriPd = crypto.createHash('sha256').update(loginAccount + accMobile).digest('base64'),
+                    newPd = crypto.createHash('sha256').update(loginAccount + accMobile).digest('base64');
+
                 var setdata = {
-                    "acc": "u001",//todo
-                    "oriPd": this.$refs.passwordEditor.oldPassword,
-                    "newPd": this.$refs.passwordEditor.newPassword
+                    "acc": loginAccount,
+                    "oriPd": oriPd,
+                    "newPd": newPd
                 };
              
                 var comp = this;

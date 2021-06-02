@@ -365,7 +365,7 @@
     .users-list .v-btn:not(.v-btn--round).v-size--large {
         min-width: 2000px !important;
     }*/
-    .userlist .alertTitle{
+     .userlist .alertTitle{
         font-size:8px;
 
     }
@@ -387,8 +387,8 @@
 
     export default {
         data: () => ({
-            totalCount: 10,
-            itemsPerPage: 20,
+            totalCount: 0,
+            itemsPerPage: 5,
             totalVisible: 8,
             inpage:1,
             uName: null,
@@ -560,7 +560,7 @@
             search(page) {
                 var filter = {
                     page: page,
-                    rows: 10
+                    rows: this.itemsPerPage,
                 };
                 if (this.selectRole) {
                     filter.userType = this.selectRole.id;
@@ -587,6 +587,7 @@
                         default:
                             break;
                     }
+    
                     comp.totalCount = result.totalCount;
                     comp.items = [];
                     result.datas.forEach(f => comp.items.push(f))
@@ -594,6 +595,8 @@
                         comp.$bus.$emit('alert_show', true);
                         return;
                     }
+           
+    
                 }).catch(function () {
                     comp.alertTitle = '處理錯誤，請重新嘗試';
                     comp.alertImgSrc = comp.warningIcon;

@@ -1,4 +1,5 @@
 ﻿import axios from 'axios';
+import siteConfig from "project/site.config"
 export default {
     namespaced: true,
     actions: {
@@ -8,14 +9,15 @@ export default {
                 var datas, testmode = false;
       
                 try {
-                    var apiUrl = (testmode) ? '/testUserList.json':'https://vaccine.gov.taipei:8080/api/User?page=1&rows=100&api-version=1.0',
+
+                    var apiUrl = (testmode) ? '/testUserList.json' : `${state.apiRoot}api/User?api-version=1.0`,
                         result = { datas: [], state: '', totalCount: 0, page: 0, rows: 0 };
                     axios({
                         method: 'get',
                         url: apiUrl,
                         responseType: 'json',
                         headers: {
-                            "X-Token": "AP2c2d806ab80db44f9b4320694406cd7d1",
+                            "X-Token": "AP115a8b8790fbe415a973aa385fec9a770",
                         },
                         params: {
                             page: params.page,
@@ -28,7 +30,7 @@ export default {
                         datas = response.data;
 
                         var exists = [];
-            
+
                         if (testmode) {
                             exists = state.items;
                             if (params.userType) {
@@ -73,20 +75,20 @@ export default {
                                 result.state = exists.state;
                                 throw result;
                             }
+                            result.totalCount = exists.length;
                         } else {
                             exists = datas.data;
                             exists.forEach(function (obj) {
                                 obj.unitName = obj.unit;
                                 delete obj.unit;
                             });
+                            result.totalCount = datas.totalRows;
 
                         }
-                       
+
                         result.datas = exists;
-
-                        result.totalCount = exists.length;
                         result.state = exists.state
-
+                       
                         resolve(result);
                    
                     })
@@ -103,14 +105,16 @@ export default {
         modifyPassword({ state }, setdata) {
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
+                var apiUrl = `${state.apiRoot}api/User/Login`;
+                alert(apiUrl);
                 console.log(state);
                 axios({
                     method: 'put',
-                    url: 'https://vaccine.gov.taipei:8080/api/User/Login?api-version=1.0',
+                    url: `${state.apiRoot}api/User/Login?api-version=1.0`,
                     data: setdata,
                     responseType: 'json',
                     headers: {
-                        "X-Token": "AP2c2d806ab80db44f9b4320694406cd7d1",
+                        "X-Token": "AP115a8b8790fbe415a973aa385fec9a770",
                     }
                 }).then(res => {
                     results.datas = res;
@@ -158,11 +162,11 @@ export default {
                  
                 axios({
                     method: method,
-                    url: 'https://vaccine.gov.taipei:8080/api/User?api-version=1.0',
+                    url: `${state.apiRoot}api/User?api-version=1.0`,
                     data: setdata,
                     responseType: 'json',
                     headers: {
-                        "X-Token": "AP2c2d806ab80db44f9b4320694406cd7d1",
+                        "X-Token": "AP115a8b8790fbe415a973aa385fec9a770",
                     }
                 }).then(res => {
                     results.datas = res;
@@ -183,11 +187,10 @@ export default {
                 var results = { datas: [], state: '' };
                 axios({
                     method: 'delete',
-                    url: 'https://vaccine.gov.taipei:8080/api/User?api-version=1.0&acc=' + delKey,
-            
+                    url: `${state.apiRoot}api/User?api-version=1.0&acc=` + delKey,
                     responseType: 'json',
                     headers: {
-                        "X-Token": "AP2c2d806ab80db44f9b4320694406cd7d1",
+                        "X-Token": "AP115a8b8790fbe415a973aa385fec9a770",
                     }
                 }).then(res => {
                     results.datas = res;
@@ -201,14 +204,14 @@ export default {
             });
 
         },
-        getAreaList: function ({ commit }) {
+        getAreaList: function ({ state ,commit }) {
 
             axios({
                 method: 'get',
-                url: 'https://vaccine.gov.taipei:8080/api/DataItem/ZoneMap?api-version=1.0',
+                url: `${state.apiRoot}api/DataItem/ZoneMap?api-version=1.0`,
                 data: {},
                 headers: {
-                    "X-Token": "AP2c2d806ab80db44f9b4320694406cd7d1",
+                    "X-Token": "AP115a8b8790fbe415a973aa385fec9a770",
                 },
                 responseType: 'json',
             }).then(function (res) {
@@ -219,6 +222,7 @@ export default {
     },
 
     state: {
+        ...siteConfig,
         arealist: [
             {
                 id: 2001,
