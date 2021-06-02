@@ -34,7 +34,7 @@ export default new Vuex.Store({
                         return;
                     }
 
-                    commit('setSessionId', res.data.sessionId);
+                    commit('user/setSessionId', res.data.sessionId);
                     results.datas = res.data;
                     reslove(results);
                 }).catch(ex => {
@@ -44,16 +44,16 @@ export default new Vuex.Store({
                 });
             });
         },
-        checkVerificationCode: function ({ state, getters, commit }, params) {
+        checkVerificationCode: function ({ state, commit, rootGetters }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login`;
                 var results = { datas: [], state: '', state1: '' };
-
+                
                 axios.get(apiUrl, {
                     params: {
                         acc: params.uid,
                         otp: params.verificationCode,
-                        sessionId: getters.getSessionId,
+                        sessionId: rootGetters['user/getSessionId'],
                         requestSystem: state.requestSystem,
                         deviceKey: navigator.userAgent
                     }
@@ -72,7 +72,8 @@ export default new Vuex.Store({
                         return;
                     }
 
-                    commit('setToken', res.data.token);
+                    commit('user/setToken', res.data.token);
+                    commit('user/setZones', res.data.zones);
                     
                     // 需要修改密碼
                     if (res.data.requirePdChange) {
@@ -104,7 +105,7 @@ export default new Vuex.Store({
                 });
             });
         },
-        checkResetPw: function ({ state, getters }, params) {
+        checkResetPw: function ({ state, rootGetters }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login`;
                 var results = { datas: [], state: '' };
@@ -120,7 +121,7 @@ export default new Vuex.Store({
                     newPd: newPd
                 }, {
                     headers: {
-                        'x-token': getters.getToken
+                        'x-token': rootGetters['user/getToken']
                     }
                 }).then(res => {
                     results.state = 'pass';
@@ -143,7 +144,7 @@ export default new Vuex.Store({
                         acc: params.uid
                     }
                 }).then(res => {
-                    commit('setSessionId', res.data.sessionId);
+                    commit('user/setSessionId', res.data.sessionId);
                     results.state = 'pass';
                     results.datas = res.data;
                     reslove(results);
@@ -154,14 +155,14 @@ export default new Vuex.Store({
                 });
             });
         },
-        checkForgetPdVerificationCode: function ({ state, getters }, params) {
+        checkForgetPdVerificationCode: function ({ state, rootGetters }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login/ForgetPd`;
                 var results = { datas: [], state: '' };
 
                 axios.post(apiUrl, {
                     acc: params.uid,
-                    sessionId: getters.getSessionId,
+                    sessionId: rootGetters['user/getSessionId'],
                     otp: params.verificationCode
                 }).then(res => {
                     results.state = 'pass';
@@ -174,7 +175,7 @@ export default new Vuex.Store({
                 });
             });
         },
-        modifyPw: function ({ state, getters }, params) {
+        modifyPw: function ({ state, rootGetters }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login/ForgetPd`;
                 var results = { datas: [], state: '' };
@@ -184,7 +185,7 @@ export default new Vuex.Store({
 
                 axios.put(apiUrl, {
                     acc: params.uid,
-                    sessionId: getters.getSessionId,
+                    sessionId: rootGetters['user/getSessionId'],
                     otp: params.verificationCode,
                     newPd: newUpd
                 }).then(res => {
@@ -198,12 +199,16 @@ export default new Vuex.Store({
                 });
             });
         },
-        logout: function ({ state, getters }, params) {
+        logout: function ({ state, rootGetters }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login`;
                 var results = { datas: [], state: '' };
                 
-                var token = getters.getToken;
+                var token = rootGetters['user/getToken'];
+
+                // 清除
+                rootGetters['user/clear'];
+
                 if (token !== null) {
                     axios.delete(apiUrl, {
                         headers: {
@@ -221,9 +226,6 @@ export default new Vuex.Store({
                         results.datas = ex;
                         reject(results);
                     });
-
-                    // 清除
-                    getters.clear;
                 } else {
                     results.state = 'success';
                     reslove(results);
@@ -235,23 +237,8 @@ export default new Vuex.Store({
         ...siteConfig
     },
     getters: {
-        getSessionId: () => {
-            return window.sessionStorage.getItem('sessionId');
-        },
-        getToken: () => {
-            return window.sessionStorage.getItem('x_token');
-        },
-        clear: () => {
-            return window.sessionStorage.clear();
-        }
     },
     mutations: {
-        setSessionId: (state, sessionId) => {
-            window.sessionStorage.setItem('sessionId', sessionId);
-        },
-        setToken: (state, token) => {
-            window.sessionStorage.setItem('x_token', token);
-        }
     },
     modules: {
         user: userStore,
