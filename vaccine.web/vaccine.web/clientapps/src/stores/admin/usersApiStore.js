@@ -3,7 +3,7 @@ import siteConfig from "project/site.config"
 export default {
     namespaced: true,
     actions: {
-        searchUser({ state }, params) {
+        searchUser({ state, rootGetters }, params) {
             console.log(state);
             return new Promise(function (resolve, reject) {
                 var datas, testmode = false;
@@ -17,7 +17,7 @@ export default {
                         url: apiUrl,
                         responseType: 'json',
                         headers: {
-                            "X-Token": "AP115a8b8790fbe415a973aa385fec9a770",
+                            "X-Token": rootGetters['user/getToken'],
                         },
                         params: {
                             page: params.page,
@@ -102,7 +102,7 @@ export default {
             });
         },
 
-        modifyPassword({ state }, setdata) {
+        modifyPassword({ state, rootGetters}, setdata) {
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
                 var apiUrl = `${state.apiRoot}api/User/Login`;
@@ -114,7 +114,7 @@ export default {
                     data: setdata,
                     responseType: 'json',
                     headers: {
-                        "X-Token": "AP115a8b8790fbe415a973aa385fec9a770",
+                        "X-Token": rootGetters['user/getToken'],
                     }
                 }).then(res => {
                     results.datas = res;
@@ -129,7 +129,7 @@ export default {
             });
 
         },
-        changeUser({ state }, data) {
+        changeUser({ state ,rootGetters }, data) {
             return new Promise(function (resolve,reject) {
                 var results = { datas: [], state: '' };
                 console.log(state);
@@ -166,7 +166,7 @@ export default {
                     data: setdata,
                     responseType: 'json',
                     headers: {
-                        "X-Token": "AP115a8b8790fbe415a973aa385fec9a770",
+                        "X-Token": rootGetters['user/getToken'],
                     }
                 }).then(res => {
                     results.datas = res;
@@ -181,7 +181,7 @@ export default {
             });
 
         },
-        removeUser({ state }, delKey) {
+        removeUser({ state, rootGetters }, delKey) {
             console.log(state);
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
@@ -190,7 +190,7 @@ export default {
                     url: `${state.apiRoot}api/User?api-version=1.0&acc=` + delKey,
                     responseType: 'json',
                     headers: {
-                        "X-Token": "AP115a8b8790fbe415a973aa385fec9a770",
+                        "X-Token": rootGetters['user/getToken'],
                     }
                 }).then(res => {
                     results.datas = res;
@@ -204,14 +204,14 @@ export default {
             });
 
         },
-        getAreaList: function ({ state ,commit }) {
+        getAreaList: function ({ state, rootGetters, commit }) {
 
             axios({
                 method: 'get',
                 url: `${state.apiRoot}api/DataItem/ZoneMap?api-version=1.0`,
                 data: {},
                 headers: {
-                    "X-Token": "AP115a8b8790fbe415a973aa385fec9a770",
+                    "X-Token": rootGetters['user/getToken'],
                 },
                 responseType: 'json',
             }).then(function (res) {

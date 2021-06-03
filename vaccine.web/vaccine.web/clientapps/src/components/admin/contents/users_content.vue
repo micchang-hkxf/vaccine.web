@@ -220,7 +220,7 @@
                     <v-btn @click="createConfirm" color="primary" style="margin-left:20px">儲存</v-btn>
                 </template>
             </com-dialog>
-            <com-confirm ref="alert"  ref-key="alert" :right-click="alertClick" >
+            <com-confirm ref="alert"  ref-key="alert" :right-click="alertClick" right-color="#2EB6C7" right-outlined="">
 
                 <template v-slot:confirm-image>
                     <v-img v-bind:src="alertImgSrc"></v-img>
@@ -423,7 +423,7 @@
             changeStatus:null,
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
-                { text: '姓名', value: 'uName', align: 'start', sortable: true, flex: 6 },
+                { text: '姓名', value: 'uName', align: 'start', sortable: true, flex: 6, width: '10%' },
                 { text: '帳號', value: 'acc', sortable: false, flex: 6 },
                 //{ text: 'email', value: 'email', sortable: false, flex: 6 },
                 { text: '角色', value: 'userTypeDesc', sortable: false, flex: 6},

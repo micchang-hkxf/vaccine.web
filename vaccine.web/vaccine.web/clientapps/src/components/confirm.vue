@@ -22,7 +22,7 @@
                                 <v-btn class="confirm-center-btn"
                                        :color="setRightColor"
                                        :ripple="false"
-                                       :outlined="setRighOutlined"
+                                       :outlined="setRightOutlined"
                                        @click="rightBtnAction">
                                     <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
 
