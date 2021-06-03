@@ -1,8 +1,58 @@
-﻿export default {
+﻿import axios from 'axios';
+import siteConfig from "project/site.config"
+
+export default {
     namespaced: true,
     actions: {
+        getUserInfoData({ state, rootGetters }) {
+  
+            return new Promise(function (resolve, reject) {
+                var results = { datas: [], state: '' };
+                console.log(state);
+                axios({
+                    method: 'get',
+                    url: `${state.apiRoot}api/User/ReGetInfo?api-version=1.0`,
+                    responseType: 'json',
+                    headers: {
+                        "X-Token": rootGetters['user/getToken'],
+                    }
+                }).then(res => {
+                    results.datas = res;
+                    resolve(results);
+                }).catch(ex => {
+                    results.state = 'error';
+                    results.datas = ex;
+                    reject(results);
+                });
+            });
+        },
+        userLogout({ state, rootGetters }) {
+         
+            return new Promise(function (resolve, reject) {
+                var results = { datas: [], state: '' };
+                console.log(state);
+                axios({
+                    method: 'delete',
+                    url: `${state.apiRoot}api/User/Login?api-version=1.0`,
+                    responseType: 'json',
+                    headers: {
+                        "X-Token": rootGetters['user/getToken'],
+                    }
+                }).then(res => {
+                  
+                    results.datas = res;
+                    resolve(results);
+                 }).catch(ex => {
+                    
+                    results.state = 'error';
+                    results.datas = ex;
+                    reject(results);
+                });
+            });
+        }
     },
     state: {
+        ...siteConfig,
         moduleEnabled: 'vuex module 已啟用'
     },
     getters: {

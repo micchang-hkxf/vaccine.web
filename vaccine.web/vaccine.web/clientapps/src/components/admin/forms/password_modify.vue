@@ -132,7 +132,7 @@
                     this.$refs.newPassword2.focus();
                     return;
                 }
-                this.action({ mode: this.mode, action: 'save', model: this.model });
+                this.action({ mode: this.mode, action: 'save', model: this.model, pass: this.newPassword});
 
                 this.$refs.dialogPanel.close();                
             },

@@ -187,9 +187,9 @@
         },      
         created: function () {
             var comp = this;
-
-            comp.$set(comp, "setLeftColor", comp.leftColor);
-            comp.$set(comp, "setRightColor", comp.rightColor);
+       
+            comp.$set(comp, "setLeftColor", (comp.leftColor) ? comp.leftColor : comp.setLeftColor);
+            comp.$set(comp, "setRightColor", (comp.rightColor) ? comp.rightColor : comp.setRightColor);
 
             comp.$set(comp, "setLeftOutlined", comp.leftOutlined == "on");
             comp.$set(comp, "setRightOutlined", comp.rightOutlined == "on");

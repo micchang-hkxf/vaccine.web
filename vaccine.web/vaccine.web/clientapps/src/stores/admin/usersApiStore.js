@@ -105,8 +105,6 @@ export default {
         modifyPassword({ state, rootGetters}, setdata) {
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
-                var apiUrl = `${state.apiRoot}api/User/Login`;
-                alert(apiUrl);
                 console.log(state);
                 axios({
                     method: 'put',

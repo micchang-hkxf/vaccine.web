@@ -24,7 +24,7 @@
                            class="usertitle"
                            icon>
                         <v-icon>mdi-account-outline</v-icon>
-                        {{(user)?user.name:''}}
+                        {{(user)?user.uName:''}}
                         <v-icon>mdi-chevron-right</v-icon>
                     </v-btn>
                 </template>
@@ -65,7 +65,7 @@
             </div>
         </v-footer>
         <modify ref="passwordEditor" ref-key="pwd" width="40%" :title="title" :action="formAction"></modify>
-        <profile ref="profileViewer" ref-key="pf" width="40%" :title="title2" ></profile>
+        <profile ref="profileViewer" ref-key="pf" width="40%" :title="title2"></profile>
         <com-dialog ref="modifyViewer" ref-key="pwd" width="60%">
             <template v-slot:toolbar>
                 {{modifyTitle}}
@@ -93,12 +93,24 @@
             <template v-slot:confirm-text>
                 {{alertText}}
             </template>
-
             <template v-slot:confirm-right-btn-text>
                 確認
             </template>
         </com-confirm>
-
+        <com-confirm ref="changeErrorAlert" ref-key="confirm" :right-click="alertRightClick" right-color="#626781">
+            <template v-slot:confirm-image>
+                <v-img v-bind:src="errorImgSrc"></v-img>
+            </template>
+            <template v-slot:confirm-title>
+                {{errorTitle}}
+            </template>
+            <template v-slot:confirm-text>
+                {{errorText}}
+            </template>
+            <template v-slot:confirm-right-btn-text>
+                確認
+            </template>
+        </com-confirm>
 
 
     </v-app>
@@ -119,13 +131,16 @@
         // router,
         data: () => ({
             drawer: true,
-            user: { name: '王小明 ' },
+            user: null,
             menus: [],
             modifyTitle: '',
             profileTitle: '',
             alertTitle:'',
             alertText: '',
-            alertImgSrc:'',
+            alertImgSrc: '',
+            errorTitle: '',
+            errorText: '',
+            errorImgSrc: '',
             successIcon: '/alert_success.svg',
             warningIcon: '/alert_warning.svg',
             title: '修改密碼',
@@ -144,7 +159,7 @@
                     click() {
                        
                         this.profileTitle = '個人資訊';
-                        this.$refs.profileViewer.create();
+                        this.$refs.profileViewer.create(this.user);
                     }
                 },
                 {
@@ -159,7 +174,7 @@
                     title: '登出',
                     icon: 'mdi-logout',
                     click() {
-                        alert('logout');
+                        this.clickLogout();
                     }
                 }
             ],
@@ -178,9 +193,12 @@
 
         },
         created: function () {
+            this.getUserInfo();
         },
         methods: {
             ...mapActions('users', ['modifyPassword']),
+            ...mapActions('user', ['getUserInfoData','userLogout']),
+
             handleClick(index) {
                 this.menulist[index].click.call(this)
             },
@@ -205,10 +223,11 @@
                 this.$refs.passwordEditor.show();
             },
             save: function () {
+          
                 //todo
-                var loginAccount = "kkk",
-                    accMobile = "0900000000";
-
+                var loginAccount = this.user.acc,
+                    accMobile = this.$refs.passwordEditor.newPassword;
+                
                 var oriPd = crypto.createHash('sha256').update(loginAccount + accMobile).digest('base64'),
                     newPd = crypto.createHash('sha256').update(loginAccount + accMobile).digest('base64');
 
@@ -226,10 +245,10 @@
                     comp.$refs.modifyViewer.close();
                     comp.$refs.changeAlert.open();
                 }).catch(function () {
-                    comp.alertImgSrc = comp.warningIcon;
-                    comp.alertText = '處理錯誤，請重新嘗試';
+                    comp.errorImgSrc = comp.warningIcon;
+                    comp.errorText = '處理錯誤，請重新嘗試';
                     comp.$refs.modifyViewer.close();
-                    comp.$refs.changeAlert.open();
+                    comp.$refs.changeErrorAlert.open();
                 });
 
                 
@@ -237,6 +256,26 @@
             alertRightClick: function () {
                 this.$bus.$emit(`confirm_show`, false);
             },
+            getUserInfo() {
+                
+
+                var comp = this;
+                comp.getUserInfoData().then(function (result) {
+                    console.log(result);
+                    comp.user = result.datas.data;
+                }).catch(function () {
+                    window.location.href = "/login";
+                });
+            },
+            clickLogout() {
+                var comp = this;
+                comp.userLogout().then(function (result) {
+                    console.log(result);
+                    window.location.href = "/login";
+                }).catch(function () {
+
+                });
+            }
         },
         components: {
             modify, comDialog, comConfirm, profile

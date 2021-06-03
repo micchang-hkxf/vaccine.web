@@ -81,10 +81,10 @@
 
                     <template v-slot:toolbar-action={}>
                         <!--<v-checkbox :ripple="false" hide-details @click="switchSelect"></v-checkbox>
-        <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
-            <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
-        </v-btn>
-        -->
+                <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
+                    <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
+                </v-btn>
+                -->
                         <v-spacer></v-spacer>
 
                         <v-menu bottom right offset-y>
@@ -121,13 +121,13 @@
 
                     <template v-slot:item.modify="{item}">
 
-                        <v-menu bottom right offset-y >
+                        <v-menu bottom right offset-y>
                             <template v-slot:activator="{ on }">
                                 <v-btn dark icon v-on="on" @click.stop="showOptMenu(item)">
                                     <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
                                 </v-btn>
                             </template>
-                            <v-list >
+                            <v-list>
                                 <v-list-item @click.stop="editItem(item)">
                                     <v-list-item-action-text>
                                         <v-btn icon dense>
@@ -149,10 +149,10 @@
                                         </v-btn>刪除
                                     </v-list-item-action-text>
                                 </v-list-item>
-                             
+
                             </v-list>
                         </v-menu>
-         
+
                     </template>
                 </com-table>
             </div>
@@ -168,7 +168,7 @@
                         <v-label><span class="star">帳號</span></v-label>
                         <v-text-field dense outlined class="w02" placeholder="請輸入帳號" v-model="acc" v-bind:readonly="isReadOnly" :rules="[v => !!v || '必填']"></v-text-field>
                         <!--<v-label><span class="star">email</span></v-label>
-    <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>-->
+                <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>-->
                         <v-label><span class="star">手機</span></v-label>
                         <v-text-field dense outlined class="w02" placeholder="請輸入手機號碼" type="number" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
                         <v-label><span class="star">再次確認手機</span></v-label>
@@ -220,8 +220,7 @@
                     <v-btn @click="createConfirm" color="primary" style="margin-left:20px">儲存</v-btn>
                 </template>
             </com-dialog>
-            <com-confirm ref="alert"  ref-key="alert" :right-click="alertClick" right-color="#2EB6C7" right-outlined="">
-
+            <com-confirm ref="alert" ref-key="alert" :right-click="alertClick" :right-color="alertrightcolor" right-outlined="">
                 <template v-slot:confirm-image>
                     <v-img v-bind:src="alertImgSrc"></v-img>
                 </template>
@@ -234,9 +233,22 @@
                 <template v-slot:confirm-right-btn-text>
                     確認
                 </template>
-         
             </com-confirm>
-            <com-confirm ref="duplicatAlert"  ref-key="duplicatAlert" :right-click="backClick">
+            <com-confirm ref="error" ref-key="error" :right-click="alertClick" right-color="#626781" right-outlined="">
+                <template v-slot:confirm-image>
+                    <v-img v-bind:src="errorImgSrc"></v-img>
+                </template>
+                <template v-slot:confirm-title>
+                    <span class="alertTitle">{{ errorTitle }}</span>
+                </template>
+                <template v-slot:confirm-text>
+                    {{ errorMessage }}
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    確認
+                </template>
+            </com-confirm>
+            <com-confirm ref="duplicatAlert" ref-key="duplicatAlert" :right-click="backClick" rightColor="#626781">
                 <template v-slot:confirm-image>
                     <v-img v-bind:src="alertImgSrc"></v-img>
                 </template>
@@ -248,7 +260,7 @@
                     返回
                 </template>
             </com-confirm>
-            <com-confirm ref-key="confirmAction" :left-click="confirmLeftClick" :right-click="confirmRightClick">
+            <com-confirm ref-key="confirmAction" :left-click="confirmLeftClick" :right-click="confirmRightClick" rightColor="#F0524B" leftColor="#626781">
                 <template v-slot:confirm-image>
                     <v-img v-bind:src="confirmImgSrc"></v-img>
                 </template>
@@ -259,7 +271,7 @@
                     {{ confirmMessage }}
                 </template>
                 <template outlined v-slot:confirm-left-btn-text>
-                    取消
+                    <font color="#ffffff">取消</font>
                 </template>
                 <template v-slot:confirm-right-btn-text>
                     確認
@@ -401,6 +413,8 @@
             valid: true,
             alertMessage: "",
             alertTitle: "",
+            errorMessage: "",
+            errorTitle: "",
             confirmTitle: "刪除人員?",
             confirmMessage:"",
             editID: "",
@@ -409,6 +423,7 @@
             formTitle: "新增人員",
             confirmImgSrc: "",
             alertImgSrc: "",
+            errorImgSrc: "",
             successIcon: '/alert_success.svg', 
             warningIcon: '/alert_warning.svg',
             setRole: null,
@@ -420,7 +435,8 @@
             itle: "",
             fromSaveConfirmMessage: "",
             fromSaveConfirmTitle: "",
-            changeStatus:null,
+            changeStatus: null,
+            alertrightcolor:'#736DB9',
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
                 { text: '姓名', value: 'uName', align: 'start', sortable: true, flex: 6, width: '10%' },
@@ -502,19 +518,20 @@
             stopItem(item) {
                 var comp = this;
                 item.editMode = true;
-       
+             
                 item.isEnable = (item.isEnable.toString() == 'true') ? 'false' : 'true';
-                item.zones = ["200", item.zones[0].data[0].distId];//todo
+                item.zones = ["200", (item.zones[0].data[0]) ? item.zones[0].data[0].distId:""];//todo
                 comp.alertImgSrc = comp.warningIcon;
-
                 comp.changeUser(item).then(function (result) {
                   
                     if (result) {
+                      
                         comp.alertImgSrc = comp.successIcon;
                         comp.$bus.$emit('alert_show', true);
                         comp.alertTitle = comp.changeStatus+'成功';
                         comp.search(comp.inpage);
                     } else {
+                     
                         comp.alertTitle = comp.changeStatus+'失敗';
                         this.alertImgSrc = this.alertIcon;
                         comp.$bus.$emit('alert_show', true);
@@ -522,9 +539,9 @@
                     }
    
                 }).catch(function () {
-                    comp.alertImgSrc = comp.alertIcon;
-                    comp.alertMessage = '處理錯誤，請重新嘗試';
-                    comp.$bus.$emit('alert_show', true);
+                    comp.errorImgSrc = comp.alertIcon;
+                    comp.errorMessage = '處理錯誤，請重新嘗試';
+                    comp.$bus.$emit('error_show', true);
                 });
             },
             removeItemConfirm(item) {
@@ -551,9 +568,9 @@
                     comp.$bus.$emit('alert_show', true);
                 }).catch(function () {
 
-                    comp.alertMessage = '處理錯誤，請重新嘗試';
-                    comp.alertImgSrc = comp.warningIcon;
-                    comp.$bus.$emit('alert_show', true);
+                    comp.errorMessage = '處理錯誤，請重新嘗試';
+                    comp.errorImgSrc = comp.warningIcon;
+                    comp.$bus.$emit('error_show', true);
                 });
             },
             search(page) {
@@ -597,9 +614,9 @@
            
     
                 }).catch(function () {
-                    comp.alertTitle = '處理錯誤，請重新嘗試';
-                    comp.alertImgSrc = comp.warningIcon;
-                    comp.$bus.$emit('alert_show', true);
+                    comp.errorTitle = '處理錯誤，請重新嘗試';
+                    comp.errorImgSrc = comp.warningIcon;
+                    comp.$bus.$emit('error_show', true);
                 })
             },
             newItem() {
@@ -671,7 +688,11 @@
                 comp.alertImgSrc = comp.warningIcon;
   
                 comp.$bus.$emit('type1_show4', "資料處理中...");
-                var saveMsg = comp.uName + "\n" + comp.acc + "\n" + comp.setRole.state+"\n";
+                var roleDesc = comp.setRole.state;
+                if (this.setRole.id > 0) {
+                    roleDesc += "-" + comp.setArea.state;
+                }
+                var saveMsg = comp.uName + "\n" + comp.acc + "\n" + roleDesc+"\n";
                 comp.changeUser(setData).then(function (result) {
 
                     if (result.datas.status == "201") {
@@ -685,13 +706,14 @@
                         comp.search(1);
                     }
 
-                    comp.$bus.$emit('type1_hide4');
+                    //comp.$bus.$emit('type1_hide4');
                    
                 }).catch(function (r) {
                     console.log(r.datas.response.status);
-                    comp.$bus.$emit('type1_hide4');
-                    comp.$set(comp, "alertTitle", '處理錯誤，請重新嘗試');
-                    comp.$bus.$emit('alert_show', true);
+                    //comp.$bus.$emit('type1_hide4');
+                    comp.errorImgSrc = comp.warningIcon;
+                    comp.$set(comp, "errorTitle", '處理錯誤，請重新嘗試');
+                    comp.$bus.$emit('error_show', true);
                 });
 
             },

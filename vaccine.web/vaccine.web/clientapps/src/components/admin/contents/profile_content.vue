@@ -61,26 +61,21 @@
         created: function () {
         },
         methods: {
-            open: function (model) {
-                this.mode = 'edit';
-                Object.assign(this.model, model);
+            open: function () {
                 this.$refs.dialogPanel.open();
             },
-
-            create: function (model) {
-                this.mode = 'new';
-                Object.assign(this.model, model);
-               
+            create: function (data) {
+                console.log(data);
                 this.$refs.dialogPanel.open();
 
                 //get inform from api(todo)
-                this.$set(this, "uName", 'myname');
-                this.$set(this, "acc", 'myacc');
-                this.$set(this, "mbNo", '0900000000');
-                this.$set(this, "unit", '衛生局');
-                this.$set(this, "perm", '轄區管理員');
-                this.$set(this, "passModifyTime", '2021/5/25 12:00:00');
-                this.$set(this, "zones", '信義區');
+                this.$set(this, "uName", data.uName);
+                this.$set(this, "acc", data.acc);
+                this.$set(this, "mbNo", data.mbNo);
+                this.$set(this, "unit", data.unit);
+                this.$set(this, "perm", data.userTypeDesc);
+                this.$set(this, "passModifyTime", data.lastAccessTime);
+                this.$set(this, "zones", data.zones[0].cityName);//todo
             },
            
             show: function () {
