@@ -194,7 +194,7 @@
                         </v-select>
                         <v-label><span class="star">管理區域</span></v-label>
                         <v-select v-model="setArea"
-                                  :items="getAreaItems"
+                                  :items="getAllAreaItems"
                                   item-text="state"
                                   item-value="id"
                                   dense
@@ -460,8 +460,7 @@
             }
         }),
         computed: {
-            ...mapGetters('users', ['getTableItems', 'getAreaItems', 'getRoleItems', 'getRoleListById', 'getAreaListById']),     
-      
+            ...mapGetters('users', ['getTableItems', 'getAreaItems', 'getAllAreaItems', 'getRoleItems', 'getRoleListById', 'getAreaListById']),
         },
         props: {
 
@@ -470,7 +469,7 @@
             this.search(1);
         },
         created() {
-            //this.getAreaList();
+            this.getAreaList();
         },
         methods: {
             ...mapActions('users', ['searchUser', 'changeUser', 'removeUser', 'getAreaList']),

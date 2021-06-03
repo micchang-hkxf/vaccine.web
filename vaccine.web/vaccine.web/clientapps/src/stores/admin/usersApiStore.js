@@ -204,8 +204,40 @@ export default {
             });
 
         },
+    
         getAreaList: function ({ state, rootGetters, commit }) {
+            var z = rootGetters['user/getZones'];
 
+            var isAdmin = true;
+            //var z = [{
+            //    "cityId": "1",
+            //    "cityName": "台北市",
+            //    "hasAuth": true,
+            //    "data": [
+            //        {
+            //            "distId": "1",
+            //            "distName": "abc區",
+            //            "hasAuth": true,
+            //            "data": [
+            //                {
+            //                    "villageId": "string",
+            //                    "villageName": "string",
+            //                    "hasAuth": true
+            //                }
+            //            ]
+            //        }
+            //    ]
+            //}];
+
+
+            if (z[0].data.length > 0) {
+                isAdmin = false;
+                var result = [];
+                z[0].data.forEach(function (item) {
+                    result.push({ id: item.distId, state: item.distName });
+                });
+                state.arealist = result;
+            } 
             axios({
                 method: 'get',
                 url: `${state.apiRoot}api/DataItem/ZoneMap?api-version=1.0`,
@@ -215,8 +247,13 @@ export default {
                 },
                 responseType: 'json',
             }).then(function (res) {
-                commit('getAreaList', res.data)
+                
+                commit('getAreaList', res.data);
+                if (isAdmin) {//搜尋介面管理者看全區
+                    commit('getAreaListBySearchSelector'); 
+                }
             });
+            
 
         },
     },
@@ -241,6 +278,8 @@ export default {
                 state: "E區"
             }
         ],
+
+        arealist2: [],//全部區
         rolelist: [
             {
                 id: 0,
@@ -688,7 +727,7 @@ export default {
     getters: {
         getTableItems: state => state.items,
         getAreaItems: state => state.arealist,
-
+        getAllAreaItems: state => state.arealist2,
         
         getRoleItems: state => state.rolelist,
         getRoleListById: state => (id) => {
@@ -699,13 +738,17 @@ export default {
         }
     },
     mutations: {
-        //getAreaList: function (state, data) {
-        //    var result = [];
-        //    data[0].data.forEach(function (item) {
-        //       result.push({ id: item.distId, state: item.distName });
-        //    });
-        //    state.arealist = result;
-        //}
+        getAreaList: function (state, data) {
+
+            var result = [];
+            data[0].data.forEach(function (item) {
+               result.push({ id: item.distId, state: item.distName });
+            });
+            state.arealist2 = result;
+        },
+        getAreaListBySearchSelector: function (state) {
+            state.arealist = state.arealist2
+        }
     },
     modules: {
 
