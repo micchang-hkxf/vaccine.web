@@ -1,14 +1,18 @@
 ﻿<template>
     <!-- App.vue -->
     <v-app class="app-container" light>
-        <v-navigation-drawer app v-model="showNavi">
+        <v-navigation-drawer app v-model="showNavi" v-if="$slots['navigation']">
             <div class="app-navigation" v-if="$slots['navigation']">
                 <slot name="navigation" />
             </div>
             <!-- -->
         </v-navigation-drawer>
 
+
         <v-app-bar app v-if="$slots['app-bar']" v-bind="barOption">
+            <template v-slot:extension v-if="$slots['extension']">
+                <slot name="extension" />
+            </template>
             <div class="app-bar" v-if="$slots['app-bar']">
                 <slot name="app-bar" />
             </div>

@@ -18,8 +18,8 @@
             <div id="app">
                 <div class="tab-container">
                     <v-tabs color="black" slider-color="#736DB9" grow>
-                        <v-tab>我要報名</v-tab>
-                        <v-tab>查詢紀錄</v-tab>
+                        <v-tab :ripple="false">我要報名</v-tab>
+                        <v-tab :ripple="false">查詢紀錄</v-tab>
                     </v-tabs>
                 </div>
             </div>
