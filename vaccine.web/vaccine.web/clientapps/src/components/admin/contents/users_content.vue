@@ -449,7 +449,7 @@
                 { text: '最後存取時間', value: 'lastAccessTime', sortable: false, flex: 6 },
                 //{ text: '手機', value: 'mbNo', sortable: false, flex: 6 },
                 //{ text: '服務單位', value: 'unitName', sortable: false, flex: 6 },
-                { text: '', value: 'modify', sortable: false },
+                { text: '', value: 'modify', sortable: false, width: '3%' },
             ],
             items: [],
             selectRole: null,
@@ -592,7 +592,7 @@
                     filter.uName = this.selectUser;
                 }
                 var comp = this;
-         
+                comp.$bus.$emit('type1_show4', "資料處理中...");
                 comp.searchUser(filter).then(function (result) {
                     var finddata = true;
                     switch (result.state) {
@@ -603,7 +603,7 @@
                         default:
                             break;
                     }
-    
+                    comp.$bus.$emit('type1_hide4');
                     comp.totalCount = result.totalCount;
                     comp.items = [];
                     result.datas.forEach(f => comp.items.push(f))
@@ -706,11 +706,11 @@
                         comp.search(1);
                     }
 
-                    //comp.$bus.$emit('type1_hide4');
+                    comp.$bus.$emit('type1_hide4');
                    
                 }).catch(function (r) {
                     console.log(r.datas.response.status);
-                    //comp.$bus.$emit('type1_hide4');
+                    comp.$bus.$emit('type1_hide4');
                     comp.errorImgSrc = comp.warningIcon;
                     comp.$set(comp, "errorTitle", '處理錯誤，請重新嘗試');
                     comp.$bus.$emit('error_show', true);
