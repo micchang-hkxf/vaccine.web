@@ -62,6 +62,13 @@ export default {
         getToken: () => {
             return window.sessionStorage.getItem('x_token');
         },
+        getApiHeader: () => {
+            return {
+                headers: {
+                    'x-token': window.sessionStorage.getItem('x_token')
+                }
+            } ;
+        },
         getZones: () => {
             return JSON.parse(window.sessionStorage.getItem('zones'));
         },
