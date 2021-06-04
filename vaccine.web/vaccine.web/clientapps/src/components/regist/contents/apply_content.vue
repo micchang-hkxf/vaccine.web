@@ -4,7 +4,7 @@
             報名資訊確認
         </template>
         <template v-slot:regist-content>
-            <div class="apply-header">
+            <!--<div class="apply-header">
                 <v-stepper alt-labels class="elevation-0">
                     <v-stepper-header>
                         <v-stepper-step step="1" class="step-one disable-step"></v-stepper-step>
@@ -12,7 +12,7 @@
                         <v-stepper-step step="2" class="step-two active-step"> </v-stepper-step>
                     </v-stepper-header>
                 </v-stepper>
-            </div>
+            </div>-->
             <div class="apply-container">
 
                 <div class="activity-name">五月份新冠肺炎疫苗接種</div>
@@ -38,12 +38,16 @@
                         </v-select>
                         <v-select :items="months" placeholder="mm">
                             <template v-slot:prepend>
-                                /
+                                <div class="splid-date d-flex justify-center">
+                                    /
+                                </div>
                             </template>
                         </v-select>
                         <v-select :items="days" placeholder="dd">
                             <template v-slot:prepend>
-                                /
+                                <div class="splid-date d-flex justify-center">
+                                    /
+                                </div>
                             </template>
                         </v-select>
                     </div>
@@ -64,18 +68,18 @@
                     <div class="apply-field-label">接種疫苗<span class="red--text">*</span></div>
                     <div class="apply-field-container">
                         <div class="apply-field-type d-flex justify-space-between">
-                            <div class="apply-field-type-icon">
-                                &nbsp;
+                            <div class="apply-field-type-icon d-flex justify-start align-center">
+                                <img src="/regist/select_vaccine.svg" />
                             </div>
-                            <div class="apply-field-type-text d-flex justify-start">
+                            <div class="apply-field-type-text d-flex justify-start align-center">
                                 公費流感疫苗
                             </div>
                         </div>
                         <div class="apply-field-type d-flex justify-space-between">
-                            <div class="apply-field-type-icon">
-                                &nbsp;
+                            <div class="apply-field-type-icon d-flex justify-start align-center">
+                                <img src="/regist/select_vaccine.svg" />
                             </div>
-                            <div class="apply-field-type-text d-flex justify-start">
+                            <div class="apply-field-type-text d-flex justify-start align-center">
                                 公費肺炎鏈球菌疫苗(中央75歲以上)
                             </div>
                         </div>
@@ -91,20 +95,27 @@
                 </div>
 
                 <div class="apply-field display">
-                    <v-checkbox label="我同意以上申明*"></v-checkbox>
+                    <v-checkbox>
+                        <template v-slot:label>
+                            我同意以上申明
+                            <span class="red--text">*</span>
+                        </template>
+                    </v-checkbox>
                 </div>
             </div>
-            <div class="apply-actions d-flex justify-space-around" v-if="isNeedLogin">
+            <div class="apply-actions d-flex justify-space-between" v-if="isNeedLogin">
                 <v-btn color="#626781" :to="{ name:'regist' }">取消</v-btn>
                 <v-btn color="#736DB9" :to="{ name:'agree' }">上一步</v-btn>
                 <v-btn color="#736DB9" @click.stop="sendApply()">確定報名</v-btn>
             </div>
+            <apply-done ref="done"></apply-done>
         </template>
     </app-layout>
 </template>
 
 <script>
     import appLayout from 'components/regist/regist_layout'
+    import applyDone from 'components/regist/forms/apply_done'
     export default {
         // router,
         data: () => ({
@@ -126,15 +137,41 @@
         },
         methods: {
             sendApply: function () {
-
+                this.$refs.done.create();
             },
         },
         components: {
-            appLayout
+            appLayout, applyDone
         }
     }
 </script>
 <style scoped>
+
+    .apply-content/deep/ .v-btn {
+        min-width: 100px !important;
+    }
+
+    .v-application .primary--text {
+        color: #736DB9 !important;
+        caret-color: #736DB9 !important;
+    }
+    .apply-content/deep/ .apply-actions .v-btn:not(.v-btn--disabled) {
+        color: white !important;
+    }
+
+    .apply-content/deep/ .v-select .v-icon {
+        font-size: 16px !important;
+    }
+
+    .apply-content/deep/ .splid-date {
+        width:30px!important;
+        margin-left:10px!important;
+    }
+
+
+    .apply-content/deep/ .apply-actions .v-btn:not(.v-btn--disabled) {
+        color: white !important;
+    }
 
     .apply-content/deep/ .descript-area {
         padding: 16px !important;
@@ -142,7 +179,7 @@
     }
 
     .apply-content/deep/ .apply-field-type-icon {
-        width: 30px !important;
+        width: 40px !important;
         color: #626781 !important;
         font-size: 16px !important;
     }
@@ -150,7 +187,7 @@
     .apply-content/deep/ .apply-field-type-text {
         font-size: 16px !important;
         color: #626781 !important;
-        width: calc(100% - 30px) !important;
+        width: calc(100% - 40px) !important;
     }
 
     .apply-content/deep/ .apply-container .apply-field-label {
@@ -208,14 +245,14 @@
         margin-top: 24px !important;
     }
 
-    .apply-content/deep/ .apply-container,
-    .apply-content/deep/ .apply-actions {
+    .apply-content/deep/ .apply-container {
+        padding-top: 24px !important;
         padding-left: 24px !important;
         padding-right: 24px !important;
     }
 
     .apply-content/deep/ .apply-actions {
-        padding-top: 24px !important;
+        padding: 24px !important;
     }
 
     .apply-content/deep/ .action {

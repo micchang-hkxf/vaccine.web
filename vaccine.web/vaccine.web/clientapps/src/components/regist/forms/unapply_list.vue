@@ -1,12 +1,21 @@
 ﻿<template>
     <div class="unapply-list">
         <div class="action-bar">
-            <v-text-field placeholder="請輸入行政區、村里或場次標題" hide-details dense height="48px"
-                          outlined>
-                <template v-slot:append>
-                    <img src="/regist/common_search-24px.svg" />
-                </template>
-            </v-text-field>
+            <div class="action-bar-filter">
+                <v-select placeholder="全部新冠肺炎疫苗廠牌" hide-details height="48px">
+                </v-select>
+                <v-text-field placeholder="請輸入行政區、村里或場次標題" hide-details dense height="48px">
+                    <template v-slot:append>
+                        <div class="d-flex align-center text-controll">
+                            <img src="/regist/common_search-24px.svg" />
+                        </div>
+                    </template>
+                </v-text-field>
+            </div>
+            <div class="action-bar-bottons d-flex justify-space-between">
+                <v-btn class="clear-action">清除條件</v-btn>
+                <v-btn class="search-action">查詢</v-btn>
+            </div>
         </div>
         <div class="action-container">
             <v-card class="action d-flex flex-row" elevation="0">
@@ -38,7 +47,7 @@
                     </div>
                 </div>
                 <div class="action-button d-flex justify-center align-center">
-                    <v-btn color="#736DB9" height="100%" width="100%">
+                    <v-btn color="#736DB9" height="100%" width="100%" :to="{ name: 'agree' }">
                         報名
                     </v-btn>
                 </div>
@@ -72,8 +81,8 @@
                     </div>
                 </div>
                 <div class="action-button d-flex justify-center align-center">
-                    <v-btn color="#736DB9" height="100%" width="100%">
-                        報名
+                    <v-btn color="#626781" height="100%" width="100%" :to="{ name: 'agree' }">
+                        查看
                     </v-btn>
                 </div>
             </v-card>
@@ -106,6 +115,36 @@
     }
 </script>
 <style scoped>
+
+    .unapply-list/deep/ .v-btn:not(.v-btn--disabled) {
+        color: white !important;
+    }
+
+    .unapply-list/deep/ .clear-action {
+        background-color: #626781!important;
+        width:40%!important
+    }
+    .unapply-list/deep/ .search-action {
+        background-color: #736DB9 !important;
+        width:40%!important
+    }
+    
+
+    .unapply-list/deep/ .action-bar-bottons {
+        padding-top: 12px !important;
+    }
+    .unapply-list/deep/ .v-input {
+        padding-top: 0px !important;
+        margin-top: 0px !important;
+    }
+
+    .unapply-list/deep/ .text-controll{
+        height:48px!important;
+    }
+    .v-application .primary--text {
+        color: #736DB9 !important;
+        caret-color: #736DB9 !important;
+    } 
 
     .unapply-list/deep/ {
         background-color: #F4F4F4 !important;
@@ -169,10 +208,12 @@
         height: 100%;
     }
 
-    .unapply-list/deep/ .action-bar {
-        padding: 16px !important;
-        background-color: #FFFFFF;
-    }
+        .unapply-list/deep/ .action-bar {
+            padding-right: 16px !important;
+            padding-left: 16px !important;
+            padding-bottom: 16px !important;
+            background-color: #FFFFFF;
+        }
 
         .unapply-list/deep/ .action-bar .v-text-field .transparent {
             border-color: rgba(54,66,80,0.2) !important;

@@ -60,7 +60,6 @@
         padding-top: 5px !important;
         max-width: 200%;
         font-size: 16px !important;
-        font-weight: bold !important;
     }
     .logo-title {
         max-width: 200%;

@@ -54,6 +54,8 @@
     }
 </script>
 <style>
+
+
     .regist-icon {
         padding-right:8px!important;
     }

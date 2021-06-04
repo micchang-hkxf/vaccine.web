@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="action-button d-flex justify-center align-center">
-                    <v-btn color="rgba(119,204,219,0.5)" height="100%" width="100%" elevation="0">
+                    <v-btn color="rgba(119,204,219,0.5)" height="100%" width="100%" elevation="0" :to="{ name:'applied' }">
                         報名
                     </v-btn>
                 </div>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="action-button d-flex justify-center align-center">
-                    <v-btn  color="#77CCDB" height="100%" width="100%" elevation="0">
+                    <v-btn  color="#77CCDB" height="100%" width="100%" elevation="0" :to="{ name:'applied' }">
                         報名
                     </v-btn>
                 </div>
@@ -108,7 +108,7 @@
                     </div>
                 </div>
                 <div class="action-button d-flex justify-center align-center">
-                    <v-btn color="rgba(67,73,105,0.1)" height="100%" width="100%" elevation="0">
+                    <v-btn color="rgba(67,73,105,0.1)" height="100%" width="100%" elevation="0" :to="{ name:'applied' }">
                         報名
                     </v-btn>
                 </div>

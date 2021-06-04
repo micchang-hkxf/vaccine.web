@@ -4,6 +4,9 @@
         <div class="activity-name">五月份新冠肺炎疫苗接種</div>
         <div class="activity-name-descript">內湖區西康里 | COVID-19疫苗(AZ) | 王慶森診所</div>
 
+        <div class="activity-detail-title">疫苗廠牌</div>
+        <div class="activity-detail-descript">AstraZeneca(AZ)</div>
+
         <div class="activity-detail-title">設站起訖時間</div>
         <div class="activity-detail-descript">2021/05/08, 08:30 - 11:30</div>
 

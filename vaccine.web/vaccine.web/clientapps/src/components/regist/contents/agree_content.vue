@@ -4,15 +4,6 @@
             報名登記與身份驗證
         </template>
         <template v-slot:regist-content>
-            <div class="agree-header">
-                <v-stepper alt-labels class="elevation-0">
-                    <v-stepper-header>
-                        <v-stepper-step step="1" class="step-one active-step"></v-stepper-step>
-                        <v-divider></v-divider>
-                        <v-stepper-step step="2" class="step-two disable-step"> </v-stepper-step>
-                    </v-stepper-header>
-                </v-stepper>
-            </div>
             <div class="agree-container">
                 <apply-viewer></apply-viewer>
                 <v-divider></v-divider>
@@ -20,15 +11,15 @@
             <div class="agree-actions" v-if="isNeedLogin">
                 <div class="action-header">請選擇登記方式：</div>
                 <div class="action-content d-flex flex-row justify-space-between">
-                    <div class="action d-flex flex-column justify-center align-center" @click.stop="toTpton()">
+                    <div class="action tp-pass d-flex flex-column justify-center align-center" @click.stop="toTpton()">
                         <div>
-                            <img src="/regist/regist_logo.png">
+                            <img src="/regist/tp_pass.svg">
                         </div>
                         <div class="action-label">台北通帳號登入</div>
                     </div>
                     <div class="action d-flex flex-column justify-center align-center" @click.stop="toLogin()">
                         <div>
-                            <img src="/regist/regist_logo.png">
+                            <img src="/regist/editor_pen.svg">
                         </div>
                         <div class="action-label">手動輸入資料</div>
                     </div>
@@ -81,11 +72,18 @@
     .agree-content/deep/ .v-divider {
         margin-top: 24px !important;
     }
-    .agree-content/deep/ .agree-container,
-    .agree-content/deep/ .agree-actions {
+    .agree-content/deep/ .agree-container {
+        padding-top: 24px !important;
         padding-left: 24px !important;
         padding-right: 24px !important;
     }
+    .agree-content/deep/ .agree-actions {
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+        padding-bottom: 24px !important;
+    }
+
+
 
     .agree-content/deep/ .action {
         font-size: 16px;
@@ -95,6 +93,13 @@
         height: 150px;
         border-radius: 10px;
     }
+
+        .agree-content/deep/ .action.tp-pass {
+            background-color: #77CCDB;
+        }
+
+
+
     .agree-content/deep/ .action-content {
         padding-top: 20px;
     }

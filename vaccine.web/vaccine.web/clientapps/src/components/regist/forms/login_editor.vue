@@ -1,6 +1,6 @@
 ﻿<template>
-    <v-dialog class="login-editor"  v-model="isShow">
-        <v-card>
+    <v-dialog v-model="isShow">
+        <v-card class="login-editor">
             <v-card-title class="login-header">請輸入您的資料以驗證身份</v-card-title>
             <v-card-text class="login-container">
                 <div class="login-field">
@@ -28,9 +28,9 @@
                     </div>
                 </div>
             </v-card-text>
-            <v-card-actions class="login-actions d-flex justify-space-around">
-                <v-btn color="#626781" @click.stop="isShow=false">取消</v-btn>
-                <v-btn color="#736DB9" :to="{ name:'apply' }">下一步</v-btn>
+            <v-card-actions class="login-actions d-flex justify-space-between">
+                <v-btn class="cancel-action" color="#626781" width="130px" @click.stop="isShow=false">取消</v-btn>
+                <v-btn class="next-action" color="#736DB9" width="130px" :to="{ name:'apply' }">下一步</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -65,8 +65,34 @@
         }
     }
 </script>
+
 <style scoped>
 
+    .login-editor/deep/ .v-btn {
+        min-width:130px!important;
+    }
+
+    .login-editor/deep/ .v-input {
+        padding-top: 0px !important;
+        margin-top: 0px !important;
+    }
+
+    .v-application .primary--text {
+        color: #736DB9 !important;
+        caret-color: #736DB9 !important;
+    }
+
+    .login-editor/deep/ .cancel-action {
+        background-color: #626781 !important;
+    }
+
+    .login-editor/deep/ .next-action {
+        background-color: #736DB9 !important;
+    }
+
+    .login-editor/deep/ .v-btn:not(.v-btn--disabled) {
+        color: white !important;
+    }
 
     .login-editor/deep/ {
     }
@@ -74,11 +100,11 @@
         .login-editor/deep/ .v-overlay__scrim {
         }
 
-    
-    .login-editor/deep/ .login-header {
-        font-size: 16px !important;
-        color: #626781 !important;
-    }
+
+        .login-editor/deep/ .login-header {
+            font-size: 16px !important;
+            color: #626781 !important;
+        }
 
         .login-editor/deep/ .login-container {
         }
@@ -98,9 +124,4 @@
                 width: 60px !important;
             }
 
-        .login-editor/deep/ .v-text-field,
-        .login-editor/deep/ .v-select {
-            padding-top: 0px !important;
-            margin-top: 0px !important;
-        }
 </style>

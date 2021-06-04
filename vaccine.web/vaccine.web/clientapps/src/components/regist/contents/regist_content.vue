@@ -59,7 +59,7 @@
         methods: {
             toRegist: function (type) {
                 console.log('regist type', type);
-                this.$router.push({ name: 'agree' });
+                this.$router.push({ name: 'unapply' });
             }
         },
         components: {

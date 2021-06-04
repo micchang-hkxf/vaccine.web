@@ -1,5 +1,5 @@
 ﻿<template>
-    <app-layout :app-bar="appBar" class="list-content">
+    <app-layout :app-bar="appBar" class="unapply-content">
         <template v-slot:regist-title>
             「新冠肺炎疫苗」選擇種接場次
         </template>
