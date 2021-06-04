@@ -192,9 +192,10 @@ export default {
                 regist_station_end_time: '11:30',
                 regist_apply_start_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),               
                 regist_review_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),///checkTime              
-                regist_qualified: 423,
-                regist_quota: 500,
-                regist_unpassed: 45,
+                regist_qualified: '423',
+                regist_quota: '500',
+                regist_unpassed: '425',
+                regist_abnormalCnt:'0'
                 //abnormalCnt: '0',
                
                 //checkPassCnt: '0',
@@ -229,9 +230,9 @@ export default {
                 regist_apply_end_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),
                 regist_review_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),///checkTime              
                 regist_qualified: '423',
-                regist_quota: 500,
-                regist_unpassed: 45,
-
+                regist_quota: '500',
+                regist_unpassed: '45',
+                regist_abnormalCnt: '0'
                 //checkPassCnt: '0',
             },
         ],

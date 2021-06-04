@@ -181,7 +181,7 @@
                             </com-dialog>
 
 
-
+                            <!--新增-->
                             <editor ref="registNewEditor" ref-key="two" width="60%" :title="title" :action="formAction"></editor>
                             <com-dialog ref="registViewer" ref-key="two" width="60%">
                                 <template v-slot:toolbar>
@@ -192,9 +192,9 @@
                                     </v-btn>
                                 </template>
                                 <template v-slot:content>
-                                    點選「確定」後本報名表將立即生效，請再次確認內容無誤。 {{result}}
+                                    點選「確定」後本報名表將立即生效，請再次確認內容無誤。
                                     <v-divider></v-divider>
-                                    <div>
+                                    <div v-if="result.model !=null">
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>接種類型</v-list-item-title>
@@ -317,7 +317,7 @@
                             </com-dialog>
 
 
-
+                            <!--編輯-->
                             <editor ref="registEdit" ref-key="two" width="60%" :title="title" :action="editFormAction"></editor>
                             <com-dialog ref="registEditViewer" ref-key="two" width="60%">
                                 <template v-slot:toolbar>
@@ -330,10 +330,10 @@
                                 <template v-slot:content>
                                     點選「確定」後本報名表將立即生效，請再次確認內容無誤。
                                     <v-divider></v-divider>
-                                    <div>                                        
+                                    <div v-if="result.model !=null">
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>接種類型</v-list-item-title>{{result}}
+                                                <v-list-item-title>接種類型</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_type_name}}5</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -632,22 +632,23 @@
                                                 <div>複檢通過人數：{{detailCheckPassCnt == '0' ? '-' : detailCheckPassCnt}}</div>
                                             </div>
                                             <div class="detail-action-btn">
-                                                <v-btn v-on="on" @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
+                                                <!--v-on="on"-->
+                                                <v-btn @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
                                                     <span :style="detailAbnormalCnt > 0 ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
                                                 </v-btn>
-                                                <v-btn v-on="on" color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn  color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false" :disabled="lessCheckTime">
                                                     <v-icon left color='white' size="15">
                                                         mdi-arrow-down
                                                     </v-icon>
                                                     <span style="color:white">下載完整接種同意書</span>
                                                 </v-btn>
-                                                <v-btn v-on="on" color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn  color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">
                                                     <v-icon left color='white' size="15">
                                                         mdi-arrow-down
                                                     </v-icon>
                                                     <span style="color:white">下載報名清冊</span>
                                                 </v-btn>
-                                                <v-btn v-on="on" color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn  color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false" :disabled="lessCheckTime">
                                                     <v-icon left color='white' size="15">
                                                         mdi-arrow-down
                                                     </v-icon>
@@ -669,13 +670,13 @@
 
                                 <template v-slot:item.modify="{item}">
                                     <template>
-                                        <v-btn v-on="on" color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result === '系統異常' ? 'hidden' : ''">
+                                        <v-btn  color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result === '系統異常' ? 'hidden' : ''">
                                             <v-icon left color='white' size="15">
                                                 mdi-arrow-down
                                             </v-icon>
                                             <span style="color:white">下載同意書</span>
                                         </v-btn>
-                                        <v-btn v-on="on" color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result !== '系統異常' ? 'hidden' : ''" class="btn-warning">
+                                        <v-btn  color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result !== '系統異常' ? 'hidden' : ''" class="btn-warning">
                                             <span style="color:white">人工複檢</span>
                                         </v-btn>
                                     </template>
@@ -1243,23 +1244,24 @@
                 console.log('item', item);
             },
             detailItem: function (item) {
-                this.detailId = item.id;
-                this.detailTitle = item.title;
-                this.detailType = item.type;
-                this.detailDistrict = item.district;
-                this.detailVillage = item.village;
-                this.detailInstitution = item.institution;
-                this.detailInstutionDistrict = item.instutionDistrict;
-                this.detailStationTime = item.stationTime;
-                this.detailRegistrationTime = item.registrationTime;
-                this.detailCntQuota = item.cntQuota;
-                this.detailTotalQuota = item.totalQuota;
-                this.detailAbnormalCnt = item.abnormalCnt;
-                this.detailCheckTime = item.checkTime;
-                this.detailCheckPassCnt = item.checkPassCnt;
+                this.detailId = item.regist_id;//item.id;
+                this.detailTitle = item.regist_title;//item.title;
+                this.detailType = item.regist_type_name; //item.type;
+                this.detailDistrict = item.regist_district_name; //item.district;
+                this.detailVillage = item.regist_village_name; //item.village;
+                this.detailInstitution = item.regist_institution_name;//item.institution;
+                this.detailInstutionDistrict = item.regist_instution_district_name;   //item.instutionDistrict;
+                this.detailStationTime = item.regist_station_date; //item.stationTime;
+                this.detailRegistrationTime = item.regist_apply_start_date;   //item.registrationTime;
+                this.detailCntQuota = item.regist_unpassed;   //item.cntQuota;
+                this.detailTotalQuota = item.regist_quota;    //item.totalQuota;
+                this.detailAbnormalCnt = item.regist_abnormalCnt;   //item.abnormalCnt;
+                this.detailCheckTime = item.regist_review_date;   //item.checkTime;
+                this.detailCheckPassCnt = item.regist_unpassed;//item.checkPassCnt;
 
                 var today = new Date().toISOString().substr(0, 10).replace(/-/g, '');
-                var checkTime = item.checkTime.substr(0, 10).replace(/\//g, '');
+                //var checkTime = item.checkTime.substr(0, 10).replace(/\//g, '');
+                var checkTime = item.regist_review_date.substr(0, 10).replace(/\//g, '');
                 this.lessCheckTime = (today <= checkTime);
 
                 this.$bus.$emit('dialogDetail_show', true);
