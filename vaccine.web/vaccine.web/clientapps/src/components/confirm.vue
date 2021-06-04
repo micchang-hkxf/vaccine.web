@@ -151,7 +151,7 @@
 
 
     .confirm-center-btn {
-        width: 88px;
+        width: 230px;
         margin-bottom: 20px;
     }
 
