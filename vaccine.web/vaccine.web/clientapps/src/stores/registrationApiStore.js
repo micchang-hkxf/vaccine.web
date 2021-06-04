@@ -204,31 +204,42 @@ export default {
                 }
             });
         },
-        registForm: function ({ state }, data) {
+        registForm: function ({ state, rootGetters}, data) {
             return new Promise((reslove) => {
+                console.log('new', data);
                 var result = { data: [], state: state }
+                var url = `${state.apiRoot}api/Activity`;
+                var header = rootGetters['user/getToken'];
+                var info = {
+                    vaccineGroupId: 0,
+                    vaccineIds: ["string"],
+                    title: "string",
+                    implementDate: "2021-06-04T09:28:07.117Z",
+                    implementStartDate: "2021-06-04T09:28:07.117Z",
+                    implementEndDate: "2021-06-04T09:28:07.117Z",
+                    stationAddr: "string",
+                    distId: "string",
+                    villageId: "string",
+                    startApplyDate: "2021-06-04T09:28:07.117Z",
+                    endApplyDate: "2021-06-04T09:28:07.117Z",
+                    amount: 0,
+                    medicalIds: ["string" ]
+                }
+
+
+                axios.post(url, info, header).then((r) => {
+                    reslove(r)
+                }).catch((e) => {
+                    reject(e);
+                })
+
+
+
                 console.log('new',data);
                 reslove(result)
 
             })
          
-            //        model: {
-            //regist_title: '',
-            //    regist_type: '',
-            //    regist_brand: '',
-            //    regist_district: '',
-            //    regist_village: '',
-            //    regist_place: '',
-            //    regist_institution: '',
-            //    regist_institution_code: '',
-            //    regist_institution_district: '',
-            //    regist_date: new Date().toISOString().substr(0, 10),
-            //    regist_start_time: '08:00',
-            //    regist_end_time: '12:00',
-            //    regist_review_date:'',
-            //    regist_in_advance: '',
-            //    regist_quota:'無限制'
-            //}
 
         },
         updateRegist: function ({ state }, data) {
