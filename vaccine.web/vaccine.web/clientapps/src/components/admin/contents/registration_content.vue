@@ -26,7 +26,7 @@
                                         <v-select v-model="selectVaccine"
                                                   :items="getVaccines"
                                                   item-text="name"
-                                                  item-value="name"
+                                                  item-value="id"
                                                   placeholder="所有疫苗類型"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
@@ -41,7 +41,7 @@
                                         <v-select v-model="selectDistrict"
                                                   :items="getDistricts"
                                                   item-text="name"
-                                                  item-value="name"
+                                                  item-value="id"
                                                   placeholder="全部行政區"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
@@ -57,7 +57,7 @@
                                         <v-select v-model="selectVillage"
                                                   :items="getVillages"
                                                   item-text="name"
-                                                  item-value="name"
+                                                  item-value="id"
                                                   placeholder="全部村里"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
@@ -72,7 +72,7 @@
                                         <v-select v-model="selectInstitution"
                                                   :items="getInstitutions"
                                                   item-text="name"
-                                                  item-value="name"
+                                                  item-value="id"
                                                   placeholder="全部醫療院所"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
