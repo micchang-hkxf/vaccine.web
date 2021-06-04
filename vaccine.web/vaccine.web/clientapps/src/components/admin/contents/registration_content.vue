@@ -14,11 +14,10 @@
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
                                :change-page="changePage"  :row-click="handleRowClick"
                                style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
-                        <!--<template v-slot:item.date="{item}">
-            <div>{{item}}</div>
-        </template>-->
-                        <template v-slot:item.quota="{item}">
-                            <div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>
+
+                        <template v-slot:item.regist_quota="{item}">
+                            <!--<div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>-->
+                            <div><span :class="item.regist_unpassed >= item.regist_quota ? 'color-red' : ''">{{item.regist_unpassed}}</span>/<span style="color:#626781">{{item.regist_quota}}</span></div>
                         </template>
                         <template v-slot:search-bar>
                             <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
@@ -136,7 +135,7 @@
                                 </v-list>
                             </v-menu>
 
-                            <editor ref="registEditor" ref-key="two" width="60%" :title="title" :action="formAction"></editor>
+
 
                             <com-dialog ref="fileViewer" ref-key="two" width="25%">
                                 <template v-slot:toolbar>
@@ -183,7 +182,7 @@
 
 
 
-
+                            <editor ref="registNewEditor" ref-key="two" width="60%" :title="title" :action="formAction"></editor>
                             <com-dialog ref="registViewer" ref-key="two" width="60%">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
@@ -193,10 +192,9 @@
                                     </v-btn>
                                 </template>
                                 <template v-slot:content>
-                                    點選「確定」後本報名表將立即生效，請再次確認內容無誤。
+                                    點選「確定」後本報名表將立即生效，請再次確認內容無誤。 {{result}}
                                     <v-divider></v-divider>
                                     <div>
-                                        {{result}}
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>接種類型</v-list-item-title>
@@ -276,8 +274,8 @@
 
                                                 </v-list-item-title>
                                                 <v-list-item-subtitle>
-                                                    {{result.model.regist_date}} ,
-                                                    {{result.model.regist_start_time}}-{{result.model.regist_end_time}}
+                                                    {{result.model.regist_station_date}} ,
+                                                    {{result.model.regist_station_start_time}}-{{result.model.regist_station_end_time}}
 
                                                 </v-list-item-subtitle>
                                             </v-list-item-content>
@@ -285,7 +283,7 @@
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>事先開放報名時間</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_in_advance}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.regist_apply_start_date}}</v-list-item-subtitle>
 
                                             </v-list-item-content>
                                         </v-list-item>
@@ -330,14 +328,13 @@
                                     </v-btn>
                                 </template>
                                 <template v-slot:content>
-                                    點選「確定」後本報名表將立即生效，請再次確認內容無誤56324。
+                                    點選「確定」後本報名表將立即生效，請再次確認內容無誤。
                                     <v-divider></v-divider>
-                                    <div>
-                                        {{result}}
+                                    <div>                                        
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>接種類型</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_type_name}}</v-list-item-subtitle>
+                                                <v-list-item-title>接種類型</v-list-item-title>{{result}}
+                                                <v-list-item-subtitle>{{result.model.regist_type_name}}5</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
@@ -413,8 +410,8 @@
 
                                                 </v-list-item-title>
                                                 <v-list-item-subtitle>
-                                                    {{result.model.regist_date}} ,
-                                                    {{result.model.regist_start_time}}-{{result.model.regist_end_time}}
+                                                    {{result.model.regist_station_date}} ,
+                                                    {{result.model.regist_station_start_time}}-{{result.model.regist_station_end_time}}
 
                                                 </v-list-item-subtitle>
                                             </v-list-item-content>
@@ -422,7 +419,7 @@
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>事先開放報名時間</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_in_advance}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.regist_apply_start_date}}</v-list-item-subtitle>
 
                                             </v-list-item-content>
                                         </v-list-item>
@@ -454,8 +451,6 @@
                                     <v-btn @click="editSaveRegist" color="primary" :ripple="false">確定</v-btn>
                                 </template>
                             </com-dialog>
-
-
 
 
                             <com-confirm ref="registAlert" ref-key="confirm" :right-click="alertRightClick">
@@ -511,7 +506,6 @@
                                     確認
                                 </template>
                             </com-confirm>
-
 
 
                         </template>
@@ -753,7 +747,7 @@
     </app-layout>
 </template>
 
-<style>
+<style scoped>
     * {
         font-family: "微軟正黑體", "Roboto", sans-serif, "Arial", "Font Awesome 5 Free", "Material Design Icons", "Material Icons", "sans-serif";
         font-weight: 400;
@@ -1010,15 +1004,16 @@
             selectVillage: '',
             selectInstitution: '',
             keyWord: '',
-            items: [],
+            items: [],  
+            registId:[],
             title: '',
-            model: {
-                regist_title: '',
-                regist_type: '',
-                regist_district: '',
-                regist_village: '',
-                regist_date: new Date().toISOString().substr(0, 10),
-            },
+            //model: {
+            //    regist_title: '',
+            //    regist_type: '',
+            //    regist_district: '',
+            //    regist_village: '',
+            //    regist_date: new Date().toISOString().substr(0, 10),
+            //},
             result: {},
             viewerTitle:'',
             alertTitle: '',
@@ -1057,22 +1052,31 @@
             rules: {
                 required: v => !!v || '必填'
             },
-            registModel: {
+            model: {
+                regist_id: '0',
+                regist_create_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),///'2021/04/01',
                 regist_title: '',
                 regist_type: '',
+                regist_type_name: '',
                 regist_brand: '',
+                regist_brand_name: '',
                 regist_district: '',
+                regist_district_name: '',
                 regist_village: '',
+                regist_village_name: '',
                 regist_place: '',
                 regist_institution: '',
-                regist_institution_code: '',
-                regist_institution_district: '',
-                regist_date: new Date().toISOString().substr(0, 10),
-                regist_start_time: '08:00',
-                regist_end_time: '12:00',
-                regist_review_date: '',
-                regist_in_advance: '',
-                regist_quota: '無限制'
+                regist_institution_name: '',
+                regist_instution_district: '',
+                regist_instution_district_name: '',
+                regist_station_date: '',
+                regist_station_start_time: '',
+                regist_station_end_time: '',
+                regist_apply_start_date: '',
+                regist_review_date: '',///checkTime              
+                regist_qualified: 423,
+                regist_quota: 500,
+                regist_unpassed: 45,
             },
         }),
         computed: {
@@ -1087,7 +1091,7 @@
         },
         methods: {
             ...mapActions('registration', [ 'loadRegistForm','loadDetailForm','getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile','execCheck',
-                'doubleCheck', 'registForm','updateRegist']),
+                'doubleCheck', 'registForm', 'updateRegist','removeRegist']),
             getRegistForm: function (page) {
                 var params = {
                     vaccine: this.selectVaccine,
@@ -1123,36 +1127,16 @@
             manualInput: function () {
                 this.title = '建立報名表';
                 this.viewerTitle = '確認新增報名資訊';
-                this.$refs.registEditor.create();
+                this.$refs.registNewEditor.create(this.model);
                 console.log('manualInput')
             },
             editItem: function (item) {
-                //Object.assign(this.model, item);
-                var model = {
-                    regist_title: item.title,
-                    regist_type_name: item.type,
-                    regist_type: item.type_code,//item.type,
-                    regist_brand_name: item.brand,
-                    regist_brand: item.brand_code,
-                    regist_district_name: item.district,
-                    regist_district: item.district_code,
-                    regist_village_name: item.village,
-                    regist_village: item.village_code,
-                    regist_place: item.place,
-                    regist_institution_name: item.institution,
-                    regist_institution: item.institution_code,                 
-                    regist_institution_district: item.instutionDistrict,
-                    regist_date: item.date,
-                    regist_start_time: '08:00',
-                    regist_end_time: '12:00',
-                    regist_review_date: item.checkTime,
-                    regist_in_advance: item.in_advance,
-                    regist_quota: item.totalQuota
-                }
+                Object.assign(this.model, item);
+                
                 this.title = '編輯報名表';
                 this.viewerTitle = '編輯報名資訊確認';
                 //this.$refs.registEditor.open(model);
-                this.$refs.registEdit.open(model);
+                this.$refs.registEdit.open(item);
                 console.log('edit', item);
             },
             fileImport: function () {
@@ -1191,7 +1175,6 @@
             editClose: function () {
                 this.$refs.registEditViewer.close();
             },
-
             saveRegist: function () {
                 console.log('result', this.result)
                 this.registForm(this.result);
@@ -1221,7 +1204,6 @@
             cancelFile: function () {
                 this.$refs.fileViewer.close();
             },
-
             successUploadRightClick: function () {
                 this.$refs.successUploadAlert.close();
             },
@@ -1229,11 +1211,14 @@
                 console.log('view', item);
             },
             removeRightClick: function () {
-
+                console.log('compSelectedItems', this.compSelectedItems);
+                this.removeRegist(this.compSelectedItems);
                 this.$bus.$emit(`confirm_show`, false);
             },
             removeItem: function (item) {
-                this.deleteSelected([item]);
+                this.compSelectedItems.splice(0);
+                this.compSelectedItems.push(item);               
+                this.$refs.removeAlert.open();          
                 console.log('remove', item);
             },
             removeLeftClick: function () {

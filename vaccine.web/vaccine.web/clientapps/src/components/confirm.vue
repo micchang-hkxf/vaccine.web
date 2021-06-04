@@ -31,31 +31,30 @@
                     </div>
                 </template>
 
-
                 <template v-if="$slots['confirm-left-btn-text']">
-                    <div class="d-flex justify-center">
-                        <v-row>
-                            <v-col cols="6" class="confirm-btns">
-                                <v-btn class="confirm-left-btn"
-                                       color="rgba(50,65,80,0.2)"
-                                       :ripple="false"
-                                       outlined
-                                       @click="leftBtnAction">
-                                    <span class="confirm-left-btns-text"><slot name="confirm-left-btn-text"></slot></span>
-                                </v-btn>
-                            </v-col>
-                            <v-col cols="6" class="confirm-btns">
-                                <v-btn class="confirm-right-btn"
-                                       color="#2EB6C7"
-                                       :ripple="false"
-                                       @click="rightBtnAction">
-                                    <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
+        <div class="d-flex justify-center">
+            <v-row>
+                <v-col cols="6" class="confirm-btns">
+                    <v-btn class="confirm-left-btn"
+                           color="rgba(50,65,80,0.2)"
+                           :ripple="false"
+                           outlined
+                           @click="leftBtnAction">
+                        <span class="confirm-left-btns-text"><slot name="confirm-left-btn-text"></slot></span>
+                    </v-btn>
+                </v-col>
+                <v-col cols="6" class="confirm-btns">
+                    <v-btn class="confirm-right-btn"
+                           color="#2EB6C7"
+                           :ripple="false"
+                           @click="rightBtnAction">
+                        <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
 
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                    </div>
-                </template>
+                    </v-btn>
+                </v-col>
+            </v-row>
+        </div>
+    </template>
 
 
             </v-card>

@@ -12,7 +12,7 @@
                 <v-row>
                     <v-col cols="4">
                         <div><span class="regist-title">接種類型</span> <span class="red--text">*</span></div>
-                        <v-select v-model="defaultItem.regist_type"
+                        <v-select v-model="model.regist_type"
                                   :items="vaccines"
                                   item-text="name"
                                   item-value="id"
@@ -31,7 +31,7 @@
                 <v-row>
                     <v-col cols="4">
                         <div><span class="regist-title">新冠肺炎疫苗廠牌</span> <span class="red--text">*</span></div>
-                        <v-select v-model="defaultItem.regist_brand"
+                        <v-select v-model="model.regist_brand"
                                   :items="brands"
                                   item-text="name"
                                   item-value="id"
@@ -50,7 +50,7 @@
                 <v-row>
                     <v-col cols="12">
                         <div><span class="regist-title">場次標題</span><span class="red--text">*</span></div>
-                        <v-text-field v-model="defaultItem.regist_title"
+                        <v-text-field v-model="model.regist_title"
                                       placeholder="請輸入場次標題 ( 30字內 )"
                                       :rules="[rules.required]"
                                       required
@@ -67,7 +67,7 @@
                 </v-row>
                 <v-row>
                     <v-col cols="3">
-                        <v-select v-model="defaultItem.regist_district"
+                        <v-select v-model="model.regist_district"
                                   :items="districts"
                                   item-text="name"
                                   item-value="id"
@@ -83,7 +83,7 @@
                     </v-col>
                     <v-col cols="1"><div></div></v-col>
                     <v-col cols="3">
-                        <v-select v-model="defaultItem.regist_village"
+                        <v-select v-model="model.regist_village"
                                   :items="villages"
                                   item-text="name"
                                   item-value="id"
@@ -102,7 +102,7 @@
                 <v-row>
                     <v-col cols="12">
                         <div><span class="regist-title">設站地點</span><span class="red--text">*</span></div>
-                        <v-text-field v-model="defaultItem.regist_place"
+                        <v-text-field v-model="model.regist_place"
                                       placeholder="請輸入設站地點"
                                       :rules="[rules.required]"
                                       required
@@ -114,7 +114,7 @@
                 <v-row>
                     <v-col cols="3">
                         <div> <span class="regist-title">醫療院所</span><span class="red--text">*</span></div>
-                        <v-select v-model="defaultItem.regist_institution"
+                        <v-select v-model="model.regist_institution"
                                   :items="institutions"
                                   item-text="name"
                                   item-value="id"
@@ -130,8 +130,8 @@
                 </v-row>
                 <v-row>
                     <v-col cols="12">
-                        <div><span class="regist-title">機構代碼：3501110115</span> </div>
-                        <div style="margin-bottom: 15px;"><span class="regist-title">機構所在行政區：內湖區</span></div>
+                        <div><span class="regist-title">機構代碼：{{model.regist_institution_code}}</span> </div>
+                        <div style="margin-bottom: 15px;"><span class="regist-title">機構所在行政區：{{model.regist_instution_district}}</span></div>
                     </v-col>
                 </v-row>
                 <v-divider></v-divider>
@@ -146,7 +146,7 @@
                                 offset-y
                                 min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="defaultItem.regist_date"
+                                <v-text-field v-model="model.regist_station_date"
                                               append-icon="mdi-calendar"
                                               :rules="[rules.required]"
                                               readonly
@@ -155,7 +155,7 @@
                                               outlined
                                               dense></v-text-field>
                             </template>
-                            <v-date-picker v-model="defaultItem.regist_date"
+                            <v-date-picker v-model="model.regist_station_date"
                                            no-title
                                            scrollable>
                                 <v-spacer></v-spacer>
@@ -168,7 +168,7 @@
                                 <v-btn text
                                        :ripple="false"
                                        color="primary"
-                                       @click="$refs.menu.save(defaultItem.regist_date)">
+                                       @click="$refs.menu.save(model.regist_station_date)">
                                     OK
                                 </v-btn>
                             </v-date-picker>
@@ -191,7 +191,7 @@
                                 offset-y
                                 min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="defaultItem.regist_start_time"
+                                <v-text-field v-model="model.regist_station_start_time"
                                               append-icon="mdi-clock-outline"
                                               :rules="[rules.required]"
                                               readonly
@@ -200,23 +200,11 @@
                                               outlined
                                               dense></v-text-field>
                             </template>
-                            <v-time-picker v-model="defaultItem.regist_start_time"
-                                           :max="defaultItem.regist_end_time"
+                            <v-time-picker v-model="model.regist_station_start_time"
+                                           :max="model.regist_station_end_time"
                                            no-title
                                            scrollable>
                                 <v-spacer></v-spacer>
-                                <!--<v-btn text
-                                       :ripple="false"
-                                       color="primary"
-                                       @click="menu = false">
-                                    Cancel
-                                </v-btn>
-                                <v-btn text
-                                       :ripple="false"
-                                       color="primary"
-                                       @click="$refs.menu.save(date)">
-                                    OK
-                                </v-btn>-->
                             </v-time-picker>
                         </v-menu>
                     </v-col>
@@ -229,7 +217,7 @@
                                 offset-y
                                 min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="defaultItem.regist_end_time"
+                                <v-text-field v-model="model.regist_station_end_time"
                                               append-icon="mdi-clock-outline"
                                               readonly
                                               v-bind="attrs"
@@ -237,23 +225,11 @@
                                               outlined
                                               dense></v-text-field>
                             </template>
-                            <v-time-picker v-model="defaultItem.regist_end_time"
-                                           :min="defaultItem.regist_start_time"
+                            <v-time-picker v-model="model.regist_station_end_time"
+                                           :min="model.regist_station_start_time"
                                            no-title
                                            scrollable>
                                 <v-spacer></v-spacer>
-                                <!--<v-btn text
-                                       :ripple="false"
-                                       color="primary"
-                                       @click="menu = false">
-                                    Cancel
-                                </v-btn>
-                                <v-btn text
-                                       :ripple="false"
-                                       color="primary"
-                                       @click="$refs.menu.save(date)">
-                                    OK
-                                </v-btn>-->
                             </v-time-picker>
                         </v-menu>
                     </v-col>
@@ -263,16 +239,44 @@
                 <v-row>
                     <v-col cols="6">
                         <div> <span class="regist-title">事先報名開始時間</span><span class="red--text">*</span></div>
-                        <v-text-field v-model="defaultItem.regist_in_advance"
-                                      placeholder="請輸入事先報名開始時間"
-                                       append-icon="mdi-calendar"
-                                      :rules="[rules.required]"
-                                      required
-                                      outlined
-                                      dense>
-                        </v-text-field>
-                        <div><span class="regist-title">事先報名結束時間：2021/05/05，23:59</span>  </div>
-                        <div style="margin-bottom:15px;"><span class="regist-title">報名者接種資格複檢時間：2021/05/07</span> </div>
+                        <v-menu ref="apply"
+                                v-model="apply"
+                                :close-on-content-click="false"
+                                :return-value.sync="date"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="auto">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-text-field v-model="model.regist_apply_start_date"
+                                              placeholder="請輸入事先報名開始時間"
+                                              append-icon="mdi-calendar"
+                                              :rules="[rules.required]"
+                                              readonly
+                                              v-bind="attrs"
+                                              v-on="on"
+                                              outlined
+                                              dense></v-text-field>
+                            </template>
+                            <v-date-picker v-model="model.regist_apply_start_date"
+                                           no-title
+                                           scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text
+                                       :ripple="false"
+                                       color="primary"
+                                       @click="menu = false">
+                                    Cancel
+                                </v-btn>
+                                <v-btn text
+                                       :ripple="false"
+                                       color="primary"
+                                       @click="$refs.apply.save(model.regist_apply_start_date)">
+                                    OK
+                                </v-btn>
+                            </v-date-picker>
+                        </v-menu>                       
+                        <div><span class="regist-title">事先報名結束時間：{{model.regist_apply_start_date}}</span>  </div>
+                        <div style="margin-bottom:15px;"><span class="regist-title">報名者接種資格複檢時間：{{model.regist_review_date}}</span> </div>
                     </v-col>
 
                 </v-row>
@@ -280,7 +284,7 @@
                 <v-row>
                     <v-col cols="6">
                         <div style="margin-top:15px;"><span class="regist-title">報名名額上限設定</span></div>
-                        <v-text-field v-model="defaultItem.regist_quota"
+                        <v-text-field v-model="model.regist_quota"
                                       placeholder="請輸入報名名額上限設定(預設無限制)"
                                       required
                                       outlined
@@ -373,10 +377,12 @@
             institutions: [{ id: 'wang', name: '王慶森診所' }, { id: 'wang2', name: '王慶森2診所' }, { id: 'wang3', name: '王慶森3診所' }],
             date: new Date().toISOString().substr(0, 10),
             menu: false,
+            apply:false,
             start: false,
             end: false,
             modal: false,
             menu2: false,
+            default: {},
             model: {},
             rules: {
                 required: v => !!v || '必填',              
@@ -384,7 +390,7 @@
         }),
         computed: {
             defaultItem: function () {
-                return this.model;
+                return this.default;
             }
         },
         props: ['width','title','action'],
@@ -393,14 +399,15 @@
         methods: {
             open: function (model) {
                 this.mode = 'edit';
-                Object.assign(this.model, model);
+                
+                this.model =Object.assign(this.defaultItem, model);
                
                 this.$refs.dialogPanel.open();
             },
 
             create: function (model) {
                 this.mode = 'new';
-                Object.assign(this.model, model);
+                this.model=Object.assign(this.defaultItem, model);
 
                 this.$refs.dialogPanel.open();
             },
