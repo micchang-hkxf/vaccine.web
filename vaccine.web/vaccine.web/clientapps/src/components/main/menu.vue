@@ -48,6 +48,26 @@
             </v-list-item-content>
         </v-list-item>
 
+        <v-list-item @click="openPages('/admin/#/registration')">
+            <v-list-item-content>
+                <v-list-item-title>報名表管理</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+
+
+        <v-list-item @click="openPages('/admin/#/registed')">
+            <v-list-item-content>
+                <v-list-item-title>Registed</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item @click="openPages('/admin/#/audit')">
+            <v-list-item-content>
+                <v-list-item-title>稽核</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+
+
         <v-divider></v-divider>
 
 
@@ -62,6 +82,23 @@
                 <v-list-item-title>未登記清單</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list-item @click="toPages('form')">
+            <v-list-item-content>
+                <v-list-item-title>form</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+        
+        <v-list-item @click="toPages('api')">
+            <v-list-item-content>
+                <v-list-item-title>API</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+
     </v-list>
 </template>
 

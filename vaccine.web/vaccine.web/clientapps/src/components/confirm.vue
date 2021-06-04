@@ -1,11 +1,10 @@
-﻿<template>
-    <v-row justify="center">
-
-        <v-dialog v-model="isShow"  width="264">
+﻿<template> 
+        <v-dialog v-model="isShow"  width="264" persistent  >
             <v-card>
+                <!--@keydown.enter="isShow = false-->
                 <v-card-title>
                     <div class="confirm-image d-flex justify-center">
-                        <div >
+                        <div>
                             <slot name="confirm-image"></slot>
                         </div>
                     </div>
@@ -19,49 +18,49 @@
                 <template v-if="!$slots['confirm-left-btn-text']">
                     <div class="d-flex justify-center">
                         <v-row>
-                            <v-cols cols="12" class="confirm-btns">
+                            <v-col cols="12" class="confirm-btns">
                                 <v-btn class="confirm-center-btn"
-                                       color="#2EB6C7"
+                                       :color="setRightColor"
                                        :ripple="false"
+                                       :outlined="setRightOutlined"
                                        @click="rightBtnAction">
                                     <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
 
                                 </v-btn>
-                            </v-cols>                          
+                            </v-col>
                         </v-row>
                     </div>
                 </template>
-
 
                 <template v-if="$slots['confirm-left-btn-text']">
                     <div class="d-flex justify-center">
                         <v-row>
-                            <v-cols cols="6" class="confirm-btns">
+                            <v-col cols="6" class="confirm-btns">
                                 <v-btn class="confirm-left-btn"
-                                       color="rgba(50,65,80,0.2)"
+                                       :color="setLeftColor"
                                        :ripple="false"
-                                       outlined
+                                       :outlined="setLeftOutlined"
                                        @click="leftBtnAction">
                                     <span class="confirm-left-btns-text"><slot name="confirm-left-btn-text"></slot></span>
                                 </v-btn>
-                            </v-cols>
-                            <v-cols cols="6" class="confirm-btns">
+                            </v-col>
+                            <v-col cols="6" class="confirm-btns">
                                 <v-btn class="confirm-right-btn"
-                                       color="#2EB6C7"
+                                       :color="setRightColor"
                                        :ripple="false"
+                                       :outlined="setRightOutlined"
                                        @click="rightBtnAction">
                                     <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
 
-                                </v-btn>
-                            </v-cols>
-                        </v-row>
-                    </div>
-                </template>
+                    </v-btn>
+                </v-col>
+            </v-row>
+        </div>
+    </template>
 
 
             </v-card>
         </v-dialog>
-    </v-row>
 </template>
 
 
@@ -151,7 +150,7 @@
 
 
     .confirm-center-btn {
-        width: 88px;
+        width: 230px;
         margin-bottom: 20px;
     }
 
@@ -173,14 +172,27 @@
 
 <script>
     export default {
-        props: ['refKey','rightClick','leftClick'],
+    
+        props: ['refKey', 'rightClick', 'leftClick', 'leftColor', 'rightColor', 'leftOutlined', 'rightOutlined'],
         data: () => ({
-            isShow: false
+            isShow: false,
+            setLeftColor: "rgba(50,65,80,0.2)",
+            setRightColor: "#2EB6C7",
+            setLeftOutlined: true,
+            setRightOutlined: false,
+
         }),
         computed: {
         },      
         created: function () {
             var comp = this;
+       
+            comp.$set(comp, "setLeftColor", (comp.leftColor) ? comp.leftColor : comp.setLeftColor);
+            comp.$set(comp, "setRightColor", (comp.rightColor) ? comp.rightColor : comp.setRightColor);
+
+            comp.$set(comp, "setLeftOutlined", comp.leftOutlined == "on");
+            comp.$set(comp, "setRightOutlined", comp.rightOutlined == "on");
+
             this.$bus.$on(`${comp.refKey}_show`, function (isShow) {
                 comp.$set(comp, "isShow", isShow);
             });
@@ -189,12 +201,21 @@
             });
         },
         methods: {
+            open: function(){
+                this.isShow = true;
+            },
             rightBtnAction: function () {
                 this.rightClick();
             },
             leftBtnAction: function () {
                 this.leftClick();
-            }
+            },
+            close: function () {
+                this.$set(this, 'isShow', false);
+            },
+            hasSlot: function (templateName) {
+                return this.$slots[templateName] != null || this.$scopedSlots[templateName] != null;
+            },
         },
         //components: {
         //}

@@ -7,7 +7,7 @@
         </v-list-item>
     </v-list>
 </template>
-
+ 
 <script>
     //import { mapState } from 'vuex'
 
@@ -15,11 +15,10 @@
         // router,
         data: () => ({
             menus: [
-                { text: "aaa", active: true, key: "meetings", target: null },
-                { text: "bbb", active: false, key: "parameters", target: null },
-                { text: "ccc", active: false, key: "managers", target: null },
-                { text: "ddd", active: false, key: "rents", target: null },
-                { text: "eee", active: false, key: "webex", target: "https://admin.webex.com/login" }
+                { text: "報名表管理", active: false, key: "registration", target: null },
+                { text: "人員管理", active: false, key: "users", target: null },
+                { text: "稽核管理", active: false, key: "audit", target: null},
+                { text: "報名查詢", active: false, key: "registed", target: null },
             ],
             currentContent: { text: "我的會議", active: true, key: "meetings" },
 
@@ -28,19 +27,24 @@
 
         },
         props: {
+
         },
 
         created: function () {
+
         },
         methods: {
 
             menuActive: function (menu) {
                 if (menu.target != null) {
-                    window.open(menu.target, menu.text);
+
+                    window.location = menu.target;
+                    //window.open(menu.target, menu.text);
                     return;
                 }
                 window.location.hash = "";
                 this.currentContent = menu;
+                this.$router.push({ name: menu.key });
             },
             menuItemActive: function (menu) {
                 return {
@@ -62,11 +66,7 @@
 
     .menu-list {
         background: #626781 !important;
-
         height: 100vh !important;
     }
 
-    .v-list-item__title {
-        color: white;
-    }
 </style>

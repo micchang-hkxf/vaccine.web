@@ -1,106 +1,146 @@
 ﻿<template>
-    <div>
-        <v-data-table :headers="computedHeaders"
-                      :items="items"
-                      :page.sync="page"
-                      :items-per-page="itemsPerPage"
-                      class="elevation-1"
-                      hide-default-footer
-                      @page-count="computedPageCount = $event">
+    <v-data-table v-model="selected"
+                  :headers="computedHeaders"
+                  :items="items"
+                  item-key="date"
+                  :page.sync="page"
+                  :items-per-page="itemsPerPage"
+                  :single-select="singleSelect"
+                  :show-select="showSelect"
+                  :item-class="rowClass"
+                  class="elevation-0"
+                  hide-default-footer>
 
-            <template v-for="(header,index) in computedHeaders" v-slot:[header.templateName]="{item}">
 
-                <span :key="index" v-if="$slots[header.templateName]==null"> {{item[header.value]}}</span>
+        <template v-for="(header,index) in computedHeaders" v-slot:[header.headerTemplateName]>
 
-                <slot :name="header.templateName" v-if="$slots[header.templateName]!=null" :item="item"></slot>
+            <span :key="index" v-if="!header.hasHeaderTemplate"> {{header.text}}</span>
+
+            <slot :name="header.headerTemplateName" v-if="header.hasHeaderTemplate" :header="header"></slot>
+
+        </template>
+
+
+        <template v-for="(header,index) in computedHeaders" v-slot:[header.templateName]="{item}">
+
+            <span :key="index" v-if="!header.hasTemplate"> {{item[header.value]}}</span>
+
+            <slot :name="header.templateName" v-if="header.hasTemplate" :item="item"></slot>
+
+        </template>
+        <!--<template v-slot:item.checked="{ item }">
+            <v-checkbox v-model="item.checked" :ripple="false"></v-checkbox>
+        </template>-->
+        <template v-slot:top>
+
+            <template>
+                <slot name="search-bar" v-if="hasSlot('search-bar')"></slot>
             </template>
 
-
-            <template v-slot:item.modify="{ item }">
-                <v-menu bottom right offset-y>
-                    <template v-slot:activator="{ on }">
-                        <v-btn dark icon v-on="on" @click.stop="">
-                            <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
-                        </v-btn>
-                    </template>
-                    <v-list>
-                        <v-list-item @click.stop="editItem(item)">
-                            <v-list-item-action-text>
-                                <v-btn icon dense>
-                                    <v-icon small>far fa-edit</v-icon>
-                                </v-btn>編輯
-                            </v-list-item-action-text>
-                        </v-list-item>
-                        <v-list-item @click.stop="editItem(item)">
-                            <v-list-item-action-text>
-                                <v-btn icon dense>
-                                    <v-icon small>far fa-trash-alt</v-icon>
-                                </v-btn>刪除
-                            </v-list-item-action-text>
-                        </v-list-item>
-                        <v-list-item @click.stop="editItem(item)">
-                            <v-list-item-action-text>
-                                <v-btn icon dense>
-                                    <v-icon small>mdi-arrow-down</v-icon>
-                                </v-btn>完整下載接種同意書
-                            </v-list-item-action-text>
-                        </v-list-item>
-                        <v-list-item @click.stop="editItem(item)">
-                            <v-list-item-action-text>
-                                <v-btn icon dense>
-                                    <v-icon small>mdi-arrow-down</v-icon>
-                                </v-btn>下載報名清冊
-                            </v-list-item-action-text>
-                        </v-list-item>
-                        <v-list-item @click.stop="editItem(item)">
-                            <v-list-item-action-text>
-                                <v-btn icon dense>
-                                    <v-icon small>mdi-arrow-down</v-icon>
-                                </v-btn>下載施打清冊
-                            </v-list-item-action-text>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
-            </template>
+            <v-toolbar flat color="white" v-if="hasSlot('toolbar-action')">
+                <slot name="toolbar-action" :selectedItems="selected" :selectAll="selectAll"
+                      :deleteSelected="deleteSelected" :switchSelect="switchSelect" :selected="selected"></slot>
+            </v-toolbar>
 
 
-        </v-data-table>
+        </template>
 
-        <div class="text-center pt-2">
-            <v-pagination v-model="page"
-                          :length="computedPageCount"
-                          :total-visible="totalVisible"></v-pagination>
 
-        </div>
-    </div>
+        <template v-slot:footer>
+
+            <div class="text-center pt-2">
+                <v-pagination v-model="page"
+                              :length="computedPageCount"
+                              :total-visible="totalVisible"
+                              color="white"></v-pagination>
+            </div>
+
+        </template>
+
+    </v-data-table>
+
 </template>
-
+  
 
 <style>
+    .row, .col {
+        /*margin: 0px !important;
+        padding: 0px !important;*/
+        flex-wrap: nowrap !important;
+    }
+
+    .v-pagination__navigation, .v-pagination__item {
+        box-shadow: none !important;
+    }
+    .theme--light.v-pagination .v-pagination__item--active {
+        color: #626781 !important;
+    }
+    .v-input--selection-controls__ripple {
+        border-radius: 50%;
+        cursor: pointer;
+        height: 34px;
+        position: absolute;
+        transition: inherit;
+        width: 34px;
+        left: -12px;
+        top: calc(50% - 24px);
+        margin: 7px;
+        display: none;
+    }
+
+
+    .fa-check-square:before, .fa-minus-square:before {
+        color: #736DB9;
+    }
+
 </style>
 
 
 <script>
     export default {
-        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage','totalVisible','page'],
+        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage', 'totalVisible', 'showSelect', 'disabledProp', 'changePage','rowClick'],
         data: () => ({
+            page:1,
             isShow: false,
-            
-            select:[],
-
+            selected:[],
+            //selected: false, 
+            singleSelect: false,
+           
         }),
+        watch: {
+            page: function (value) {
+                if (!this.changePage) return;
+                this.changePage({
+                    page: value,
+                    pageSize: this.itemsPerPage
+                });
+            },
+            selected: function (value) {
+                if (value == true) this.selectAll();
+                else {
+                    this.cancelAll();
+                }
+            },
+        },
         computed: {
             computedHeaders: function () {
                 return this.headers.map((x) => {
                     return {
                         ...x,
-                        templateName: 'item.'+x.value
+                        templateName: 'item.' + x.value,
+                        hasTemplate: this.$slots['item.' + x.value] != null || this.$scopedSlots['item.' + x.value] != null,
+
+                        headerTemplateName: 'header.' + x.value,
+                        hasHeaderTemplate: this.$slots['header.' + x.value] != null || this.$scopedSlots['header.' + x.value] != null
                     }
                    
                 })
             },
             computedPageCount: function () {              
                 return Math.ceil(this.totalCount / this.itemsPerPage);
+            },
+            selectedItems: function () {
+                return this.items.filter((x) => x.checked);
             }
         },
         created: function () {
@@ -113,8 +153,31 @@
             });
         },
         methods: {
-            editItem: function () {
-                alert('test');
+            rowClass: function (item) {
+                if (!this.disabledProp) return "";
+                return item[this.disabledProp] ? "item-disabled" : "" ;
+            },
+            hasSlot: function (templateName) {
+                return this.$slots[templateName] != null || this.$scopedSlots[templateName]!=null  ;
+            },
+            deleteSelected: function (item) {
+                console.log('selected', item);
+            },
+            selectAll: function () {
+                this.items.forEach((x) => x.checked = true);
+            },
+            cancelAll: function () {
+                this.items.forEach((x) => x.checked = false);
+            },
+            switchSelect: function () {
+                var comp = this;
+                comp.selected =! comp.selected;
+            },
+            innerRowClick: function (a, item) {
+                if (this.rowClick)
+                this.rowClick(item);
+               //console.log('a', a);
+               // console.log('row', item);
             }
         },
         components: {

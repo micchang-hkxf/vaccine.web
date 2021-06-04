@@ -50,8 +50,8 @@ export default new Vuetify({
         },
         themes: {
             dark: {
-                primary: '#2EB6C7',
-                secondary: '#364250',
+                primary: '#736DB9',
+                secondary: '#626781',
                 accent: '#82B1FF',
                 error: '#F0524B',
                 info: '#2196F3',
@@ -59,8 +59,8 @@ export default new Vuetify({
                 warning: '#FC8E5E'
             },
             light: {
-                primary: '#2EB6C7',
-                secondary: '#364250',
+                primary: '#736DB9',
+                secondary:'#626781',
                 accent: '#82B1FF',
                 error: '#F0524B',
                 info: '#2196F3',

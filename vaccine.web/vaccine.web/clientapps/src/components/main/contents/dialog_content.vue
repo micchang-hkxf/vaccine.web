@@ -10,7 +10,7 @@
                 <v-btn color="primary" @click="show('two')">two</v-btn>
                 <com-dialog ref="dialogPanel" ref-key="two" width="60%">
                     <template v-slot:toolbar>
-                        公文管理環境檢測
+                        新增人員
                     </template>
                     <template v-slot:content>
 
@@ -18,7 +18,7 @@
                     <template v-slot:action="{close}">
                         <v-btn @click="close">取消</v-btn>
                         <v-spacer></v-spacer>
-                        <v-btn @click="$refs.dialogPanel.close">儲存草稿</v-btn>
+                        <v-btn @click="closeDialog">儲存草稿</v-btn>
                         <v-btn>送出</v-btn>
                     </template>
                 </com-dialog>
@@ -49,6 +49,9 @@
             },
             open: function (refKey) {
                 this.$bus.$emit(`${refKey}_show`,true);
+            },
+            closeDialog: function () {
+                this.$refs.dialogPanel.close();
             }
         },
         components: {

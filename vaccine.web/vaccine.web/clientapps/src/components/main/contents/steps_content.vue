@@ -9,7 +9,7 @@
                 <com-steps ref-key="one"
                            :steps="steps"
                            :alt-labels="false"
-                           :arrow="true"
+                           :arrow="false"
                            stepType="grid">
                     <template v-slot:step-1="{next}">
                         <v-card class="mb-12" color="grey lighten-1" height="100px">內文 1</v-card>

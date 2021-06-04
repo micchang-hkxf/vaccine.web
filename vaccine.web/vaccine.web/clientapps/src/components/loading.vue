@@ -1,5 +1,6 @@
 ﻿<template>
     <div class="text-center">
+
         <v-progress-circular indeterminate :color="setColor" v-show="isLoading"></v-progress-circular>
         <v-progress-circular :rotate="360"
                              :size="100"
@@ -11,10 +12,27 @@
         </v-progress-circular>
         <div class="w3-modal" v-show="isLoading3" style="display:block">
             <div class="w3-modal-content">
-               <img  :src="picPath"  />
-               <div>{{ loadingText }}</div>
+                <img :src="picPath" />
+                <div>{{ loadingText }}</div>
             </div>
         </div>
+
+
+
+
+        <div class="w3-modal" v-show="isLoading4" style="display:block">
+            <div class="w3-modal-content">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block; shape-rendering: auto" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                    <circle cx="50" cy="50" fill="none" stroke="#77ccdb30" stroke-width="2" r="24">
+                    </circle>
+                    <circle cx="50" cy="50" fill="none" stroke="#77ccdb" stroke-width="2" r="24" stroke-dasharray="30 180">
+                        <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" values="0 50 50;180 50 50;360 50 50" keyTimes="0;0.2;1" style="animation-play-state: running; animation-delay: 0s;"></animateTransform>
+                    </circle>
+                </svg>
+                <div>{{ loadingText2 }}</div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -24,11 +42,13 @@
             isLoading: false,
             isLoading2: false,
             isLoading3: false,
+            isLoading4: false,
             setColor: 'green',
             setColor2: 'red',
             value: 30,
-            loadingText:"",
-            picPath: "http://localhost/loading.gif"
+            loadingText: "",
+            loadingText2: "",
+            picPath: "/images/loading.gif"
         }),
         computed: {
         },
@@ -70,6 +90,15 @@
             this.$bus.$on(`${comp.refKey}_picpath`, function (v) {
                 comp.$set(comp, "picPath", v);
             });
+            this.$bus.$on(`${comp.refKey}_show4`, function (v) {
+                console.log('show4 it');
+                comp.$set(comp, "loadingText2", v);
+                comp.$set(comp, "isLoading4", true);
+            });
+            this.$bus.$on(`${comp.refKey}_hide4`, function () {
+                console.log('hide4 it');
+                comp.$set(comp, "isLoading4", false);
+            });
 
         },
         methods: {
@@ -84,23 +113,23 @@
         margin: 1rem;
     }
     .w3-modal {
-        z-index: 3;
-        display: none;
-        padding-top: 100px;
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
         height: 100%;
-        overflow: auto;
+        width: 100%;
+        display: none;
+        position: fixed;
+        z-index: 99999999999999999;
+        top: 0;
+        left: 0;
         background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0,0.4)
+        background-color: rgba(0,0,0, 0.5);
+
     }
     .w3-modal-content {
-        margin: auto;
         position: relative;
-        padding: 0;
-        outline: 0;
+        top: 25%;
+        width: 100%;
+        text-align: center;
+        margin-top: 30px;
     }
 
    

@@ -16,6 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="clientapps\public\testUserList.json" />
+    <Content Remove="clientapps\src\stores\admin\test.json" />
     <Content Remove="site.config.json" />
     <Content Remove="site.store.Debug.json" />
     <Content Remove="site.store.Release.json" />
@@ -28,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="clientapps\public\testUserList.json" />
     <None Include="site.config.Release.json" />
     <None Include="site.config.Debug.json" />
     <None Include="site.config.json">
@@ -36,8 +39,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="clientapps\public\images\" />
     <Folder Include="clientapps\public\login\" />
-    <Folder Include="clientapps\src\components\admin\contents\" />
+    <Folder Include="clientapps\src\components\regist\contents\" />
   </ItemGroup>
 
   <ItemGroup>

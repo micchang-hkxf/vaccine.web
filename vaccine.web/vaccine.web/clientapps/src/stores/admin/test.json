@@ -1,0 +1,87 @@
+﻿{
+  "data": [
+    {
+      "acc": "string",
+      "requirePdChange": true,
+      "token": "string",
+      "uName": "string",
+      "lastAccessTime": "2021-05-20T08:26:43.103Z",
+      "pdExpTime": "2021-05-20T08:26:43.103Z",
+      "email": "string",
+      "userType": 1,
+      "userTypeDesc": "string",
+      "isEnable": true,
+      "unit": "string",
+      "mbNo": "string",
+      "func": {
+        "activityMgn": true,
+        "userMgn": true,
+        "dataMgn": true
+      },
+      "zones": [
+        {
+          "cityId": "string",
+          "cityName": "string",
+          "hasAuth": true,
+          "data": [
+            {
+              "distId": "string",
+              "distName": "string",
+              "hasAuth": true,
+              "data": [
+                {
+                  "villageId": "string",
+                  "villageName": "string",
+                  "hasAuth": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "acc": "string2",
+      "requirePdChange": true,
+      "token": "string2",
+      "uName": "string2",
+      "lastAccessTime": "2021-05-20T08:26:43.103Z",
+      "pdExpTime": "2021-05-20T08:26:43.103Z",
+      "email": "string2",
+      "userType": 2,
+      "userTypeDesc": "string2",
+      "isEnable": true,
+      "unit": "string2",
+      "mbNo": "string2",
+      "func": {
+        "activityMgn": true,
+        "userMgn": true,
+        "dataMgn": true
+      },
+      "zones": [
+        {
+          "cityId": "string2",
+          "cityName": "string2",
+          "hasAuth": true,
+          "data": [
+            {
+              "distId": "string2",
+              "distName": "string2",
+              "hasAuth": true,
+              "data": [
+                {
+                  "villageId": "string2",
+                  "villageName": "string2",
+                  "hasAuth": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "page": 1,
+  "rows": 2,
+  "totalRows": 2
+}

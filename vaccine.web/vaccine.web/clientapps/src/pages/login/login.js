@@ -27,7 +27,7 @@ Vue.use(VueMomentJS, moment);
 //page setting
 import i18n from 'pages/login/loginLanguage'
 import router from 'pages/login/loginRouter'
-import store from 'pages/login/loginStore'
+import store from 'pages/login/loginApiStore'
 import app from 'pages/login/login.vue'
 
 new Vue({

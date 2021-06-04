@@ -7,9 +7,10 @@
         <template v-slot:app-content>
             <div id="app">
                 <v-btn @click="show('confirm')">confirm</v-btn>
-                <com-confirm ref-key="confirm"  :left-click="confirmLeftClick" :right-click="confirmRightClick">
+                <v-btn @click="show('confirm2')">confirm2</v-btn>
+                <com-confirm left-color="#2EB6C7" left-outlined="on" right-color="green" right-outlined="" ref-key="confirm" :left-click="confirmLeftClick" :right-click="confirmRightClick">
                     <template v-slot:confirm-image>
-                        <v-img src="/alert_success.svg"></v-img>                     
+                        <v-img src="/alert_success.svg"></v-img>
                     </template>
                     <template v-slot:confirm-title>
                         打卡成功
@@ -27,8 +28,29 @@
                         確認
                     </template>
 
+                </com-confirm>
+
+                <com-confirm  right-color="yellow" right-outlined="" ref-key="confirm2" :right-click="confirmRightClick2">
+                    <template v-slot:confirm-image>
+                        <v-img src="/alert_success.svg"></v-img>
+                    </template>
+                    <template v-slot:confirm-title>
+                        打卡成功
+                    </template>
+                    <template v-slot:confirm-text>
+                        08:16:19
+                    </template>
+                    <template v-slot:confirm-sub-title>
+                        1F大廳北側花圃上方
+                    </template>
+ 
+                    <template v-slot:confirm-right-btn-text>
+                        <font color="black">確認</font>
+                    </template>
 
                 </com-confirm>
+
+
             </div>
         </template>
     </app-layout>
@@ -63,7 +85,10 @@
             },
             confirmLeftClick: function () {
                 this.$bus.$emit(`confirm_show`, false);
-            }
+            },
+            confirmRightClick2: function () {
+                this.$bus.$emit(`confirm2_show`, false);
+            },
         },
         components: {
             appLayout, appMenu, comConfirm
