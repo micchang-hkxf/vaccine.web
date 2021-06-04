@@ -1,5 +1,5 @@
 ﻿import siteConfig from "project/site.config"
-//import { Promise } from "core-js";
+
 export default {
     namespaced: true,
     actions: {
@@ -108,6 +108,40 @@ export default {
                 }
             });
         },
+        registForm: function ({ state }, data) {
+            return new Promise((reslove) => {
+                var result = { data: [], state: state }
+                console.log('new',data);
+                reslove(result)
+
+            })
+         
+            //        model: {
+            //regist_title: '',
+            //    regist_type: '',
+            //    regist_brand: '',
+            //    regist_district: '',
+            //    regist_village: '',
+            //    regist_place: '',
+            //    regist_institution: '',
+            //    regist_institution_code: '',
+            //    regist_institution_district: '',
+            //    regist_date: new Date().toISOString().substr(0, 10),
+            //    regist_start_time: '08:00',
+            //    regist_end_time: '12:00',
+            //    regist_review_date:'',
+            //    regist_in_advance: '',
+            //    regist_quota:'無限制'
+            //}
+
+        },
+        updateRegist: function ({ state }, data) {
+            return new Promise((resolve) => {
+                var result = { data:[] ,state: state };
+                console.log('update',data)
+                resolve(result);
+            })
+        }
     },
     state: {
         ...siteConfig,
@@ -115,11 +149,13 @@ export default {
             { text: '建立日期', value: 'date', align: 'start', sortable: true, flex: 6 },
             { text: '場次標題', value: 'title', sortable: false, flex: 6 },
             { text: '疫苗類型', value: 'type', sortable: false, flex: 6 },
+            //{ text: '疫苗類型代碼', value: 'type_code', sortable: false, flex: 6,disable:true },
             { text: '行政區', value: 'district', sortable: false, flex: 6 },
             { text: '村里', value: 'village', sortable: false, flex: 6 },
             { text: '醫療院所', value: 'institution', sortable: false, flex: 6 },
             { text: '院所行政區', value: 'instutionDistrict', sortable: false, flex: 6 },
             { text: '設站時間', value: 'stationTime', sortable: false, flex: 6 },
+            { text: '設站地點', value: 'place', sortable: false, flex: 6 },
             { text: '報名時間', value: 'registrationTime', sortable: false, flex: 6 },
             { text: '名額', value: 'quota', sortable: false, flex: 6 },
             { text: '復審合格數', value: 'qualified', sortable: false, flex: 6 },
@@ -131,12 +167,21 @@ export default {
                 date: '2021/04/01',
                 title: '110年5月份新冠疫苗 接種',
                 type: '新冠肺炎',
+                type_code: 'coronavirus',
+                brand: 'Pfizer-BioNTech',
+                brand_code:'bnt',
                 district: '內湖區',
+                district_code: 'neihu',
                 village: '西康里',
+                village_code: 'xikang',
+                place:'地點',
                 institution: '王慶森診所',
+                institution_code: 'wang',
                 instutionDistrict: '內湖區',
+                instutionDistrict_code: 'neihu',
                 stationTime: '2021/05/08 08:30 - 11:30',
                 registrationTime: '2021/04/10 08:00 - 2021/05/05 19:30',
+                in_advance: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),
                 cntQuota: '670',
                 totalQuota: '670',
                 qualified: '423',
@@ -271,6 +316,10 @@ export default {
                 checkPassCnt: '224',
             }
         ],
+        brands: [
+            { id: 'az', name: 'AstraZeneca' },
+            { id: 'bnt', name: 'Pfizer-BioNTech' },
+        ], 
         vaccines: [
             { id: 'influenza', name: '肺鏈流感' },
             { id: 'coronavirus', name: '新冠肺炎' },
