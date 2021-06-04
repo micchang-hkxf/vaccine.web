@@ -38,7 +38,7 @@
             </template>
 
             <v-toolbar flat color="white" v-if="hasSlot('toolbar-action')">
-                <slot name="toolbar-action" :selectedItems="selectedItems" :selectAll="selectAll"
+                <slot name="toolbar-action" :selectedItems="selected" :selectAll="selectAll"
                       :deleteSelected="deleteSelected" :switchSelect="switchSelect" :selected="selected"></slot>
             </v-toolbar>
 
