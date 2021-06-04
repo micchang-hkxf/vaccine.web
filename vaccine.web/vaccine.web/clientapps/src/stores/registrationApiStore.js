@@ -30,10 +30,10 @@ export default {
                     }
                 }).then(res => {
                     results.totalCount = res.totalRows;
-                    /*
+                    // TODO: 測試資料，之後移除
                     res.data = [{
-                        vaccineGroupId: '1', // 疫苗種類Id
-                        vaccineGroupName: '新冠肺炎', // 疫苗種類名稱
+                        vaccineGroupId: '0', // 疫苗種類Id
+                        vaccineGroupName: '肺鏈流感', // 疫苗種類名稱
                         isReChecked: false, // 是否已經覆核過
                         activityId: '1', // 活動編號
                         activityTitle: '110年5月份新冠疫苗 接種', // 活動名稱
@@ -45,68 +45,83 @@ export default {
                         startApplyDate: new Date().toISOString().substr(0, 10).replace(/-/g, '/') , // 開始接受事前報名時間
                         amount: 500, // 施打數量配額上限
                         leftAmount: 30, // 剩餘數量
-                        createDate: new Date().toISOString().substr(0, 10).replace(/-/g, '/') // 活動建立時間
+                        createDate: new Date().toISOString().substr(0, 10).replace(/-/g, '/'), // 活動建立時間
+                        region: {
+                            cityId: '200', // 城市代碼
+                            cityName: '臺北市', // 城市名稱
+                            distId: '2001', // 行政區代碼
+                            distName: '松山區', // 行政區名稱
+                            villageId: '2001-001', // 村、里代碼
+                            villageName: '莊敬里' // 村、里名稱
+                        },
+                        medicalInfo: {
+                            medicalId: 'A123456789', // 醫事機構代碼
+                            medicalName: '王慶森診所', // 醫事機構名稱
+                            distId: '2001', // 所屬行政區代碼
+                            distName: '松山區', // 所屬行政區名稱
+                        }
+                    }, {
+                        vaccineGroupId: '1', // 疫苗種類Id
+                        vaccineGroupName: '新冠肺炎', // 疫苗種類名稱
+                        isReChecked: false, // 是否已經覆核過
+                        activityId: '1', // 活動編號
+                        activityTitle: '110年6月份新冠疫苗 接種', // 活動名稱
+                        implementDate: '2021/06/08', // 實際施打日期
+                        implementStartTime: '08:30', // 開始施打時間
+                        implementEndTime: '11:30', // 結束施打時間
+                        implementAddr: '', // 施打地點
+                        endApplyDate: new Date().toISOString().substr(0, 10).replace(/-/g, '/'), // 結束接受事前報名時間
+                        startApplyDate: new Date().toISOString().substr(0, 10).replace(/-/g, '/'), // 開始接受事前報名時間
+                        amount: 500, // 施打數量配額上限
+                        leftAmount: 30, // 剩餘數量
+                        createDate: new Date().toISOString().substr(0, 10).replace(/-/g, '/'), // 活動建立時間
+                        region: {
+                            cityId: '200', // 城市代碼
+                            cityName: '臺北市', // 城市名稱
+                            distId: '2001', // 行政區代碼
+                            distName: '松山區', // 行政區名稱
+                            villageId: '2001-001', // 村、里代碼
+                            villageName: '莊敬里' // 村、里名稱
+                        },
+                        medicalInfo: {
+                            medicalId: 'A123456789', // 醫事機構代碼
+                            medicalName: '王慶森診所', // 醫事機構名稱
+                            distId: '2001', // 所屬行政區代碼
+                            distName: '松山區', // 所屬行政區名稱
+                        }
                     }];
-                    */
 
-                    res.data = [
-                        {
-                            regist_id: '1',
-                            regist_create_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),///'2021/04/01',
-                            regist_title: '110年5月份新冠疫苗 接種',
-                            regist_type: 'coronavirus',
-                            regist_type_name: '新冠肺炎',
-                            regist_brand: 'bnt',
-                            regist_brand_name: 'Pfizer-BioNTech',
-                            regist_district: 'neihu',
-                            regist_district_name: '內湖區',
-                            regist_village: 'xikang',
-                            regist_village_name: '西康里',
-                            regist_place: '地點',
-                            regist_institution: 'wang',
-                            regist_institution_name: '王慶森診所',
-                            regist_instution_district: 'neihu',
-                            regist_instution_district_name: '內湖區',
-                            regist_station_date: '2021/05/08',
-                            regist_station_start_time: '08:30',
-                            regist_station_end_time: '11:30',
-                            regist_apply_start_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),
-                            regist_review_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),///checkTime              
-                            regist_qualified: 423,
-                            regist_quota: 500,
-                            regist_unpassed: 45
-                        },
-                        {
-                            regist_id: '2',
-                            regist_create_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),///'2021/04/01',
-                            regist_title: '110年10月份新冠疫苗 接種',
-                            regist_type: 'coronavirus',
-                            regist_type_name: '新冠肺炎',
-                            regist_brand: 'bnt',
-                            regist_brand_name: 'Pfizer-BioNTech',
-                            regist_district: 'neihu',
-                            regist_district_name: '內湖區',
-                            regist_village: 'xikang',
-                            regist_village_name: '西康里',
-                            regist_place: '設站地點',
-                            regist_institution: 'wang',
-                            regist_institution_name: '王慶森診所',
-                            regist_instution_district: 'neihu',
-                            regist_instution_district_name: '內湖區',
-                            regist_station_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),//'2021/05/08',
-                            regist_station_start_time: '08:30',
-                            regist_station_end_time: '11:30',
-                            regist_apply_start_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),
-                            regist_apply_end_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),
-                            regist_review_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),///checkTime              
-                            regist_qualified: '423',
-                            regist_quota: 500,
-                            regist_unpassed: 45
-                        },
-                    ];
+                    var datas = [];
+                    res.data.forEach((data) => {
+                        datas.push({
+                            regist_id: data.activityId,
+                            regist_create_date: data.createDate,
+                            regist_title: data.activityTitle,
+                            regist_type: data.vaccineGroupId,
+                            regist_type_name: data.vaccineGroupName,
+                            regist_brand: '',
+                            regist_brand_name: '',
+                            regist_district: data.region.distId,
+                            regist_district_name: data.region.distName,
+                            regist_village: data.region.villageId,
+                            regist_village_name: data.region.villageName,
+                            regist_place: '',
+                            regist_institution: data.medicalInfo.medicalId,
+                            regist_institution_name: data.medicalInfo.medicalName,
+                            regist_instution_district: data.medicalInfo.distId,
+                            regist_instution_district_name: data.medicalInfo.distName,
+                            regist_station_date: '',
+                            regist_station_start_time: '',
+                            regist_station_end_time: '',
+                            regist_apply_start_date: data.implementDate,
+                            regist_review_date: '',              
+                            regist_qualified: '',
+                            regist_quota: data.amount,
+                            regist_unpassed: data.amount - data.leftAmount
+                        });
+                    });
 
-
-                    results.datas = [].slice.call(res.data);
+                    results.datas = datas;
                     reslove(results);
                 }).catch(ex => {
                     results.datas = ex;
