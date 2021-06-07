@@ -37,15 +37,15 @@ export default {
                         isReChecked: false, // 是否已經覆核過
                         activityId: '1', // 活動編號
                         activityTitle: '110年5月份新冠疫苗 接種', // 活動名稱
-                        implementDate: '2021/05/08', // 實際施打日期
-                        implementStartTime: '08:30', // 開始施打時間
-                        implementEndTime: '11:30', // 結束施打時間
+                        implementDate: '2021-05-07T01:49:24.585Z', // 實際施打日期
+                        implementStartTime: '2021-05-07T01:49:24.585Z', // 開始施打時間
+                        implementEndTime: '2021-05-07T01:49:24.585Z', // 結束施打時間
                         implementAddr: '', // 施打地點
-                        endApplyDate: new Date().toISOString().substr(0, 10).replace(/-/g, '/') , // 結束接受事前報名時間
-                        startApplyDate: new Date().toISOString().substr(0, 10).replace(/-/g, '/') , // 開始接受事前報名時間
+                        endApplyDate: '2021-05-07T01:49:24.585Z', // 結束接受事前報名時間
+                        startApplyDate: '2021-05-07T01:49:24.585Z' , // 開始接受事前報名時間
                         amount: 500, // 施打數量配額上限
                         leftAmount: 30, // 剩餘數量
-                        createDate: new Date().toISOString().substr(0, 10).replace(/-/g, '/'), // 活動建立時間
+                        createDate: '2021-05-07T01:49:24.585Z', // 活動建立時間
                         region: {
                             cityId: '200', // 城市代碼
                             cityName: '臺北市', // 城市名稱
@@ -54,27 +54,27 @@ export default {
                             villageId: '2001-001', // 村、里代碼
                             villageName: '莊敬里' // 村、里名稱
                         },
-                        medicalInfo: {
+                        medicalInfo: [{
                             medicalId: 'A123456789', // 醫事機構代碼
                             medicalName: '王慶森診所', // 醫事機構名稱
                             distId: '2001', // 所屬行政區代碼
                             distName: '松山區', // 所屬行政區名稱
-                        }
+                        }]
                     }, {
                         vaccineGroupId: '1', // 疫苗種類Id
                         vaccineGroupName: '新冠肺炎', // 疫苗種類名稱
                         isReChecked: false, // 是否已經覆核過
                         activityId: '1', // 活動編號
                         activityTitle: '110年6月份新冠疫苗 接種', // 活動名稱
-                        implementDate: '2021/06/08', // 實際施打日期
-                        implementStartTime: '08:30', // 開始施打時間
-                        implementEndTime: '11:30', // 結束施打時間
+                        implementDate: '2021-06-07T01:49:24.585Z', // 實際施打日期
+                        implementStartTime: '2021-06-07T01:49:24.585Z', // 開始施打時間
+                        implementEndTime: '2021-06-07T01:49:24.585Z', // 結束施打時間
                         implementAddr: '', // 施打地點
-                        endApplyDate: new Date().toISOString().substr(0, 10).replace(/-/g, '/'), // 結束接受事前報名時間
-                        startApplyDate: new Date().toISOString().substr(0, 10).replace(/-/g, '/'), // 開始接受事前報名時間
+                        endApplyDate: '2021-06-07T01:49:24.585Z', // 結束接受事前報名時間
+                        startApplyDate: '2021-06-07T01:49:24.585Z', // 開始接受事前報名時間
                         amount: 500, // 施打數量配額上限
                         leftAmount: 30, // 剩餘數量
-                        createDate: new Date().toISOString().substr(0, 10).replace(/-/g, '/'), // 活動建立時間
+                        createDate: '2021-06-07T01:49:24.585Z', // 活動建立時間
                         region: {
                             cityId: '200', // 城市代碼
                             cityName: '臺北市', // 城市名稱
@@ -83,19 +83,19 @@ export default {
                             villageId: '2001-001', // 村、里代碼
                             villageName: '莊敬里' // 村、里名稱
                         },
-                        medicalInfo: {
+                        medicalInfo: [{
                             medicalId: 'A123456789', // 醫事機構代碼
                             medicalName: '王慶森診所', // 醫事機構名稱
                             distId: '2001', // 所屬行政區代碼
                             distName: '松山區', // 所屬行政區名稱
-                        }
+                        }]
                     }];
 
                     var datas = [];
                     res.data.forEach((data) => {
                         datas.push({
                             regist_id: data.activityId,
-                            regist_create_date: data.createDate,
+                            regist_create_date: data.createDate.substr(0, 10).replace(/-/g, '/'),
                             regist_title: data.activityTitle,
                             regist_type: data.vaccineGroupId,
                             regist_type_name: data.vaccineGroupName,
@@ -106,14 +106,14 @@ export default {
                             regist_village: data.region.villageId,
                             regist_village_name: data.region.villageName,
                             regist_place: '',
-                            regist_institution: data.medicalInfo.medicalId,
-                            regist_institution_name: data.medicalInfo.medicalName,
-                            regist_instution_district: data.medicalInfo.distId,
-                            regist_instution_district_name: data.medicalInfo.distName,
+                            regist_institution: data.medicalInfo[0].medicalId,
+                            regist_institution_name: data.medicalInfo[0].medicalName,
+                            regist_instution_district: data.medicalInfo[0].distId,
+                            regist_instution_district_name: data.medicalInfo[0].distName,
                             regist_station_date: '',
                             regist_station_start_time: '',
                             regist_station_end_time: '',
-                            regist_apply_start_date: data.implementDate,
+                            regist_apply_start_date: data.implementDate.substr(0, 10).replace(/-/g, '/'),
                             regist_review_date: '',              
                             regist_qualified: '',
                             regist_quota: data.amount,
