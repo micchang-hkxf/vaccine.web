@@ -64,7 +64,7 @@ export default {
                         vaccineGroupId: '1', // 疫苗種類Id
                         vaccineGroupName: '新冠肺炎', // 疫苗種類名稱
                         isReChecked: false, // 是否已經覆核過
-                        activityId: '1', // 活動編號
+                        activityId: '2', // 活動編號
                         activityTitle: '110年6月份新冠疫苗 接種', // 活動名稱
                         implementDate: '2021-06-07T01:49:24.585Z', // 實際施打日期
                         implementStartTime: '2021-06-07T01:49:24.585Z', // 開始施打時間
@@ -220,7 +220,7 @@ export default {
             });
         },
         registForm: function ({ state, rootGetters}, data) {
-            return new Promise((reslove) => {
+            return new Promise((reslove, reject) => {
                 console.log('new', data);
                 var result = { data: [], state: state }
                 var url = `${state.apiRoot}api/Activity`;

@@ -518,7 +518,7 @@
                                     </v-btn>
                                 </template>
                                 <v-list>
-                                    <v-list-item @click.stop="viewitem(item)"  class="modify-list-item">
+                                    <v-list-item @click.stop="detailItem(item)"  class="modify-list-item">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
                                                 <img src="/view.svg">
@@ -541,13 +541,6 @@
                                                 <img src="/trash.svg">
                                             </v-btn>
                                             <span class="modify-btn-text">刪除</span>
-                                        </v-list-item-action-text>
-                                    </v-list-item>
-                                    <v-list-item @click.stop="detailItem(item)">
-                                        <v-list-item-action-text>
-                                            <v-btn icon dense>
-                                                <v-icon small>far fa-edit</v-icon>
-                                            </v-btn>場次內容
                                         </v-list-item-action-text>
                                     </v-list-item>
                                     <v-list-item @click.stop="dowloadAgreeItem(item)">
@@ -1208,9 +1201,6 @@
             successUploadRightClick: function () {
                 this.$refs.successUploadAlert.close();
             },
-            viewItem: function (item) {
-                console.log('view', item);
-            },
             removeRightClick: function () {
                 console.log('compSelectedItems', this.compSelectedItems);
                 this.removeRegist(this.compSelectedItems);
@@ -1232,13 +1222,19 @@
                 this.$refs.successUploadAlert.open();
             },
             dowloadAgreeItem: function (item) {
-                console.log('Agree', item);
+                //console.log('Agree', item);
+                this.detailId = item.regist_id;
+                this.downloadCompleteFile();
             },
             dowloadRegistItem: function (item) {
-                console.log('Regist', item);
+                //console.log('Regist', item);
+                this.detailId = item.regist_id;
+                this.downloadSignUpFile();
             },
             dowloadList: function (item) {
-                console.log('List', item);
+                //console.log('List', item);
+                this.detailId = item.regist_id;
+                this.downloadVaccinationFile();
             },
             handleRowClick: function (item) {
                 console.log('item', item);
