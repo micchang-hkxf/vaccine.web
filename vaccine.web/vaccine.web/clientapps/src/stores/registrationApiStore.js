@@ -130,19 +130,55 @@ export default {
                 });
             });
         },
-        loadDetailForm: function ({ state }, params) {
-            return new Promise((reslove) => {
+        loadDetailForm: function ({ state, rootGetters }, params) {
+            return new Promise((reslove, reject) => {
+                var apiUrl = `${state.apiRoot}api/Activity/Detail/` + params.id;
                 var results = { datas: [], state: '', totalCount: 0 };
-                var query = state.registrationDesserts;
-                if (params.keyWord) {
-                    query = query.filter((x) => x.name === params.keyWord || x.identity === params.keyWord);
-                }
-                results.totalCount = query.length;
-                var start = (params.page - 1) * params.pageSize;
-                var end = start + params.pageSize;
-                query = query.slice(start, end);
-                results.datas = query;
-                reslove(results);
+                
+                axios.get(apiUrl,
+                    rootGetters['user/getApiHeader']
+                ).then(res => {
+                    // TODO: 測試資料，之後移除
+                    res.data = [{
+                        signUpTime: '2021-06-09T06:59:08.767Z', // 報名時間
+                        uName: '袁●吉', // 去識別的使用者姓名
+                        applyNo: 1, // 報名流水號
+                        gender: 'M', // 性別
+                        bd: '2021-06-09T06:59:08.767Z', // 生日
+                        uId: 'B●●●●●●236', // 去識別化身分證號
+                        mbNo: '0910123456', // 電話
+                        isCitizen: true, // 是否為台北市民
+                        signUpChannel: 0, // 報名管道 0:網路自行報名 1: 現場報名
+                        eligible: true, // 是否合格
+                        canPrintLabel: true,
+                        isIndigenous: true // 是否為原住民
+                    }];
+                    
+                    results.totalCount = res.data.length;
+
+                    var datas = [];
+                    res.data.forEach((data) => {
+                        datas.push({
+                            id: data.applyNo,
+                            date: data.signUpTime.substr(0, 16).replace(/-/g, '/').replace('T', ' '),
+                            name: data.uName,
+                            serialNumber: data.applyNo,
+                            gender: data.gender,
+                            birthday: data.bd.substr(0, 10).replace(/-/g, '/'),
+                            identity: data.uId,
+                            phone: data.mbNo,
+                            censusRegister: data.isCitizen ? '北市' : '非北市',
+                            type: data.signUpChannel ? '現場報名' : '網路自行報名',
+                            result: data.eligible ? '合格' : '不合格',
+                        });
+                    });
+
+                    results.datas = datas;
+                    reslove(results);
+                }).catch(ex => {
+                    results.datas = ex;
+                    reject(results);
+                });
             });
         },
         getCompleteFile: function ({ state }, data) {
@@ -288,7 +324,7 @@ export default {
             //{ text: '設站地點', value: 'place', sortable: false, flex: 6 },
             { text: '報名時間', value: 'regist_apply_start_date', sortable: false, flex: 6 },
             { text: '名額', value: 'regist_quota', sortable: false, flex: 6 },
-            { text: '復審合格數', value: 'regist_qualified', sortable: false, flex: 6 },
+            { text: '複檢合格數', value: 'regist_qualified', sortable: false, flex: 6 },
             { text: '', value: 'modify', sortable: false },
         ],
         desserts: [
