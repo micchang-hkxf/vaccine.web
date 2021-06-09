@@ -37,12 +37,12 @@ export default {
                         isReChecked: false, // 是否已經覆核過
                         activityId: '1', // 活動編號
                         activityTitle: '110年5月份新冠疫苗 接種', // 活動名稱
-                        implementDate: '2021-05-07T01:49:24.585Z', // 實際施打日期
-                        implementStartTime: '2021-05-07T01:49:24.585Z', // 開始施打時間
-                        implementEndTime: '2021-05-07T01:49:24.585Z', // 結束施打時間
+                        implementDate: '2021-05-07T00:00:00.000Z', // 實際施打日期
+                        implementStartTime: '2021-05-07T09:00:00.000Z', // 開始施打時間
+                        implementEndTime: '2021-05-07T18:00:00.000Z', // 結束施打時間
                         implementAddr: '', // 施打地點
-                        endApplyDate: '2021-05-07T01:49:24.585Z', // 結束接受事前報名時間
-                        startApplyDate: '2021-05-07T01:49:24.585Z' , // 開始接受事前報名時間
+                        endApplyDate: '2021-05-07T18:00:00.000Z', // 結束接受事前報名時間
+                        startApplyDate: '2021-05-07T09:00:00.000Z' , // 開始接受事前報名時間
                         amount: 500, // 施打數量配額上限
                         leftAmount: 30, // 剩餘數量
                         createDate: '2021-05-07T01:49:24.585Z', // 活動建立時間
@@ -66,12 +66,12 @@ export default {
                         isReChecked: false, // 是否已經覆核過
                         activityId: '2', // 活動編號
                         activityTitle: '110年6月份新冠疫苗 接種', // 活動名稱
-                        implementDate: '2021-06-07T01:49:24.585Z', // 實際施打日期
-                        implementStartTime: '2021-06-07T01:49:24.585Z', // 開始施打時間
-                        implementEndTime: '2021-06-07T01:49:24.585Z', // 結束施打時間
+                        implementDate: '2021-06-07T00:00:00.000Z', // 實際施打日期
+                        implementStartTime: '2021-06-07T09:00:00.000Z', // 開始施打時間
+                        implementEndTime: '2021-06-07T18:00:00.000Z', // 結束施打時間
                         implementAddr: '', // 施打地點
-                        endApplyDate: '2021-06-07T01:49:24.585Z', // 結束接受事前報名時間
-                        startApplyDate: '2021-06-07T01:49:24.585Z', // 開始接受事前報名時間
+                        endApplyDate: '2021-06-07T18:00:00.000Z', // 結束接受事前報名時間
+                        startApplyDate: '2021-06-07T09:00:00.000Z', // 開始接受事前報名時間
                         amount: 500, // 施打數量配額上限
                         leftAmount: 30, // 剩餘數量
                         createDate: '2021-06-07T01:49:24.585Z', // 活動建立時間
@@ -110,10 +110,11 @@ export default {
                             regist_institution_name: data.medicalInfo[0].medicalName,
                             regist_instution_district: data.medicalInfo[0].distId,
                             regist_instution_district_name: data.medicalInfo[0].distName,
-                            regist_station_date: '',
-                            regist_station_start_time: '',
-                            regist_station_end_time: '',
-                            regist_apply_start_date: data.implementDate.substr(0, 10).replace(/-/g, '/'),
+                            regist_station_date: data.implementDate.substr(0, 10).replace(/-/g, '/'),
+                            regist_station_start_time: data.implementStartTime.substr(11, 5),
+                            regist_station_end_time: data.implementEndTime.substr(11, 5),
+                            regist_apply_start_date: data.startApplyDate.substr(0, 16).replace(/-/g, '/').replace('T', ' '),
+                            regist_apply_end_date: data.endApplyDate.substr(0, 16).replace(/-/g, '/').replace('T', ' '),
                             regist_review_date: '',              
                             regist_qualified: '',
                             regist_quota: data.amount,
@@ -311,7 +312,8 @@ export default {
                 regist_station_date: '2021/05/08',
                 regist_station_start_time: '08:30',
                 regist_station_end_time: '11:30',
-                regist_apply_start_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),               
+                regist_apply_start_date: new Date().toISOString().substr(0, 16).replace(/-/g, '/').replace('T', ' '),
+                regist_apply_end_date: new Date().toISOString().substr(0, 16).replace(/-/g, '/').replace('T', ' '),
                 regist_review_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),///checkTime              
                 regist_qualified: 423,
                 regist_quota: 500,
@@ -346,8 +348,8 @@ export default {
                 regist_station_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),//'2021/05/08',
                 regist_station_start_time: '08:30',
                 regist_station_end_time: '11:30',
-                regist_apply_start_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),
-                regist_apply_end_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),
+                regist_apply_start_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/').replace('T', ' '),
+                regist_apply_end_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/').replace('T', ' '),
                 regist_review_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),///checkTime              
                 regist_qualified: '423',
                 regist_quota: 500,

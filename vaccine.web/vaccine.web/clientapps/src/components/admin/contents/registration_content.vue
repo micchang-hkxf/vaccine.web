@@ -12,7 +12,7 @@
                 <v-card style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
                     <com-table ref-key="table" :headers="getHeaders" :items="items" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               :change-page="changePage"  :row-click="handleRowClick"
+                               :change-page="changePage" :row-click="handleRowClick"
                                style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
 
                         <template v-slot:item.regist_quota="{item}">
@@ -510,6 +510,14 @@
 
                         </template>
 
+                        <template v-slot:item.regist_station_date="{item}">
+                            {{item.regist_station_date}} {{item.regist_station_start_time}} - {{item.regist_station_end_time}}
+                        </template>
+
+                        <template v-slot:item.regist_apply_start_date="{item}">
+                            {{item.regist_apply_start_date}} - {{item.regist_apply_end_date}}
+                        </template>
+
                         <template v-slot:item.modify="{item}">
                             <v-menu bottom right offset-y>
                                 <template v-slot:activator="{ on }">
@@ -518,7 +526,7 @@
                                     </v-btn>
                                 </template>
                                 <v-list>
-                                    <v-list-item @click.stop="detailItem(item)"  class="modify-list-item">
+                                    <v-list-item @click.stop="detailItem(item)" class="modify-list-item">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
                                                 <img src="/view.svg">
@@ -1067,6 +1075,7 @@
                 regist_station_start_time: '',
                 regist_station_end_time: '',
                 regist_apply_start_date: '',
+                regist_apply_end_date: '',
                 regist_review_date: '',///checkTime              
                 regist_qualified: 423,
                 regist_quota: 500,
@@ -1247,8 +1256,8 @@
                 this.detailVillage = item.regist_village_name; //item.village;
                 this.detailInstitution = item.regist_institution_name;//item.institution;
                 this.detailInstutionDistrict = item.regist_instution_district_name;   //item.instutionDistrict;
-                this.detailStationTime = item.regist_station_date; //item.stationTime;
-                this.detailRegistrationTime = item.regist_apply_start_date;   //item.registrationTime;
+                this.detailStationTime = item.regist_station_date + ' ' + item.regist_station_start_time + ' - ' + item.regist_station_end_time; //item.stationTime;
+                this.detailRegistrationTime = item.regist_apply_start_date + ' - ' + item.regist_apply_end_date;   //item.registrationTime;
                 this.detailCntQuota = item.regist_unpassed;   //item.cntQuota;
                 this.detailTotalQuota = item.regist_quota;    //item.totalQuota;
                 this.detailAbnormalCnt = item.regist_abnormalCnt;   //item.abnormalCnt;
