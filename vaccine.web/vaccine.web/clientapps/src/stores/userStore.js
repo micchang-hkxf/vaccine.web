@@ -8,7 +8,7 @@ export default {
   
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
-                console.log(state);
+                //console.log(state);
                 axios({
                     method: 'get',
                     url: `${state.apiRoot}api/User/ReGetInfo?api-version=1.0`,
