@@ -31,6 +31,10 @@ export default {
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
                 console.log(state);
+
+                // 清除
+                rootGetters['user/clear'];
+
                 axios({
                     method: 'delete',
                     url: `${state.apiRoot}api/User/Login?api-version=1.0`,
@@ -72,6 +76,12 @@ export default {
         getZones: () => {
             return JSON.parse(window.sessionStorage.getItem('zones'));
         },
+        getVaccines: () => {
+            return JSON.parse(window.sessionStorage.getItem('vaccines'));
+        },
+        getMedicals: () => {
+            return JSON.parse(window.sessionStorage.getItem('medicals'));
+        },
         clear: () => {
             return window.sessionStorage.clear();
         }
@@ -85,6 +95,12 @@ export default {
         },
         setZones: (state, zones) => {
             window.sessionStorage.setItem('zones', JSON.stringify(zones));
+        },
+        setVaccines: (state, vaccines) => {
+            window.sessionStorage.setItem('vaccines', JSON.stringify(vaccines));
+        },
+        setMedicals: (state, medicals) => {
+            window.sessionStorage.setItem('medicals', JSON.stringify(medicals));
         }
     },
     modules: {

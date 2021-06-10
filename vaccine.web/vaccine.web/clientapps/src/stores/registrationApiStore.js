@@ -6,16 +6,109 @@ import { Promise } from "core-js";
 export default {
     namespaced: true,
     actions: {
+        loadVaccines: function ({ state, commit, rootGetters }) {
+            var datas = [];
+
+            var vaccines = rootGetters['user/getVaccines'];
+            if (vaccines !== null) {
+                vaccines.forEach((data) => {
+                    datas.push({
+                        id: data.groupId,
+                        name: data.groupName
+                    });
+                });
+                state.vaccines = datas;
+                return;
+            }
+                
+            var apiUrl = `${state.apiRoot}api/DataItem/Vaccines`;
+
+            axios.get(apiUrl,
+                rootGetters['user/getApiHeader']
+            ).then(res => {
+                res.data.forEach((data) => {
+                    datas.push({
+                        id: data.groupId,
+                        name: data.groupName
+                    });
+                });
+                state.vaccines = datas;
+                    
+                commit('user/setVaccines', res.data);
+            });
+        },
+        loadDists: function ({ state, rootGetters }) {
+            var zones = rootGetters['user/getZones'];
+            var dists = [];
+
+            zones.forEach((zone) => {
+                zone.data.forEach((dist) => {
+                    dists.push({
+                        id: dist.distId,
+                        name: dist.distName
+                    });
+                });
+            });
+            state.districts = dists;
+        },
+        loadVillages: function ({ state, rootGetters }, params) {
+            var zones = rootGetters['user/getZones'];
+            var villages = [];
+
+            zones.forEach((zone) => {
+                zone.data.forEach((dist) => {
+                    if (dist.distId === params.id) {
+                        dist.data.forEach((village) => {
+                            villages.push({
+                                id: village.villageId,
+                                name: village.villageName
+                            });
+                        });
+                    }
+                });
+            });
+            state.villages = villages;
+
+            //
+            state.institutions = [];
+        },
+        loadMedicals: function ({ state, commit, rootGetters }) {
+            var medicals = rootGetters['user/getMedicals'];
+            if (medicals !== null) return;
+
+            var apiUrl = `${state.apiRoot}api/DataItem/Medical`;
+
+            axios.get(apiUrl,
+                rootGetters['user/getApiHeader']
+            ).then(res => {
+                commit('user/setMedicals', res.data);
+            });
+        },
+        loadMedicalsByVillage: function ({ state, rootGetters }, params) {
+            var medicals = rootGetters['user/getMedicals'];
+            if (medicals === null) return;
+
+            var datas = [];
+            medicals.forEach((medical) => {
+                if (medical.villageName === params.name) {
+                    datas.push({
+                        id: medical.id,
+                        name: medical.uName
+                    });
+                }
+            });
+            state.institutions = datas;
+        },
         loadRegistForm: function ({ state, rootGetters }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity`;
                 var results = { datas: [], state: '', totalCount: 0 };
 
-                var medicalOrgIdFilter = params.institution.id === '' ? 'all' : params.institution.id;
-                var distIdFilter       = params.district.id    === '' ? 'all' : params.district.id;
-                var villageIdFilter    = params.village.id     === '' ? 'all' : params.village.id;
-                var vaccineGroupId     = params.vaccine.id     === '' ?  null : params.vaccine.id;
-                var keyword            = params.keyWord        === '' ?  null : params.keyWord;
+                var medicalOrgIdFilter = (typeof params.institution === 'undefined' || params.institution.id === '') ? null : params.institution.id;
+                var distIdFilter       = (typeof params.district    === 'undefined' || params.district.id    === '') ? null : params.district.id;
+                var villageIdFilter    = (typeof params.village     === 'undefined' || params.village.id     === '') ? null : params.village.id;
+                var vaccineGroupId     = (typeof params.vaccine     === 'undefined' || params.vaccine.id     === '') ? null : params.vaccine.id;
+                var keyword            =                                               params.keyWord        === ''  ? null : params.keyWord;
                 
                 axios.get(apiUrl, {
                     params: {
@@ -362,22 +455,10 @@ export default {
             { id: 'az', name: 'AstraZeneca' },
             { id: 'bnt', name: 'Pfizer-BioNTech' },
         ], 
-        vaccines: [
-            { id: '0', name: '肺鏈流感' },
-            { id: '1', name: '新冠肺炎' },
-        ],
-        districts: [
-            { id: 'neihu', name: '內湖區' },
-            { id: 'nangang', name: '南港區' },
-        ],
-        villages: [
-            { id: 'xikang', name: '西康里' }
-        ],
-        institutions: [
-            { id: 'wang', name: '王慶森診所' },
-            { id: 'wang2', name: '王慶森2診所' },
-            { id: 'wang3', name: '王慶森3診所' }
-        ],
+        vaccines: [],
+        districts: [],
+        villages: [],
+        institutions: [],
         registrationHeaders: [
             { text: '報名日期', value: 'date', align: 'start', sortable: true, flex: 6 },
             { text: '姓名', value: 'name', sortable: false, flex: 6 },

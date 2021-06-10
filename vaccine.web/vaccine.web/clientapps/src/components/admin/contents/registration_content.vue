@@ -49,7 +49,8 @@
                                                   clearable
                                                   style="margin-right: 10px;"
                                                   class="search-filter"
-                                                  return-object>
+                                                  return-object
+                                                  @change="loadVillages">
                                         </v-select>
                                     </v-col>
 
@@ -65,7 +66,8 @@
                                                   clearable
                                                   style="margin-right: 10px;"
                                                   class="search-filter"
-                                                  return-object>
+                                                  return-object
+                                                  @change="loadMedicalsByVillage">
                                         </v-select>
                                     </v-col>
                                     <v-col cols="2">
@@ -1083,18 +1085,21 @@
             },
         }),
         computed: {
-            ...mapGetters('registration', [ 'getHeaders', 'getVaccines','getDistricts','getVillages','getInstitutions', 'getRegistrationHeaders']),
+            ...mapGetters('registration', ['getHeaders', 'getVaccines', 'getDistricts', 'getVillages', 'getInstitutions', 'getRegistrationHeaders']),
         },
         props: {
 
         },
         created: function () {
-            var page = 1;
-            this.getRegistForm(page);
+            this.loadVaccines();
+            this.loadDists();
+            this.loadMedicals();
+            this.getRegistForm(1);
         },
         methods: {
-            ...mapActions('registration', [ 'loadRegistForm','loadDetailForm','getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile','execCheck',
-                'doubleCheck', 'registForm', 'updateRegist','removeRegist']),
+            ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadMedicals', 'loadMedicalsByVillage',
+                                           'loadRegistForm', 'loadDetailForm', 'getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile', 'execCheck',
+                                           'doubleCheck', 'registForm', 'updateRegist', 'removeRegist']),
             getRegistForm: function (page) {
                 var params = {
                     vaccine: this.selectVaccine,
