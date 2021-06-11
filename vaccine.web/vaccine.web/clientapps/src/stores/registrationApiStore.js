@@ -394,36 +394,39 @@ export default {
         registForm: function ({ state, rootGetters}, data) {
             return new Promise((reslove, reject) => {
                 console.log('new', data);
+       
                 var result = { data: [], state: state }
                 var url = `${state.apiRoot}api/Activity`;
-                var header = rootGetters['user/getToken'];
+                //var header = rootGetters['user/getToken'];
                 var info = {
-                    vaccineGroupId: 0,
-                    vaccineIds: ["string"],
-                    title: "string",
-                    implementDate: "2021-06-04T09:28:07.117Z",
-                    implementStartDate: "2021-06-04T09:28:07.117Z",
-                    implementEndDate: "2021-06-04T09:28:07.117Z",
-                    stationAddr: "string",
-                    distId: "string",
-                    villageId: "string",
-                    startApplyDate: "2021-06-04T09:28:07.117Z",
-                    endApplyDate: "2021-06-04T09:28:07.117Z",
-                    amount: 0,
-                    medicalIds: ["string" ]
-                }
-
-
-                axios.post(url, info, header).then((r) => {
-                    reslove(r)
-                }).catch((e) => {
-                    reject(e);
-                })
-
-
-
-                console.log('new',data);
-                reslove(result)
+                    vaccineGroupId: data.model.regist_type.id,
+                    vaccineIds: [data.model.regist_brand.id],
+                    title: data.model.regist_title,
+                    implementDate: data.model.regist_station_date+"T00:00:00",
+                    implementStartDate: data.model.regist_station_date +"T" + data.model.regist_station_start_time+":00",
+                    implementEndDate: data.model.regist_station_date + "T" + data.model.regist_station_end_time + ":00",
+                    stationAddr: data.model.regist_place,
+                    distId: data.model.district.id,
+                    villageId: data.model.village.id,
+                    startApplyDate: data.model.regist_apply_start_date + "T00:00:00",
+                    endApplyDate: data.model.regist_apply_start_date + "T00:00:00",//TODO ???????
+                    amount: data.model.regist_quota,
+                    medicalIds: ['123']
+                };
+                console.log(rootGetters['user/getToken']);
+                axios.post(url, {
+                   data:info,
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    result.datas = res.data;
+                    reslove(result);
+                }).catch(ex => {
+                    result.datas = ex;
+                    reject(result);
+                });
+           
 
             })
          

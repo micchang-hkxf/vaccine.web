@@ -1186,13 +1186,13 @@
             },
             saveRegist: function () {
                 //console.log('result', this.result)
-                
-                this.$refs.registEdit.saveForm(this.result);
+                this.$refs.registViewer.close();
+                this.$refs.registNewEditor.close();
+                this.registForm(this.result);
                 this.alertTitle = '110年五月份新冠疫苗施打預先報名';
                 this.alertText = '成功建立報名表';
 
-                this.$refs.registViewer.close();
-                this.$refs.registEdit.close();
+        
                 this.$refs.registAlert.open();
             },
             editSaveRegist: function () {

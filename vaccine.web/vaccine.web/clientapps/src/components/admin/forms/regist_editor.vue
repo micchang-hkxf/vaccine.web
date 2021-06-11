@@ -428,11 +428,11 @@
                 this.$refs.dialogPanel.open();
             },
             save: function () {
-                //if (this.$refs.form.validate()) {
+                if (this.$refs.form.validate()) {
                     this.action({ mode: this.mode, action: 'save', model: this.model });
                     //console.log(this.model);
                     //this.$refs.dialogPanel.close();   
-                //}   
+                }   
                 
             },
             show: function () {
@@ -448,11 +448,8 @@
             },
             closeDialog: function () {
                 //this.$refs.dialogPanel.open();
-            },
-            saveForm(result) {
-
-                console.log(result);
             }
+    
           
         },
         components: {
