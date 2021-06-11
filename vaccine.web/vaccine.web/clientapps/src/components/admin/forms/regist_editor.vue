@@ -8,11 +8,11 @@
             </v-btn>
         </template>
         <template v-slot:content>
-            <v-form class="edit-form">
+            <v-form class="edit-form" v-model="valid" ref="form">
                 <v-row>
                     <v-col cols="4">
                         <div><span class="regist-title">接種類型</span> <span class="red--text">*</span></div>
-                        <v-select v-model="selectVaccine"
+                        <v-select v-model="model.regist_type"
                                   :items="getVaccines"
                                   item-text="name"
                                   item-value="id"
@@ -32,7 +32,7 @@
                 <v-row>
                     <v-col cols="4">
                         <div><span class="regist-title">新冠肺炎疫苗廠牌</span> <span class="red--text">*</span></div>
-                        <v-select v-model="selectBrand"
+                        <v-select v-model="model.regist_brand"
                                   :items="getBrands"
                                   item-text="name"
                                   item-value="id"
@@ -68,7 +68,7 @@
                 </v-row>
                 <v-row>
                     <v-col cols="3">
-                        <v-select v-model="selectDistrict"
+                        <v-select v-model="model.district"
                                   :items="getDistricts"
                                   item-text="name"
                                   item-value="id"
@@ -85,7 +85,7 @@
                     </v-col>
                     <v-col cols="1"><div></div></v-col>
                     <v-col cols="3">
-                        <v-select v-model="selectVillage"
+                        <v-select v-model="model.village"
                                   :items="getVillages"
                                   item-text="name"
                                   item-value="id"
@@ -117,12 +117,13 @@
                 <v-row>
                     <v-col cols="3">
                         <div> <span class="regist-title">醫療院所</span><span class="red--text">*</span></div>
-                        <v-select v-model="selectInstitution"
+                        <v-select v-model="model.institution"
                                   :items="getInstitutions"
                                   item-text="name"
                                   item-value="id"
                                   placeholder="請選擇醫療院所"
                                   :menu-props="{ bottom: true, offsetY: true }"
+                                  :rules="[rules.required]"
                                   outlined
                                   dense
                                   class="search-filter"
@@ -387,6 +388,7 @@
             modal: false,
             menu2: false,
             default: {},
+            valid: true,
             model: {},
             selectVaccine: '',
             selectDistrict: '',
@@ -426,15 +428,18 @@
                 this.$refs.dialogPanel.open();
             },
             save: function () {
-               
-                this.action({ mode: this.mode, action: 'save', model: this.model });
-
-                this.$refs.dialogPanel.close();                
+                //if (this.$refs.form.validate()) {
+                    this.action({ mode: this.mode, action: 'save', model: this.model });
+                    //console.log(this.model);
+                    //this.$refs.dialogPanel.close();   
+                //}   
+                
             },
             show: function () {
-                this.$refs.dialogPanel.open();
+                //this.$refs.dialogPanel.open();
             },
             close: function () {
+
                 this.$refs.dialogPanel.close();
             },
             cancel: function () {
@@ -442,8 +447,12 @@
                 this.$refs.dialogPanel.close();
             },
             closeDialog: function () {
-                this.$refs.dialogPanel.open();
+                //this.$refs.dialogPanel.open();
             },
+            saveForm(result) {
+
+                console.log(result);
+            }
           
         },
         components: {

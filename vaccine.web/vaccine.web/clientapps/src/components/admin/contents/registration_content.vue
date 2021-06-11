@@ -222,7 +222,7 @@
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>設站行政區</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_district.name}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.district.name}}</v-list-item-subtitle>
 
                                             </v-list-item-content>
                                         </v-list-item>
@@ -231,7 +231,7 @@
                                             <v-list-item-content>
 
                                                 <v-list-item-title>設站村里</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_village.name}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.village.name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
 
@@ -246,7 +246,7 @@
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>醫療院所</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_institution.name}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.institution.name}}</v-list-item-subtitle>
 
                                             </v-list-item-content>
                                         </v-list-item>
@@ -336,7 +336,7 @@
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>接種類型</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_type_name}}5</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.regist_type_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
@@ -1142,10 +1142,9 @@
             },
             editItem: function (item) {
                 Object.assign(this.model, item);
-                
+      
                 this.title = '編輯報名表';
                 this.viewerTitle = '編輯報名資訊確認';
-                //this.$refs.registEditor.open(model);
                 this.$refs.registEdit.open(item);
                 console.log('edit', item);
             },
@@ -1186,13 +1185,14 @@
                 this.$refs.registEditViewer.close();
             },
             saveRegist: function () {
-                console.log('result', this.result)
-                this.registForm(this.result);
+                //console.log('result', this.result)
+                
+                this.$refs.registEdit.saveForm(this.result);
                 this.alertTitle = '110年五月份新冠疫苗施打預先報名';
                 this.alertText = '成功建立報名表';
-               
-                
+
                 this.$refs.registViewer.close();
+                this.$refs.registEdit.close();
                 this.$refs.registAlert.open();
             },
             editSaveRegist: function () {
@@ -1206,7 +1206,7 @@
             },
             backToEdit: function () {
                 this.$refs.registViewer.close();
-                this.$refs.registEditor.show();
+                //this.$refs.registEdit.show();
             },
             alertRightClick: function () {
                 this.$bus.$emit(`confirm_show`, false);
