@@ -1,5 +1,5 @@
 ﻿<template>
-    <app-layout>
+    <app-layout class="registration-list">
         <template v-slot:navigation>
             <app-menu></app-menu>
         </template>
@@ -751,101 +751,103 @@
     </app-layout>
 </template>
 
-<style scoped>
+<style>
     * {
         font-family: "微軟正黑體", "Roboto", sans-serif, "Arial", "Font Awesome 5 Free", "Material Design Icons", "Material Icons", "sans-serif";
         font-weight: 400;
         font-size: 14px;
     }
-
-    .app-content {
+    .registration-list .v-list-item__title {
+        color: #000000 !important;
+    }
+    .registration-list .app-content {
         background-color: #F2F3F7;
     }
 
-    .content-bar {
+    .registration-list .content-bar {
         font-size: 16px;
         /*margin-top: 80px;*/
         margin-left: 0px;
         padding: 0px !important;
     }
 
-    .v-toolbar, .v-card {
+    .registration-list .v-toolbar, .v-card {
         border-radius: 0px !important;
         box-shadow: none !important;
     }
 
-    .v-application .elevation-1 {
+    .registration-list .v-application .elevation-1 {
         box-shadow: none !important;
     }
 
 
-    .v-list-item__title {
+    registration-list .v-list-item__title {
         color: lightgray;
         font-size: 14px;
     }
 
-    .theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
+    .registration-list .theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
         color: rgba(0, 0, 0, 0.6);
         background: rgba(98, 103, 129, 0.06);
     }
 
-    .file-text {
+    .registration-list .file-text {
         color: #626781;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
     }
 
-    .file-text-warn {
+    .registration-list .file-text-warn {
         color: #F0524B;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
     }
 
 
-    .file-btn-container {
+    .registration-list .file-btn-container {
         display: flex;
         justify-content: space-around;
         margin-top: 5px;
         margin-bottom: 10px;
     }
 
-    .file-btn-text {
+    .registration-list .file-btn-text {
         padding-left: 10px;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
-        color:#ffffff;
+        color: #ffffff;
     }
 
-    .modify-btn-text {
+    .registration-list .modify-btn-text {
         color: #626781;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
     }
 
-    .modify-list-item {
+    .registration-list .modify-list-item {
         min-height: 20px !important;
     }
 
-    .action-option-text {
+    .registration-list .action-option-text {
         color: #626781;
     }
 
-    .detail-title {
+    .registration-list .detail-title {
         font: normal normal normal 24px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #736DB9;
         text-align: left;
         opacity: 1;
     }
-    .add-btn-text {
+    .registration-list .add-btn-text {
         color: white;
         padding-left: 5px;
     }
 
-    .detail-title span {
+    .registration-list .detail-title span {
         font: normal normal normal 24px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #F0524B;
         margin: 0 10px;
     }
 
-    .detail-sub-title {
+    .registration-list .detail-sub-title {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #626781;
@@ -854,7 +856,7 @@
         margin: 4px 0;
     }
 
-    .detail-title-desc {
+    .registration-list .detail-title-desc {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #626781;
@@ -863,7 +865,7 @@
         margin: 23px 0 18px 0;
     }
 
-    .detail-rebound-info {
+    .registration-list .detail-rebound-info {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #626781;
@@ -874,19 +876,19 @@
         display: inline-block;
     }
 
-    .detail-search-input {
+    .registration-list .detail-search-input {
         width: 220px;
     }
 
-    .detail-action {
+    .registration-list .detail-action {
         display: inline-flex;
     }
 
-    .detail-action .v-btn {
+    .registration-list .detail-action .v-btn {
         margin: 3px 5px;
     }
 
-    .detail-result-abnormal {
+    .registration-list .detail-result-abnormal {
         /*font: normal normal normal 16px/24px Noto Sans T Chinese;*/
         letter-spacing: 0px;
         color: #F0524B;
@@ -894,12 +896,12 @@
         opacity: 1;
     }
 
-    .detail-search-block {
+    .registration-list .detail-search-block {
         white-space: nowrap;
         display: inline-flex;
     }
 
-    .item-disabled {
+    .registration-list .item-disabled {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #62678166;
@@ -907,21 +909,21 @@
         opacity: 1;
     }
 
-    .hidden {
+    .registration-list .hidden {
         display: none !important;
     }
 
-    .btn-warning {
+    .registration-list .btn-warning {
         background: #FCBF5E 0% 0% no-repeat padding-box !important;
         border-radius: 4px;
         opacity: 1;
     }
 
-    .color-red {
+    .registration-list .color-red {
         color: #F0524B;
     }
 
-    .double-check .subtitle {
+    .registration-list .double-check .subtitle {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #626781;
@@ -929,7 +931,7 @@
         opacity: 1;
     }
 
-    .double-check label {
+    .registration-list .double-check label {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #62678166;
@@ -937,15 +939,15 @@
         opacity: 1;
     }
 
-    .double-check hr {
+    .registration-list .double-check hr {
         margin: 24px 0;
     }
 
-    .double-check .row {
+    .registration-list .double-check .row {
         margin-bottom: 16px !important;
     }
 
-    .v-btn--outlined {
+    .registration-list .v-btn--outlined {
         border: thin solid rgba(98,103, 129,0.2) !important;
     }
 

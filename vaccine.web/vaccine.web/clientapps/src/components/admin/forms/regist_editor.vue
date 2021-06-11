@@ -12,8 +12,8 @@
                 <v-row>
                     <v-col cols="4">
                         <div><span class="regist-title">接種類型</span> <span class="red--text">*</span></div>
-                        <v-select v-model="model.regist_type"
-                                  :items="vaccines"
+                        <v-select v-model="selectVaccine"
+                                  :items="getVaccines"
                                   item-text="name"
                                   item-value="id"
                                   placeholder="請選擇接種類型"
@@ -23,7 +23,8 @@
                                   dense
                                   class="search-filter"
                                   append-icon="mdi-chevron-down"
-                                  return-object>
+                                  return-object
+                                  @change="loadVaccines">
                         </v-select>
                     </v-col>
 
@@ -31,8 +32,8 @@
                 <v-row>
                     <v-col cols="4">
                         <div><span class="regist-title">新冠肺炎疫苗廠牌</span> <span class="red--text">*</span></div>
-                        <v-select v-model="model.regist_brand"
-                                  :items="brands"
+                        <v-select v-model="selectBrand"
+                                  :items="getBrands"
                                   item-text="name"
                                   item-value="id"
                                   placeholder="請選擇新冠肺炎疫苗廠牌"
@@ -67,8 +68,8 @@
                 </v-row>
                 <v-row>
                     <v-col cols="3">
-                        <v-select v-model="model.regist_district"
-                                  :items="districts"
+                        <v-select v-model="selectDistrict"
+                                  :items="getDistricts"
                                   item-text="name"
                                   item-value="id"
                                   placeholder="請選擇行政區"
@@ -78,13 +79,14 @@
                                   dense
                                   class="search-filter"
                                   append-icon="mdi-chevron-down"
-                                  return-object>
+                                  return-object
+                                  @change="loadVillages">
                         </v-select>
                     </v-col>
                     <v-col cols="1"><div></div></v-col>
                     <v-col cols="3">
-                        <v-select v-model="model.regist_village"
-                                  :items="villages"
+                        <v-select v-model="selectVillage"
+                                  :items="getVillages"
                                   item-text="name"
                                   item-value="id"
                                   placeholder="請選擇村里"
@@ -94,7 +96,8 @@
                                   dense
                                   class="search-filter"
                                   append-icon="mdi-chevron-down"
-                                  return-object>
+                                  return-object
+                                  @change="loadMedicalsByVillage">
                         </v-select>
                     </v-col>
                 </v-row>
@@ -114,8 +117,8 @@
                 <v-row>
                     <v-col cols="3">
                         <div> <span class="regist-title">醫療院所</span><span class="red--text">*</span></div>
-                        <v-select v-model="model.regist_institution"
-                                  :items="institutions"
+                        <v-select v-model="selectInstitution"
+                                  :items="getInstitutions"
                                   item-text="name"
                                   item-value="id"
                                   placeholder="請選擇醫療院所"
@@ -125,7 +128,7 @@
                                   class="search-filter"
                                   append-icon="mdi-chevron-down"
                                   return-object>
-                        </v-select>                      
+                        </v-select>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -354,6 +357,7 @@
 
 <script>
     import comDialog from 'components/dialog'
+    import { mapActions, mapGetters } from 'vuex'
     export default {     
         data: () => ({
             mode:'',          
@@ -384,19 +388,29 @@
             menu2: false,
             default: {},
             model: {},
+            selectVaccine: '',
+            selectDistrict: '',
+            selectVillage: '',
+            selectInstitution: '',
+            selectBrand: '',
             rules: {
                 required: v => !!v || '必填',              
             }
         }),
         computed: {
+            ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders']),
             defaultItem: function () {
                 return this.default;
             }
         },
         props: ['width','title','action'],
         created: function () {
+            this.loadVaccines();
+            //this.loadDists();
+            this.loadMedicals();
         },
         methods: {
+            ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadBrands', 'loadMedicals', 'loadMedicalsByVillage']),
             open: function (model) {
                 this.mode = 'edit';
                 

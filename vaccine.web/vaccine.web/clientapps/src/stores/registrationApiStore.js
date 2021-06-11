@@ -6,9 +6,8 @@ import { Promise } from "core-js";
 export default {
     namespaced: true,
     actions: {
-        loadVaccines: function ({ state, commit, rootGetters }) {
-            var datas = [];
-
+        loadVaccines: function ({ state, commit, rootGetters }, params) {
+            var datas = [],brands=[];
             var vaccines = rootGetters['user/getVaccines'];
             if (vaccines !== null) {
                 vaccines.forEach((data) => {
@@ -16,8 +15,19 @@ export default {
                         id: data.groupId,
                         name: data.groupName
                     });
+        
+                    if (params && (data.groupId === params.id)) {
+                        data.vaccines.forEach((subdata) => {
+                            //console.log(data.groupName + ":" + subdata.itemId + "@" + subdata.itemName);
+                            brands.push({
+                                id: subdata.itemId,
+                                name: subdata.itemName
+                            });
+                        });
+                    }
                 });
                 state.vaccines = datas;
+                state.brands = brands;
                 return;
             }
                 
@@ -274,6 +284,7 @@ export default {
                 });
             });
         },
+        
         getCompleteFile: function ({ state, rootGetters }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement`;
@@ -491,6 +502,9 @@ export default {
         },
         getRegistrationHeaders: state => {
             return state.registrationHeaders;
+        },
+        getBrands: state => {
+            return state.brands;
         },
     },
     mutations: {
