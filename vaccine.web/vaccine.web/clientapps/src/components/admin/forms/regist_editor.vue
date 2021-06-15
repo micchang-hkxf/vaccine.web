@@ -278,8 +278,44 @@
                                     OK
                                 </v-btn>
                             </v-date-picker>
-                        </v-menu>                       
-                        <div><span class="regist-title">事先報名結束時間：{{model.regist_apply_start_date}}</span>  </div>
+                        </v-menu>
+                        <div><span class="regist-title">事先報名結束時間</span><span class="red--text">*</span></div>
+                        <v-menu ref="apply2"
+                                v-model="apply2"
+                                :close-on-content-click="false"
+                                :return-value.sync="date"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="auto">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-text-field v-model="model.regist_apply_end_date"
+                                              placeholder="請輸入事先報名截止時間"
+                                              append-icon="mdi-calendar"
+                                              :rules="[rules.required]"
+                                              readonly
+                                              v-bind="attrs"
+                                              v-on="on"
+                                              outlined
+                                              dense></v-text-field>
+                            </template>
+                            <v-date-picker v-model="model.regist_apply_end_date"
+                                           no-title
+                                           scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text
+                                       :ripple="false"
+                                       color="primary"
+                                       @click="menu = false">
+                                    Cancel
+                                </v-btn>
+                                <v-btn text
+                                       :ripple="false"
+                                       color="primary"
+                                       @click="$refs.apply2.save(model.regist_apply_end_date)">
+                                    OK
+                                </v-btn>
+                            </v-date-picker>
+                        </v-menu>
                         <div style="margin-bottom:15px;"><span class="regist-title">報名者接種資格複檢時間：{{model.regist_review_date}}</span> </div>
                     </v-col>
 
@@ -382,7 +418,8 @@
             institutions: [{ id: 'wang', name: '王慶森診所' }, { id: 'wang2', name: '王慶森2診所' }, { id: 'wang3', name: '王慶森3診所' }],
             date: new Date().toISOString().substr(0, 10),
             menu: false,
-            apply:false,
+            apply: false,
+            apply2: false,
             start: false,
             end: false,
             modal: false,

@@ -396,26 +396,31 @@ export default {
                 console.log('new', data);
        
                 var result = { data: [], state: state }
-                var url = `${state.apiRoot}api/Activity`;
+
                 //var header = rootGetters['user/getToken'];
-                var info = {
+                var setData=[{
                     vaccineGroupId: data.model.regist_type.id,
                     vaccineIds: [data.model.regist_brand.id],
                     title: data.model.regist_title,
-                    implementDate: data.model.regist_station_date+"T00:00:00",
-                    implementStartDate: data.model.regist_station_date +"T" + data.model.regist_station_start_time+":00",
-                    implementEndDate: data.model.regist_station_date + "T" + data.model.regist_station_end_time + ":00",
+                    implementDate: data.model.regist_station_date +"T00:00:00.000Z",
+                    implementStartDate: data.model.regist_station_date + "T" + data.model.regist_station_start_time +":00.000Z",
+                    implementEndDate: data.model.regist_station_date + "T" + data.model.regist_station_end_time + ":00.000Z",
                     stationAddr: data.model.regist_place,
                     distId: data.model.district.id,
                     villageId: data.model.village.id,
-                    startApplyDate: data.model.regist_apply_start_date + "T00:00:00",
-                    endApplyDate: data.model.regist_apply_start_date + "T00:00:00",//TODO ???????
+                    startApplyDate: data.model.regist_apply_start_date + "T00:00:00.000Z",
+                    endApplyDate: data.model.regist_apply_end_date + "T00:00:00.000Z",
                     amount: data.model.regist_quota,
                     medicalIds: ['123']
-                };
-                console.log(rootGetters['user/getToken']);
-                axios.post(url, {
-                   data:info,
+                }];
+  
+
+                //console.log(rootGetters['user/getToken']);
+                axios({
+                    method: 'post',
+                    url: `${state.apiRoot}api/Activity?api-version=1.0`,
+                    data: setData,
+                    responseType:'json',
                     headers: {
                         'x-token': rootGetters['user/getToken']
                     }
