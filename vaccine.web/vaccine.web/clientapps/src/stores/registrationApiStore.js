@@ -396,20 +396,20 @@ export default {
                 console.log('new', data);
        
                 var result = { data: [], state: state }
-
+         
                 //var header = rootGetters['user/getToken'];
                 var setData=[{
                     vaccineGroupId: data.model.regist_type.id,
                     vaccineIds: [data.model.regist_brand.id],
                     title: data.model.regist_title,
-                    implementDate: data.model.regist_station_date +"T00:00:00.000Z",
-                    implementStartDate: data.model.regist_station_date + "T" + data.model.regist_station_start_time +":00.000Z",
-                    implementEndDate: data.model.regist_station_date + "T" + data.model.regist_station_end_time + ":00.000Z",
+                    implementDate: data.model.regist_station_date,
+                    implementStartDate: data.model.regist_station_date + "T" + data.model.regist_station_start_time,
+                    implementEndDate: data.model.regist_station_date + "T" + data.model.regist_station_end_time,
                     stationAddr: data.model.regist_place,
                     distId: data.model.district.id,
                     villageId: data.model.village.id,
-                    startApplyDate: data.model.regist_apply_start_date + "T00:00:00.000Z",
-                    endApplyDate: data.model.regist_apply_end_date + "T00:00:00.000Z",
+                    startApplyDate: data.model.regist_apply_start_date,
+                    endApplyDate: data.model.regist_apply_end_date,
                     amount: data.model.regist_quota,
                     medicalIds: ['123']
                 }];

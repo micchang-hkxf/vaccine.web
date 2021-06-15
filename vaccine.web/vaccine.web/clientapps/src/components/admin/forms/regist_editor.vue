@@ -189,6 +189,7 @@
                     <v-col cols="3">
                         <v-menu 
                                 v-model="start"
+                                ref="tmenu"
                                 :close-on-content-click="false"
                                 :return-value.sync="date"
                                 transition="scale-transition"
@@ -206,7 +207,9 @@
                             </template>
                             <v-time-picker v-model="model.regist_station_start_time"
                                            :max="model.regist_station_end_time"
-                                           no-title
+                                           v-if="start"
+                                           ampm-in-title
+                                           @click:minute="$refs.tmenu.save(time)"
                                            scrollable>
                                 <v-spacer></v-spacer>
                             </v-time-picker>
@@ -215,6 +218,7 @@
                     <v-col cols="1"><span style="display:flex;justify-content:center;color:#626781">-</span></v-col>
                     <v-col cols="3">
                         <v-menu v-model="end"
+                                ref="tmenu2"
                                 :close-on-content-click="false"
                                 :return-value.sync="date"
                                 transition="scale-transition"
@@ -231,7 +235,9 @@
                             </template>
                             <v-time-picker v-model="model.regist_station_end_time"
                                            :min="model.regist_station_start_time"
-                                           no-title
+                                           v-if="end"
+                                           ampm-in-title
+                                           @click:minute="$refs.tmenu2.save(time)"
                                            scrollable>
                                 <v-spacer></v-spacer>
                             </v-time-picker>

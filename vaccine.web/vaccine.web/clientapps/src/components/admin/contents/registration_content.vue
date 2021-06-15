@@ -8,6 +8,7 @@
 
         </template>
         <template v-slot:app-content>
+            <com-loading ref-key="type1"></com-loading>
             <div id="app">
                 <v-card style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
                     <com-table ref-key="table" :headers="getHeaders" :items="items" :total-count="totalCount"
@@ -17,6 +18,7 @@
 
                         <template v-slot:item.regist_quota="{item}">
                             <!--<div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>-->
+                            n
                             <div><span :class="item.regist_unpassed >= item.regist_quota ? 'color-red' : ''">{{item.regist_unpassed}}</span>/<span style="color:#626781">{{item.regist_quota}}</span></div>
                         </template>
                         <template v-slot:search-bar>
@@ -284,9 +286,14 @@
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>事先開放報名時間</v-list-item-title>
+                                                <v-list-item-title>事先開放報名開始時間</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_apply_start_date}}</v-list-item-subtitle>
-
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>事先開放報名結束時間</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_apply_end_date}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
@@ -508,7 +515,22 @@
                                     確認
                                 </template>
                             </com-confirm>
+                            <com-confirm ref="warringAlert" ref-key="warringAlert" :right-click="closeRightClick">
+                                <template v-slot:confirm-image>
+                                    <v-img src="/alert_warning.svg"></v-img>
+                                </template>
+                                <template v-slot:confirm-title>
+                                    <span style="color:#736DB9">{{alertTitle}}</span>
 
+                                </template>
+                                <template v-slot:confirm-text>
+                                    <span style="color:#626781">{{alertText}}</span>
+                                </template>
+
+                                <template v-slot:confirm-right-btn-text>
+                                    確認
+                                </template>
+                            </com-confirm>
 
                         </template>
 
@@ -639,19 +661,19 @@
                                                 <v-btn @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
                                                     <span :style="detailAbnormalCnt > 0 ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
                                                 </v-btn>
-                                                <v-btn  color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false" :disabled="lessCheckTime">
                                                     <v-icon left color='white' size="15">
                                                         mdi-arrow-down
                                                     </v-icon>
                                                     <span style="color:white">下載完整接種同意書</span>
                                                 </v-btn>
-                                                <v-btn  color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">
                                                     <v-icon left color='white' size="15">
                                                         mdi-arrow-down
                                                     </v-icon>
                                                     <span style="color:white">下載報名清冊</span>
                                                 </v-btn>
-                                                <v-btn  color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false" :disabled="lessCheckTime">
                                                     <v-icon left color='white' size="15">
                                                         mdi-arrow-down
                                                     </v-icon>
@@ -673,13 +695,13 @@
 
                                 <template v-slot:item.modify="{item}">
                                     <template>
-                                        <v-btn  color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result === '系統異常' ? 'hidden' : ''">
+                                        <v-btn color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result === '系統異常' ? 'hidden' : ''">
                                             <v-icon left color='white' size="15">
                                                 mdi-arrow-down
                                             </v-icon>
                                             <span style="color:white">下載同意書</span>
                                         </v-btn>
-                                        <v-btn  color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result !== '系統異常' ? 'hidden' : ''" class="btn-warning">
+                                        <v-btn color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result !== '系統異常' ? 'hidden' : ''" class="btn-warning">
                                             <span style="color:white">人工複檢</span>
                                         </v-btn>
                                     </template>
@@ -997,6 +1019,7 @@
     import editor from 'components/admin/forms/regist_editor'
     import comDialog from 'components/dialog'
     import comConfirm from 'components/confirm'
+    import comLoading from 'components/loading'
     import { mapActions, mapGetters } from 'vuex'
     export default {
         // router,
@@ -1153,16 +1176,38 @@
                 console.log('fileImport')
             },
             formAction: function (result) {
-                Object.assign(this.result, result);
-                switch (result.action) {
-                    case 'save':
-                        this.$refs.registViewer.open();
-                        console.log('save', result)
-                        break;
+                var errMsg=""
+                if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) >=
+                    Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_end_time)) {
+                    errMsg = "(開始施打時間)必須早於(結束施打時間)";
+                }
 
-                    case 'cancel':
-                        console.log('cancel', result)
-                        break;
+                if (Date.parse(result.model.regist_apply_start_date) > Date.parse(result.model.regist_apply_end_date)) {
+                    errMsg= "(事先開放報名開始時間)必須早於(事先開放報名結束時間)";
+                }
+    
+                if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) <
+                    Date.parse(result.model.regist_apply_end_date)) {
+                    errMsg= "(開放報名結束時間)必須早於(開始施打時間)";
+                }
+
+                if (errMsg != "") {
+                    this.alertTitle = '設定錯誤';
+                    this.alertText = errMsg;
+                    this.$refs.fileViewer.close();
+                    this.$refs.warringAlert.open();
+                } else {
+                    Object.assign(this.result, result);
+                    switch (result.action) {
+                        case 'save':
+                            this.$refs.registViewer.open();
+                            console.log('save', result)
+                            break;
+
+                        case 'cancel':
+                            console.log('cancel', result)
+                            break;
+                    }
                 }
             },
             editFormAction: function (result) {
@@ -1186,12 +1231,14 @@
             },
             saveRegist: function () {
                 //console.log('result', this.result)
+        
                 this.$refs.registViewer.close();
                 this.$refs.registNewEditor.close();
+                this.$bus.$emit('type1_show4', "資料處理中...");
                 this.registForm(this.result);
                 this.alertTitle = '110年五月份新冠疫苗施打預先報名';
                 this.alertText = '成功建立報名表';
-
+                this.$bus.$emit('type1_hide4');
         
                 this.$refs.registAlert.open();
             },
@@ -1216,6 +1263,9 @@
             },
             successUploadRightClick: function () {
                 this.$refs.successUploadAlert.close();
+            },
+            closeRightClick: function () {
+                this.$refs.warringAlert.close();
             },
             removeRightClick: function () {
                 console.log('compSelectedItems', this.compSelectedItems);
@@ -1485,7 +1535,7 @@
         },
 
         components: {
-            appLayout, appMenu, comTable, editor, comDialog, comConfirm
+            appLayout, appMenu, comTable, editor, comDialog, comConfirm, comLoading
         }
     };
 </script>
