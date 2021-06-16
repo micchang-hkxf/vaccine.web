@@ -1235,12 +1235,23 @@
                 this.$refs.registViewer.close();
                 this.$refs.registNewEditor.close();
                 this.$bus.$emit('type1_show4', "資料處理中...");
-                this.registForm(this.result);
-                this.alertTitle = '110年五月份新冠疫苗施打預先報名';
-                this.alertText = '成功建立報名表';
-                this.$bus.$emit('type1_hide4');
+                var comp = this;
+                this.registForm(comp.result).then(function (ret) {
+                    console.log(ret.datas);
+                    comp.$bus.$emit('type1_hide4');
+                    comp.alertTitle = '110年五月份新冠疫苗施打預先報名';
+                    comp.alertText = '成功建立報名表';
+                    comp.$refs.registAlert.open();
+                }).catch(function (r) {
+                    console.log(r.datas);
+                    comp.alertTitle = '連線異常';
+                    comp.alertText = '請稍後再試!';
+                    comp.$refs.warringAlert.open();
+                    comp.$bus.$emit('type1_hide4');
+                });
+
         
-                this.$refs.registAlert.open();
+                
             },
             editSaveRegist: function () {
                 console.log('updateresult', this.result)
