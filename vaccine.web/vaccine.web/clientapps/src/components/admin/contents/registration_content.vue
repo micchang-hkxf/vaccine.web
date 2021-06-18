@@ -18,7 +18,6 @@
 
                         <template v-slot:item.regist_quota="{item}">
                             <!--<div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>-->
-                            n
                             <div><span :class="item.regist_unpassed >= item.regist_quota ? 'color-red' : ''">{{item.regist_unpassed}}</span>/<span style="color:#626781">{{item.regist_quota}}</span></div>
                         </template>
                         <template v-slot:search-bar>
@@ -1025,7 +1024,7 @@
         // router,
         data: () => ({
             totalCount: 12,
-            itemsPerPage: 2,
+            itemsPerPage: 5,
             totalVisible: 4,
             showSelect: true,
             selectVaccine: '',

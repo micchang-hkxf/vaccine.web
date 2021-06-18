@@ -114,11 +114,11 @@ export default {
                 var apiUrl = `${state.apiRoot}api/Activity`;
                 var results = { datas: [], state: '', totalCount: 0 };
 
-                var medicalOrgIdFilter = (typeof params.institution === 'undefined' || params.institution.id === '') ? null : params.institution.id;
-                var distIdFilter       = (typeof params.district    === 'undefined' || params.district.id    === '') ? null : params.district.id;
-                var villageIdFilter    = (typeof params.village     === 'undefined' || params.village.id     === '') ? null : params.village.id;
-                var vaccineGroupId     = (typeof params.vaccine     === 'undefined' || params.vaccine.id     === '') ? null : params.vaccine.id;
-                var keyword            =                                               params.keyWord        === ''  ? null : params.keyWord;
+                var medicalOrgIdFilter = (params.institution === '' || params.institution.id === '') ? 'all' : params.institution.id;
+                var distIdFilter       = (params.district    === '' || params.district.id    === '') ? 'all' : params.district.id;
+                var villageIdFilter    = (params.village     === '' || params.village.id     === '') ? 'all' : params.village.id;
+                var vaccineGroupId     = (params.vaccine     === '' || params.vaccine.id     === '') ?  null : params.vaccine.id;
+                var keyword            =                               params.keyWord        === ''  ?  null : params.keyWord;
                 
                 axios.get(apiUrl, {
                     params: {
@@ -132,70 +132,10 @@ export default {
                         token: rootGetters['user/getToken']
                     }
                 }).then(res => {
-                    results.totalCount = res.totalRows;
-                    // TODO: 測試資料，之後移除
-                    res.data = [{
-                        vaccineGroupId: '0', // 疫苗種類Id
-                        vaccineGroupName: '肺鏈流感', // 疫苗種類名稱
-                        isReChecked: false, // 是否已經覆核過
-                        activityId: '1', // 活動編號
-                        activityTitle: '110年5月份新冠疫苗 接種', // 活動名稱
-                        implementDate: '2021-05-07T00:00:00.000Z', // 實際施打日期
-                        implementStartTime: '2021-05-07T09:00:00.000Z', // 開始施打時間
-                        implementEndTime: '2021-05-07T18:00:00.000Z', // 結束施打時間
-                        implementAddr: '', // 施打地點
-                        endApplyDate: '2021-05-07T18:00:00.000Z', // 結束接受事前報名時間
-                        startApplyDate: '2021-05-07T09:00:00.000Z' , // 開始接受事前報名時間
-                        amount: 500, // 施打數量配額上限
-                        leftAmount: 30, // 剩餘數量
-                        createDate: '2021-05-07T01:49:24.585Z', // 活動建立時間
-                        region: {
-                            cityId: '200', // 城市代碼
-                            cityName: '臺北市', // 城市名稱
-                            distId: '2001', // 行政區代碼
-                            distName: '松山區', // 行政區名稱
-                            villageId: '2001-001', // 村、里代碼
-                            villageName: '莊敬里' // 村、里名稱
-                        },
-                        medicalInfo: [{
-                            medicalId: 'A123456789', // 醫事機構代碼
-                            medicalName: '王慶森診所', // 醫事機構名稱
-                            distId: '2001', // 所屬行政區代碼
-                            distName: '松山區', // 所屬行政區名稱
-                        }]
-                    }, {
-                        vaccineGroupId: '1', // 疫苗種類Id
-                        vaccineGroupName: '新冠肺炎', // 疫苗種類名稱
-                        isReChecked: false, // 是否已經覆核過
-                        activityId: '2', // 活動編號
-                        activityTitle: '110年6月份新冠疫苗 接種', // 活動名稱
-                        implementDate: '2021-06-07T00:00:00.000Z', // 實際施打日期
-                        implementStartTime: '2021-06-07T09:00:00.000Z', // 開始施打時間
-                        implementEndTime: '2021-06-07T18:00:00.000Z', // 結束施打時間
-                        implementAddr: '', // 施打地點
-                        endApplyDate: '2021-06-07T18:00:00.000Z', // 結束接受事前報名時間
-                        startApplyDate: '2021-06-07T09:00:00.000Z', // 開始接受事前報名時間
-                        amount: 500, // 施打數量配額上限
-                        leftAmount: 30, // 剩餘數量
-                        createDate: '2021-06-07T01:49:24.585Z', // 活動建立時間
-                        region: {
-                            cityId: '200', // 城市代碼
-                            cityName: '臺北市', // 城市名稱
-                            distId: '2001', // 行政區代碼
-                            distName: '松山區', // 行政區名稱
-                            villageId: '2001-001', // 村、里代碼
-                            villageName: '莊敬里' // 村、里名稱
-                        },
-                        medicalInfo: [{
-                            medicalId: 'A123456789', // 醫事機構代碼
-                            medicalName: '王慶森診所', // 醫事機構名稱
-                            distId: '2001', // 所屬行政區代碼
-                            distName: '松山區', // 所屬行政區名稱
-                        }]
-                    }];
-
+                    results.totalCount = res.data.totalRows;
+                    
                     var datas = [];
-                    res.data.forEach((data) => {
+                    res.data.data.forEach((data) => {
                         datas.push({
                             regist_id: data.activityId,
                             regist_create_date: data.createDate.substr(0, 10).replace(/-/g, '/'),
@@ -209,10 +149,10 @@ export default {
                             regist_village: data.region.villageId,
                             regist_village_name: data.region.villageName,
                             regist_place: '',
-                            regist_institution: data.medicalInfo[0].medicalId,
-                            regist_institution_name: data.medicalInfo[0].medicalName,
-                            regist_instution_district: data.medicalInfo[0].distId,
-                            regist_instution_district_name: data.medicalInfo[0].distName,
+                            regist_institution: data.medicalInfo.length > 0 ? data.medicalInfo[0].medicalId : '',
+                            regist_institution_name: data.medicalInfo.length > 0 ? data.medicalInfo[0].medicalName : '',
+                            regist_instution_district: data.medicalInfo.length > 0 ? data.medicalInfo[0].distId : '',
+                            regist_instution_district_name: data.medicalInfo.length > 0 ? data.medicalInfo[0].distName : '',
                             regist_station_date: data.implementDate.substr(0, 10).replace(/-/g, '/'),
                             regist_station_start_time: data.implementStartTime.substr(11, 5),
                             regist_station_end_time: data.implementEndTime.substr(11, 5),
