@@ -114,11 +114,11 @@ export default {
                 var apiUrl = `${state.apiRoot}api/Activity`;
                 var results = { datas: [], state: '', totalCount: 0 };
 
-                var medicalOrgIdFilter = (params.institution === '' || params.institution.id === '') ? 'all' : params.institution.id;
-                var distIdFilter       = (params.district    === '' || params.district.id    === '') ? 'all' : params.district.id;
-                var villageIdFilter    = (params.village     === '' || params.village.id     === '') ? 'all' : params.village.id;
-                var vaccineGroupId     = (params.vaccine     === '' || params.vaccine.id     === '') ?  null : params.vaccine.id;
-                var keyword            =                               params.keyWord        === ''  ?  null : params.keyWord;
+                var medicalOrgIdFilter = (typeof params.institution === 'undefined' || params.institution === '' || params.institution.id === '') ? 'all' : params.institution.id;
+                var distIdFilter       = (typeof params.district    === 'undefined' || params.district    === '' || params.district.id    === '') ? 'all' : params.district.id;
+                var villageIdFilter    = (typeof params.village     === 'undefined' || params.village     === '' || params.village.id     === '') ? 'all' : params.village.id;
+                var vaccineGroupId     = (typeof params.vaccine     === 'undefined' || params.vaccine     === '' || params.vaccine.id     === '') ?  null : params.vaccine.id;
+                var keyword            =                                                                            params.keyWord        === ''  ?  null : params.keyWord;
                 
                 axios.get(apiUrl, {
                     params: {
