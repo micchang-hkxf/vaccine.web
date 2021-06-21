@@ -181,26 +181,10 @@ export default {
                 axios.get(apiUrl,
                     rootGetters['user/getApiHeader']
                 ).then(res => {
-                    // TODO: 測試資料，之後移除
-                    res.data = [{
-                        signUpTime: '2021-06-09T06:59:08.767Z', // 報名時間
-                        uName: '袁●吉', // 去識別的使用者姓名
-                        applyNo: 1, // 報名流水號
-                        gender: 'M', // 性別
-                        bd: '2021-06-09T06:59:08.767Z', // 生日
-                        uId: 'B●●●●●●236', // 去識別化身分證號
-                        mbNo: '0910123456', // 電話
-                        isCitizen: true, // 是否為台北市民
-                        signUpChannel: 0, // 報名管道 0:網路自行報名 1: 現場報名
-                        eligible: true, // 是否合格
-                        canPrintLabel: true,
-                        isIndigenous: true // 是否為原住民
-                    }];
-                    
-                    results.totalCount = res.data.length;
+                    results.totalCount = res.data.totalRows;
 
                     var datas = [];
-                    res.data.forEach((data) => {
+                    res.data.data.forEach((data) => {
                         datas.push({
                             id: data.applyNo,
                             date: data.signUpTime.substr(0, 16).replace(/-/g, '/').replace('T', ' '),
