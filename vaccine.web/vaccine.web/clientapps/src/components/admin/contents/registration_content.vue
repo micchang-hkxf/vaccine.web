@@ -11,7 +11,7 @@
             <com-loading ref-key="type1"></com-loading>
             <div id="app">
                 <v-card style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
-                    <com-table ref-key="table" :headers="getHeaders" :items="items" :total-count="totalCount"
+                    <com-table ref-key="table" :headers="getHeaders" :items="items" :itemKey="itemKey" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
                                :change-page="changePage" :row-click="handleRowClick"
                                style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
@@ -925,7 +925,7 @@
     .registration-list .item-disabled {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
-        color: #62678166;
+        color: #626781;
         text-align: center;
         opacity: 1;
     }
@@ -1032,6 +1032,7 @@
             selectVillage: '',
             selectInstitution: '',
             keyWord: '',
+            itemKey: 'regist_id',
             items: [],  
             registId:[],
             title: '',

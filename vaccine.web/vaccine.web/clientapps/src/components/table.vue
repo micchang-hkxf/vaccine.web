@@ -2,7 +2,7 @@
     <v-data-table v-model="selected"
                   :headers="computedHeaders"
                   :items="items"
-                  item-key="date"
+                  :item-key="itemKey"
                   :page.sync="page"
                   :items-per-page="itemsPerPage"
                   :single-select="singleSelect"
@@ -98,7 +98,7 @@
 
 <script>
     export default {
-        props: ['refKey', 'headers', 'items', 'totalCount', 'itemsPerPage', 'totalVisible', 'showSelect', 'disabledProp', 'changePage','rowClick'],
+        props: ['refKey', 'headers', 'items', 'itemKey', 'totalCount', 'itemsPerPage', 'totalVisible', 'showSelect', 'disabledProp', 'changePage','rowClick'],
         data: () => ({
             page:1,
             isShow: false,

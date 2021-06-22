@@ -6,7 +6,7 @@
         <template v-slot:app-content>
             <div id="app">
                 <!--<v-btn @click="show('table')">table</v-btn>-->
-                <com-table  ref="tablePanel" ref-key="table" :headers="headers" :items="desserts" :total-count="totalCount" disabled-prop="disabled"
+                <com-table  ref="tablePanel" ref-key="table" :headers="headers" :items="desserts" :itemKey="itemKey" :total-count="totalCount" disabled-prop="disabled"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect" :change-page="changePage"
                             :row-click="handleRowClick">
                 <!--<com-table ref-key="table" :headers="headers" :items="computedItems" :total-count="totalCount" disabled-prop="disabled"
@@ -163,6 +163,7 @@
             itemsPerPage: 3,
             totalVisible: 4,
             showSelect: true,
+            itemKey: 'date',
             headers: [               
                 { text: '建立日期',     value: 'date', align: 'start',sortable: true, flex:6},
                 { text: '場次標題', value: 'title', sortable: false, flex: 6},
