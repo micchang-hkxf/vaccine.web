@@ -4,7 +4,7 @@
             「新冠肺炎疫苗」選擇種接場次
         </template>
         <template v-slot:regist-content>
-            <unapply-list></unapply-list>
+            <unapply-list :group-id="groupId"></unapply-list>
         </template>
     </app-layout>
 </template>
@@ -21,9 +21,11 @@
             }
         }),
         computed: {
-        },
-        props: {
-
+            groupId: function () {
+                if (this.$route.query) 
+                    return this.$route.query.groupId;
+                return null;
+            }
         },
         created: function () {
 

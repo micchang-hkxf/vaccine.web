@@ -2,9 +2,9 @@
     <div class="unapply-list">
         <div class="action-bar">
             <div class="action-bar-filter">
-                <v-select placeholder="全部新冠肺炎疫苗廠牌" hide-details height="48px">
+                <v-select placeholder="全部新冠肺炎疫苗廠牌" v-model="filterBrandId" :items="getVaccineBrands" item-text="brandName" item-value="brandId" hide-details height="48px" v-if="groupId=='covid'" @change="search">
                 </v-select>
-                <v-text-field placeholder="請輸入行政區、村里或場次標題" hide-details dense height="48px">
+                <v-text-field placeholder="請輸入行政區、村里或場次標題" v-model="filterKeyword" hide-details dense height="48px" @change="search"  @input="search">
                     <template v-slot:append>
                         <div class="d-flex align-center text-controll">
                             <img src="/regist/common_search-24px.svg" />
@@ -13,36 +13,36 @@
                 </v-text-field>
             </div>
             <div class="action-bar-bottons d-flex justify-space-between">
-                <v-btn class="clear-action">清除條件</v-btn>
-                <v-btn class="search-action">查詢</v-btn>
+                <v-btn class="clear-action" @click="clear">清除條件</v-btn>
+                <v-btn class="search-action" @click="search">查詢</v-btn>
             </div>
         </div>
         <div class="action-container">
-            <v-card class="action d-flex flex-row" elevation="0">
+            <v-card class="action d-flex flex-row" elevation="0" v-for="(session,index) in sessions" :key="`session_${index}`">
                 <div class="action-info d-flex flex-column justify-center">
                     <div class="action-info-header d-flex flex-column">
                         <div class="action-info-subject">
-                            五月份新冠肺炎疫苗接種
+                            {{session.sessionName}}
                         </div>
                         <div class="action-info-sec-subject">
-                            內湖區-西康里
+                            {{session.zoneName}}-{{session.villageName}}
                         </div>
                     </div>
                     <v-divider></v-divider>
                     <div class="action-info-detail d-flex flex-column justify-center">
                         <div class="d-flex flex-row justify-space-between">
                             <div class="action-info-title text-left">接種日期：</div>
-                            <div class="action-info-data text-right">2021/04/10, 08:30-11:30</div>
+                            <div class="action-info-data text-right">{{$moment(session.sessionStart).format('YYYY/MM/DD')}}, {{$moment(session.sessionStart).format('HH:mm')}}-{{$moment(session.sessionEnd).format('HH:mm')}}</div>
                         </div>
                         <div class="d-flex flex-row justify-space-between">
                             <div class="action-info-title text-left">事先報名：</div>
                             <div class="action-info-data text-right">
-                                2021/04/01,08:00<br />- 2021/04/07,20:00
+                                {{$moment(session.registStart).format('YYYY/MM/DD ,HH:mm')}}<br />- {{$moment(session.registEnd).format('YYYY/MM/DD ,HH:mm')}}
                             </div>
                         </div>
                         <div class="d-flex flex-row justify-space-between">
                             <div class="action-info-title text-left">開放名額：</div>
-                            <div class="action-info-data text-right">240 / 300</div>
+                            <div class="action-info-data text-right">{{session.totalCount}} / {{session.maxLimit}}</div>
                         </div>
                     </div>
                 </div>
@@ -52,67 +52,54 @@
                     </v-btn>
                 </div>
             </v-card>
-            <v-card class="action d-flex flex-row" elevation="0">
-                <div class="action-info d-flex flex-column justify-center">
-                    <div class="action-info-header d-flex flex-column">
-                        <div class="action-info-subject">
-                            五月份新冠肺炎疫苗接種
-                        </div>
-                        <div class="action-info-sec-subject">
-                            內湖區-西康里
-                        </div>
-                    </div>
-                    <v-divider></v-divider>
-                    <div class="action-info-detail d-flex flex-column justify-center">
-                        <div class="d-flex flex-row justify-space-between">
-                            <div class="action-info-title text-left">接種日期：</div>
-                            <div class="action-info-data text-right">2021/04/10, 08:30-11:30</div>
-                        </div>
-                        <div class="d-flex flex-row justify-space-between">
-                            <div class="action-info-title text-left">事先報名：</div>
-                            <div class="action-info-data text-right">
-                                2021/04/01,08:00<br />- 2021/04/07,20:00
-                            </div>
-                        </div>
-                        <div class="d-flex flex-row justify-space-between">
-                            <div class="action-info-title text-left">開放名額：</div>
-                            <div class="action-info-data text-right">240 / 300</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="action-button d-flex justify-center align-center">
-                    <v-btn color="#626781" height="100%" width="100%" :to="{ name: 'agree' }">
-                        查看
-                    </v-btn>
-                </div>
-            </v-card>
         </div>
     </div>
 </template>
 
 <script>
+    import { mapActions , mapGetters } from 'vuex'
+
     export default {
         // router,
         data: () => ({
             appBar: {
                 elevation: 0,
                 height: '144px'
-            }
+            }, 
+            sessions: [],
+            filterBrandId: '', 
+            filterKeyword: '',
         }),
         computed: {
+            ...mapGetters('regist', ['getVaccineBrands']),
         },
-        props: {
-
-        },
+        props: ['groupId'],
         created: function () {
-
+            this.loacVaccineBrands();
+            this.search();
         },
         methods: {
-
+            ...mapActions('regist', ['loacVaccineSessions','loacVaccineBrands']),
+            search: function () {
+                this.loacVaccineSessions({
+                    groupId: this.groupId,
+                    brandId: this.filterBrandId, 
+                    keyword: this.filterKeyword, 
+                }).then(r => {
+                    this.sessions.splice(0);
+                    r.datas.forEach(f => this.sessions.push(f));
+                })
+            },
+            clear: function () {
+                this.filterBrandId = '';
+                this.filterKeyword = '';
+                this.search();
+            }
         },
         components: {
         }
     }
+
 </script>
 <style scoped>
 

@@ -11,7 +11,7 @@
             <div class="agree-actions" v-if="isNeedLogin">
                 <div class="action-header">請選擇登記方式：</div>
                 <div class="action-content d-flex flex-row justify-space-between">
-                    <div class="action tp-pass d-flex flex-column justify-center align-center" @click.stop="toTpton()">
+                    <div class="action tp-pass d-flex flex-column justify-center align-center" @click.stop="toTpPass()">
                         <div>
                             <img src="/regist/tp_pass.svg">
                         </div>
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
     import appLayout from 'components/regist/regist_layout'
     import applyViewer from 'components/regist/forms/apply_viewer'
     import loginEditor from 'components/regist/forms/login_editor'
@@ -53,8 +54,11 @@
 
         },
         methods: {
-            toTpton: function () {
-
+            ...mapActions('regist', ['setUserInfo']),
+            toTpPass: function () {
+                this.setUserInfo({ uid: 'A123456789', birth: '2021/6/9', type: 'taipei-pass' }).then(() => {
+                    this.$router.push({ name: 'apply' });
+                });
             },
             toLogin: function () {
                 this.$refs.login.create();

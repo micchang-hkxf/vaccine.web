@@ -9,9 +9,9 @@ import content_agree from 'components/regist/contents/agree_content.vue'
 export default new VueRouter({
     routes: [
         { name: 'regist', path: '/regist', component: content_regist },
-        { name: 'agree', path: '/agree', component: content_agree },
+        { name: 'agree', path: '/agree/:vote_no', component: content_agree },
         { name: 'applied', path: '/applied', component: content_applied },
-        { name: 'apply', path: '/apply', component: content_apply },
+        { name: 'apply', path: '/apply/:vote_no', component: content_apply },
         { name: 'unapply', path: '/unapply', component: content_unapply },
         { name: '*', path: '/', component: content_regist }
     ]
