@@ -368,11 +368,28 @@ export default {
                 resolve(result);
             })
         },
-        removeRegist: function ({ state }, data) {
-            return new Promise((reslove) => {
-                var result = { state: state };
+        removeRegist: function ({ state, rootGetters }, data) {
+            return new Promise((reslove, reject) => {
+                var result = { state: state }, actIdLists="";
+                data.forEach((d) => {
+                    actIdLists+='&actIdList='+d.regist_id;
+                });
+               
                 console.log('remove', data);
-                reslove(result);
+                axios({
+                    method: 'delete',
+                    url: `${state.apiRoot}api/Activity?api-version=1.0` + actIdLists,
+                    responseType: 'json',
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    result.datas = res.data;
+                    reslove(result);
+                }).catch(ex => {
+                    result.datas = ex;
+                    reject(result);
+                });
             })
         }
     },

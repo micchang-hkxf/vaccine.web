@@ -463,7 +463,7 @@
 
                             <com-confirm ref="registAlert" ref-key="confirm" :right-click="alertRightClick">
                                 <template v-slot:confirm-image>
-                                    <v-img src="/alert_success.svg"></v-img>
+                                    <v-img v-bind:src="alertImgSrc"></v-img>
                                 </template>
                                 <template v-slot:confirm-title>
                                     {{alertTitle}}
@@ -1073,6 +1073,10 @@
             artificialName: '',
             artificialBirthday: '',
             artificialIdentity: '',
+            alertImgSrc:"",
+            successIcon: '/alert_success.svg',
+            warningIcon: '/alert_warning.svg',
+            alertIcon: '/alert_warning.svg',
             artificialResult: '',
             artificialOptions: [
                 { state: '複檢合格', id: 'pass' },
@@ -1241,11 +1245,13 @@
                     comp.$bus.$emit('type1_hide4');
                     comp.alertTitle = '110年五月份新冠疫苗施打預先報名';
                     comp.alertText = '成功建立報名表';
+                    comp.alertImgSrc = comp.successIcon;
                     comp.$refs.registAlert.open();
                 }).catch(function (r) {
                     console.log(r.datas);
                     comp.alertTitle = '連線異常';
                     comp.alertText = '請稍後再試!';
+                    comp.alertImgSrc = comp.successIcon;
                     comp.$refs.warringAlert.open();
                     comp.$bus.$emit('type1_hide4');
                 });
@@ -1259,6 +1265,7 @@
                 //this.registForm(this.result);
                 this.alertTitle = '110年五月份新冠疫苗施打預先報名';
                 this.alertText = '已成功變更報名表';
+                this.alertImgSrc = this.successIcon;
                 this.$refs.registEditViewer.close();
                 this.$refs.registAlert.open();
             },
@@ -1279,9 +1286,32 @@
                 this.$refs.warringAlert.close();
             },
             removeRightClick: function () {
+     
                 console.log('compSelectedItems', this.compSelectedItems);
-                this.removeRegist(this.compSelectedItems);
                 this.$bus.$emit(`confirm_show`, false);
+                var comp = this;
+                comp.alertImgSrc = comp.warningIcon;
+                comp.removeRegist(comp.compSelectedItems).then(function (result) {
+                    if (result) {
+                        comp.alertTitle = '刪除成功';
+                        comp.alertImgSrc = comp.successIcon;
+                        comp.getRegistForm(1);
+                    } else {
+                        this.alertImgSrc = comp.alertIcon;
+                        comp.alertTitle = '刪除失敗';
+                    }
+                    comp.$refs.registAlert.open();
+                }).catch(function () {
+
+                    comp.errorMessage = '處理錯誤，請重新嘗試';
+                    comp.errorImgSrc = comp.warningIcon;
+                    comp.$refs.registAlert.open();
+                 });
+
+
+
+                
+                
             },
             removeItem: function (item) {
                 this.compSelectedItems.splice(0);
