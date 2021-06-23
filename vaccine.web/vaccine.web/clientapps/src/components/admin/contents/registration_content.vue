@@ -23,7 +23,7 @@
                         <template v-slot:search-bar>
                             <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
                                 <v-row>
-                                    <v-col cols="2">
+                                    <v-col class="d-flex justify-content-end" cols="8">
                                         <v-select v-model="selectVaccine"
                                                   :items="getVaccines"
                                                   item-text="name"
@@ -37,8 +37,6 @@
                                                   class="search-filter"
                                                   return-object>
                                         </v-select>
-                                    </v-col>
-                                    <v-col cols="2">
                                         <v-select v-model="selectDistrict"
                                                   :items="getDistricts"
                                                   item-text="name"
@@ -53,9 +51,6 @@
                                                   return-object
                                                   @change="loadVillages">
                                         </v-select>
-                                    </v-col>
-
-                                    <v-col cols="2">
                                         <v-select v-model="selectVillage"
                                                   :items="getVillages"
                                                   item-text="name"
@@ -70,8 +65,6 @@
                                                   return-object
                                                   @change="loadMedicalsByVillage">
                                         </v-select>
-                                    </v-col>
-                                    <v-col cols="2">
                                         <v-select v-model="selectInstitution"
                                                   :items="getInstitutions"
                                                   item-text="name"
@@ -85,14 +78,14 @@
                                                   class="search-filter"
                                                   return-object>
                                         </v-select>
-                                    </v-col>
-                                    <v-col cols="2">
+
                                         <v-text-field v-model="keyWord" placeholder="標題關鍵字" outlined dense clearable></v-text-field>
+
+                                        <v-btn icon color="#626781" :ripple="false"
+                                               @click="getRegistForm(1)">
+                                            <v-icon>fas fa-search</v-icon>
+                                        </v-btn>
                                     </v-col>
-                                    <v-btn icon color="#626781" style="top:5px;" :ripple="false"
-                                           @click="getRegistForm(1)">
-                                        <v-icon>fas fa-search</v-icon>
-                                    </v-btn>
                                 </v-row>
                             </div>
 
