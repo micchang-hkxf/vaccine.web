@@ -23,7 +23,7 @@
                         <template v-slot:search-bar>
                             <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
                                 <v-row>
-                                    <v-col class="d-flex justify-content-end" cols="8">
+                                    <v-col class="d-flex justify-content-end" cols="9">
                                         <v-select v-model="selectVaccine"
                                                   :items="getVaccines"
                                                   item-text="name"
@@ -33,7 +33,7 @@
                                                   outlined
                                                   dense
                                                   clearable
-                                                  style="margin-right: 10px;"
+                                                  style="margin-right: 10px; width: 230px;"
                                                   class="search-filter"
                                                   return-object>
                                         </v-select>
@@ -46,7 +46,7 @@
                                                   outlined
                                                   dense
                                                   clearable
-                                                  style="margin-right: 10px;"
+                                                  style="margin-right: 10px; width: 210px;"
                                                   class="search-filter"
                                                   return-object
                                                   @change="loadVillages">
@@ -60,7 +60,7 @@
                                                   outlined
                                                   dense
                                                   clearable
-                                                  style="margin-right: 10px;"
+                                                  style="margin-right: 10px; width: 210px;"
                                                   class="search-filter"
                                                   return-object
                                                   @change="loadMedicalsByVillage">
@@ -74,7 +74,7 @@
                                                   outlined
                                                   dense
                                                   clearable
-                                                  style="margin-right: 10px;"
+                                                  style="margin-right: 10px; width: 240px;"
                                                   class="search-filter"
                                                   return-object>
                                         </v-select>
