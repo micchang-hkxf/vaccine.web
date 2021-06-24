@@ -68,7 +68,7 @@
                 </v-row>
                 <v-row>
                     <v-col cols="3">
-                        <v-select v-model="model.district"
+                        <v-select v-model="model.regist_district"
                                   :items="getDistricts"
                                   item-text="name"
                                   item-value="id"
@@ -85,7 +85,7 @@
                     </v-col>
                     <v-col cols="1"><div></div></v-col>
                     <v-col cols="3">
-                        <v-select v-model="model.village"
+                        <v-select v-model="model.regist_village"
                                   :items="getVillages"
                                   item-text="name"
                                   item-value="id"
@@ -117,7 +117,7 @@
                 <v-row>
                     <v-col cols="3">
                         <div> <span class="regist-title">醫療院所</span><span class="red--text">*</span></div>
-                        <v-select v-model="model.institution"
+                        <v-select v-model="model.regist_institution"
                                   :items="getInstitutions"
                                   item-text="name"
                                   item-value="id"
@@ -128,14 +128,16 @@
                                   dense
                                   class="search-filter"
                                   append-icon="mdi-chevron-down"
-                                  return-object>
+                                  return-object
+                                  @change="setMedicalInfo($event)"
+                                  >
                         </v-select>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col cols="12">
-                        <div><span class="regist-title">機構代碼：{{model.regist_institution_code}}</span> </div>
-                        <div style="margin-bottom: 15px;"><span class="regist-title">機構所在行政區：{{model.regist_instution_district}}</span></div>
+                        <div><span class="regist-title">機構代碼：{{regist_institution_code}}{{model.regist_institution_code}}</span> </div>
+                        <div style="margin-bottom: 15px;"><span class="regist-title">機構所在行政區：{{regist_institution_name}}{{model.regist_instution_district_name}}</span></div>
                     </v-col>
                 </v-row>
                 <v-divider></v-divider>
@@ -322,7 +324,8 @@
                                 </v-btn>
                             </v-date-picker>
                         </v-menu>
-                        <div style="margin-bottom:15px;"><span class="regist-title">報名者接種資格複檢時間：{{model.regist_review_date}}</span> </div>
+                        <!--<div style="margin-bottom:15px;"><span class="regist-title">報名者接種資格複檢時間：{{model.regist_review_date}}</span> </div>-->
+
                     </v-col>
 
                 </v-row>
@@ -347,7 +350,7 @@
         <template v-slot:action>
             <v-spacer></v-spacer>
             <v-btn @click="cancel" outlined :ripple="false"><span style="color:#626781;">取消</span></v-btn>
-            <v-btn color="primary" @click="save" :ripple="false"><span>建立報名表</span></v-btn>
+            <v-btn color="primary" @click="save" :ripple="false"><span>{{saveBtnName}}</span></v-btn>
 
         </template>     
     </com-dialog>
@@ -438,27 +441,34 @@
             selectVillage: '',
             selectInstitution: '',
             selectBrand: '',
+            regist_institution_code: "",
+            regist_institution_name: "",
             rules: {
                 required: v => !!v || '必填',              
             }
         }),
+        watch: {
+
+        },
         computed: {
             ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders']),
             defaultItem: function () {
                 return this.default;
             }
         },
-        props: ['width','title','action'],
+        props: ['width', 'title', 'action','saveBtnName'],
         created: function () {
             this.loadVaccines();
-            //this.loadDists();
+            this.loadDists();
             this.loadMedicals();
+
         },
         methods: {
             ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadBrands', 'loadMedicals', 'loadMedicalsByVillage']),
             open: function (model) {
                 this.mode = 'edit';
-                
+                this.loadVaccines({ id: model.regist_type });
+                this.loadVillages({id: model.regist_district });
                 this.model =Object.assign(this.defaultItem, model);
                
                 this.$refs.dialogPanel.open();
@@ -486,14 +496,21 @@
                 this.$refs.dialogPanel.close();
             },
             cancel: function () {
-                this.action({ mode: this.mode, action: 'cancel', model: this.model });
+                
                 this.$refs.dialogPanel.close();
             },
             closeDialog: function () {
                 //this.$refs.dialogPanel.open();
+            },
+            setMedicalInfo: function (event) {
+                this.$store.state.registration.institutions.forEach((d) => {
+                    if (d.id === event.id) {
+                        this.regist_institution_code = d.id;
+                        this.regist_institution_name = d.from;
+                    }
+                });
             }
-    
-          
+
         },
         components: {
             comDialog

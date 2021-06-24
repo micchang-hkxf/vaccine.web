@@ -169,6 +169,9 @@
             cancelAll: function () {
                 this.items.forEach((x) => x.checked = false);
             },
+            clearAll: function () {
+                this.selected =[];
+            },
             switchSelect: function () {
                 var comp = this;
                 comp.selected =! comp.selected;

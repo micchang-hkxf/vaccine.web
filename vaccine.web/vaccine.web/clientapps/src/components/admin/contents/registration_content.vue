@@ -11,7 +11,7 @@
             <com-loading ref-key="type1"></com-loading>
             <div id="app">
                 <v-card style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
-                    <com-table ref-key="table" :headers="getHeaders" :items="items" :itemKey="itemKey" :total-count="totalCount"
+                    <com-table ref="table" ref-key="table" :headers="getHeaders" :items="items" :itemKey="itemKey" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
                                :change-page="changePage" :row-click="handleRowClick"
                                style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
@@ -185,7 +185,7 @@
 
 
                             <!--新增-->
-                            <editor ref="registNewEditor" ref-key="two" width="60%" :title="title" :action="formAction"></editor>
+                            <editor ref="registNewEditor" ref-key="two" width="60%" :title="title" :saveBtnName="saveBtnName" :action="formAction"></editor>
                             <com-dialog ref="registViewer" ref-key="two" width="60%">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
@@ -201,13 +201,13 @@
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>接種類型</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_type.name}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.regist_type_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>新冠肺炎疫苗廠牌</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_brand.name}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
 
                                             </v-list-item-content>
                                         </v-list-item>
@@ -223,7 +223,7 @@
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>設站行政區</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.district.name}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.regist_district_name}}</v-list-item-subtitle>
 
                                             </v-list-item-content>
                                         </v-list-item>
@@ -232,7 +232,7 @@
                                             <v-list-item-content>
 
                                                 <v-list-item-title>設站村里</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.village.name}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.regist_village_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
 
@@ -247,7 +247,7 @@
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>醫療院所</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.institution.name}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.regist_institution_name}}</v-list-item-subtitle>
 
                                             </v-list-item-content>
                                         </v-list-item>
@@ -263,7 +263,7 @@
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>機構所在行政區</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_institution_district}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.regist_instution_district_name}}</v-list-item-subtitle>
 
                                             </v-list-item-content>
                                         </v-list-item>
@@ -295,13 +295,13 @@
                                                 <v-list-item-subtitle>{{result.model.regist_apply_end_date}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line>
+                                        <!--<v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>接種資格複審時間</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
 
                                             </v-list-item-content>
-                                        </v-list-item>
+                                        </v-list-item>-->
                                         <v-divider></v-divider>
 
                                         <v-list-item two-line>
@@ -326,7 +326,7 @@
 
 
                             <!--編輯-->
-                            <editor ref="registEdit" ref-key="two" width="60%" :title="title" :action="editFormAction"></editor>
+                            <editor ref="registEdit" ref-key="two" width="60%" :title="title" :saveBtnName="saveBtnName" :action="editFormAction"></editor>
                             <com-dialog ref="registEditViewer" ref-key="two" width="60%">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
@@ -403,8 +403,8 @@
 
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>機構所在行政區</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_institution_district}}</v-list-item-subtitle>
+                                                <v-list-item-title>機構所在行政區</v-list-item-title>                
+                                                <v-list-item-subtitle>{{result.model.regist_instution_district_name}}</v-list-item-subtitle>
 
                                             </v-list-item-content>
                                         </v-list-item>
@@ -431,13 +431,13 @@
 
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line>
+                                        <!--<v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>接種資格複審時間</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
 
                                             </v-list-item-content>
-                                        </v-list-item>
+                                        </v-list-item>-->
                                         <v-divider></v-divider>
 
                                         <v-list-item two-line>
@@ -455,7 +455,7 @@
                                 <template v-slot:action>
 
                                     <v-spacer></v-spacer>
-                                    <v-btn outlined :ripple="false" @click="backToEdit"><span style="color:#626781;">修改</span></v-btn>
+                                    <v-btn outlined :ripple="false" @click="backToEdit2"><span style="color:#626781;">修改</span></v-btn>
                                     <v-btn @click="editSaveRegist" color="primary" :ripple="false">確定</v-btn>
                                 </template>
                             </com-dialog>
@@ -651,10 +651,10 @@
                                             </v-btn>
                                         </div>
                                         <div class="detail-action">
-                                            <div class="detail-rebound-info">
+                                            <!--<div class="detail-rebound-info">
                                                 <div>複檢時間：{{detailCheckTime}}</div>
                                                 <div>複檢通過人數：{{detailCheckPassCnt == '0' ? '-' : detailCheckPassCnt}}</div>
-                                            </div>
+                                            </div>-->
                                             <div class="detail-action-btn">
                                                 <!--v-on="on"-->
                                                 <v-btn @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
@@ -1036,6 +1036,7 @@
             items: [],  
             registId:[],
             title: '',
+            saveBtnName:'',
             //model: {
             //    regist_title: '',
             //    regist_type: '',
@@ -1122,8 +1123,9 @@
         created: function () {
             this.loadVaccines();
             this.loadDists();
-            this.loadMedicals();
+            //this.loadMedicals();
             this.getRegistForm(1);
+            
         },
         methods: {
             ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadMedicals', 'loadMedicalsByVillage',
@@ -1154,6 +1156,7 @@
                 this.getRegistForm(pager.page);
             },
             deleteSelected: function (items) {
+
                 this.compSelectedItems.splice(0);
                 items.forEach((x) => this.compSelectedItems.push(x));
                 this.$forceUpdate();
@@ -1163,17 +1166,21 @@
             },
             manualInput: function () {
                 this.title = '建立報名表';
+                this.saveBtnName = "儲建立報名表";
                 this.viewerTitle = '確認新增報名資訊';
                 this.$refs.registNewEditor.create(this.model);
                 console.log('manualInput')
             },
             editItem: function (item) {
                 Object.assign(this.model, item);
-      
+                this.saveBtnName = "儲存";
                 this.title = '編輯報名表';
                 this.viewerTitle = '編輯報名資訊確認';
                 this.$refs.registEdit.open(item);
                 console.log('edit', item);
+    
+                this.loadMedicalsByVillage({ "name": item.regist_village_name});
+             
             },
             fileImport: function () {
                 this.$refs.fileViewer.open();
@@ -1201,11 +1208,23 @@
                     this.$refs.fileViewer.close();
                     this.$refs.warringAlert.open();
                 } else {
+                     //mappping
+                    result.model.regist_type_name = result.model.regist_type.name;
+                    result.model.regist_brand_name = result.model.regist_brand.name;
+                    result.model.regist_village_name = result.model.regist_village.name;
+                    result.model.regist_institution_name = result.model.regist_institution.name;
+                    result.model.regist_institution_code = result.model.regist_institution.id;
+                    result.model.regist_instution_district_name = result.model.regist_institution.from;
+                    result.model.regist_district_name = result.model.regist_district.name;
+
                     Object.assign(this.result, result);
+ 
+   
                     switch (result.action) {
                         case 'save':
                             this.$refs.registViewer.open();
-                            console.log('save', result)
+                           
+                            console.log('save2', result)
                             break;
 
                         case 'cancel':
@@ -1215,11 +1234,12 @@
                 }
             },
             editFormAction: function (result) {
+        
                 Object.assign(this.result, result);
                 switch (result.action) {
                     case 'save':
                         this.$refs.registEditViewer.open();
-                        console.log('save', result)
+                        console.log('save1', result)
                         break;
 
                     case 'cancel':
@@ -1247,6 +1267,7 @@
                     comp.alertText = '成功建立報名表';
                     comp.alertImgSrc = comp.successIcon;
                     comp.$refs.registAlert.open();
+                    comp.getRegistForm(1);
                 }).catch(function (r) {
                     console.log(r.datas);
                     comp.alertTitle = '連線異常';
@@ -1261,17 +1282,39 @@
             },
             editSaveRegist: function () {
                 console.log('updateresult', this.result)
-                this.updateRegist(this.result)
-                //this.registForm(this.result);
-                this.alertTitle = '110年五月份新冠疫苗施打預先報名';
-                this.alertText = '已成功變更報名表';
-                this.alertImgSrc = this.successIcon;
-                this.$refs.registEditViewer.close();
-                this.$refs.registAlert.open();
+
+                var comp = this;
+                this.updateRegist(comp.result).then(function (ret) {
+                    console.log(ret.datas);
+                    comp.$bus.$emit('type1_hide4');
+                    comp.alertTitle = '110年五月份新冠疫苗施打預先報名';
+                    comp.alertText = '已成功變更報名表';
+                    comp.alertImgSrc = this.successIcon;
+                    comp.$refs.registEditViewer.close();
+        
+                    comp.$refs.registAlert.open();
+                    comp.getRegistForm(1);
+                }).catch(function (r) {
+                    console.log(r.datas);
+                    comp.alertTitle = '連線異常';
+                    comp.alertText = '請稍後再試!';
+                    comp.alertImgSrc = comp.successIcon;
+                    comp.$refs.warringAlert.open();
+                    comp.$bus.$emit('type1_hide4');
+                 });
+
+
+
             },
             backToEdit: function () {
+       
                 this.$refs.registViewer.close();
-                //this.$refs.registEdit.show();
+                this.$refs.registNewEditor.show();
+            },
+            backToEdit2: function () {
+
+                this.$refs.registEditViewer.close();
+                this.$refs.registEdit.show();
             },
             alertRightClick: function () {
                 this.$bus.$emit(`confirm_show`, false);
@@ -1296,6 +1339,7 @@
                         comp.alertTitle = '刪除成功';
                         comp.alertImgSrc = comp.successIcon;
                         comp.getRegistForm(1);
+                        comp.$refs.table.clearAll();
                     } else {
                         this.alertImgSrc = comp.alertIcon;
                         comp.alertTitle = '刪除失敗';

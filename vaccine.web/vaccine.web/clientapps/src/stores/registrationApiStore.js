@@ -57,14 +57,15 @@ export default {
                         id: dist.distId,
                         name: dist.distName
                     });
+
                 });
             });
+
             state.districts = dists;
         },
         loadVillages: function ({ state, rootGetters }, params) {
             var zones = rootGetters['user/getZones'];
             var villages = [];
-
             zones.forEach((zone) => {
                 zone.data.forEach((dist) => {
                     if (dist.distId === params.id) {
@@ -78,8 +79,6 @@ export default {
                 });
             });
             state.villages = villages;
-
-            //
             state.institutions = [];
         },
         loadMedicals: function ({ state, commit, rootGetters }) {
@@ -97,18 +96,22 @@ export default {
         loadMedicalsByVillage: function ({ state, rootGetters }, params) {
             var medicals = rootGetters['user/getMedicals'];
             if (medicals === null) return;
-
             var datas = [];
+ 
             medicals.forEach((medical) => {
                 if (medical.villageName === params.name) {
                     datas.push({
                         id: medical.id,
-                        name: medical.uName
+                        name: medical.uName,
+                        from: medical.distName + "/" + medical.villageName
                     });
                 }
             });
+
             state.institutions = datas;
         },
+   
+
         loadRegistForm: function ({ state, rootGetters }, params) {
             return new Promise((reslove, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity`;
@@ -136,23 +139,25 @@ export default {
                     
                     var datas = [];
                     res.data.data.forEach((data) => {
+                        
                         datas.push({
                             regist_id: data.activityId,
                             regist_create_date: data.createDate.substr(0, 10).replace(/-/g, '/'),
                             regist_title: data.activityTitle,
                             regist_type: data.vaccineGroupId,
                             regist_type_name: data.vaccineGroupName,
-                            regist_brand: '',
-                            regist_brand_name: '',
+                            regist_brand: (data.vaccines[0]!=undefined) ? data.vaccines[0].itemId:"",
+                            regist_brand_name: (data.vaccines[0]!=undefined) ? data.vaccines[0].itemName : "",
                             regist_district: data.region.distId,
                             regist_district_name: data.region.distName,
                             regist_village: data.region.villageId,
                             regist_village_name: data.region.villageName,
-                            regist_place: '',
+                            regist_place: data.implementAddr,
                             regist_institution: data.medicalInfo.length > 0 ? data.medicalInfo[0].medicalId : '',
                             regist_institution_name: data.medicalInfo.length > 0 ? data.medicalInfo[0].medicalName : '',
+                            regist_institution_code: data.medicalInfo.length > 0 ? data.medicalInfo[0].medicalId : '',
                             regist_instution_district: data.medicalInfo.length > 0 ? data.medicalInfo[0].distId : '',
-                            regist_instution_district_name: data.medicalInfo.length > 0 ? data.medicalInfo[0].distName : '',
+                            regist_instution_district_name: data.medicalInfo.length > 0 ? data.medicalInfo[0].distName + '/' + data.region.villageName : '',
                             regist_station_date: data.implementDate.substr(0, 10).replace(/-/g, '/'),
                             regist_station_start_time: data.implementStartTime.substr(11, 5),
                             regist_station_end_time: data.implementEndTime.substr(11, 5),
@@ -318,11 +323,10 @@ export default {
         registForm: function ({ state, rootGetters}, data) {
             return new Promise((reslove, reject) => {
                 console.log('new', data);
-       
+
                 var result = { data: [], state: state }
-         
-                //var header = rootGetters['user/getToken'];
-                var setData=[{
+  
+                var setData = [{
                     vaccineGroupId: data.model.regist_type.id,
                     vaccineIds: [data.model.regist_brand.id],
                     title: data.model.regist_title,
@@ -330,16 +334,15 @@ export default {
                     implementStartDate: data.model.regist_station_date + "T" + data.model.regist_station_start_time,
                     implementEndDate: data.model.regist_station_date + "T" + data.model.regist_station_end_time,
                     stationAddr: data.model.regist_place,
-                    distId: data.model.district.id,
-                    villageId: data.model.village.id,
+                    distId: data.model.regist_district.id,
+                    villageId: data.model.regist_village.id,
                     startApplyDate: data.model.regist_apply_start_date,
                     endApplyDate: data.model.regist_apply_end_date,
                     amount: data.model.regist_quota,
-                    medicalIds: ['123']
+                    medicalIds: [data.model.regist_institution.id]
                 }];
-  
-
-                //console.log(rootGetters['user/getToken']);
+                console.log("setData", setData);
+            
                 axios({
                     method: 'post',
                     url: `${state.apiRoot}api/Activity?api-version=1.0`,
@@ -355,17 +358,48 @@ export default {
                     result.datas = ex;
                     reject(result);
                 });
-           
 
             })
          
 
         },
-        updateRegist: function ({ state }, data) {
-            return new Promise((resolve) => {
+        updateRegist: function ({ state, rootGetters }, data) {
+            return new Promise((reslove, reject) => {
                 var result = { data:[] ,state: state };
                 console.log('update',data)
-                resolve(result);
+          
+                var setData = [{
+                    vaccineGroupId: data.model.regist_type.id,
+                    vaccineIds: [data.model.regist_brand],
+                    title: data.model.regist_title,
+                    implementDate: data.model.regist_station_date,
+                    implementStartDate: data.model.regist_station_date + "T" + data.model.regist_station_start_time,
+                    implementEndDate: data.model.regist_station_date + "T" + data.model.regist_station_end_time,
+                    stationAddr: data.model.regist_place,
+                    distId: data.model.regist_district,
+                    villageId: data.model.regist_village,
+                    startApplyDate: data.model.regist_apply_start_date,
+                    endApplyDate: data.model.regist_apply_end_date,
+                    amount: data.model.regist_quota,
+                    medicalIds: [data.model.regist_institution]
+                }];
+             
+                console.log('update', setData);
+                axios({
+                    method: 'put',
+                    url: `${state.apiRoot}api/Activity/Detail/` + data.model.regist_id+'?api-version=1.0',
+                    data: setData,
+                    responseType: 'json',
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    result.datas = res.data;
+                    reslove(result);
+                }).catch(ex => {
+                    result.datas = ex;
+                    reject(result);
+                });
             })
         },
         removeRegist: function ({ state, rootGetters }, data) {
@@ -412,7 +446,7 @@ export default {
             { text: '', value: 'modify', sortable: false },
         ],
         brands: [
-            { id: 'az', name: 'AstraZeneca' },
+            { id: 'AZ', name: 'AstraZeneca' },
             { id: 'bnt', name: 'Pfizer-BioNTech' },
         ], 
         vaccines: [],
