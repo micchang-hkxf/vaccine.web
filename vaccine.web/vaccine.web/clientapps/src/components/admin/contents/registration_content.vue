@@ -1118,6 +1118,7 @@
             this.loadDists();
             //this.loadMedicals();
             this.getRegistForm(1);
+
             
         },
         methods: {
@@ -1162,6 +1163,7 @@
                 this.saveBtnName = "儲建立報名表";
                 this.viewerTitle = '確認新增報名資訊';
                 this.$refs.registNewEditor.create(this.model);
+                this.$refs.registNewEditor.reset();
                 console.log('manualInput')
             },
             editItem: function (item) {

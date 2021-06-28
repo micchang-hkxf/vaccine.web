@@ -211,7 +211,7 @@
                                            :max="model.regist_station_end_time"
                                            v-if="start"
                                            ampm-in-title
-                                           @click:minute="$refs.tmenu.save(time)"
+                                           @click:minute="$refs.tmenu.save()"
                                            scrollable>
                                 <v-spacer></v-spacer>
                             </v-time-picker>
@@ -239,7 +239,7 @@
                                            :min="model.regist_station_start_time"
                                            v-if="end"
                                            ampm-in-title
-                                           @click:minute="$refs.tmenu2.save(time)"
+                                           @click:minute="$refs.tmenu2.save()"
                                            scrollable>
                                 <v-spacer></v-spacer>
                             </v-time-picker>
@@ -336,6 +336,7 @@
                         <v-text-field v-model="model.regist_quota"
                                       placeholder="請輸入報名名額上限設定(預設無限制)"
                                       required
+                                      type="number"
                                       outlined
                                       dense>
                         </v-text-field>
@@ -404,6 +405,7 @@
 <script>
     import comDialog from 'components/dialog'
     import { mapActions, mapGetters } from 'vuex'
+
     export default {     
         data: () => ({
             mode:'',          
@@ -457,12 +459,18 @@
             }
         },
         props: ['width', 'title', 'action','saveBtnName'],
+
         created: function () {
             this.loadVaccines();
             this.loadDists();
             this.loadMedicals();
 
         },
+        mounted: function () {
+            console.log(this.$refs.form);
+
+        },
+     
         methods: {
             ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadBrands', 'loadMedicals', 'loadMedicalsByVillage']),
             open: function (model) {
@@ -477,8 +485,19 @@
             create: function (model) {
                 this.mode = 'new';
                 this.model=Object.assign(this.defaultItem, model);
-
+                
                 this.$refs.dialogPanel.open();
+               
+            },
+            reset: function () {
+                for (var nn in this.model) {
+                    if (nn == "regist_quota") {
+                        this.model[nn] = 500;
+                    } else {
+                        this.model[nn] = "";
+                    }
+                    
+               }
             },
             save: function () {
                 if (this.$refs.form.validate()) {

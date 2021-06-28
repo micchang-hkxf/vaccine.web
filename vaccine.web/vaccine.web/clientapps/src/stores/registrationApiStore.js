@@ -338,7 +338,7 @@ export default {
                     villageId: data.model.regist_village.id,
                     startApplyDate: data.model.regist_apply_start_date,
                     endApplyDate: data.model.regist_apply_end_date,
-                    amount: data.model.regist_quota,
+                    amount: parseInt(data.model.regist_quota),
                     medicalIds: [data.model.regist_institution.id]
                 }];
                 console.log("setData", setData);
@@ -369,22 +369,22 @@ export default {
                 console.log('update',data)
           
                 var setData = [{
-                    vaccineGroupId: data.model.regist_type.id,
+                    vaccineGroupId: data.model.regist_type,
                     vaccineIds: [data.model.regist_brand],
                     title: data.model.regist_title,
-                    implementDate: data.model.regist_station_date,
-                    implementStartDate: data.model.regist_station_date + "T" + data.model.regist_station_start_time,
-                    implementEndDate: data.model.regist_station_date + "T" + data.model.regist_station_end_time,
+                    implementDate: data.model.regist_station_date.replace(/\//g, '-'),
+                    implementStartDate: data.model.regist_station_date.replace(/\//g, '-') + "T" + data.model.regist_station_start_time + ":00",
+                    implementEndDate: data.model.regist_station_date.replace(/\//g, '-') + "T" + data.model.regist_station_end_time + ":00",
                     stationAddr: data.model.regist_place,
                     distId: data.model.regist_district,
                     villageId: data.model.regist_village,
-                    startApplyDate: data.model.regist_apply_start_date,
-                    endApplyDate: data.model.regist_apply_end_date,
+                    startApplyDate: data.model.regist_apply_start_date.replace(/\//g, '-').replace(' ', 'T')+":00",
+                    endApplyDate: data.model.regist_apply_end_date.replace(/\//g, '-').replace(' ', 'T') + ":00",
                     amount: data.model.regist_quota,
                     medicalIds: [data.model.regist_institution]
                 }];
-             
-                console.log('update', setData);
+         
+                console.log('setData', setData);
                 axios({
                     method: 'put',
                     url: `${state.apiRoot}api/Activity/Detail/` + data.model.regist_id+'?api-version=1.0',
@@ -397,6 +397,7 @@ export default {
                     result.datas = res.data;
                     reslove(result);
                 }).catch(ex => {
+                    console.log('ex', ex);
                     result.datas = ex;
                     reject(result);
                 });
