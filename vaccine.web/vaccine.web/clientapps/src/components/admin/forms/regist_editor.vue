@@ -130,14 +130,15 @@
                                   append-icon="mdi-chevron-down"
                                   return-object
                                   @change="setMedicalInfo($event)"
+                               
                                   >
                         </v-select>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col cols="12">
-                        <div><span class="regist-title">機構代碼：{{regist_institution_code}}{{model.regist_institution_code}}</span> </div>
-                        <div style="margin-bottom: 15px;"><span class="regist-title">機構所在行政區：{{regist_institution_name}}{{model.regist_instution_district_name}}</span></div>
+                        <div><span class="regist-title">機構代碼：{{regist_institution_code}}</span> </div>
+                        <div style="margin-bottom: 15px;"><span class="regist-title">機構所在行政區：{{regist_institution_name}}</span></div>
                     </v-col>
                 </v-row>
                 <v-divider></v-divider>
@@ -475,10 +476,14 @@
             ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadBrands', 'loadMedicals', 'loadMedicalsByVillage']),
             open: function (model) {
                 this.mode = 'edit';
+       
                 this.loadVaccines({ id: model.regist_type });
-                this.loadVillages({id: model.regist_district });
+                this.loadVillages({ id: model.regist_district });
+             
+                this.$set(this, "regist_institution_code", model.regist_institution_code);
+                this.$set(this, "regist_institution_name", model.regist_district_name + "/" + model.regist_village_name );
                 this.model =Object.assign(this.defaultItem, model);
-               
+                this.model.regist_type = { id: model.regist_type };
                 this.$refs.dialogPanel.open();
             },
 
@@ -499,6 +504,7 @@
                     
                }
             },
+
             save: function () {
                 if (this.$refs.form.validate()) {
                     this.action({ mode: this.mode, action: 'save', model: this.model });
@@ -522,8 +528,10 @@
                 //this.$refs.dialogPanel.open();
             },
             setMedicalInfo: function (event) {
+    
                 this.$store.state.registration.institutions.forEach((d) => {
                     if (d.id === event.id) {
+
                         this.regist_institution_code = d.id;
                         this.regist_institution_name = d.from;
                     }

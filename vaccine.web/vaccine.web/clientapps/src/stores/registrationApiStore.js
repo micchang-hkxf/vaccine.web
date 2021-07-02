@@ -15,7 +15,7 @@ export default {
                         id: data.groupId,
                         name: data.groupName
                     });
-        
+
                     if (params && (data.groupId === params.id)) {
                         data.vaccines.forEach((subdata) => {
                             //console.log(data.groupName + ":" + subdata.itemId + "@" + subdata.itemName);
@@ -50,20 +50,19 @@ export default {
         loadDists: function ({ state, rootGetters }) {
             var zones = rootGetters['user/getZones'];
             var dists = [];
-
             zones.forEach((zone) => {
                 zone.data.forEach((dist) => {
                     dists.push({
                         id: dist.distId,
                         name: dist.distName
                     });
-
                 });
             });
 
             state.districts = dists;
         },
         loadVillages: function ({ state, rootGetters }, params) {
+            
             var zones = rootGetters['user/getZones'];
             var villages = [];
             zones.forEach((zone) => {
@@ -107,7 +106,6 @@ export default {
                     });
                 }
             });
-
             state.institutions = datas;
         },
    
@@ -367,22 +365,21 @@ export default {
             return new Promise((reslove, reject) => {
                 var result = { data:[] ,state: state };
                 console.log('update',data)
-          
-                var setData = [{
-                    vaccineGroupId: data.model.regist_type,
-                    vaccineIds: [data.model.regist_brand],
+                var setData = {
+                    vaccineGroupId: data.model.regist_type.id,
+                    vaccineIds: data.model.regist_brand.id ? [data.model.regist_brand.id]:[data.model.regist_brand],
                     title: data.model.regist_title,
                     implementDate: data.model.regist_station_date.replace(/\//g, '-'),
                     implementStartDate: data.model.regist_station_date.replace(/\//g, '-') + "T" + data.model.regist_station_start_time + ":00",
                     implementEndDate: data.model.regist_station_date.replace(/\//g, '-') + "T" + data.model.regist_station_end_time + ":00",
                     stationAddr: data.model.regist_place,
                     distId: data.model.regist_district,
-                    villageId: data.model.regist_village,
+                    villageId: (typeof data.model.regist_village == "object") ? data.model.regist_village.id : data.model.regist_village,
                     startApplyDate: data.model.regist_apply_start_date.replace(/\//g, '-').replace(' ', 'T')+":00",
                     endApplyDate: data.model.regist_apply_end_date.replace(/\//g, '-').replace(' ', 'T') + ":00",
-                    amount: data.model.regist_quota,
-                    medicalIds: [data.model.regist_institution]
-                }];
+                    amount: parseInt(data.model.regist_quota),
+                    medicalIds: [data.model.regist_institution_code]
+                };
          
                 console.log('setData', setData);
                 axios({
@@ -394,7 +391,7 @@ export default {
                         'x-token': rootGetters['user/getToken']
                     }
                 }).then(res => {
-                    result.datas = res.data;
+                    result.datas = res.status;
                     reslove(result);
                 }).catch(ex => {
                     console.log('ex', ex);

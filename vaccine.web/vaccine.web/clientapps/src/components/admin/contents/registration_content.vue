@@ -1083,7 +1083,7 @@
                 regist_id: '0',
                 regist_create_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),///'2021/04/01',
                 regist_title: '',
-                regist_type: '',
+                regist_type: 0,
                 regist_type_name: '',
                 regist_brand: '',
                 regist_brand_name: '',
@@ -1167,9 +1167,11 @@
                 console.log('manualInput')
             },
             editItem: function (item) {
-                Object.assign(this.model, item);
+                  //regist_type=0會有問題,無法設定v-select值??? vue bug??
+ 
+                //Object.assign(this.model, item);
                 this.saveBtnName = "儲存";
-                this.title = '編輯報名表';
+                this.title = '編輯報名表2';
                 this.viewerTitle = '編輯報名資訊確認';
                 this.$refs.registEdit.open(item);
                 console.log('edit', item);
@@ -1229,7 +1231,7 @@
                 }
             },
             editFormAction: function (result) {
-        
+    
                 Object.assign(this.result, result);
                 switch (result.action) {
                     case 'save':
@@ -1277,23 +1279,27 @@
             },
             editSaveRegist: function () {
                 console.log('updateresult', this.result)
-
                 var comp = this;
                 this.updateRegist(comp.result).then(function (ret) {
-                    console.log(ret.datas);
                     comp.$bus.$emit('type1_hide4');
                     comp.alertTitle = '110年五月份新冠疫苗施打預先報名';
-                    comp.alertText = '已成功變更報名表';
-                    comp.alertImgSrc = this.successIcon;
+      
+                    if (ret.datas == 200) {
+                        comp.alertText = '已成功變更報名表';
+                        comp.alertImgSrc = comp.successIcon;
+                    } else {
+                        comp.alertText = '變更報名表失敗';
+                        comp.alertImgSrc = comp.alertIcon;
+                    }
                     comp.$refs.registEditViewer.close();
-        
+                    comp.$refs.registEdit.close();
                     comp.$refs.registAlert.open();
                     comp.getRegistForm(1);
                 }).catch(function (r) {
                     console.log(r.datas);
                     comp.alertTitle = '連線異常';
                     comp.alertText = '請稍後再試!';
-                    comp.alertImgSrc = comp.successIcon;
+                    comp.alertImgSrc = this.alertIcon;
                     comp.$refs.warringAlert.open();
                     comp.$bus.$emit('type1_hide4');
                  });
