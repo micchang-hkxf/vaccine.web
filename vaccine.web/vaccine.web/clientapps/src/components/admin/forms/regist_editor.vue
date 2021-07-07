@@ -451,7 +451,10 @@
             }
         }),
         watch: {
-
+            'getInstitutions': function () {
+                this.regist_institution_code = "";
+                this.regist_institution_name = "";
+             },
         },
         computed: {
             ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders']),
