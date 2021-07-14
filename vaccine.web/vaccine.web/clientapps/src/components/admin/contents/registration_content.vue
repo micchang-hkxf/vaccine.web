@@ -152,12 +152,15 @@
                                         </div>
 
                                         <div class="file-btn-container">
-                                            <v-btn color="secondary">
+                                            <v-btn color="secondary" @click="onUploadClick">
                                                 <img src="/upload.svg">
-
                                                 <span class="file-btn-text">上傳報名表檔案</span>
                                             </v-btn>
-
+                                            <input ref="excelUploader"
+                                  
+                                                   type="file"
+                                                   
+                                                   >
                                             <v-spacer></v-spacer>
 
                                             <v-btn color="secondary">
@@ -1044,6 +1047,7 @@
     import comConfirm from 'components/confirm'
     import comLoading from 'components/loading'
     import { mapActions, mapGetters } from 'vuex'
+    import XLSX from 'xlsx'
     export default {
         // router,
         data: () => ({
@@ -1138,6 +1142,7 @@
                 regist_age_limit:'',
                 regist_remarks:'',
                 regist_unpassed: 45,
+                uploadFile: null,
             },
         }),
         computed: {
@@ -1659,7 +1664,18 @@
             cancelDoubleCheck: function () {
                 this.$bus.$emit('dialogDoubleCheck_show', false);
             },         
-
+            onUploadClick() {
+                this.$refs.excelUploader.click();
+            },
+            onFileChanged(event) {
+                debugger;
+                //this.uploadFile = event.target.files ? event.target.files[0] : null;
+                //let workbook = XLSX.readFile(this.uploadFile);
+                //console.log('workbook1');
+                //console.log(workbook);
+                //console.log('SheetNames');
+                //console.log(workbook.SheetNames);
+            }
         },
 
         components: {
