@@ -200,6 +200,7 @@ export default {
                             censusRegister: data.isCitizen ? '北市' : '非北市',
                             type: data.signUpChannel ? '現場報名' : '網路自行報名',
                             result: data.eligible ? '合格' : '不合格',
+                            remark: ''
                         });
                     });
 
@@ -458,10 +459,11 @@ export default {
             { text: '性別', value: 'gender', sortable: false, flex: 6 },
             { text: '生日', value: 'birthday', sortable: false, flex: 6 },
             { text: '身分證', value: 'identity', sortable: false, flex: 6 },
-            { text: '電話', value: 'phone', sortable: false, flex: 6 },
+            { text: '手機', value: 'phone', sortable: false, flex: 6 },
             { text: '戶籍地（北市/非北市）', value: 'censusRegister', sortable: false, flex: 6 },
             { text: '報名方式', value: 'type', sortable: false, flex: 6 },
             { text: '複檢結果', value: 'result', sortable: false, flex: 6 },
+            { text: '備註', value: 'remark', sortable: false, flex: 6 },
             { text: '', value: 'modify', sortable: false },
         ],
     },
