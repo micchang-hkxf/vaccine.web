@@ -624,8 +624,9 @@
                             <div class="detail-title-desc">
                                 <div>設站時間：{{detailStationTime}}</div>
                                 <div>報名開放時間：{{detailRegistrationTime}}</div>
-                                <div>報名名額：<span :class="detailCntQuota >= detailTotalQuota ? 'color-red' : ''">{{detailCntQuota}}</span>/<span style="color:#626781">{{detailTotalQuota}}</span></div>
                                 <div>承辦醫院：{{detailInstitution}}（{{detailInstutionDistrict}}）</div>
+                                <div>報名名額：<span :class="detailCntQuota >= detailTotalQuota ? 'color-red' : ''">{{detailCntQuota}}</span>/<span style="color:#626781">{{detailTotalQuota}}</span></div>
+                                <div>年齡限制：{{detailAgeLimit}}</div>
                             </div>
                             <hr />
                             <!---->
@@ -644,10 +645,10 @@
                                             </v-btn>
                                         </div>
                                         <div class="detail-action">
-                                            <!--<div class="detail-rebound-info">
+                                            <div class="detail-rebound-info">
                                                 <div>複檢時間：{{detailCheckTime}}</div>
-                                                <div>複檢通過人數：{{detailCheckPassCnt == '0' ? '-' : detailCheckPassCnt}}</div>
-                                            </div>-->
+                                                <div>複檢合格人數：{{detailCheckPassCnt == '0' ? '-' : detailCheckPassCnt}}</div>
+                                            </div>
                                             <div class="detail-action-btn">
                                                 <!--v-on="on"-->
                                                 <v-btn @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
@@ -1053,6 +1054,7 @@
             detailRegistrationTime: '',
             detailCntQuota: '',
             detailTotalQuota: '',
+            detailAgeLimit: '',
             detailItems: [],
             detailTotalCount: 6,
             detailItemsPerPage: 2,
@@ -1403,6 +1405,7 @@
                 this.detailRegistrationTime = item.regist_apply_start_date + ' - ' + item.regist_apply_end_date;   //item.registrationTime;
                 this.detailCntQuota = item.regist_unpassed;   //item.cntQuota;
                 this.detailTotalQuota = item.regist_quota;    //item.totalQuota;
+                this.detailAgeLimit = '';
                 this.detailAbnormalCnt = item.regist_abnormalCnt;   //item.abnormalCnt;
                 this.detailCheckTime = item.regist_review_date;   //item.checkTime;
                 this.detailCheckPassCnt = item.regist_unpassed;//item.checkPassCnt;
