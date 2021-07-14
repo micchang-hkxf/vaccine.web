@@ -288,13 +288,15 @@
                                                 <v-list-item-subtitle>{{result.model.regist_apply_end_date}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <!--<v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                                        <!--
+                                            <v-list-item two-line>
+                                                <v-list-item-content>
+                                                    <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                                    <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
 
-                                            </v-list-item-content>
-                                        </v-list-item>-->
+                                                </v-list-item-content>
+                                            </v-list-item>
+                                            -->
                                         <v-divider></v-divider>
 
                                         <v-list-item two-line>
@@ -302,6 +304,21 @@
                                                 <v-list-item-title>報名名額上限</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_quota}}</v-list-item-subtitle>
 
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+
+                                        <v-list-item two-line v-if="result.model.age_limit >0">
+                                            <v-list-item-content>
+                                                <v-list-item-title>報名者最低年齡限制</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.age_limit}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>備註</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
 
@@ -396,7 +413,7 @@
 
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>機構所在行政區</v-list-item-title>                
+                                                <v-list-item-title>機構所在行政區</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_instution_district_name}}</v-list-item-subtitle>
 
                                             </v-list-item-content>
@@ -425,12 +442,12 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                                                <v-list-item-content>
+                                                    <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                                    <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
 
-                                            </v-list-item-content>
-                                        </v-list-item>-->
+                                                </v-list-item-content>
+                                            </v-list-item>-->
                                         <v-divider></v-divider>
 
                                         <v-list-item two-line>
@@ -438,6 +455,20 @@
                                                 <v-list-item-title>報名名額上限</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_quota}}</v-list-item-subtitle>
 
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-list-item two-line v-if="result.model.age_limit>0">
+                                            <v-list-item-content>
+                                                <v-list-item-title>報名者最低年齡限制</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.age_limit}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>備註</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
 
@@ -1104,6 +1135,8 @@
                 regist_review_date: '',///checkTime              
                 regist_qualified: 423,
                 regist_quota: 500,
+                regist_age_limit:'',
+                regist_remarks:'',
                 regist_unpassed: 45,
             },
         }),
@@ -1184,21 +1217,29 @@
                 console.log('fileImport')
             },
             formAction: function (result) {
-                var errMsg=""
+                var errMsg = ""
+
+                var diffdate = 3;//事先報名開始時間必須早於設站日期前 n 天
+                
+
                 if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) >=
                     Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_end_time)) {
-                    errMsg = "(開始施打時間)必須早於(結束施打時間)";
+                    errMsg = "結束時間不能早於起始時間";
                 }
 
                 if (Date.parse(result.model.regist_apply_start_date) > Date.parse(result.model.regist_apply_end_date)) {
-                    errMsg= "(事先開放報名開始時間)必須早於(事先開放報名結束時間)";
+                    errMsg= "事先開放報名開始時間必須早於事先開放報名結束時間";
                 }
     
-                if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) <
-                    Date.parse(result.model.regist_apply_end_date)) {
-                    errMsg= "(開放報名結束時間)必須早於(開始施打時間)";
+                //if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) <
+                //    Date.parse(result.model.regist_apply_end_date)) {
+                //    errMsg= "開放報名結束時間必須早於開始施打時間";
+                //}
+              
+                if ((Date.parse(result.model.regist_apply_start_date) + diffdate * 24 * 3600000) > Date.parse(result.model.regist_station_date)) {
+                    errMsg = "事先報名開始時間必須早於設站日期前" + diffdate + "天";
+                    alert(errMsg);
                 }
-
                 if (errMsg != "") {
                     this.alertTitle = '設定錯誤';
                     this.alertText = errMsg;
@@ -1403,6 +1444,7 @@
                 this.detailRegistrationTime = item.regist_apply_start_date + ' - ' + item.regist_apply_end_date;   //item.registrationTime;
                 this.detailCntQuota = item.regist_unpassed;   //item.cntQuota;
                 this.detailTotalQuota = item.regist_quota;    //item.totalQuota;
+
                 this.detailAbnormalCnt = item.regist_abnormalCnt;   //item.abnormalCnt;
                 this.detailCheckTime = item.regist_review_date;   //item.checkTime;
                 this.detailCheckPassCnt = item.regist_unpassed;//item.checkPassCnt;

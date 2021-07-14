@@ -129,9 +129,7 @@
                                   class="search-filter"
                                   append-icon="mdi-chevron-down"
                                   return-object
-                                  @change="setMedicalInfo($event)"
-                               
-                                  >
+                                  @change="setMedicalInfo($event)">
                         </v-select>
                     </v-col>
                 </v-row>
@@ -158,6 +156,7 @@
                                               :rules="[rules.required]"
                                               readonly
                                               v-bind="attrs"
+                                              placeholder="請選擇日期"
                                               v-on="on"
                                               outlined
                                               dense></v-text-field>
@@ -190,8 +189,7 @@
                 </v-row>
                 <v-row>
                     <v-col cols="3">
-                        <v-menu 
-                                v-model="start"
+                        <v-menu v-model="start"
                                 ref="tmenu"
                                 :close-on-content-click="false"
                                 :return-value.sync="date"
@@ -204,6 +202,7 @@
                                               :rules="[rules.required]"
                                               readonly
                                               v-bind="attrs"
+                                              placeholder="請選擇起始時間"
                                               v-on="on"
                                               outlined
                                               dense></v-text-field>
@@ -232,6 +231,7 @@
                                               append-icon="mdi-clock-outline"
                                               readonly
                                               v-bind="attrs"
+                                              placeholder="請選擇結束時間"
                                               v-on="on"
                                               outlined
                                               dense></v-text-field>
@@ -330,6 +330,8 @@
                     </v-col>
 
                 </v-row>
+                ow
+                vi
                 <v-divider></v-divider>
                 <v-row>
                     <v-col cols="6">
@@ -338,6 +340,31 @@
                                       placeholder="請輸入報名名額上限設定(預設無限制)"
                                       required
                                       type="number"
+                                      outlined
+                                      dense>
+                        </v-text-field>
+                    </v-col>
+
+                </v-row>
+                <v-row>
+                    <v-col cols="6">
+                        <div style="margin-top:15px;"><span class="regist-title">報名者最低年齡限制</span></div>
+                        <v-text-field v-model="model.age_limit"
+                                      placeholder="請輸入年齡下限(預設無限制)"
+                                      required
+                                      type="number"
+                                      outlined
+                                      dense>
+                        </v-text-field>
+                    </v-col>
+
+                </v-row>
+                <v-row>
+                    <v-col cols="6">
+                        <div style="margin-top:15px;"><span class="regist-title">備註</span></div>
+                        <v-text-field v-model="model.remarks"
+                                      placeholder=""
+                                      required
                                       outlined
                                       dense>
                         </v-text-field>
