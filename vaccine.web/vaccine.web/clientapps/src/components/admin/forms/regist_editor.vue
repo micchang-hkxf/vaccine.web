@@ -330,8 +330,6 @@
                     </v-col>
 
                 </v-row>
-                ow
-                vi
                 <v-divider></v-divider>
                 <v-row>
                     <v-col cols="6">

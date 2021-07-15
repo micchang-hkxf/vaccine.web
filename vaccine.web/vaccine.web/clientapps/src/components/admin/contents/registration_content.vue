@@ -157,15 +157,16 @@
                                                 <span class="file-btn-text">上傳報名表檔案</span>
                                             </v-btn>
                                             <input ref="excelUploader"
-                                  
                                                    type="file"
-                                                   
+                                                   style="display:none"
+                                                   accept=".xlsx,xls"
+                                                   @change="onFileChanged"
                                                    >
                                             <v-spacer></v-spacer>
 
                                             <v-btn color="secondary">
                                                 <v-img src="/download.svg"></v-img>
-                                                <span>下載報名表格式範本</span>
+                                                <span><a href="%E6%B4%BB%E5%8B%95%E6%89%B9%E6%AC%A1%E6%96%B0%E5%A2%9E.xlsx">下載報名表格式範本</a></span>
                                             </v-btn>
                                         </div>
 
@@ -1112,6 +1113,7 @@
                 regist_quota: 500,
                 regist_unpassed: 45,
                 uploadFile: null,
+                uploadData:[]
             },
         }),
         computed: {
@@ -1125,7 +1127,7 @@
             this.loadDists();
             //this.loadMedicals();
             this.getRegistForm(1);
-
+ 
             
         },
         methods: {
@@ -1629,13 +1631,92 @@
                 this.$refs.excelUploader.click();
             },
             onFileChanged(event) {
-                debugger;
-                //this.uploadFile = event.target.files ? event.target.files[0] : null;
-                //let workbook = XLSX.readFile(this.uploadFile);
-                //console.log('workbook1');
-                //console.log(workbook);
-                //console.log('SheetNames');
-                //console.log(workbook.SheetNames);
+           
+                this.uploadFile = event.target.files ? event.target.files[0] : null;
+      
+                if (this.uploadFile) {
+                    const reader = new FileReader();
+                    //var ss = this.$store;
+                    var comp = this;
+                    reader.onload = (e) => {
+                        /* Parse data */
+                        const bstr = e.target.result;
+                        const wb = XLSX.read(bstr, { type: 'binary' });
+                        /* Get first worksheet */
+                        const wsname = wb.SheetNames[0];
+                        const ws = wb.Sheets[wsname];
+                        /* Convert array of arrays */
+                        const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+                        //console.log(data);
+                        //var getKeyByValue=fuction(object, value) {
+                        //    return Object.keys(object).find(key => object[key] === value);
+                        //}
+                        var i, j;
+                        var fv = function(nameKey, myArray ,name){
+                            for (i = 0; i < myArray.length; i++) {
+                                if (myArray[i][name] === nameKey) {
+                                    return myArray[i];
+                                }
+                            }
+                        };
+
+                        var v = comp.$store.getters['user/getVaccines'],
+                            z = comp.$store.getters['user/getZones'][0].data,
+                            m = comp.$store.getters['user/getMedicals'];
+
+                        var vv, vvv, k = 0, finalData = [];
+                        var zz, zzz, mm, villageName;
+                        for (j = 4; j < data.length; j++) {
+                            vv = fv(data[j][0], v, 'groupName');
+                            finalData[k] = data[j];
+                            
+                               //疫苗種類
+                            if (vv) {
+                                vvv = fv(data[j][1], vv['vaccines'], 'itemName');
+                                //console.log(vv['groupName'] + "@" + vvv['itemName'] + "@" + vvv['itemId']);
+                                finalData[k][0] = vv['groupId'];
+                                if (vvv) {
+                                    finalData[k][1] = vvv['itemId'];
+                                } else {
+                                    console.log('疫苗種類', "error line:" + (j + 1));
+                                }
+                            } else {
+                                console.log('疫苗類型',"error line:"+(j+1));
+                            }
+                        
+                               //行政區域
+                            zz = fv(data[j][3], z, 'distName');
+                            if (zz) {
+                                finalData[k][3] = zz['distId'];
+                                zzz = fv(data[j][4], zz['data'], 'villageName');
+                                villageName = data[j][4];
+                                if (zzz) {
+                                    finalData[k][4] = zzz['villageId'];
+                                } else {
+                                    console.log('村里', "error line:" + (j + 1));
+                                }
+                            } else {
+                                console.log('行政區域', "error line:" + (j + 1));
+                            }
+                              //醫療院所
+                         
+                            mm = fv(villageName, m, 'villageName');
+                
+                            if (mm && mm['uName'] == data[j][6]) {
+                                finalData[k][6] = mm['id'];
+                            } else {
+                                console.log('醫療院所', "error line:" + (j + 1));
+                            }
+
+                            k++;
+                        }
+                        console.log(finalData);
+                       
+                    }
+
+                   reader.readAsBinaryString(this.uploadFile);
+                   
+                }
             }
         },
 
