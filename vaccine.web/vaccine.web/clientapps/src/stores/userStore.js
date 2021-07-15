@@ -82,6 +82,9 @@ export default {
         getMedicals: () => {
             return JSON.parse(window.sessionStorage.getItem('medicals'));
         },
+        getAuditTypes: () => {
+            return JSON.parse(window.sessionStorage.getItem('auditTypes'));
+        },
         clear: () => {
             return window.sessionStorage.clear();
         }
@@ -101,6 +104,9 @@ export default {
         },
         setMedicals: (state, medicals) => {
             window.sessionStorage.setItem('medicals', JSON.stringify(medicals));
+        },
+        setAuditTypes: (state, auditTypes) => {
+            window.sessionStorage.setItem('auditTypes', JSON.stringify(auditTypes));
         }
     },
     modules: {

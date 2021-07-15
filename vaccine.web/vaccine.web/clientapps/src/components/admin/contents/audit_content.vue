@@ -253,11 +253,11 @@
             }
         },
         created: function () {
-            var page = 1;
-            this.getAudit(page);
+            this.loadAuditTypes();
+            this.getAudit(1);
         },
         methods: {
-            ...mapActions('audit', ['loadAudit', 'saveAudit', 'downloadAudit']),
+            ...mapActions('audit', ['loadAuditTypes', 'loadAudit', 'saveAudit', 'downloadAudit']),
             getAudit: function (page) {
                 var params = {
                     type: this.selectType,

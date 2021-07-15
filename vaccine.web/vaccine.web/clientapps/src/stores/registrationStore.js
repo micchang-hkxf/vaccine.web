@@ -5,7 +5,7 @@ export default {
     namespaced: true,
     actions: {
         loadRegistForm: function ({ state},params) {
-            return new Promise((reslove) => {
+            return new Promise((resolve) => {
                 var results = { datas: [], state: '', totalCount: 0 };
                 var query = state.desserts;
                 if (params.district) {
@@ -16,11 +16,11 @@ export default {
                 var end = start + params.pageSize;
                 query = query.slice(start, end);
                 results.datas = query;               
-                reslove(results);
+                resolve(results);
             });
         },
         loadDetailForm: function ({ state }, params) {
-            return new Promise((reslove) => {
+            return new Promise((resolve) => {
                 var results = { datas: [], state: '', totalCount: 0 };
                 var query = state.registrationDesserts;
                 if (params.keyWord) {
@@ -31,7 +31,7 @@ export default {
                 var end = start + params.pageSize;
                 query = query.slice(start, end);
                 results.datas = query;
-                reslove(results);
+                resolve(results);
             });
         },
         getCompleteFile: function ({ state }, data) {
@@ -110,10 +110,10 @@ export default {
             });
         },
         registForm: function ({ state }, data) {
-            return new Promise((reslove) => {
+            return new Promise((resolve) => {
                 var result = { data: [], state: state }
                 console.log('new',data);
-                reslove(result)
+                resolve(result)
 
             })
          
@@ -144,10 +144,10 @@ export default {
             })
         },
         removeRegist: function ({ state }, data) {
-            return new Promise((reslove) => {
+            return new Promise((resolve) => {
                 var result = { state: state };
                 console.log('remove', data);
-                reslove(result);
+                resolve(result);
             })
         }
     },

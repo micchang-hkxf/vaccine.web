@@ -1,8 +1,41 @@
-﻿import siteConfig from "project/site.config"
+﻿import userStore from "stores/userStore"
+import siteConfig from "project/site.config"
+import axios from 'axios'
+import { Promise } from "core-js";
 
 export default {
     namespaced: true,
     actions: {
+        loadAuditTypes: function ({ state, commit, rootGetters }) {
+            var datas = [];
+            var auditTypes = rootGetters['user/getAuditTypes'];
+            if (auditTypes !== null) {
+                auditTypes.forEach((data) => {
+                    datas.push({
+                        id: data.auditType,
+                        name: data.auditTypeName
+                    });
+                });
+                state.types = datas;
+                return;
+            }
+
+            var apiUrl = `${state.apiRoot}api/DataItem/AuditType`;
+
+            axios.get(apiUrl,
+                rootGetters['user/getApiHeader']
+            ).then(res => {
+                res.data.forEach((data) => {
+                    datas.push({
+                        id: data.auditType,
+                        name: data.auditTypeName
+                    });
+                });
+                state.types = datas;
+
+                commit('user/setAuditTypes', res.data);
+            });
+        },
         loadAudit: function ({ state }, params) {
             return new Promise((resolve) => {
                 var results = { datas: [], state: '', totalCount: 0 };
@@ -20,26 +53,26 @@ export default {
 
             });
         },
-        saveAudit: function ({ state }, data) {
+        saveAudit: function ({ state, rootGetters }, data) {
             return new Promise(function (resolve, reject) {
-                // TODO:
-                var result = true; 
-                try {
-                    //data.audit_type.id;
-                    state.desserts.push({
-                        id: 6,
-                        date: new Date().toISOString().substr(0, 16).replace('T', ' ').replace(/-/g, '/'),
-                        name: '袁吉吉',
-                        affiliation: '衛生局',
-                        type: '案件抽查表',
-                        title: data.audit_year + '年' + parseInt(data.audit_month, 10) + '月份－案件抽查表（' + data.audit_type.state + '）',
-                        count: '5000',
-                        download: data.audit_reason,    
-                    });
-                    resolve(result);
-                } catch (e) {
-                    reject(result);
-                }
+                var apiUrl = `${state.apiRoot}api/AuditLog`;
+                var results = { datas: [], state: '' };
+
+                axios.post(apiUrl, {
+                        actionType: data.audit_type.id,
+                        auditYear: parseInt(data.audit_year, 10) + 1911,
+                        auditMonth: parseInt(data.audit_month, 10),
+                        reason: data.audit_reason
+                    },
+                    rootGetters['user/getApiHeader']
+                ).then(res => {
+                    results.datas = res.data;
+                    resolve(results);
+                }).catch(ex => {
+                    results.state = 'error';
+                    results.datas = ex;
+                    reject(results);
+                });
             });
         },
         downloadAudit: function ({ state }, data) {
@@ -118,13 +151,7 @@ export default {
                 download: '（..事由文字..）', 
             },
         ],
-        types: [                     
-            { id: 'regist', name: '報名清冊' },
-            { id: 'agree', name: '接種同意書' },
-            { id: 'list', name: '接種清冊' },
-            { id: 'file', name: '案件抽查表' },
-           
-        ],
+        types: [],
     },
     getters: {
         getTypes: state => {
@@ -135,5 +162,6 @@ export default {
     mutations: {
     },
     modules: {
+        user: userStore
     }
 }

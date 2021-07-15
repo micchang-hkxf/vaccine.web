@@ -144,8 +144,8 @@
         data: () => ({
             mode:'',
             options: [
-                { state: '完整', id: 'complete' },
-                { state: '抽樣', id: 'sampling' },
+                { state: '完整', id: 0 },
+                { state: '抽樣', id: 1 },
             ],
             model: {},
             year: [],
