@@ -111,7 +111,7 @@ export default {
    
 
         loadRegistForm: function ({ state, rootGetters }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity`;
                 var results = { datas: [], state: '', totalCount: 0 };
 
@@ -169,7 +169,7 @@ export default {
                     });
 
                     results.datas = datas;
-                    reslove(results);
+                    resolve(results);
                 }).catch(ex => {
                     results.datas = ex;
                     reject(results);
@@ -177,7 +177,7 @@ export default {
             });
         },
         loadDetailForm: function ({ state, rootGetters }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Detail/` + params.id;
                 var results = { datas: [], state: '', totalCount: 0 };
                 
@@ -205,7 +205,7 @@ export default {
                     });
 
                     results.datas = datas;
-                    reslove(results);
+                    resolve(results);
                 }).catch(ex => {
                     results.datas = ex;
                     reject(results);
@@ -214,7 +214,7 @@ export default {
         },
         
         getCompleteFile: function ({ state, rootGetters }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement`;
                 var results = { datas: [], state: '' };
 
@@ -227,7 +227,7 @@ export default {
                     }
                 }).then(res => {
                     results.datas = res.data;
-                    reslove(results);
+                    resolve(results);
                 }).catch(ex => {
                     results.datas = ex;
                     reject(results);
@@ -235,7 +235,7 @@ export default {
             });
         },
         getSignUpFile: function ({ state, rootGetters }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Export/ApplyList`;
                 var results = { datas: [], state: '' };
 
@@ -248,7 +248,7 @@ export default {
                     }
                 }).then(res => {
                     results.datas = res.data;
-                    reslove(results);
+                    resolve(results);
                 }).catch(ex => {
                     results.datas = ex;
                     reject(results);
@@ -256,7 +256,7 @@ export default {
             });
         },
         getVaccinationFile: function ({ state, rootGetters }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Export/VaccinationList`;
                 var results = { datas: [], state: '' };
 
@@ -269,7 +269,7 @@ export default {
                     }
                 }).then(res => {
                     results.datas = res.data;
-                    reslove(results);
+                    resolve(results);
                 }).catch(ex => {
                     results.datas = ex;
                     reject(results);
@@ -277,7 +277,7 @@ export default {
             });
         },
         getAgreeFile: function ({ state, rootGetters }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement/` + params.id;
                 var results = { datas: [], state: '' };
 
@@ -285,7 +285,7 @@ export default {
                     rootGetters['user/getApiHeader']
                 ).then(res => {
                     results.datas = res.data;
-                    reslove(results);
+                    resolve(results);
                 }).catch(ex => {
                     results.datas = ex;
                     reject(results);
@@ -320,7 +320,7 @@ export default {
             });
         },
         registForm: function ({ state, rootGetters}, data) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 console.log('new', data);
 
                 var result = { data: [], state: state }
@@ -354,7 +354,7 @@ export default {
                     }
                 }).then(res => {
                     result.datas = res.data;
-                    reslove(result);
+                    resolve(result);
                 }).catch(ex => {
                     result.datas = ex;
                     reject(result);
@@ -412,7 +412,7 @@ export default {
             })
         },
         updateRegist: function ({ state, rootGetters }, data) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var result = { data:[] ,state: state };
                 console.log('update',data)
                 var setData = {
@@ -444,7 +444,7 @@ export default {
                     }
                 }).then(res => {
                     result.datas = res.status;
-                    reslove(result);
+                    resolve(result);
                 }).catch(ex => {
                     console.log('ex', ex);
                     result.datas = ex;
@@ -453,7 +453,7 @@ export default {
             })
         },
         removeRegist: function ({ state, rootGetters }, data) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var result = { state: state }, actIdLists="";
                 data.forEach((d) => {
                     actIdLists+='&actIdList='+d.regist_id;
@@ -469,7 +469,7 @@ export default {
                     }
                 }).then(res => {
                     result.datas = res.data;
-                    reslove(result);
+                    resolve(result);
                 }).catch(ex => {
                     result.datas = ex;
                     reject(result);

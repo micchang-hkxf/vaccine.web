@@ -4,7 +4,7 @@ export default {
     namespaced: true,
     actions: {
         loadAudit: function ({ state }, params) {
-            return new Promise((reslove) => {
+            return new Promise((resolve) => {
                 var results = { datas: [], state: '', totalCount: 0 };
                 var query = state.desserts;
                 if (params.keyWord) {
@@ -16,7 +16,7 @@ export default {
                 var end = start + params.pageSize;
                 query = query.slice(start, end);
                 results.datas = query;
-                reslove(results);
+                resolve(results);
 
             });
         },

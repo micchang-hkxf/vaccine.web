@@ -12,7 +12,7 @@ export default new Vuex.Store({
     namespaced: true,
     actions: {
         checkLogin: function ({ state, commit }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login`;
                 var results = { datas: [], state: '' };
 
@@ -30,13 +30,13 @@ export default new Vuex.Store({
                     if (!res.data.isAllowLogin) {
                         results.state = 'not allow login';
                         results.datas = res.data;
-                        reslove(results);
+                        resolve(results);
                         return;
                     }
 
                     commit('user/setSessionId', res.data.sessionId);
                     results.datas = res.data;
-                    reslove(results);
+                    resolve(results);
                 }).catch(ex => {
                     results.state = 'error';
                     results.datas = ex;
@@ -45,7 +45,7 @@ export default new Vuex.Store({
             });
         },
         checkVerificationCode: function ({ state, commit, rootGetters }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login`;
                 var results = { datas: [], state: '', state1: '' };
                 
@@ -61,14 +61,14 @@ export default new Vuex.Store({
                     // 無管理區域
                     if (res.data.zones.length == 0) {
                         results.state = 'no management area';
-                        reslove(results);
+                        resolve(results);
                         return;
                     }
                     
                     // 帳號停用
                     if (!res.data.isEnable) {
                         results.state = 'deactivate';
-                        reslove(results);
+                        resolve(results);
                         return;
                     }
 
@@ -91,13 +91,13 @@ export default new Vuex.Store({
                         }
                         
                         results.state = 'not yet enabled';
-                        reslove(results);
+                        resolve(results);
                         return;
                     }
                     
                     results.state = 'pass';
                     results.datas = res.data;
-                    reslove(results);
+                    resolve(results);
                 }).catch(ex => {
                     results.state = 'error';
                     results.datas = ex;
@@ -106,7 +106,7 @@ export default new Vuex.Store({
             });
         },
         checkResetPw: function ({ state, rootGetters }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login`;
                 var results = { datas: [], state: '' };
                 
@@ -126,7 +126,7 @@ export default new Vuex.Store({
                 }).then(res => {
                     results.state = 'pass';
                     results.datas = res.data;
-                    reslove(results);
+                    resolve(results);
                 }).catch(ex => {
                     results.state = 'error';
                     results.datas = ex;
@@ -135,7 +135,7 @@ export default new Vuex.Store({
             });
         },
         checkForgetPdUid: function ({ state, commit }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login/ForgetPd`;
                 var results = { datas: [], state: '' };
 
@@ -147,7 +147,7 @@ export default new Vuex.Store({
                     commit('user/setSessionId', res.data.sessionId);
                     results.state = 'pass';
                     results.datas = res.data;
-                    reslove(results);
+                    resolve(results);
                 }).catch(ex => {
                     results.state = 'error';
                     results.datas = ex;
@@ -156,7 +156,7 @@ export default new Vuex.Store({
             });
         },
         checkForgetPdVerificationCode: function ({ state, rootGetters }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login/ForgetPd`;
                 var results = { datas: [], state: '' };
 
@@ -167,7 +167,7 @@ export default new Vuex.Store({
                 }).then(res => {
                     results.state = 'pass';
                     results.datas = res.data;
-                    reslove(results);
+                    resolve(results);
                 }).catch(ex => {
                     results.state = 'error';
                     results.datas = ex;
@@ -176,7 +176,7 @@ export default new Vuex.Store({
             });
         },
         modifyPw: function ({ state, rootGetters }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login/ForgetPd`;
                 var results = { datas: [], state: '' };
 
@@ -191,7 +191,7 @@ export default new Vuex.Store({
                 }).then(res => {
                     results.state = 'pass';
                     results.datas = res.data;
-                    reslove(results);
+                    resolve(results);
                 }).catch(ex => {
                     results.state = 'error';
                     results.datas = ex;
@@ -200,7 +200,7 @@ export default new Vuex.Store({
             });
         },
         logout: function ({ state, rootGetters }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/User/Login`;
                 var results = { datas: [], state: '' };
                 
@@ -220,7 +220,7 @@ export default new Vuex.Store({
                     }).then(res => {
                         results.state = 'success';
                         results.datas = res.data;
-                        reslove(results);
+                        resolve(results);
                     }).catch(ex => {
                         results.state = 'error';
                         results.datas = ex;
@@ -228,7 +228,7 @@ export default new Vuex.Store({
                     });
                 } else {
                     results.state = 'success';
-                    reslove(results);
+                    resolve(results);
                 }
             });
         }
