@@ -293,19 +293,31 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                                                <v-list-item-content>
+                                                    <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                                    <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
 
-                                            </v-list-item-content>
-                                        </v-list-item>-->
+                                                </v-list-item-content>
+                                            </v-list-item>-->
                                         <v-divider></v-divider>
 
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>報名名額上限</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_quota}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                        <v-list-item two-line v-if="result.model.age_limit >0">
+                                            <v-list-item-content>
+                                                <v-list-item-title>報名者最低年齡限制</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.age_limit}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
 
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>備註</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
 
@@ -400,7 +412,7 @@
 
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>機構所在行政區</v-list-item-title>                
+                                                <v-list-item-title>機構所在行政區</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_instution_district_name}}</v-list-item-subtitle>
 
                                             </v-list-item-content>
@@ -429,12 +441,12 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                                                <v-list-item-content>
+                                                    <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                                    <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
 
-                                            </v-list-item-content>
-                                        </v-list-item>-->
+                                                </v-list-item-content>
+                                            </v-list-item>-->
                                         <v-divider></v-divider>
 
                                         <v-list-item two-line>
@@ -444,7 +456,19 @@
 
                                             </v-list-item-content>
                                         </v-list-item>
+                                        <v-list-item two-line v-if="result.model.age_limit >0">
+                                            <v-list-item-content>
+                                                <v-list-item-title>報名者最低年齡限制</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.age_limit}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
 
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>備註</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
                                         <v-divider></v-divider>
                                     </div>
 
@@ -1113,7 +1137,7 @@
                 regist_quota: 500,
                 regist_unpassed: 45,
                 uploadFile: null,
-                uploadData:[]
+                finalData:[]
             },
         }),
         computed: {
@@ -1132,8 +1156,8 @@
         },
         methods: {
             ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadMedicals', 'loadMedicalsByVillage',
-                                           'loadRegistForm', 'loadDetailForm', 'getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile', 'execCheck',
-                                           'doubleCheck', 'registForm', 'updateRegist', 'removeRegist']),
+                                         'loadRegistForm', 'loadDetailForm', 'getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile', 'execCheck',
+                                         'doubleCheck', 'registForm', 'updateRegist', 'removeRegist','importRegistForm']),
             getRegistForm: function (page) {
                 var params = {
                     vaccine: this.selectVaccine,
@@ -1169,7 +1193,7 @@
             },
             manualInput: function () {
                 this.title = '建立報名表';
-                this.saveBtnName = "儲建立報名表";
+                this.saveBtnName = "建立報名表";
                 this.viewerTitle = '確認新增報名資訊';
                 this.$refs.registNewEditor.create(this.model);
                 this.$refs.registNewEditor.reset();
@@ -1375,12 +1399,6 @@
             },
             removeLeftClick: function () {
                 this.$bus.$emit(`confirm_show`, false);
-            },
-            saveFile: function () {
-                this.alertTitle = '上傳成功';
-                this.alertText = '已成功建立報名表';
-                this.$refs.fileViewer.close();
-                this.$refs.successUploadAlert.open();
             },
             dowloadAgreeItem: function (item) {
                 //console.log('Agree', item);
@@ -1630,6 +1648,31 @@
             onUploadClick() {
                 this.$refs.excelUploader.click();
             },
+            saveFile() {
+
+                console.log(this.finalData);
+                if (this.finalData.length > 0) {
+                    
+                    var comp = this;
+                    comp.importRegistForm(comp.finalData).then(function (ret) {
+                        console.log(ret.datas);
+                        comp.$bus.$emit('type1_hide4');
+                        comp.alertTitle = '檔案匯入成功';
+                        comp.alertText = '成功匯入報名表';
+                        comp.alertImgSrc = comp.successIcon;
+                        comp.$refs.fileViewer.close();
+                        comp.$refs.successUploadAlert.open();
+                        comp.getRegistForm(1);
+                    }).catch(function (r) {
+                        console.log(r.datas);
+                        comp.alertTitle = '連線異常';
+                        comp.alertText = '請稍後再試!';
+                        comp.alertImgSrc = comp.successIcon;
+                        comp.$refs.warringAlert.open();
+                        comp.$bus.$emit('type1_hide4');
+                    });
+                }
+            },
             onFileChanged(event) {
            
                 this.uploadFile = event.target.files ? event.target.files[0] : null;
@@ -1638,6 +1681,7 @@
                     const reader = new FileReader();
                     //var ss = this.$store;
                     var comp = this;
+                    this.$bus.$emit('type1_show4', "資料處理中...");
                     reader.onload = (e) => {
                         /* Parse data */
                         const bstr = e.target.result;
@@ -1664,19 +1708,20 @@
                             z = comp.$store.getters['user/getZones'][0].data,
                             m = comp.$store.getters['user/getMedicals'];
 
-                        var vv, vvv, k = 0, finalData = [];
+                        var vv, vvv, k = 0;
                         var zz, zzz, mm, villageName;
+                        comp.finalData = [];
                         for (j = 4; j < data.length; j++) {
                             vv = fv(data[j][0], v, 'groupName');
-                            finalData[k] = data[j];
+                            comp.finalData[k] = data[j];
                             
                                //疫苗種類
                             if (vv) {
                                 vvv = fv(data[j][1], vv['vaccines'], 'itemName');
                                 //console.log(vv['groupName'] + "@" + vvv['itemName'] + "@" + vvv['itemId']);
-                                finalData[k][0] = vv['groupId'];
+                                comp.finalData[k][0] = vv['groupId'];
                                 if (vvv) {
-                                    finalData[k][1] = vvv['itemId'];
+                                    comp.finalData[k][1] = vvv['itemId'];
                                 } else {
                                     console.log('疫苗種類', "error line:" + (j + 1));
                                 }
@@ -1687,11 +1732,11 @@
                                //行政區域
                             zz = fv(data[j][3], z, 'distName');
                             if (zz) {
-                                finalData[k][3] = zz['distId'];
+                                comp.finalData[k][3] = zz['distId'];
                                 zzz = fv(data[j][4], zz['data'], 'villageName');
                                 villageName = data[j][4];
                                 if (zzz) {
-                                    finalData[k][4] = zzz['villageId'];
+                                    comp.finalData[k][4] = zzz['villageId'];
                                 } else {
                                     console.log('村里', "error line:" + (j + 1));
                                 }
@@ -1703,15 +1748,15 @@
                             mm = fv(villageName, m, 'villageName');
                 
                             if (mm && mm['uName'] == data[j][6]) {
-                                finalData[k][6] = mm['id'];
+                                comp.finalData[k][6] = mm['id'];
                             } else {
                                 console.log('醫療院所', "error line:" + (j + 1));
                             }
 
                             k++;
                         }
-                        console.log(finalData);
-                       
+                          //console.log(finalData);
+                        comp.$bus.$emit('type1_hide4');
                     }
 
                    reader.readAsBinaryString(this.uploadFile);

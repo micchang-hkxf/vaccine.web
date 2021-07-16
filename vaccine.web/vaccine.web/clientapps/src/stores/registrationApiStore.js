@@ -338,7 +338,9 @@ export default {
                     startApplyDate: data.model.regist_apply_start_date,
                     endApplyDate: data.model.regist_apply_end_date,
                     amount: parseInt(data.model.regist_quota),
-                    medicalIds: [data.model.regist_institution.id]
+                    medicalIds: [data.model.regist_institution.id],
+                    //ageLimit: [data.model.age_limit],
+                    //remarks: [data.model.remarks],
                 }];
                 console.log("setData", setData);
             
@@ -362,6 +364,51 @@ export default {
          
 
         },
+        importRegistForm: function ({ state, rootGetters }, data) {
+            var setData = [];
+            data.forEach((d) => {
+                setData.push({
+                    vaccineGroupId: d[0],
+                    vaccineIds: d[1],
+                    title: d[2],
+                    distId: d[3],
+                    villageId: d[4],
+                    stationAddr: d[5],
+                    medicalIds: d[6],
+                    implementDate: d[7],
+                    implementStartDate: d[7] + "T" + d[8] + ":00",
+                    implementEndDate: d[7] + "T" + d[9] + ":00",
+
+                    startApplyDate: d[10],
+                    endApplyDate: d[11],
+                    amount: parseInt(d[12]),
+                    //ageLimit: parseInt(d[13]),
+                    //remarks: parseInt(d[14]),
+                });
+            });
+         
+
+            return new Promise((reslove, reject) => {
+                console.log('import', data);
+                var result = { data: [], state: state }
+                axios({
+                    method: 'post',
+                    url: `${state.apiRoot}api/Activity?api-version=1.0`,
+                    data: setData,
+                    responseType: 'json',
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    result.datas = res.data;
+                    reslove(result);
+                }).catch(ex => {
+                    result.datas = ex;
+                    reject(result);
+                });
+
+            })
+        },
         updateRegist: function ({ state, rootGetters }, data) {
             return new Promise((reslove, reject) => {
                 var result = { data:[] ,state: state };
@@ -379,7 +426,9 @@ export default {
                     startApplyDate: data.model.regist_apply_start_date.replace(/\//g, '-').replace(' ', 'T')+":00",
                     endApplyDate: data.model.regist_apply_end_date.replace(/\//g, '-').replace(' ', 'T') + ":00",
                     amount: parseInt(data.model.regist_quota),
-                    medicalIds: [data.model.regist_institution_code]
+                    medicalIds: [data.model.regist_institution_code],
+                      //ageLimit: [data.model.age_limit],
+                      //remarks: [data.model.remarks],
                 };
          
                 console.log('setData', setData);
