@@ -364,32 +364,34 @@ export default {
          
 
         },
-        importRegistForm: function ({ state, rootGetters }, data) {
+        importRegistForm: function ({ state, rootGetters }, importData) {
             var setData = [];
-            data.forEach((d) => {
-                setData.push({
-                    vaccineGroupId: d[0],
-                    vaccineIds: d[1],
-                    title: d[2],
-                    distId: d[3],
-                    villageId: d[4],
-                    stationAddr: d[5],
-                    medicalIds: d[6],
-                    implementDate: d[7],
-                    implementStartDate: d[7] + "T" + d[8] + ":00",
-                    implementEndDate: d[7] + "T" + d[9] + ":00",
-
-                    startApplyDate: d[10],
-                    endApplyDate: d[11],
-                    amount: parseInt(d[12]),
-                    //ageLimit: parseInt(d[13]),
-                    //remarks: parseInt(d[14]),
-                });
+            importData.forEach((d) => {
+          
+                if (d[2]!="") {
+                    setData.push({
+                        vaccineGroupId: d[0],
+                        vaccineIds: [d[1]],
+                        title: d[2],
+                        distId: d[3],
+                        villageId: d[4],
+                        stationAddr: d[5],
+                        medicalIds: [d[6]],
+                        implementDate: d[7],
+                        implementStartDate: d[7] + "T" + d[8] + ":00",
+                        implementEndDate: d[7] + "T" + d[9] + ":00",
+                        startApplyDate: d[10],
+                        endApplyDate: d[11],
+                        amount: parseInt(d[12])
+                        //ageLimit: parseInt(d[13]),
+                        //remarks: parseInt(d[14]),
+                    });
+                }
             });
          
 
             return new Promise((reslove, reject) => {
-                console.log('import', data);
+                console.log('import', setData);
                 var result = { data: [], state: state }
                 axios({
                     method: 'post',

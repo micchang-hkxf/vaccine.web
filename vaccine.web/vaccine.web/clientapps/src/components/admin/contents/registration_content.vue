@@ -166,7 +166,7 @@
 
                                             <v-btn color="secondary">
                                                 <v-img src="/download.svg"></v-img>
-                                                <span><a href="%E6%B4%BB%E5%8B%95%E6%89%B9%E6%AC%A1%E6%96%B0%E5%A2%9E.xlsx">下載報名表格式範本</a></span>
+                                                <span><a href="ActivityExample.xlsx">下載報名表格式範本</a></span>
                                             </v-btn>
                                         </div>
 
@@ -1712,6 +1712,11 @@
                         var zz, zzz, mm, villageName;
                         comp.finalData = [];
                         for (j = 4; j < data.length; j++) {
+           
+                            if (!data[j][0]) {
+                                console.log("line "+(j+1)+"is null");
+                                continue;
+                            }
                             vv = fv(data[j][0], v, 'groupName');
                             comp.finalData[k] = data[j];
                             
