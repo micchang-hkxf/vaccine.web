@@ -208,8 +208,8 @@
     export default {
         // router,
         data: () => ({
-            totalCount: 12,
-            itemsPerPage: 2,
+            totalCount: 0,
+            itemsPerPage: 5,
             totalVisible: 4,
             showSelect: false,
             selectType: '',
@@ -332,6 +332,7 @@
                     .then(function (result) {
                         console.log(result);
                         comp.close();
+                        comp.getAudit(1);
                     })
                     .catch(function () {
                         comp.alertMessage = '網站異常，請稍後再試';

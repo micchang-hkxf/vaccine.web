@@ -1017,7 +1017,7 @@
     export default {
         // router,
         data: () => ({
-            totalCount: 12,
+            totalCount: 0,
             itemsPerPage: 5,
             totalVisible: 4,
             showSelect: true,

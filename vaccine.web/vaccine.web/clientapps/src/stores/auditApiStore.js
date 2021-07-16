@@ -36,21 +36,48 @@ export default {
                 commit('user/setAuditTypes', res.data);
             });
         },
-        loadAudit: function ({ state }, params) {
-            return new Promise((resolve) => {
+        loadAudit: function ({ state, rootGetters }, params) {
+            return new Promise((resolve, reject) => {
+                var apiUrl = `${state.apiRoot}api/AuditLog`;
                 var results = { datas: [], state: '', totalCount: 0 };
-                var query = state.desserts;
-                if (params.keyWord) {
-                    query = query.filter((x) => x.affiliation == params.keyWord);
-                }
-                results.totalCount = query.length;
-                
-                var start = (params.page - 1) * params.pageSize;
-                var end = start + params.pageSize;
-                query = query.slice(start, end);
-                results.datas = query;
-                resolve(results);
 
+                var auditTypeFilter = (typeof params.type === 'undefined' || params.type    === '') ? 'all' : params.type;
+                var keyword         =                                        params.keyWord === ''  ?  null : params.keyWord;
+
+                axios.get(apiUrl, {
+                    params: {
+                        auditTypeFilter: auditTypeFilter,       // 報表類別
+                        page: params.page,                      // 頁數
+                        rows: params.pageSize,                  // 每頁筆數
+                        keyword: keyword                        // 關鍵字
+                    },
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    results.totalCount = res.data.totalRows;
+
+                    var datas = [];
+                    res.data.data.forEach((data) => {
+                        datas.push({
+                            id: data.seq,
+                            date: data.createTime.substr(0, 16).replace('T', ' ').replace(/ -/g, '/'),
+                            name: data.uName,
+                            affiliation: data.unit,
+                            type: data.auditTypeName,
+                            title: data.fileName,
+                            count: data.dataCount,
+                            download: data.desc,
+                            fileId: data.fileId
+                        });
+                    });
+
+                    results.datas = datas;
+                    resolve(results);
+                }).catch(ex => {
+                    results.datas = ex;
+                    reject(results);
+                });
             });
         },
         saveAudit: function ({ state, rootGetters }, data) {
@@ -75,24 +102,20 @@ export default {
                 });
             });
         },
-        downloadAudit: function ({ state }, data) {
-            return new Promise(function (resolve, reject) {
-                // TODO:
-                var result = { id: data.id, state: '' };
-                try {
-                    var exist = state.desserts.find(f => f.id == data.id);
+        downloadAudit: function ({ state, rootGetters }, data) {
+            return new Promise((resolve, reject) => {
+                var apiUrl = `${state.apiRoot}api/AuditLog/dl/` + data.fileId;
+                var results = { datas: [], state: '' };
 
-                    if (!exist) {
-                        result.state = 'not found';
-                        resolve(result);
-                        return;
-                    }
-
-                    resolve(result);
-                    alert('下載完成 (' + data.id + ')');
-                } catch (e) {
-                    reject(result);
-                }
+                axios.get(apiUrl,
+                    rootGetters['user/getApiHeader']
+                ).then(res => {
+                    results.datas = res.data;
+                    resolve(results);
+                }).catch(ex => {
+                    results.datas = ex;
+                    reject(results);
+                });
             });
         }
     },
