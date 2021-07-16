@@ -1369,6 +1369,7 @@
                 var comp = this;
                 comp.alertImgSrc = comp.warningIcon;
                 comp.removeRegist(comp.compSelectedItems).then(function (result) {
+                    comp.alertText = '';
                     if (result) {
                         comp.alertTitle = '刪除成功';
                         comp.alertImgSrc = comp.successIcon;
@@ -1379,9 +1380,16 @@
                         comp.alertTitle = '刪除失敗';
                     }
                     comp.$refs.registAlert.open();
-                }).catch(function () {
-
-                    comp.errorMessage = '處理錯誤，請重新嘗試';
+                }).catch(function (e) {
+                    console.log('errcode', e.datas.response.status);
+                    if (e.datas.response.status == 405) {
+                        comp.alertTitle = '無法刪除';
+                        comp.alertText = '無法刪除已有人報名的活動';
+                    } else {
+                        comp.alertTitle = '刪除失敗';
+                        comp.alertText = '處理錯誤，請重新嘗試';
+                    }
+                    
                     comp.errorImgSrc = comp.warningIcon;
                     comp.$refs.registAlert.open();
                  });
@@ -1667,7 +1675,7 @@
                         console.log(r.datas);
                         comp.alertTitle = '連線異常';
                         comp.alertText = '請稍後再試!';
-                        comp.alertImgSrc = comp.successIcon;
+                        comp.alertImgSrc = comp.alertIcon;
                         comp.$refs.warringAlert.open();
                         comp.$bus.$emit('type1_hide4');
                     });
