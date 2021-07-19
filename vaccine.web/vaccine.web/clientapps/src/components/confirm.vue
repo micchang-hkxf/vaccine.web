@@ -32,7 +32,6 @@
                     </div>
                 </template>
 
-
                 <template v-if="$slots['confirm-left-btn-text']">
                     <div class="d-flex justify-center">
                         <v-row>
@@ -53,11 +52,11 @@
                                        @click="rightBtnAction">
                                     <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
 
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                    </div>
-                </template>
+                    </v-btn>
+                </v-col>
+            </v-row>
+        </div>
+    </template>
 
 
             </v-card>

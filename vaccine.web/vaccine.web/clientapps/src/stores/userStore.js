@@ -8,7 +8,7 @@ export default {
   
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
-                console.log(state);
+                //console.log(state);
                 axios({
                     method: 'get',
                     url: `${state.apiRoot}api/User/ReGetInfo?api-version=1.0`,
@@ -31,6 +31,10 @@ export default {
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
                 console.log(state);
+
+                // 清除
+                rootGetters['user/clear'];
+
                 axios({
                     method: 'delete',
                     url: `${state.apiRoot}api/User/Login?api-version=1.0`,
@@ -62,8 +66,24 @@ export default {
         getToken: () => {
             return window.sessionStorage.getItem('x_token');
         },
+        getApiHeader: () => {
+            return {
+                headers: {
+                    'x-token': window.sessionStorage.getItem('x_token')
+                }
+            } ;
+        },
         getZones: () => {
             return JSON.parse(window.sessionStorage.getItem('zones'));
+        },
+        getVaccines: () => {
+            return JSON.parse(window.sessionStorage.getItem('vaccines'));
+        },
+        getMedicals: () => {
+            return JSON.parse(window.sessionStorage.getItem('medicals'));
+        },
+        getAuditTypes: () => {
+            return JSON.parse(window.sessionStorage.getItem('auditTypes'));
         },
         clear: () => {
             return window.sessionStorage.clear();
@@ -78,6 +98,15 @@ export default {
         },
         setZones: (state, zones) => {
             window.sessionStorage.setItem('zones', JSON.stringify(zones));
+        },
+        setVaccines: (state, vaccines) => {
+            window.sessionStorage.setItem('vaccines', JSON.stringify(vaccines));
+        },
+        setMedicals: (state, medicals) => {
+            window.sessionStorage.setItem('medicals', JSON.stringify(medicals));
+        },
+        setAuditTypes: (state, auditTypes) => {
+            window.sessionStorage.setItem('auditTypes', JSON.stringify(auditTypes));
         }
     },
     modules: {

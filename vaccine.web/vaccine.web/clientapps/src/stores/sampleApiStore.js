@@ -5,7 +5,7 @@ export default {
     namespaced: true,
     actions: {
         login: function ({ state, commit, getters }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/user/login`;
                 var results = { datas: [], state: '', totalCount: 0 };
                 axios.post(apiUrl, {
@@ -21,7 +21,7 @@ export default {
                     }).then(res => {
                         commit('sample/saveToken', '123456');
                         results.datas = res.data;
-                        reslove(results);
+                        resolve(results);
                     }).catch(ex => {
                         //狀態處理
                         commit('sample/saveToken', '123456');
@@ -32,7 +32,7 @@ export default {
             });
         },
         getUsers: function ({ state }, params) {
-            return new Promise((reslove, reject) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/user`;
                 var results = { datas: [], state: '', totalCount: 0, page: 0, rows: 0 };
                 axios.get(apiUrl, {
@@ -46,7 +46,7 @@ export default {
                     results.totalCount = res.totalRows;
                     results.page = res.page;
                     results.page = res.rows;
-                    reslove(results);
+                    resolve(results);
                 }).catch(ex => {
                     //狀態處理
                     results.state = 'error';

@@ -1058,6 +1058,14 @@
         padding: 0;
     }
 
+    .dialogForgetSteps .v-card__actions {
+        padding: 0;
+    }
+
+    .dialogForgetSteps .v-stepper__step__step {
+        background: #9D99CE 0% 0% no-repeat padding-box !important;
+        opacity: 1 !important;
+    }
     /* Extra small devices (portrait phones, less than 576px) */
     @media (max-width: 575.98px) {
         body {

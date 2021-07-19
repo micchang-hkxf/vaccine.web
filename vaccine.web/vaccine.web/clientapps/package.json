@@ -19,12 +19,14 @@
     "roboto-fontface": "*",
     "vue": "^2.6.11",
     "vue-axios": "^3.2.4",
+    "vue-excel-xlsx": "^1.0.11",
     "vue-i18n": "^8.22.2",
     "vue-moment": "^4.1.0",
     "vue-momentjs": "^1.0.0",
     "vue-router": "^3.4.9",
     "vuetify": "^2.2.11",
-    "vuex": "^3.5.1"
+    "vuex": "^3.5.1",
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@mdi/font": "^3.9.97",

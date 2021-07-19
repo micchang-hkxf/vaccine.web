@@ -207,11 +207,11 @@
                 switch (result.action) {
                     case 'save':
                         this.$refs.modifyViewer.open();
-                        console.log('save', result)
+                        //console.log('save', result)
                         break;
 
                     case 'cancel':
-                        console.log('cancel', result)
+                        //console.log('cancel', result)
                         break;
                 }
             },
@@ -261,7 +261,7 @@
 
                 var comp = this;
                 comp.getUserInfoData().then(function (result) {
-                    console.log(result);
+                    //console.log(result);
                     comp.user = result.datas.data;
                 }).catch(function () {
                     window.location.href = "/login";

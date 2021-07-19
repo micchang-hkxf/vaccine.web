@@ -1,49 +1,24 @@
-﻿import axios from 'axios';
-import siteConfig from "project/site.config"
+﻿import siteConfig from "project/site.config"
+import { Promise } from "core-js";
 
 
 export default {
     namespaced: true,
     actions: {
-        loadRegistData: function ({ state,rootGetters}, params) {
-            return new Promise((reslove, reject) => {
-                var results = { datas: [], state: '', totalCount: 0 },
-                    testMode = true;
-        
-                if (testMode) {
-                    var query = state.desserts;
-                    if (params.keyWord) {
-                        query = query.filter((x) => x.identity.slice(6, 10) == params.keyWord);
-                    }
-                } else {
-                    var apiUrl = `${state.apiRoot}api/User?api-version=1.0`;//test other api
-                    axios.get(apiUrl, {
-                        page: 1,
-                        rows: 10,
-                    }, {
-                        headers: {
-                            "X-Token": rootGetters['user/getToken'],
-                        }
-                     }).then(res => {
-                         results.datas = res.data;
-                         console.log(res.data);
-                            reslove(results);
-                     }).catch(ex => {
-                            //狀態處理
-                
-                            results.state = 'error';
-                            results.datas = ex;
-                            reject(results);
-                     });
+        loadRegistData: function ({ state }, params) {
+            return new Promise((resolve) => {
+                var results = { datas: [], state: '', totalCount: 0 };
+                var query = state.desserts;
+                if (params.keyWord) {
+                    query = query.filter((x) => x.identity.slice(6,10) == params.keyWord);
                 }
-          
                 results.totalCount = query.length;
                 
                 var start = (params.page - 1) * params.pageSize;
                 var end = start + params.pageSize;
                 query = query.slice(start, end);
                 results.datas = query;
-                reslove(results);
+                resolve(results);
 
             });
         },

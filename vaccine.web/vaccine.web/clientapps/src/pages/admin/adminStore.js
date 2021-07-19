@@ -6,8 +6,8 @@ import userStore from "stores/userStore"
 import usersStore from "stores/admin/usersApiStore"
 import registeredStore from "stores/registeredStore"
 //import configStore from "stores/configStore"
-import registrationStore from "stores/registrationStore"
-import auditStore from "stores/auditStore"
+import registrationStore from "stores/registrationApiStore"
+import auditStore from "stores/auditApiStore"
 
 export default new Vuex.Store({
     actions: {

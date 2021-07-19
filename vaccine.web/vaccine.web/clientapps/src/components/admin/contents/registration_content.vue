@@ -1,5 +1,5 @@
 ﻿<template>
-    <app-layout>
+    <app-layout class="registration-list">
         <template v-slot:navigation>
             <app-menu></app-menu>
         </template>
@@ -8,89 +8,84 @@
 
         </template>
         <template v-slot:app-content>
+            <com-loading ref-key="type1"></com-loading>
             <div id="app">
                 <v-card style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
-                    <com-table ref-key="table" :headers="getHeaders" :items="items" :total-count="totalCount"
+                    <com-table ref="table" ref-key="table" :headers="getHeaders" :items="items" :itemKey="itemKey" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               :change-page="changePage"  :row-click="handleRowClick"
+                               :change-page="changePage" :row-click="handleRowClick"
                                style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
-                        <!--<template v-slot:item.date="{item}">
-            <div>{{item}}</div>
-        </template>-->
-                        <template v-slot:item.quota="{item}">
-                            <div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>
+
+                        <template v-slot:item.regist_quota="{item}">
+                            <!--<div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>-->
+                            <div><span :class="item.regist_unpassed >= item.regist_quota ? 'color-red' : ''">{{item.regist_unpassed}}</span>/<span style="color:#626781">{{item.regist_quota}}</span></div>
                         </template>
                         <template v-slot:search-bar>
                             <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
                                 <v-row>
-                                    <v-col cols="2">
+                                    <v-col class="d-flex justify-content-end" cols="9">
                                         <v-select v-model="selectVaccine"
                                                   :items="getVaccines"
                                                   item-text="name"
-                                                  item-value="name"
+                                                  item-value="id"
                                                   placeholder="所有疫苗類型"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
                                                   dense
                                                   clearable
-                                                  style="margin-right: 10px;"
+                                                  style="margin-right: 10px; width: 230px;"
                                                   class="search-filter"
                                                   return-object>
                                         </v-select>
-                                    </v-col>
-                                    <v-col cols="2">
                                         <v-select v-model="selectDistrict"
                                                   :items="getDistricts"
                                                   item-text="name"
-                                                  item-value="name"
+                                                  item-value="id"
                                                   placeholder="全部行政區"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
                                                   dense
                                                   clearable
-                                                  style="margin-right: 10px;"
+                                                  style="margin-right: 10px; width: 210px;"
                                                   class="search-filter"
-                                                  return-object>
+                                                  return-object
+                                                  @change="loadVillages">
                                         </v-select>
-                                    </v-col>
-
-                                    <v-col cols="2">
                                         <v-select v-model="selectVillage"
                                                   :items="getVillages"
                                                   item-text="name"
-                                                  item-value="name"
+                                                  item-value="id"
                                                   placeholder="全部村里"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
                                                   dense
                                                   clearable
-                                                  style="margin-right: 10px;"
+                                                  style="margin-right: 10px; width: 210px;"
                                                   class="search-filter"
-                                                  return-object>
+                                                  return-object
+                                                  @change="loadMedicalsByVillage">
                                         </v-select>
-                                    </v-col>
-                                    <v-col cols="2">
                                         <v-select v-model="selectInstitution"
                                                   :items="getInstitutions"
                                                   item-text="name"
-                                                  item-value="name"
+                                                  item-value="id"
                                                   placeholder="全部醫療院所"
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
                                                   dense
                                                   clearable
-                                                  style="margin-right: 10px;"
+                                                  style="margin-right: 10px; width: 240px;"
                                                   class="search-filter"
                                                   return-object>
                                         </v-select>
-                                    </v-col>
-                                    <v-col cols="2">
+
                                         <v-text-field v-model="keyWord" placeholder="標題關鍵字" outlined dense clearable></v-text-field>
+
+                                        <v-btn icon color="#626781" :ripple="false"
+                                               @click="getRegistForm(1)">
+                                            <v-icon>fas fa-search</v-icon>
+                                        </v-btn>
                                     </v-col>
-                                    <v-btn icon color="#626781" style="top:5px;" :ripple="false"
-                                           @click="getRegistForm(1)">
-                                        <v-icon>fas fa-search</v-icon>
-                                    </v-btn>
                                 </v-row>
                             </div>
 
@@ -136,7 +131,7 @@
                                 </v-list>
                             </v-menu>
 
-                            <editor ref="registEditor" ref-key="two" width="60%" :title="title" :action="formAction"></editor>
+
 
                             <com-dialog ref="fileViewer" ref-key="two" width="25%">
                                 <template v-slot:toolbar>
@@ -157,17 +152,21 @@
                                         </div>
 
                                         <div class="file-btn-container">
-                                            <v-btn color="secondary">
+                                            <v-btn color="secondary" @click="onUploadClick">
                                                 <img src="/upload.svg">
-
                                                 <span class="file-btn-text">上傳報名表檔案</span>
                                             </v-btn>
-
+                                            <input ref="excelUploader"
+                                                   type="file"
+                                                   style="display:none"
+                                                   accept=".xlsx,xls"
+                                                   @change="onFileChanged"
+                                                   >
                                             <v-spacer></v-spacer>
 
                                             <v-btn color="secondary">
                                                 <v-img src="/download.svg"></v-img>
-                                                <span>下載報名表格式範本</span>
+                                                <span><a href="ActivityExample.xlsx">下載報名表格式範本</a></span>
                                             </v-btn>
                                         </div>
 
@@ -182,8 +181,8 @@
                             </com-dialog>
 
 
-
-
+                            <!--新增-->
+                            <editor ref="registNewEditor" ref-key="two" width="60%" :title="title" :saveBtnName="saveBtnName" :action="formAction"></editor>
                             <com-dialog ref="registViewer" ref-key="two" width="60%">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
@@ -195,145 +194,7 @@
                                 <template v-slot:content>
                                     點選「確定」後本報名表將立即生效，請再次確認內容無誤。
                                     <v-divider></v-divider>
-                                    <div>
-                                        {{result}}
-                                        <v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>接種類型</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_type.name}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>
-                                        <v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>新冠肺炎疫苗廠牌</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_brand.name}}</v-list-item-subtitle>
-
-                                            </v-list-item-content>
-                                        </v-list-item>
-
-                                        <v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>場次標題</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_title}}</v-list-item-subtitle>
-
-                                            </v-list-item-content>
-                                        </v-list-item>
-
-                                        <v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>設站行政區</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_district.name}}</v-list-item-subtitle>
-
-                                            </v-list-item-content>
-                                        </v-list-item>
-
-                                        <v-list-item two-line>
-                                            <v-list-item-content>
-
-                                                <v-list-item-title>設站村里</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_village.name}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>
-
-                                        <v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>設站地點</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_place}}</v-list-item-subtitle>
-
-                                            </v-list-item-content>
-                                        </v-list-item>
-
-                                        <v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>醫療院所</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_institution.name}}</v-list-item-subtitle>
-
-                                            </v-list-item-content>
-                                        </v-list-item>
-
-                                        <v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>機構代碼</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_institution_code}}</v-list-item-subtitle>
-
-                                            </v-list-item-content>
-                                        </v-list-item>
-
-                                        <v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>機構所在行政區</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_institution_district}}</v-list-item-subtitle>
-
-                                            </v-list-item-content>
-                                        </v-list-item>
-
-                                        <v-divider></v-divider>
-                                        <v-list-item two-line>
-                                            <v-list-item-content>
-
-                                                <v-list-item-title>
-                                                    設站時間
-
-                                                </v-list-item-title>
-                                                <v-list-item-subtitle>
-                                                    {{result.model.regist_date}} ,
-                                                    {{result.model.regist_start_time}}-{{result.model.regist_end_time}}
-
-                                                </v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>
-                                        <v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>事先開放報名時間</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_in_advance}}</v-list-item-subtitle>
-
-                                            </v-list-item-content>
-                                        </v-list-item>
-                                        <v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
-
-                                            </v-list-item-content>
-                                        </v-list-item>
-                                        <v-divider></v-divider>
-
-                                        <v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>報名名額上限</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_quota}}</v-list-item-subtitle>
-
-                                            </v-list-item-content>
-                                        </v-list-item>
-
-                                        <v-divider></v-divider>
-                                    </div>
-
-                                </template>
-                                <template v-slot:action>
-
-                                    <v-spacer></v-spacer>
-                                    <v-btn outlined :ripple="false" @click="backToEdit"><span style="color:#626781;">修改</span></v-btn>
-                                    <v-btn @click="saveRegist" color="primary" :ripple="false">確定</v-btn>
-                                </template>
-                            </com-dialog>
-
-
-
-                            <editor ref="registEdit" ref-key="two" width="60%" :title="title" :action="editFormAction"></editor>
-                            <com-dialog ref="registEditViewer" ref-key="two" width="60%">
-                                <template v-slot:toolbar>
-                                    {{viewerTitle}}
-                                    <v-spacer></v-spacer>
-                                    <v-btn icon @click.stop="editClose" :ripple="false">
-                                        <v-icon color="white">fas fa-times</v-icon>
-                                    </v-btn>
-                                </template>
-                                <template v-slot:content>
-                                    點選「確定」後本報名表將立即生效，請再次確認內容無誤56324。
-                                    <v-divider></v-divider>
-                                    <div>
-                                        {{result}}
+                                    <div v-if="result.model !=null">
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>接種類型</v-list-item-title>
@@ -399,7 +260,7 @@
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>機構所在行政區</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_institution_district}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.regist_instution_district_name}}</v-list-item-subtitle>
 
                                             </v-list-item-content>
                                         </v-list-item>
@@ -413,33 +274,50 @@
 
                                                 </v-list-item-title>
                                                 <v-list-item-subtitle>
-                                                    {{result.model.regist_date}} ,
-                                                    {{result.model.regist_start_time}}-{{result.model.regist_end_time}}
+                                                    {{result.model.regist_station_date}} ,
+                                                    {{result.model.regist_station_start_time}}-{{result.model.regist_station_end_time}}
 
                                                 </v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>事先開放報名時間</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_in_advance}}</v-list-item-subtitle>
-
+                                                <v-list-item-title>事先開放報名開始時間</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_apply_start_date}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
-
+                                                <v-list-item-title>事先開放報名結束時間</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_apply_end_date}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
+                                        <!--<v-list-item two-line>
+                                                <v-list-item-content>
+                                                    <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                                    <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+
+                                                </v-list-item-content>
+                                            </v-list-item>-->
                                         <v-divider></v-divider>
 
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>報名名額上限</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_quota}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                        <v-list-item two-line v-if="result.model.age_limit >0">
+                                            <v-list-item-content>
+                                                <v-list-item-title>報名者最低年齡限制</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.age_limit}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
 
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>備註</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
 
@@ -451,16 +329,162 @@
 
                                     <v-spacer></v-spacer>
                                     <v-btn outlined :ripple="false" @click="backToEdit"><span style="color:#626781;">修改</span></v-btn>
+                                    <v-btn @click="saveRegist" color="primary" :ripple="false">確定</v-btn>
+                                </template>
+                            </com-dialog>
+
+
+                            <!--編輯-->
+                            <editor ref="registEdit" ref-key="two" width="60%" :title="title" :saveBtnName="saveBtnName" :action="editFormAction"></editor>
+                            <com-dialog ref="registEditViewer" ref-key="two" width="60%">
+                                <template v-slot:toolbar>
+                                    {{viewerTitle}}
+                                    <v-spacer></v-spacer>
+                                    <v-btn icon @click.stop="editClose" :ripple="false">
+                                        <v-icon color="white">fas fa-times</v-icon>
+                                    </v-btn>
+                                </template>
+                                <template v-slot:content>
+                                    點選「確定」後本報名表將立即生效，請再次確認內容無誤。
+                                    <v-divider></v-divider>
+                                    <div v-if="result.model !=null">
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>接種類型</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_type_name}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>新冠肺炎疫苗廠牌</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
+
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>場次標題</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_title}}</v-list-item-subtitle>
+
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>設站行政區</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_district_name}}</v-list-item-subtitle>
+
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+
+                                                <v-list-item-title>設站村里</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_village_name}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>設站地點</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_place}}</v-list-item-subtitle>
+
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>醫療院所</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_institution_name}}</v-list-item-subtitle>
+
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>機構代碼</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_institution_code}}</v-list-item-subtitle>
+
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>機構所在行政區</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_instution_district_name}}</v-list-item-subtitle>
+
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-divider></v-divider>
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+
+                                                <v-list-item-title>
+                                                    設站時間
+
+                                                </v-list-item-title>
+                                                <v-list-item-subtitle>
+                                                    {{result.model.regist_station_date}} ,
+                                                    {{result.model.regist_station_start_time}}-{{result.model.regist_station_end_time}}
+
+                                                </v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>事先開放報名時間</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_apply_start_date}}</v-list-item-subtitle>
+
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                        <!--<v-list-item two-line>
+                                                <v-list-item-content>
+                                                    <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                                    <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+
+                                                </v-list-item-content>
+                                            </v-list-item>-->
+                                        <v-divider></v-divider>
+
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>報名名額上限</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_quota}}</v-list-item-subtitle>
+
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                        <v-list-item two-line v-if="result.model.age_limit >0">
+                                            <v-list-item-content>
+                                                <v-list-item-title>報名者最低年齡限制</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.age_limit}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>備註</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                        <v-divider></v-divider>
+                                    </div>
+
+                                </template>
+                                <template v-slot:action>
+
+                                    <v-spacer></v-spacer>
+                                    <v-btn outlined :ripple="false" @click="backToEdit2"><span style="color:#626781;">修改</span></v-btn>
                                     <v-btn @click="editSaveRegist" color="primary" :ripple="false">確定</v-btn>
                                 </template>
                             </com-dialog>
 
 
-
-
                             <com-confirm ref="registAlert" ref-key="confirm" :right-click="alertRightClick">
                                 <template v-slot:confirm-image>
-                                    <v-img src="/alert_success.svg"></v-img>
+                                    <v-img v-bind:src="alertImgSrc"></v-img>
                                 </template>
                                 <template v-slot:confirm-title>
                                     {{alertTitle}}
@@ -511,9 +535,31 @@
                                     確認
                                 </template>
                             </com-confirm>
+                            <com-confirm ref="warringAlert" ref-key="warringAlert" :right-click="closeRightClick">
+                                <template v-slot:confirm-image>
+                                    <v-img src="/alert_warning.svg"></v-img>
+                                </template>
+                                <template v-slot:confirm-title>
+                                    <span style="color:#736DB9">{{alertTitle}}</span>
 
+                                </template>
+                                <template v-slot:confirm-text>
+                                    <span style="color:#626781">{{alertText}}</span>
+                                </template>
 
+                                <template v-slot:confirm-right-btn-text>
+                                    確認
+                                </template>
+                            </com-confirm>
 
+                        </template>
+
+                        <template v-slot:item.regist_station_date="{item}">
+                            {{item.regist_station_date}} {{item.regist_station_start_time}} - {{item.regist_station_end_time}}
+                        </template>
+
+                        <template v-slot:item.regist_apply_start_date="{item}">
+                            {{item.regist_apply_start_date}} - {{item.regist_apply_end_date}}
                         </template>
 
                         <template v-slot:item.modify="{item}">
@@ -524,7 +570,7 @@
                                     </v-btn>
                                 </template>
                                 <v-list>
-                                    <v-list-item @click.stop="viewitem(item)"  class="modify-list-item">
+                                    <v-list-item @click.stop="detailItem(item)" class="modify-list-item">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
                                                 <img src="/view.svg">
@@ -547,13 +593,6 @@
                                                 <img src="/trash.svg">
                                             </v-btn>
                                             <span class="modify-btn-text">刪除</span>
-                                        </v-list-item-action-text>
-                                    </v-list-item>
-                                    <v-list-item @click.stop="detailItem(item)">
-                                        <v-list-item-action-text>
-                                            <v-btn icon dense>
-                                                <v-icon small>far fa-edit</v-icon>
-                                            </v-btn>場次內容
                                         </v-list-item-action-text>
                                     </v-list-item>
                                     <v-list-item @click.stop="dowloadAgreeItem(item)">
@@ -613,8 +652,9 @@
                             <div class="detail-title-desc">
                                 <div>設站時間：{{detailStationTime}}</div>
                                 <div>報名開放時間：{{detailRegistrationTime}}</div>
-                                <div>報名名額：<span :class="detailCntQuota >= detailTotalQuota ? 'color-red' : ''">{{detailCntQuota}}</span>/<span style="color:#626781">{{detailTotalQuota}}</span></div>
                                 <div>承辦醫院：{{detailInstitution}}（{{detailInstutionDistrict}}）</div>
+                                <div>報名名額：<span :class="detailCntQuota >= detailTotalQuota ? 'color-red' : ''">{{detailCntQuota}}</span>/<span style="color:#626781">{{detailTotalQuota}}</span></div>
+                                <div>年齡限制：{{detailAgeLimit}}</div>
                             </div>
                             <hr />
                             <!---->
@@ -635,25 +675,26 @@
                                         <div class="detail-action">
                                             <div class="detail-rebound-info">
                                                 <div>複檢時間：{{detailCheckTime}}</div>
-                                                <div>複檢通過人數：{{detailCheckPassCnt == '0' ? '-' : detailCheckPassCnt}}</div>
+                                                <div>複檢合格人數：{{detailCheckPassCnt == '0' ? '-' : detailCheckPassCnt}}</div>
                                             </div>
                                             <div class="detail-action-btn">
-                                                <v-btn v-on="on" @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
+                                                <!--v-on="on"-->
+                                                <v-btn @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
                                                     <span :style="detailAbnormalCnt > 0 ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
                                                 </v-btn>
-                                                <v-btn v-on="on" color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false" :disabled="lessCheckTime">
                                                     <v-icon left color='white' size="15">
                                                         mdi-arrow-down
                                                     </v-icon>
                                                     <span style="color:white">下載完整接種同意書</span>
                                                 </v-btn>
-                                                <v-btn v-on="on" color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">
                                                     <v-icon left color='white' size="15">
                                                         mdi-arrow-down
                                                     </v-icon>
                                                     <span style="color:white">下載報名清冊</span>
                                                 </v-btn>
-                                                <v-btn v-on="on" color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false" :disabled="lessCheckTime">
                                                     <v-icon left color='white' size="15">
                                                         mdi-arrow-down
                                                     </v-icon>
@@ -675,13 +716,13 @@
 
                                 <template v-slot:item.modify="{item}">
                                     <template>
-                                        <v-btn v-on="on" color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result === '系統異常' ? 'hidden' : ''">
+                                        <v-btn color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result === '系統異常' ? 'hidden' : ''">
                                             <v-icon left color='white' size="15">
                                                 mdi-arrow-down
                                             </v-icon>
                                             <span style="color:white">下載同意書</span>
                                         </v-btn>
-                                        <v-btn v-on="on" color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result !== '系統異常' ? 'hidden' : ''" class="btn-warning">
+                                        <v-btn color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result !== '系統異常' ? 'hidden' : ''" class="btn-warning">
                                             <span style="color:white">人工複檢</span>
                                         </v-btn>
                                     </template>
@@ -759,95 +800,97 @@
         font-weight: 400;
         font-size: 14px;
     }
-
-    .app-content {
+    .registration-list .v-list-item__title {
+        color: #000000 !important;
+    }
+    .registration-list .app-content {
         background-color: #F2F3F7;
     }
 
-    .content-bar {
+    .registration-list .content-bar {
         font-size: 16px;
         /*margin-top: 80px;*/
         margin-left: 0px;
         padding: 0px !important;
     }
 
-    .v-toolbar, .v-card {
+    .registration-list .v-toolbar, .v-card {
         border-radius: 0px !important;
         box-shadow: none !important;
     }
 
-    .v-application .elevation-1 {
+    .registration-list .v-application .elevation-1 {
         box-shadow: none !important;
     }
 
 
-    .v-list-item__title {
+    registration-list .v-list-item__title {
         color: lightgray;
         font-size: 14px;
     }
 
-    .theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
+    .registration-list .theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
         color: rgba(0, 0, 0, 0.6);
         background: rgba(98, 103, 129, 0.06);
     }
 
-    .file-text {
+    .registration-list .file-text {
         color: #626781;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
     }
 
-    .file-text-warn {
+    .registration-list .file-text-warn {
         color: #F0524B;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
     }
 
 
-    .file-btn-container {
+    .registration-list .file-btn-container {
         display: flex;
         justify-content: space-around;
         margin-top: 5px;
         margin-bottom: 10px;
     }
 
-    .file-btn-text {
+    .registration-list .file-btn-text {
         padding-left: 10px;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
-        color:#ffffff;
+        color: #ffffff;
     }
 
-    .modify-btn-text {
+    .registration-list .modify-btn-text {
         color: #626781;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
     }
 
-    .modify-list-item {
+    .registration-list .modify-list-item {
         min-height: 20px !important;
     }
 
-    .action-option-text {
+    .registration-list .action-option-text {
         color: #626781;
     }
 
-    .detail-title {
+    .registration-list .detail-title {
         font: normal normal normal 24px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #736DB9;
         text-align: left;
         opacity: 1;
     }
-    .add-btn-text {
+    .registration-list .add-btn-text {
         color: white;
         padding-left: 5px;
     }
 
-    .detail-title span {
+    .registration-list .detail-title span {
         font: normal normal normal 24px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #F0524B;
         margin: 0 10px;
     }
 
-    .detail-sub-title {
+    .registration-list .detail-sub-title {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #626781;
@@ -856,7 +899,7 @@
         margin: 4px 0;
     }
 
-    .detail-title-desc {
+    .registration-list .detail-title-desc {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #626781;
@@ -865,7 +908,7 @@
         margin: 23px 0 18px 0;
     }
 
-    .detail-rebound-info {
+    .registration-list .detail-rebound-info {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #626781;
@@ -876,19 +919,19 @@
         display: inline-block;
     }
 
-    .detail-search-input {
+    .registration-list .detail-search-input {
         width: 220px;
     }
 
-    .detail-action {
+    .registration-list .detail-action {
         display: inline-flex;
     }
 
-    .detail-action .v-btn {
+    .registration-list .detail-action .v-btn {
         margin: 3px 5px;
     }
 
-    .detail-result-abnormal {
+    .registration-list .detail-result-abnormal {
         /*font: normal normal normal 16px/24px Noto Sans T Chinese;*/
         letter-spacing: 0px;
         color: #F0524B;
@@ -896,34 +939,34 @@
         opacity: 1;
     }
 
-    .detail-search-block {
+    .registration-list .detail-search-block {
         white-space: nowrap;
         display: inline-flex;
     }
 
-    .item-disabled {
+    .registration-list .item-disabled {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
-        color: #62678166;
+        color: #626781;
         text-align: center;
         opacity: 1;
     }
 
-    .hidden {
+    .registration-list .hidden {
         display: none !important;
     }
 
-    .btn-warning {
+    .registration-list .btn-warning {
         background: #FCBF5E 0% 0% no-repeat padding-box !important;
         border-radius: 4px;
         opacity: 1;
     }
 
-    .color-red {
+    .registration-list .color-red {
         color: #F0524B;
     }
 
-    .double-check .subtitle {
+    .registration-list .double-check .subtitle {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #626781;
@@ -931,7 +974,7 @@
         opacity: 1;
     }
 
-    .double-check label {
+    .registration-list .double-check label {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #62678166;
@@ -939,15 +982,15 @@
         opacity: 1;
     }
 
-    .double-check hr {
+    .registration-list .double-check hr {
         margin: 24px 0;
     }
 
-    .double-check .row {
+    .registration-list .double-check .row {
         margin-bottom: 16px !important;
     }
 
-    .v-btn--outlined {
+    .registration-list .v-btn--outlined {
         border: thin solid rgba(98,103, 129,0.2) !important;
     }
 
@@ -997,12 +1040,14 @@
     import editor from 'components/admin/forms/regist_editor'
     import comDialog from 'components/dialog'
     import comConfirm from 'components/confirm'
+    import comLoading from 'components/loading'
     import { mapActions, mapGetters } from 'vuex'
+    import XLSX from 'xlsx'
     export default {
         // router,
         data: () => ({
-            totalCount: 12,
-            itemsPerPage: 2,
+            totalCount: 0,
+            itemsPerPage: 5,
             totalVisible: 4,
             showSelect: true,
             selectVaccine: '',
@@ -1010,15 +1055,18 @@
             selectVillage: '',
             selectInstitution: '',
             keyWord: '',
-            items: [],
+            itemKey: 'regist_id',
+            items: [],  
+            registId:[],
             title: '',
-            model: {
-                regist_title: '',
-                regist_type: '',
-                regist_district: '',
-                regist_village: '',
-                regist_date: new Date().toISOString().substr(0, 10),
-            },
+            saveBtnName:'',
+            //model: {
+            //    regist_title: '',
+            //    regist_type: '',
+            //    regist_district: '',
+            //    regist_village: '',
+            //    regist_date: new Date().toISOString().substr(0, 10),
+            //},
             result: {},
             viewerTitle:'',
             alertTitle: '',
@@ -1035,6 +1083,7 @@
             detailRegistrationTime: '',
             detailCntQuota: '',
             detailTotalQuota: '',
+            detailAgeLimit: '',
             detailItems: [],
             detailTotalCount: 6,
             detailItemsPerPage: 2,
@@ -1049,6 +1098,10 @@
             artificialName: '',
             artificialBirthday: '',
             artificialIdentity: '',
+            alertImgSrc:"",
+            successIcon: '/alert_success.svg',
+            warningIcon: '/alert_warning.svg',
+            alertIcon: '/alert_warning.svg',
             artificialResult: '',
             artificialOptions: [
                 { state: '複檢合格', id: 'pass' },
@@ -1057,37 +1110,54 @@
             rules: {
                 required: v => !!v || '必填'
             },
-            registModel: {
+            model: {
+                regist_id: '0',
+                regist_create_date: new Date().toISOString().substr(0, 10).replace(/-/g, '/'),///'2021/04/01',
                 regist_title: '',
-                regist_type: '',
+                regist_type: 0,
+                regist_type_name: '',
                 regist_brand: '',
+                regist_brand_name: '',
                 regist_district: '',
+                regist_district_name: '',
                 regist_village: '',
+                regist_village_name: '',
                 regist_place: '',
                 regist_institution: '',
-                regist_institution_code: '',
-                regist_institution_district: '',
-                regist_date: new Date().toISOString().substr(0, 10),
-                regist_start_time: '08:00',
-                regist_end_time: '12:00',
-                regist_review_date: '',
-                regist_in_advance: '',
-                regist_quota: '無限制'
+                regist_institution_name: '',
+                regist_instution_district: '',
+                regist_instution_district_name: '',
+                regist_station_date: '',
+                regist_station_start_time: '',
+                regist_station_end_time: '',
+                regist_apply_start_date: '',
+                regist_apply_end_date: '',
+                regist_review_date: '',///checkTime              
+                regist_qualified: 423,
+                regist_quota: 500,
+                regist_unpassed: 45,
+                uploadFile: null,
+                finalData:[]
             },
         }),
         computed: {
-            ...mapGetters('registration', [ 'getHeaders', 'getVaccines','getDistricts','getVillages','getInstitutions', 'getRegistrationHeaders']),
+            ...mapGetters('registration', ['getHeaders', 'getVaccines', 'getDistricts', 'getVillages', 'getInstitutions', 'getRegistrationHeaders']),
         },
         props: {
 
         },
         created: function () {
-            var page = 1;
-            this.getRegistForm(page);
+            this.loadVaccines();
+            this.loadDists();
+            //this.loadMedicals();
+            this.getRegistForm(1);
+ 
+            
         },
         methods: {
-            ...mapActions('registration', [ 'loadRegistForm','loadDetailForm','getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile','execCheck',
-                'doubleCheck', 'registForm','updateRegist']),
+            ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadMedicals', 'loadMedicalsByVillage',
+                                         'loadRegistForm', 'loadDetailForm', 'getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile', 'execCheck',
+                                         'doubleCheck', 'registForm', 'updateRegist', 'removeRegist','importRegistForm']),
             getRegistForm: function (page) {
                 var params = {
                     vaccine: this.selectVaccine,
@@ -1113,6 +1183,7 @@
                 this.getRegistForm(pager.page);
             },
             deleteSelected: function (items) {
+
                 this.compSelectedItems.splice(0);
                 items.forEach((x) => this.compSelectedItems.push(x));
                 this.$forceUpdate();
@@ -1122,62 +1193,83 @@
             },
             manualInput: function () {
                 this.title = '建立報名表';
+                this.saveBtnName = "建立報名表";
                 this.viewerTitle = '確認新增報名資訊';
-                this.$refs.registEditor.create();
+                this.$refs.registNewEditor.create(this.model);
+                this.$refs.registNewEditor.reset();
                 console.log('manualInput')
             },
             editItem: function (item) {
+                  //regist_type=0會有問題,無法設定v-select值??? vue bug??
+ 
                 //Object.assign(this.model, item);
-                var model = {
-                    regist_title: item.title,
-                    regist_type_name: item.type,
-                    regist_type: item.type_code,//item.type,
-                    regist_brand_name: item.brand,
-                    regist_brand: item.brand_code,
-                    regist_district_name: item.district,
-                    regist_district: item.district_code,
-                    regist_village_name: item.village,
-                    regist_village: item.village_code,
-                    regist_place: item.place,
-                    regist_institution_name: item.institution,
-                    regist_institution: item.institution_code,                 
-                    regist_institution_district: item.instutionDistrict,
-                    regist_date: item.date,
-                    regist_start_time: '08:00',
-                    regist_end_time: '12:00',
-                    regist_review_date: item.checkTime,
-                    regist_in_advance: item.in_advance,
-                    regist_quota: item.totalQuota
-                }
-                this.title = '編輯報名表';
+                this.saveBtnName = "儲存";
+                this.title = '編輯報名表2';
                 this.viewerTitle = '編輯報名資訊確認';
-                //this.$refs.registEditor.open(model);
-                this.$refs.registEdit.open(model);
+                this.$refs.registEdit.open(item);
                 console.log('edit', item);
+    
+                this.loadMedicalsByVillage({ "name": item.regist_village_name});
+             
             },
             fileImport: function () {
                 this.$refs.fileViewer.open();
                 console.log('fileImport')
             },
             formAction: function (result) {
-                Object.assign(this.result, result);
-                switch (result.action) {
-                    case 'save':
-                        this.$refs.registViewer.open();
-                        console.log('save', result)
-                        break;
+                var errMsg=""
+                if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) >=
+                    Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_end_time)) {
+                    errMsg = "(開始施打時間)必須早於(結束施打時間)";
+                }
 
-                    case 'cancel':
-                        console.log('cancel', result)
-                        break;
+                if (Date.parse(result.model.regist_apply_start_date) > Date.parse(result.model.regist_apply_end_date)) {
+                    errMsg= "(事先開放報名開始時間)必須早於(事先開放報名結束時間)";
+                }
+    
+                if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) <
+                    Date.parse(result.model.regist_apply_end_date)) {
+                    errMsg= "(開放報名結束時間)必須早於(開始施打時間)";
+                }
+
+                if (errMsg != "") {
+                    this.alertTitle = '設定錯誤';
+                    this.alertText = errMsg;
+                    this.$refs.fileViewer.close();
+                    this.$refs.warringAlert.open();
+                } else {
+                     //mappping
+                    result.model.regist_type_name = result.model.regist_type.name;
+                    result.model.regist_brand_name = result.model.regist_brand.name;
+                    result.model.regist_village_name = result.model.regist_village.name;
+                    result.model.regist_institution_name = result.model.regist_institution.name;
+                    result.model.regist_institution_code = result.model.regist_institution.id;
+                    result.model.regist_instution_district_name = result.model.regist_institution.from;
+                    result.model.regist_district_name = result.model.regist_district.name;
+
+                    Object.assign(this.result, result);
+ 
+   
+                    switch (result.action) {
+                        case 'save':
+                            this.$refs.registViewer.open();
+                           
+                            console.log('save2', result)
+                            break;
+
+                        case 'cancel':
+                            console.log('cancel', result)
+                            break;
+                    }
                 }
             },
             editFormAction: function (result) {
+    
                 Object.assign(this.result, result);
                 switch (result.action) {
                     case 'save':
                         this.$refs.registEditViewer.open();
-                        console.log('save', result)
+                        console.log('save1', result)
                         break;
 
                     case 'cancel':
@@ -1191,29 +1283,72 @@
             editClose: function () {
                 this.$refs.registEditViewer.close();
             },
-
             saveRegist: function () {
-                console.log('result', this.result)
-                this.registForm(this.result);
-                this.alertTitle = '110年五月份新冠疫苗施打預先報名';
-                this.alertText = '成功建立報名表';
-               
-                
+                //console.log('result', this.result)
+        
                 this.$refs.registViewer.close();
-                this.$refs.registAlert.open();
+                this.$refs.registNewEditor.close();
+                this.$bus.$emit('type1_show4', "資料處理中...");
+                var comp = this;
+                this.registForm(comp.result).then(function (ret) {
+                    console.log(ret.datas);
+                    comp.$bus.$emit('type1_hide4');
+                    comp.alertTitle = '110年五月份新冠疫苗施打預先報名';
+                    comp.alertText = '成功建立報名表';
+                    comp.alertImgSrc = comp.successIcon;
+                    comp.$refs.registAlert.open();
+                    comp.getRegistForm(1);
+                }).catch(function (r) {
+                    console.log(r.datas);
+                    comp.alertTitle = '連線異常';
+                    comp.alertText = '請稍後再試!';
+                    comp.alertImgSrc = comp.successIcon;
+                    comp.$refs.warringAlert.open();
+                    comp.$bus.$emit('type1_hide4');
+                });
+
+        
+                
             },
             editSaveRegist: function () {
                 console.log('updateresult', this.result)
-                this.updateRegist(this.result)
-                //this.registForm(this.result);
-                this.alertTitle = '110年五月份新冠疫苗施打預先報名';
-                this.alertText = '已成功變更報名表';
-                this.$refs.registEditViewer.close();
-                this.$refs.registAlert.open();
+                var comp = this;
+                this.updateRegist(comp.result).then(function (ret) {
+                    comp.$bus.$emit('type1_hide4');
+                    comp.alertTitle = '110年五月份新冠疫苗施打預先報名';
+      
+                    if (ret.datas == 200) {
+                        comp.alertText = '已成功變更報名表';
+                        comp.alertImgSrc = comp.successIcon;
+                    } else {
+                        comp.alertText = '變更報名表失敗';
+                        comp.alertImgSrc = comp.alertIcon;
+                    }
+                    comp.$refs.registEditViewer.close();
+                    comp.$refs.registEdit.close();
+                    comp.$refs.registAlert.open();
+                    comp.getRegistForm(1);
+                }).catch(function (r) {
+                    console.log(r.datas);
+                    comp.alertTitle = '連線異常';
+                    comp.alertText = '請稍後再試!';
+                    comp.alertImgSrc = this.alertIcon;
+                    comp.$refs.warringAlert.open();
+                    comp.$bus.$emit('type1_hide4');
+                 });
+
+
+
             },
             backToEdit: function () {
+       
                 this.$refs.registViewer.close();
-                this.$refs.registEditor.show();
+                this.$refs.registNewEditor.show();
+            },
+            backToEdit2: function () {
+
+                this.$refs.registEditViewer.close();
+                this.$refs.registEdit.show();
             },
             alertRightClick: function () {
                 this.$bus.$emit(`confirm_show`, false);
@@ -1221,60 +1356,96 @@
             cancelFile: function () {
                 this.$refs.fileViewer.close();
             },
-
             successUploadRightClick: function () {
                 this.$refs.successUploadAlert.close();
             },
-            viewItem: function (item) {
-                console.log('view', item);
+            closeRightClick: function () {
+                this.$refs.warringAlert.close();
             },
             removeRightClick: function () {
-
+     
+                console.log('compSelectedItems', this.compSelectedItems);
                 this.$bus.$emit(`confirm_show`, false);
+                var comp = this;
+                comp.alertImgSrc = comp.warningIcon;
+                comp.removeRegist(comp.compSelectedItems).then(function (result) {
+                    comp.alertText = '';
+                    if (result) {
+                        comp.alertTitle = '刪除成功';
+                        comp.alertImgSrc = comp.successIcon;
+                        comp.getRegistForm(1);
+                        comp.$refs.table.clearAll();
+                    } else {
+                        this.alertImgSrc = comp.alertIcon;
+                        comp.alertTitle = '刪除失敗';
+                    }
+                    comp.$refs.registAlert.open();
+                }).catch(function (e) {
+                    console.log('errcode', e.datas.response.status);
+                    if (e.datas.response.status == 405) {
+                        comp.alertTitle = '無法刪除';
+                        comp.alertText = '無法刪除已有人報名的活動';
+                    } else {
+                        comp.alertTitle = '刪除失敗';
+                        comp.alertText = '處理錯誤，請重新嘗試';
+                    }
+                    
+                    comp.errorImgSrc = comp.warningIcon;
+                    comp.$refs.registAlert.open();
+                 });
+
+
+
+                
+                
             },
             removeItem: function (item) {
-                this.deleteSelected([item]);
+                this.compSelectedItems.splice(0);
+                this.compSelectedItems.push(item);               
+                this.$refs.removeAlert.open();          
                 console.log('remove', item);
             },
             removeLeftClick: function () {
                 this.$bus.$emit(`confirm_show`, false);
             },
-            saveFile: function () {
-                this.alertTitle = '上傳成功';
-                this.alertText = '已成功建立報名表';
-                this.$refs.fileViewer.close();
-                this.$refs.successUploadAlert.open();
-            },
             dowloadAgreeItem: function (item) {
-                console.log('Agree', item);
+                //console.log('Agree', item);
+                this.detailId = item.regist_id;
+                this.downloadCompleteFile();
             },
             dowloadRegistItem: function (item) {
-                console.log('Regist', item);
+                //console.log('Regist', item);
+                this.detailId = item.regist_id;
+                this.downloadSignUpFile();
             },
             dowloadList: function (item) {
-                console.log('List', item);
+                //console.log('List', item);
+                this.detailId = item.regist_id;
+                this.downloadVaccinationFile();
             },
             handleRowClick: function (item) {
                 console.log('item', item);
             },
             detailItem: function (item) {
-                this.detailId = item.id;
-                this.detailTitle = item.title;
-                this.detailType = item.type;
-                this.detailDistrict = item.district;
-                this.detailVillage = item.village;
-                this.detailInstitution = item.institution;
-                this.detailInstutionDistrict = item.instutionDistrict;
-                this.detailStationTime = item.stationTime;
-                this.detailRegistrationTime = item.registrationTime;
-                this.detailCntQuota = item.cntQuota;
-                this.detailTotalQuota = item.totalQuota;
-                this.detailAbnormalCnt = item.abnormalCnt;
-                this.detailCheckTime = item.checkTime;
-                this.detailCheckPassCnt = item.checkPassCnt;
+                this.detailId = item.regist_id;//item.id;
+                this.detailTitle = item.regist_title;//item.title;
+                this.detailType = item.regist_type_name; //item.type;
+                this.detailDistrict = item.regist_district_name; //item.district;
+                this.detailVillage = item.regist_village_name; //item.village;
+                this.detailInstitution = item.regist_institution_name;//item.institution;
+                this.detailInstutionDistrict = item.regist_instution_district_name;   //item.instutionDistrict;
+                this.detailStationTime = item.regist_station_date + ' ' + item.regist_station_start_time + ' - ' + item.regist_station_end_time; //item.stationTime;
+                this.detailRegistrationTime = item.regist_apply_start_date + ' - ' + item.regist_apply_end_date;   //item.registrationTime;
+                this.detailCntQuota = item.regist_unpassed;   //item.cntQuota;
+                this.detailTotalQuota = item.regist_quota;    //item.totalQuota;
+                this.detailAgeLimit = '';
+                this.detailAbnormalCnt = item.regist_abnormalCnt;   //item.abnormalCnt;
+                this.detailCheckTime = item.regist_review_date;   //item.checkTime;
+                this.detailCheckPassCnt = item.regist_unpassed;//item.checkPassCnt;
 
                 var today = new Date().toISOString().substr(0, 10).replace(/-/g, '');
-                var checkTime = item.checkTime.substr(0, 10).replace(/\//g, '');
+                //var checkTime = item.checkTime.substr(0, 10).replace(/\//g, '');
+                var checkTime = item.regist_review_date.substr(0, 10).replace(/\//g, '');
                 this.lessCheckTime = (today <= checkTime);
 
                 this.$bus.$emit('dialogDetail_show', true);
@@ -1482,11 +1653,133 @@
             cancelDoubleCheck: function () {
                 this.$bus.$emit('dialogDoubleCheck_show', false);
             },         
+            onUploadClick() {
+                this.$refs.excelUploader.click();
+            },
+            saveFile() {
 
+                console.log(this.finalData);
+                if (this.finalData.length > 0) {
+                    
+                    var comp = this;
+                    comp.importRegistForm(comp.finalData).then(function (ret) {
+                        console.log(ret.datas);
+                        comp.$bus.$emit('type1_hide4');
+                        comp.alertTitle = '檔案匯入成功';
+                        comp.alertText = '成功匯入報名表';
+                        comp.alertImgSrc = comp.successIcon;
+                        comp.$refs.fileViewer.close();
+                        comp.$refs.successUploadAlert.open();
+                        comp.getRegistForm(1);
+                    }).catch(function (r) {
+                        console.log(r.datas);
+                        comp.alertTitle = '連線異常';
+                        comp.alertText = '請稍後再試!';
+                        comp.alertImgSrc = comp.alertIcon;
+                        comp.$refs.warringAlert.open();
+                        comp.$bus.$emit('type1_hide4');
+                    });
+                }
+            },
+            onFileChanged(event) {
+           
+                this.uploadFile = event.target.files ? event.target.files[0] : null;
+      
+                if (this.uploadFile) {
+                    const reader = new FileReader();
+                    //var ss = this.$store;
+                    var comp = this;
+                    this.$bus.$emit('type1_show4', "資料處理中...");
+                    reader.onload = (e) => {
+                        /* Parse data */
+                        const bstr = e.target.result;
+                        const wb = XLSX.read(bstr, { type: 'binary' });
+                        /* Get first worksheet */
+                        const wsname = wb.SheetNames[0];
+                        const ws = wb.Sheets[wsname];
+                        /* Convert array of arrays */
+                        const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+                        //console.log(data);
+                        //var getKeyByValue=fuction(object, value) {
+                        //    return Object.keys(object).find(key => object[key] === value);
+                        //}
+                        var i, j;
+                        var fv = function(nameKey, myArray ,name){
+                            for (i = 0; i < myArray.length; i++) {
+                                if (myArray[i][name] === nameKey) {
+                                    return myArray[i];
+                                }
+                            }
+                        };
+
+                        var v = comp.$store.getters['user/getVaccines'],
+                            z = comp.$store.getters['user/getZones'][0].data,
+                            m = comp.$store.getters['user/getMedicals'];
+
+                        var vv, vvv, k = 0;
+                        var zz, zzz, mm, villageName;
+                        comp.finalData = [];
+                        for (j = 4; j < data.length; j++) {
+           
+                            if (!data[j][0]) {
+                                console.log("line "+(j+1)+"is null");
+                                continue;
+                            }
+                            vv = fv(data[j][0], v, 'groupName');
+                            comp.finalData[k] = data[j];
+                            
+                               //疫苗種類
+                            if (vv) {
+                                vvv = fv(data[j][1], vv['vaccines'], 'itemName');
+                                //console.log(vv['groupName'] + "@" + vvv['itemName'] + "@" + vvv['itemId']);
+                                comp.finalData[k][0] = vv['groupId'];
+                                if (vvv) {
+                                    comp.finalData[k][1] = vvv['itemId'];
+                                } else {
+                                    console.log('疫苗種類', "error line:" + (j + 1));
+                                }
+                            } else {
+                                console.log('疫苗類型',"error line:"+(j+1));
+                            }
+                        
+                               //行政區域
+                            zz = fv(data[j][3], z, 'distName');
+                            if (zz) {
+                                comp.finalData[k][3] = zz['distId'];
+                                zzz = fv(data[j][4], zz['data'], 'villageName');
+                                villageName = data[j][4];
+                                if (zzz) {
+                                    comp.finalData[k][4] = zzz['villageId'];
+                                } else {
+                                    console.log('村里', "error line:" + (j + 1));
+                                }
+                            } else {
+                                console.log('行政區域', "error line:" + (j + 1));
+                            }
+                              //醫療院所
+                         
+                            mm = fv(villageName, m, 'villageName');
+                
+                            if (mm && mm['uName'] == data[j][6]) {
+                                comp.finalData[k][6] = mm['id'];
+                            } else {
+                                console.log('醫療院所', "error line:" + (j + 1));
+                            }
+
+                            k++;
+                        }
+                          //console.log(finalData);
+                        comp.$bus.$emit('type1_hide4');
+                    }
+
+                   reader.readAsBinaryString(this.uploadFile);
+                   
+                }
+            }
         },
 
         components: {
-            appLayout, appMenu, comTable, editor, comDialog, comConfirm
+            appLayout, appMenu, comTable, editor, comDialog, comConfirm, comLoading
         }
     };
 </script>
