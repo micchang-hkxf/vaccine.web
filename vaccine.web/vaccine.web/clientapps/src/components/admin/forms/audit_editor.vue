@@ -10,7 +10,7 @@
         <template v-slot:content>
             <v-form lazy-validation ref="auditEditorForm">
                 <div class="description">
-                    請設定查詢條件後執行「下載報表」以下載相關檔案，本檔案將進行加密，系統會自動寄送解鎖密碼至您提供的email信箱。
+                    請填寫下載事由與設定查詢條件後執行「下載報表」以下載相關檔案，本檔案將進行加密，系統會自動寄送解鎖密碼至您提供的email信箱。
                 </div>
                 <v-divider></v-divider>
                 <v-card-text>
