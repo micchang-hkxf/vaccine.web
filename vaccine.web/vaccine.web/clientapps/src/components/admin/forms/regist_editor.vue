@@ -162,6 +162,7 @@
                                               dense></v-text-field>
                             </template>
                             <v-date-picker v-model="model.regist_station_date"
+                                           @change="dateClicked"
                                            no-title
                                            scrollable>
                                 <v-spacer></v-spacer>
@@ -272,6 +273,7 @@
                             </template>
                             <v-date-picker v-model="model.regist_apply_start_date"
                                            no-title
+                                           @change="dateClicked"
                                            scrollable>
                                 <v-spacer></v-spacer>
                                 <v-btn text
@@ -309,6 +311,7 @@
                             </template>
                             <v-date-picker v-model="model.regist_apply_end_date"
                                            no-title
+                                           @change="dateClicked"
                                            scrollable>
                                 <v-spacer></v-spacer>
                                 <v-btn text
@@ -347,7 +350,7 @@
                 <v-row>
                     <v-col cols="6">
                         <div style="margin-top:15px;"><span class="regist-title">報名者最低年齡限制</span></div>
-                        <v-text-field v-model="model.age_limit"
+                        <v-text-field v-model="model.regist_age_limit"
                                       placeholder="請輸入年齡下限(預設無限制)"
                                       required
                                       type="number"
@@ -429,6 +432,7 @@
 
 
 <script>
+
     import comDialog from 'components/dialog'
     import { mapActions, mapGetters } from 'vuex'
 
@@ -564,7 +568,18 @@
                         this.regist_institution_name = d.from;
                     }
                 });
-            }
+            },
+            dateClicked(val) {
+                var allDates = document.querySelectorAll(".v-date-picker-table .v-btn .v-btn__content");
+                allDates.forEach((x) => {
+                    if (parseInt(val.split('-')[2]) == x.innerHTML.replace("日", "")) {
+                        x.parentNode.style = "background-color: #66bb6a !important";
+                    } else {
+                        x.parentNode.style = '';
+                    }
+                });
+
+            },
 
         },
         components: {

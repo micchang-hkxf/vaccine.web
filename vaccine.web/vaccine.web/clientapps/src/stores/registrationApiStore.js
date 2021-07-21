@@ -144,8 +144,8 @@ export default {
                             regist_title: data.activityTitle,
                             regist_type: data.vaccineGroupId,
                             regist_type_name: data.vaccineGroupName,
-                            regist_brand: (data.vaccines[0]!=undefined) ? data.vaccines[0].itemId:"",
-                            regist_brand_name: (data.vaccines[0]!=undefined) ? data.vaccines[0].itemName : "",
+                            regist_brand: (data.vaccines[0] != undefined) ? data.vaccines[0].itemId : "",
+                            regist_brand_name: (data.vaccines[0] != undefined) ? data.vaccines[0].itemName : "",
                             regist_district: data.region.distId,
                             regist_district_name: data.region.distName,
                             regist_village: data.region.villageId,
@@ -156,14 +156,15 @@ export default {
                             regist_institution_code: data.medicalInfo.length > 0 ? data.medicalInfo[0].medicalId : '',
                             regist_instution_district: data.medicalInfo.length > 0 ? data.medicalInfo[0].distId : '',
                             regist_instution_district_name: data.medicalInfo.length > 0 ? data.medicalInfo[0].distName + '/' + data.region.villageName : '',
-                            regist_station_date: data.implementDate.substr(0, 10).replace(/-/g, '/'),
+                            regist_station_date: data.implementDate.substr(0, 10),
                             regist_station_start_time: data.implementStartTime.substr(11, 5),
                             regist_station_end_time: data.implementEndTime.substr(11, 5),
-                            regist_apply_start_date: data.startApplyDate.substr(0, 16).replace(/-/g, '/').replace('T', ' '),
-                            regist_apply_end_date: data.endApplyDate.substr(0, 16).replace(/-/g, '/').replace('T', ' '),
-                            regist_review_date: '',              
+                            regist_apply_start_date: data.startApplyDate.substr(0, 10),
+                            regist_apply_end_date: data.endApplyDate.substr(0, 10),
+                            regist_review_date: '',
                             regist_qualified: '',
                             regist_quota: data.amount,
+                            regist_age_limit: (parseInt(data.actAge) > 0) ? parseInt(data.actAge) :"",
                             regist_unpassed: data.amount - data.leftAmount
                         });
                     });
@@ -215,20 +216,35 @@ export default {
         
         getCompleteFile: function ({ state, rootGetters }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement`;
+                var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement?activityId=` + params.id;
                 var results = { datas: [], state: '' };
-
-                axios.get(apiUrl, {
-                    params: {
-                        activityId: params.id
-                    },
+                
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
                     headers: {
-                        'x-token': rootGetters['user/getToken']
+                        'x-token': rootGetters['user/getToken'],
+                        'content-type': 'application/vnd.ms-excel;charset=UTF-8'
+                    },
+                    method: 'GET'
+                })
+                .then(res => res.blob().then(blob => {
+                    const filename = '完整接種同意書.xlsx';
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        navigator.msSaveBlob(blob, filename); // 兼容IE10
+                    } else {
+                        const a = document.createElement('a');
+                        document.body.appendChild(a);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = filename;
+                        a.target = '_blank';
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(apiUrl);
                     }
-                }).then(res => {
-                    results.datas = res.data;
+
                     resolve(results);
-                }).catch(ex => {
+                })).catch(ex => {
                     results.datas = ex;
                     reject(results);
                 });
@@ -236,20 +252,35 @@ export default {
         },
         getSignUpFile: function ({ state, rootGetters }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/Activity/Export/ApplyList`;
+                var apiUrl = `${state.apiRoot}api/Activity/Export/ApplyList?activityId=` + params.id;
                 var results = { datas: [], state: '' };
 
-                axios.get(apiUrl, {
-                    params: {
-                        activityId: params.id
-                    },
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
                     headers: {
-                        'x-token': rootGetters['user/getToken']
+                        'x-token': rootGetters['user/getToken'],
+                        'content-type': 'application/vnd.ms-excel;charset=UTF-8'
+                    },
+                    method: 'GET'
+                })
+                .then(res => res.blob().then(blob => {
+                    const filename = '報名清冊.xlsx';
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        navigator.msSaveBlob(blob, filename); // 兼容IE10
+                    } else {
+                        const a = document.createElement('a');
+                        document.body.appendChild(a);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = filename;
+                        a.target = '_blank';
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(apiUrl);
                     }
-                }).then(res => {
-                    results.datas = res.data;
+
                     resolve(results);
-                }).catch(ex => {
+                })).catch(ex => {
                     results.datas = ex;
                     reject(results);
                 });
@@ -257,20 +288,35 @@ export default {
         },
         getVaccinationFile: function ({ state, rootGetters }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/Activity/Export/VaccinationList`;
+                var apiUrl = `${state.apiRoot}api/Activity/Export/VaccinationList?activityId=` + params.id;
                 var results = { datas: [], state: '' };
 
-                axios.get(apiUrl, {
-                    params: {
-                        activityId: params.id
-                    },
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
                     headers: {
-                        'x-token': rootGetters['user/getToken']
+                        'x-token': rootGetters['user/getToken'],
+                        'content-type': 'application/vnd.ms-excel;charset=UTF-8'
+                    },
+                    method: 'GET'
+                })
+                .then(res => res.blob().then(blob => {
+                    const filename = '施打清冊.xlsx';
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        navigator.msSaveBlob(blob, filename); // 兼容IE10
+                    } else {
+                        const a = document.createElement('a');
+                        document.body.appendChild(a);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = filename;
+                        a.target = '_blank';
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(apiUrl);
                     }
-                }).then(res => {
-                    results.datas = res.data;
+
                     resolve(results);
-                }).catch(ex => {
+                })).catch(ex => {
                     results.datas = ex;
                     reject(results);
                 });
@@ -281,12 +327,32 @@ export default {
                 var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement/` + params.id;
                 var results = { datas: [], state: '' };
 
-                axios.get(apiUrl,
-                    rootGetters['user/getApiHeader']
-                ).then(res => {
-                    results.datas = res.data;
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'x-token': rootGetters['user/getToken'],
+                        'content-type': 'application/vnd.ms-excel;charset=UTF-8'
+                    },
+                    method: 'GET'
+                })
+                .then(res => res.blob().then(blob => {
+                    const filename = '個人同意書.xlsx';
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        navigator.msSaveBlob(blob, filename); // 兼容IE10
+                    } else {
+                        const a = document.createElement('a');
+                        document.body.appendChild(a);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = filename;
+                        a.target = '_blank';
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(apiUrl);
+                    }
+
                     resolve(results);
-                }).catch(ex => {
+                })).catch(ex => {
                     results.datas = ex;
                     reject(results);
                 });
@@ -339,7 +405,7 @@ export default {
                     endApplyDate: data.model.regist_apply_end_date,
                     amount: parseInt(data.model.regist_quota),
                     medicalIds: [data.model.regist_institution.id],
-                    //ageLimit: [data.model.age_limit],
+                    actAge: parseInt(data.model.regist_age_limit),
                     //remarks: [data.model.remarks],
                 }];
                 console.log("setData", setData);
@@ -382,8 +448,8 @@ export default {
                         implementEndDate: d[7] + "T" + d[9] + ":00",
                         startApplyDate: d[10],
                         endApplyDate: d[11],
-                        amount: parseInt(d[12])
-                        //ageLimit: parseInt(d[13]),
+                        amount: parseInt(d[12]),
+                        actAge: parseInt(d[13]),
                         //remarks: parseInt(d[14]),
                     });
                 }
@@ -425,11 +491,11 @@ export default {
                     stationAddr: data.model.regist_place,
                     distId: data.model.regist_district,
                     villageId: (typeof data.model.regist_village == "object") ? data.model.regist_village.id : data.model.regist_village,
-                    startApplyDate: data.model.regist_apply_start_date.replace(/\//g, '-').replace(' ', 'T')+":00",
-                    endApplyDate: data.model.regist_apply_end_date.replace(/\//g, '-').replace(' ', 'T') + ":00",
+                    startApplyDate: data.model.regist_apply_start_date.replace(/\//g, '-'),
+                    endApplyDate: data.model.regist_apply_end_date.replace(/\//g, '-'),
                     amount: parseInt(data.model.regist_quota),
                     medicalIds: [data.model.regist_institution_code],
-                      //ageLimit: [data.model.age_limit],
+                    actAge: parseInt(data.model.regist_age_limit),
                       //remarks: [data.model.remarks],
                 };
          
