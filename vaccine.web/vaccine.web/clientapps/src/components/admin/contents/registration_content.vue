@@ -1592,7 +1592,7 @@
             downloadAgreeFile: function (item) {
                 var comp = this;
                 comp.alertMessage = '';
-                comp.getAgreeFile({ id: item.id })
+                comp.getAgreeFile({ id: item.id, name: item.name })
                     .then(function (result) {
                         switch (result.state) {
                             case 'not found':
