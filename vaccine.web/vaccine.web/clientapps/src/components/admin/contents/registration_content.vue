@@ -307,10 +307,10 @@
                                                 <v-list-item-subtitle>{{result.model.regist_quota}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line v-if="result.model.age_limit >0">
+                                        <v-list-item two-line v-if="result.model.regist_age_limit >0">
                                             <v-list-item-content>
                                                 <v-list-item-title>報名者最低年齡限制</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.age_limit}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.regist_age_limit}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
 
@@ -437,7 +437,12 @@
                                             <v-list-item-content>
                                                 <v-list-item-title>事先開放報名時間</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_apply_start_date}}</v-list-item-subtitle>
-
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title>事先開放報名結束時間</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_apply_end_date}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
@@ -456,10 +461,10 @@
 
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line v-if="result.model.age_limit >0">
+                                        <v-list-item two-line v-if="result.model.regist_age_limit >0">
                                             <v-list-item-content>
                                                 <v-list-item-title>報名者最低年齡限制</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.age_limit}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle>{{result.model.regist_age_limit}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
 
