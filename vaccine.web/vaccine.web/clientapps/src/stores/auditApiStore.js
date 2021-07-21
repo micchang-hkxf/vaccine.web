@@ -41,9 +41,9 @@ export default {
                 var apiUrl = `${state.apiRoot}api/AuditLog`;
                 var results = { datas: [], state: '', totalCount: 0 };
 
-                var auditTypeFilter = (typeof params.type === 'undefined' || params.type    === '') ? 'all' : params.type;
-                var keyword         =                                        params.keyWord === ''  ?  null : params.keyWord;
-
+                var auditTypeFilter = (typeof params.type === 'undefined' || params.type === '' || params.type.id === '') ? null : params.type.id;
+                var keyword         =                                                              params.keyWord === ''  ? null : params.keyWord;
+                
                 axios.get(apiUrl, {
                     params: {
                         auditTypeFilter: auditTypeFilter,       // 報表類別
@@ -55,16 +55,16 @@ export default {
                         'x-token': rootGetters['user/getToken']
                     }
                 }).then(res => {
-                    results.totalCount = res.data.totalRows;
+                    results.totalCount = res.data.totalCount;
 
                     var datas = [];
                     res.data.data.forEach((data) => {
                         datas.push({
                             id: data.seq,
-                            date: data.createTime.substr(0, 16).replace('T', ' ').replace(/ -/g, '/'),
+                            date: data.createTime.substr(0, 16).replace('T', ' ').replace(/-/g, '/'),
                             name: data.uName,
                             affiliation: data.unit,
-                            type: data.auditTypeName,
+                            type: data.typeName,
                             title: data.fileName,
                             count: data.dataCount,
                             download: data.desc,
@@ -107,12 +107,32 @@ export default {
                 var apiUrl = `${state.apiRoot}api/AuditLog/dl/` + data.fileId;
                 var results = { datas: [], state: '' };
 
-                axios.get(apiUrl,
-                    rootGetters['user/getApiHeader']
-                ).then(res => {
-                    results.datas = res.data;
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'x-token': rootGetters['user/getToken'],
+                        'content-type': 'application/vnd.ms-excel;charset=UTF-8'
+                    },
+                    method: 'GET'
+                })
+                .then(res => res.blob().then(blob => {
+                    const filename = data.title;
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        navigator.msSaveBlob(blob, filename); // 兼容IE10
+                    } else {
+                        const a = document.createElement('a');
+                        document.body.appendChild(a);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = filename;
+                        a.target = '_blank';
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(apiUrl);
+                    }
+                    
                     resolve(results);
-                }).catch(ex => {
+                })).catch(ex => {
                     results.datas = ex;
                     reject(results);
                 });
@@ -121,66 +141,12 @@ export default {
     },
     state: {
         ...siteConfig,
-       
-        desserts: [
-            {
-                id: 1,
-                date: '2021/04/01 09:30',
-                name: '袁吉吉',
-                affiliation:'衛生局',
-                type: '案件抽查表',
-                title: '110年5月份－案件抽查表（完整）',
-                count: '5000',
-                download: '（..事由文字..）',                      
-            },
-            {
-                id: 2,
-                date: '2021/04/01 09:30',
-                name: '廖廷廷',
-                affiliation: '健康中心',
-                type: '報名清冊',
-                title:'204－110年5月份肺鏈及流感疫苗接種－個人接種同 意書',
-                count: '30',
-                download: '（..事由文字..）',
-            },
-            {
-                id: 3,
-                date: '2021/04/01 09:30',
-                name: '劉任任',
-                affiliation: '健康中心',
-                type: 'B1285案件抽查表41236',
-                title: '110年4月份新冠疫苗施打預先報名',
-                count: '50',
-                download: '（..事由文字..）', 
-            },
-            {
-                id: 4,
-                date: '2021/04/01 09:30',
-                name: '柯安安',
-                affiliation: 'XXXX單位',
-                type: '接種清冊',
-                title: '110年5月份肺鏈及流感疫苗接種－接種清冊',
-                count: '100',
-                download: '（..事由文字..）',   
-            },
-            {
-                id: 5,
-                date: '2021/04/01 09:30',
-                name: '許動動',
-                affiliation: 'XXXX單位',
-                type: 'B128541236',
-                title: '110年5月份肺鏈及流感疫苗接種－接種同意書',
-                count: '100',
-                download: '（..事由文字..）', 
-            },
-        ],
         types: [],
     },
     getters: {
         getTypes: state => {
             return state.types;
-        },
-       
+        }
     },
     mutations: {
     },
