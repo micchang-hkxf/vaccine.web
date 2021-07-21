@@ -181,11 +181,20 @@ export default {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Detail/` + params.id;
                 var results = { datas: [], state: '', totalCount: 0 };
-                
-                axios.get(apiUrl,
-                    rootGetters['user/getApiHeader']
-                ).then(res => {
-                    results.totalCount = res.data.totalRows;
+
+                var keyword = params.keyWord === '' ? null : params.keyWord;
+
+                axios.get(apiUrl, {
+                    params: {
+                        page: params.page,                      // 頁數
+                        rows: params.pageSize,                  // 每頁筆數
+                        keyword: keyword,                       // 關鍵字
+                    },
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    results.totalCount = res.data.totlaCount;
 
                     var datas = [];
                     res.data.data.forEach((data) => {
@@ -201,7 +210,7 @@ export default {
                             censusRegister: data.isCitizen ? '北市' : '非北市',
                             type: data.signUpChannel ? '現場報名' : '網路自行報名',
                             result: data.eligible ? '合格' : '不合格',
-                            remark: ''
+                            remark: data.memo
                         });
                     });
 
@@ -326,18 +335,18 @@ export default {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement/` + params.id;
                 var results = { datas: [], state: '' };
-
+                
                 fetch(apiUrl, {
                     cache: 'no-cache',
                     credentials: 'same-origin',
                     headers: {
                         'x-token': rootGetters['user/getToken'],
-                        'content-type': 'application/vnd.ms-excel;charset=UTF-8'
+                        'content-type': 'application/pdf;charset=UTF-8'
                     },
                     method: 'GET'
                 })
                 .then(res => res.blob().then(blob => {
-                    const filename = '個人同意書.xlsx';
+                    const filename = params.name + '_接種同意書_' + new Date().toISOString().substr(0, 10) + '.pdf';
                     if (window.navigator.msSaveOrOpenBlob) {
                         navigator.msSaveBlob(blob, filename); // 兼容IE10
                     } else {
