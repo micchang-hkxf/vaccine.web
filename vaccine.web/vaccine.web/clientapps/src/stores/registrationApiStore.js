@@ -232,8 +232,7 @@ export default {
                     cache: 'no-cache',
                     credentials: 'same-origin',
                     headers: {
-                        'x-token': rootGetters['user/getToken'],
-                        'content-type': 'application/vnd.ms-excel;charset=UTF-8'
+                        'x-token': rootGetters['user/getToken']
                     },
                     method: 'GET'
                 })
@@ -268,8 +267,7 @@ export default {
                     cache: 'no-cache',
                     credentials: 'same-origin',
                     headers: {
-                        'x-token': rootGetters['user/getToken'],
-                        'content-type': 'application/vnd.ms-excel;charset=UTF-8'
+                        'x-token': rootGetters['user/getToken']
                     },
                     method: 'GET'
                 })
@@ -304,8 +302,7 @@ export default {
                     cache: 'no-cache',
                     credentials: 'same-origin',
                     headers: {
-                        'x-token': rootGetters['user/getToken'],
-                        'content-type': 'application/vnd.ms-excel;charset=UTF-8'
+                        'x-token': rootGetters['user/getToken']
                     },
                     method: 'GET'
                 })
@@ -340,8 +337,7 @@ export default {
                     cache: 'no-cache',
                     credentials: 'same-origin',
                     headers: {
-                        'x-token': rootGetters['user/getToken'],
-                        'content-type': 'application/pdf;charset=UTF-8'
+                        'x-token': rootGetters['user/getToken']
                     },
                     method: 'GET'
                 })
