@@ -1446,7 +1446,7 @@
                 this.detailAgeLimit = item.regist_age_limit === '' ? '無' : item.regist_age_limit;
                 this.detailAbnormalCnt = item.regist_abnormalCnt;   //item.abnormalCnt;
                 this.detailCheckTime = item.regist_review_date;   //item.checkTime;
-                this.detailCheckPassCnt = item.regist_unpassed;//item.checkPassCnt;
+                this.detailCheckPassCnt = item.regist_qualified; //item.checkPassCnt;
 
                 var today = new Date().toISOString().substr(0, 10).replace(/-/g, '');
                 //var checkTime = item.checkTime.substr(0, 10).replace(/\//g, '');
