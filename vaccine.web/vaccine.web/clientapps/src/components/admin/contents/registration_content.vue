@@ -1206,7 +1206,15 @@
             },
             editItem: function (item) {
                   //regist_type=0會有問題,無法設定v-select值??? vue bug??
- 
+                var today = new Date();
+                if (today > new Date(item.regist_apply_start_date)) {
+                    this.alertTitle = '拒絕修改';
+                    this.alertText = '已經開始報名，無法再修改資料';
+                    this.alertImgSrc = this.alertIcon;
+                    this.$refs.warringAlert.open();
+                    return false;
+                }
+               //
                 //Object.assign(this.model, item);
                 this.saveBtnName = "儲存";
                 this.title = '編輯報名表2';
