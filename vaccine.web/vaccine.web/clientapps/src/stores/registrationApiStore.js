@@ -181,11 +181,20 @@ export default {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Detail/` + params.id;
                 var results = { datas: [], state: '', totalCount: 0 };
-                
-                axios.get(apiUrl,
-                    rootGetters['user/getApiHeader']
-                ).then(res => {
-                    results.totalCount = res.data.totalRows;
+
+                var keyword = params.keyWord === '' ? null : params.keyWord;
+
+                axios.get(apiUrl, {
+                    params: {
+                        page: params.page,                      // 頁數
+                        rows: params.pageSize,                  // 每頁筆數
+                        keyword: keyword,                       // 關鍵字
+                    },
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    results.totalCount = res.data.totlaCount;
 
                     var datas = [];
                     res.data.data.forEach((data) => {
@@ -201,7 +210,7 @@ export default {
                             censusRegister: data.isCitizen ? '北市' : '非北市',
                             type: data.signUpChannel ? '現場報名' : '網路自行報名',
                             result: data.eligible ? '合格' : '不合格',
-                            remark: ''
+                            remark: data.memo
                         });
                     });
 
@@ -216,20 +225,34 @@ export default {
         
         getCompleteFile: function ({ state, rootGetters }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement`;
+                var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement?activityId=` + params.id;
                 var results = { datas: [], state: '' };
-
-                axios.get(apiUrl, {
-                    params: {
-                        activityId: params.id
-                    },
+                
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
                     headers: {
                         'x-token': rootGetters['user/getToken']
+                    },
+                    method: 'GET'
+                })
+                .then(res => res.blob().then(blob => {
+                    const filename = '完整接種同意書.xlsx';
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        navigator.msSaveBlob(blob, filename); // 兼容IE10
+                    } else {
+                        const a = document.createElement('a');
+                        document.body.appendChild(a);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = filename;
+                        a.target = '_blank';
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(apiUrl);
                     }
-                }).then(res => {
-                    results.datas = res.data;
+
                     resolve(results);
-                }).catch(ex => {
+                })).catch(ex => {
                     results.datas = ex;
                     reject(results);
                 });
@@ -237,20 +260,34 @@ export default {
         },
         getSignUpFile: function ({ state, rootGetters }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/Activity/Export/ApplyList`;
+                var apiUrl = `${state.apiRoot}api/Activity/Export/ApplyList?activityId=` + params.id;
                 var results = { datas: [], state: '' };
 
-                axios.get(apiUrl, {
-                    params: {
-                        activityId: params.id
-                    },
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
                     headers: {
                         'x-token': rootGetters['user/getToken']
+                    },
+                    method: 'GET'
+                })
+                .then(res => res.blob().then(blob => {
+                    const filename = '報名清冊.xlsx';
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        navigator.msSaveBlob(blob, filename); // 兼容IE10
+                    } else {
+                        const a = document.createElement('a');
+                        document.body.appendChild(a);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = filename;
+                        a.target = '_blank';
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(apiUrl);
                     }
-                }).then(res => {
-                    results.datas = res.data;
+
                     resolve(results);
-                }).catch(ex => {
+                })).catch(ex => {
                     results.datas = ex;
                     reject(results);
                 });
@@ -258,20 +295,34 @@ export default {
         },
         getVaccinationFile: function ({ state, rootGetters }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/Activity/Export/VaccinationList`;
+                var apiUrl = `${state.apiRoot}api/Activity/Export/VaccinationList?activityId=` + params.id;
                 var results = { datas: [], state: '' };
 
-                axios.get(apiUrl, {
-                    params: {
-                        activityId: params.id
-                    },
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
                     headers: {
                         'x-token': rootGetters['user/getToken']
+                    },
+                    method: 'GET'
+                })
+                .then(res => res.blob().then(blob => {
+                    const filename = '施打清冊.xlsx';
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        navigator.msSaveBlob(blob, filename); // 兼容IE10
+                    } else {
+                        const a = document.createElement('a');
+                        document.body.appendChild(a);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = filename;
+                        a.target = '_blank';
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(apiUrl);
                     }
-                }).then(res => {
-                    results.datas = res.data;
+
                     resolve(results);
-                }).catch(ex => {
+                })).catch(ex => {
                     results.datas = ex;
                     reject(results);
                 });
@@ -281,13 +332,32 @@ export default {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement/` + params.id;
                 var results = { datas: [], state: '' };
+                
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    },
+                    method: 'GET'
+                })
+                .then(res => res.blob().then(blob => {
+                    const filename = params.name + '_接種同意書_' + new Date().toISOString().substr(0, 10) + '.pdf';
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        navigator.msSaveBlob(blob, filename); // 兼容IE10
+                    } else {
+                        const a = document.createElement('a');
+                        document.body.appendChild(a);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = filename;
+                        a.target = '_blank';
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(apiUrl);
+                    }
 
-                axios.get(apiUrl,
-                    rootGetters['user/getApiHeader']
-                ).then(res => {
-                    results.datas = res.data;
                     resolve(results);
-                }).catch(ex => {
+                })).catch(ex => {
                     results.datas = ex;
                     reject(results);
                 });

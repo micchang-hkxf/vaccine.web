@@ -1090,8 +1090,8 @@
             detailTotalQuota: '',
             detailAgeLimit: '',
             detailItems: [],
-            detailTotalCount: 6,
-            detailItemsPerPage: 2,
+            detailTotalCount: 0,
+            detailItemsPerPage: 5,
             detailTotalVisible: 4,
             detailKeyWord: '',
             detailAbnormalCnt: 0,
@@ -1451,10 +1451,10 @@
                 this.detailRegistrationTime = item.regist_apply_start_date + ' - ' + item.regist_apply_end_date;   //item.registrationTime;
                 this.detailCntQuota = item.regist_unpassed;   //item.cntQuota;
                 this.detailTotalQuota = item.regist_quota;    //item.totalQuota;
-                this.detailAgeLimit = '';
+                this.detailAgeLimit = item.regist_age_limit === '' ? '無' : item.regist_age_limit;
                 this.detailAbnormalCnt = item.regist_abnormalCnt;   //item.abnormalCnt;
                 this.detailCheckTime = item.regist_review_date;   //item.checkTime;
-                this.detailCheckPassCnt = item.regist_unpassed;//item.checkPassCnt;
+                this.detailCheckPassCnt = item.regist_qualified; //item.checkPassCnt;
 
                 var today = new Date().toISOString().substr(0, 10).replace(/-/g, '');
                 //var checkTime = item.checkTime.substr(0, 10).replace(/\//g, '');
@@ -1600,7 +1600,7 @@
             downloadAgreeFile: function (item) {
                 var comp = this;
                 comp.alertMessage = '';
-                comp.getAgreeFile({ id: item.id })
+                comp.getAgreeFile({ id: item.id, name: item.name })
                     .then(function (result) {
                         switch (result.state) {
                             case 'not found':
