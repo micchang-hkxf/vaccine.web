@@ -35,7 +35,7 @@
     import { mapActions, mapGetters } from 'vuex'
     import appLayout from 'components/regist/regist_layout'
     import appliedList from 'components/regist/forms/applied_list'
-    import loginSwitch from 'components/regist/forms/login_switch'
+    import loginSwitch from 'components/regist/forms/login_switcher'
     export default {
         // router,
         data: () => ({
@@ -45,39 +45,43 @@
             },
             tab: null,
             loginInfo: {
-                identify: '' ,
+                identify: '',
                 birth: ''
             }
         }),
         computed: {
-            ...mapGetters('regist', ['getVaccineGroups','getUserInfo']),
+            ...mapGetters('regist', ['getVaccineGroups', 'getUserInfo']),
             isTpPass: function () {
                 if (!this.getUserInfo) return false;
-                if (this.getUserInfo.type != 'taipei-pass') return false; 
+                if (this.getUserInfo.type != 'taipei-pass') return false;
                 return true;
             },
         },
-        props: {
-
-        },
+        props: [],
         created: function () {
+            var comp = this;
+            if (comp.$route.params.mode)
+                this.$nextTick(() => {
+                    comp.$set(comp, 'tab', comp.$route.params.mode);
+                })
             this.loacVaccineGroups();
         },
         watch: {
             tab: function (newValue) {
                 console.log(newValue)
-                if (newValue != 'applied') return; 
+                if (newValue != 'applied') return;
                 if (this.isTpPass) return;
-                this.$refs.switch.create();            }
+                this.$refs.switch.create();
+            }
         },
         methods: {
-            ...mapActions('regist', ['loacVaccineGroups','setUserInfo']),
+            ...mapActions('regist', ['loacVaccineGroups', 'setUserInfo']),
             toRegist: function (group) {
                 console.log('regist type', group.groupId);
                 this.$router.push({ name: 'unapply', query: { groupId: group.groupId } });
             },
             toLogin: function () {
-                this.setUserInfo({ uid:'A123456789', birth: '2021/6/9', type: 'taipei-pass' });
+                this.setUserInfo({ uid: 'A123456789', birth: '2021/6/9', type: 'taipei-pass' });
                 this.$refs.switch.close();
             },
             loginUser: function () {
@@ -94,10 +98,12 @@
         padding-left: 24px !important;
         padding-right: 24px !important;
     }
+
     .regist-content .action img {
         width: 72px;
         height: 60px;
     }
+
     .regist-content .action {
         font-size: 20px;
         color: white;
@@ -106,17 +112,19 @@
         height: 150px;
         border-radius: 10px;
     }
+
     .regist-content .action-content {
         padding-top: 20px;
     }
+
     .regist-content .action-sub-title {
         padding-top: 40px !important;
     }
-    .regist-content .action-container {
 
+    .regist-content .action-container {
     }
+
     .regist-content .action-sub-title {
         font-size: 20px !important;
     }
-
 </style>
