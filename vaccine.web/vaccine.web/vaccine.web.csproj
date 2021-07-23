@@ -24,6 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="clientapps\public\regist\稽核報表2021-07-16.xlsx" />
+    <None Remove="clientapps\public\regist\稽核報表2021-07-20.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
@@ -41,7 +46,8 @@
   <ItemGroup>
     <Folder Include="clientapps\public\images\" />
     <Folder Include="clientapps\public\login\" />
-    <Folder Include="clientapps\src\components\regist\contents\" />
+    <Folder Include="clientapps\src\components\vue-timepicker\" />
+    <Folder Include="clientapps\src\stores\regist\dynamic\" />
   </ItemGroup>
 
   <ItemGroup>
