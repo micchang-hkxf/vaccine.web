@@ -1,5 +1,5 @@
 ﻿<template>
-    <com-dialog ref="dialogPanel" ref-key="two" :width="width" >
+    <com-dialog ref="dialogPanel" ref-key="two" :width="width">
         <template v-slot:toolbar>
             {{title}}
             <v-spacer></v-spacer>
@@ -382,14 +382,15 @@
             <v-btn @click="cancel" outlined :ripple="false"><span style="color:#626781;">取消</span></v-btn>
             <v-btn color="primary" @click="save" :ripple="false"><span>{{saveBtnName}}</span></v-btn>
 
-        </template>     
+        </template>
     </com-dialog>
 
 </template>
 <style scoped>
     .v-btn--outlined {
-        border: thin solid rgba(98 ,103, 129 ,0.2) !important;
+        border: thin solid rgba(98,103, 129,0.2) !important;
     }
+
     .regist-title {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
@@ -405,27 +406,30 @@
         padding-right: 15px;
     }
 
-    /*-------滾動條整體樣式----*/
-    .edit-form::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
+        /*-------滾動條整體樣式----*/
+        .edit-form::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
 
-    /*滾動條裡面小方塊樣式*/
+        /*滾動條裡面小方塊樣式*/
         .edit-form::-webkit-scrollbar-thumb {
             border-radius: 100px;
             -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
             background: #736DB9;
         }
 
-    /*滾動條裡面軌道樣式*/
-    .edit-form::-webkit-scrollbar-track {
-        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        border-radius: 20px
-        ;
-        background: rgba(0,0,0,0.1);
+        /*滾動條裡面軌道樣式*/
+        .edit-form::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            background: rgba(0,0,0,0.1);
+        }
+</style>
+<style>
+    .v-date-picker-table .v-btn--rounded:hover {
+        background-color: #d4ffd6 !important
     }
-
 </style>
 
 
@@ -436,13 +440,13 @@
     import comDialog from 'components/dialog'
     import { mapActions, mapGetters } from 'vuex'
 
-    export default {     
+    export default {
         data: () => ({
-            mode:'',          
+            mode: '',
             brands: [
                 { id: 'az', name: 'AstraZeneca' },
-                { id: 'bnt', name: 'Pfizer-BioNTech' },               
-            ],            
+                { id: 'bnt', name: 'Pfizer-BioNTech' },
+            ],
             vaccines: [
                 { id: 'influenza', name: '肺鏈流感' },
                 { id: 'coronavirus', name: '新冠肺炎' },
@@ -476,14 +480,14 @@
             regist_institution_code: "",
             regist_institution_name: "",
             rules: {
-                required: v => !!v || '必填',              
+                required: v => !!v || '必填',
             }
         }),
         watch: {
             'getInstitutions': function () {
                 this.regist_institution_code = "";
                 this.regist_institution_name = "";
-             },
+            },
         },
         computed: {
             ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders']),
@@ -491,7 +495,7 @@
                 return this.default;
             }
         },
-        props: ['width', 'title', 'action','saveBtnName'],
+        props: ['width', 'title', 'action', 'saveBtnName'],
 
         created: function () {
             this.loadVaccines();
@@ -503,28 +507,28 @@
             console.log(this.$refs.form);
 
         },
-     
+
         methods: {
             ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadBrands', 'loadMedicals', 'loadMedicalsByVillage']),
             open: function (model) {
                 this.mode = 'edit';
-       
+
                 this.loadVaccines({ id: model.regist_type });
                 this.loadVillages({ id: model.regist_district });
-             
+
                 this.$set(this, "regist_institution_code", model.regist_institution_code);
-                this.$set(this, "regist_institution_name", model.regist_district_name + "/" + model.regist_village_name );
-                this.model =Object.assign(this.defaultItem, model);
+                this.$set(this, "regist_institution_name", model.regist_district_name + "/" + model.regist_village_name);
+                this.model = Object.assign(this.defaultItem, model);
                 this.model.regist_type = { id: model.regist_type };
                 this.$refs.dialogPanel.open();
             },
 
             create: function (model) {
                 this.mode = 'new';
-                this.model=Object.assign(this.defaultItem, model);
-                
+                this.model = Object.assign(this.defaultItem, model);
+
                 this.$refs.dialogPanel.open();
-               
+
             },
             reset: function () {
                 for (var nn in this.model) {
@@ -533,17 +537,17 @@
                     } else {
                         this.model[nn] = "";
                     }
-                    
-               }
+
+                }
             },
 
             save: function () {
                 if (this.$refs.form.validate()) {
                     this.action({ mode: this.mode, action: 'save', model: this.model });
                     //console.log(this.model);
-                    //this.$refs.dialogPanel.close();   
-                }   
-                
+                    //this.$refs.dialogPanel.close();
+                }
+
             },
             show: function () {
                 //this.$refs.dialogPanel.open();
@@ -553,14 +557,14 @@
                 this.$refs.dialogPanel.close();
             },
             cancel: function () {
-                
+
                 this.$refs.dialogPanel.close();
             },
             closeDialog: function () {
                 //this.$refs.dialogPanel.open();
             },
             setMedicalInfo: function (event) {
-    
+
                 this.$store.state.registration.institutions.forEach((d) => {
                     if (d.id === event.id) {
 
@@ -573,7 +577,7 @@
                 var allDates = document.querySelectorAll(".v-date-picker-table .v-btn .v-btn__content");
                 allDates.forEach((x) => {
                     if (parseInt(val.split('-')[2]) == x.innerHTML.replace("日", "")) {
-                        x.parentNode.style = "background-color: #66bb6a !important";
+                        x.parentNode.style = "background-color: #d4ffd6 !important";
                     } else {
                         x.parentNode.style = '';
                     }
