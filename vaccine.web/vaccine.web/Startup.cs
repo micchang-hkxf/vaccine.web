@@ -56,19 +56,20 @@ namespace VuetifyProjectTemplate
 
             app.UseHttpsRedirection();
 
-            //Set up custom content types - associating file extension to MIME type
-            var provider = new FileExtensionContentTypeProvider();
-            // Add new mappings
-            provider.Mappings[".ipa"] = "application/octet-stream";
-            provider.Mappings[".plist"] = "text/xml";
-            provider.Mappings[".apk"] = "application/vnd.android.package-archive";
+            ////Set up custom content types - associating file extension to MIME type
+            //var provider = new FileExtensionContentTypeProvider();
+            //// Add new mappings
+            //provider.Mappings[".ipa"] = "application/octet-stream";
+            //provider.Mappings[".plist"] = "text/xml";
+            //provider.Mappings[".apk"] = "application/vnd.android.package-archive";
 
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                ContentTypeProvider = provider
-            });
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    ContentTypeProvider = provider
+            //});
 
-            //app.UseStaticFiles();
+            app.UseStaticFiles();
+
             app.UseCookiePolicy();
 
 
@@ -78,12 +79,7 @@ namespace VuetifyProjectTemplate
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=main}/{action=Index}"
-                );
-
-                routes.MapRoute(
-                    name: "login",
-                    template: "{controller=login}/{action=Index}"
+                    template: "{controller=admin}/{action=Index}"
                 );
             });
         }
