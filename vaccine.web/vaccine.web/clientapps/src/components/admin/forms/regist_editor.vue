@@ -189,6 +189,12 @@
                     </v-col>
                 </v-row>
                 <v-row>
+                    <v-col cols="3">test
+                        <timepicker v-model="model.regist_station_start_time"></timepicker>
+                    </v-col>
+                </v-row>
+                <v-row>
+
                     <v-col cols="3">
                         <v-menu v-model="start"
                                 ref="tmenu"
@@ -198,6 +204,7 @@
                                 offset-y
                                 min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
+
                                 <v-text-field v-model="model.regist_station_start_time"
                                               append-icon="mdi-clock-outline"
                                               :rules="[rules.required]"
@@ -208,14 +215,14 @@
                                               outlined
                                               dense></v-text-field>
                             </template>
-                            <v-time-picker v-model="model.regist_station_start_time"
-                                           :max="model.regist_station_end_time"
-                                           v-if="start"
-                                           ampm-in-title
-                                           @click:minute="$refs.tmenu.save()"
-                                           scrollable>
-                                <v-spacer></v-spacer>
-                            </v-time-picker>
+                            <!--<v-time-picker v-model="model.regist_station_start_time"
+                                :max="model.regist_station_end_time"
+                                v-if="start"
+                                ampm-in-title
+                                @click:minute="$refs.tmenu.save()"
+                                scrollable>
+                    <v-spacer></v-spacer>
+                </v-time-picker>-->
                         </v-menu>
                     </v-col>
                     <v-col cols="1"><span style="display:flex;justify-content:center;color:#626781">-</span></v-col>
@@ -326,6 +333,8 @@
                                        @click="$refs.apply2.save(model.regist_apply_end_date)">
                                     OK
                                 </v-btn>
+
+
                             </v-date-picker>
                         </v-menu>
                         <!--<div style="margin-bottom:15px;"><span class="regist-title">報名者接種資格複檢時間：{{model.regist_review_date}}</span> </div>-->
@@ -438,6 +447,8 @@
 <script>
 
     import comDialog from 'components/dialog'
+    //import timepicker from 'components/timepicker'
+    import timepicker from 'components/vue-timepicker/Timepicker'
     import { mapActions, mapGetters } from 'vuex'
 
     export default {
@@ -587,7 +598,7 @@
 
         },
         components: {
-            comDialog
+            comDialog, timepicker
         }
     }
 </script>
