@@ -1,9 +1,5 @@
 ﻿<template>
-    <div style="position:absolute;top:50%;left:50%;">
-        {{time}}
-        <timepicker v-model="time"></timepicker>
-    </div>
-    
+    <timepicker v-model="time"></timepicker>
 </template>
 
 <script>

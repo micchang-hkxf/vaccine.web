@@ -1,49 +1,41 @@
 <template>
-  <div class="numpad">
-    <div class="numpad__digits">
-      <number v-for="digit in numbers" :number="digit"></number>
+    <div class="numpad">
+        <div class="numpad__digits">
+            <number v-for="(digit,index) in numbers" :number="digit" :key="`digit${index}`"></number>
+        </div>
+        <div class="numpad__arrows">
+            <div class="numpad__digit">
+                <button :class="{ 'is-disabled': activeIndex <= 0 }"
+                        :disabled="activeIndex<=0||!this.isOpen"
+                        @click="goToPrevious()"
+                        @mouseup="blurEl($refs.previousButton)"
+                        @touchstart="arrowPressed('left')"
+                        @touchend="goToPrevious"
+                        ref="previousButton">
+                    <svg viewBox="0 0 32 32" class="triangle">
+                        <path class="path1" d="M22.4 8v16l-14.4-8 14.4-8z"></path>
+                    </svg>
+                </button>
+                <div class="numpad__ripple"
+                     :class="{ 'is-pressed': arrowKeys.left.pressed }"></div>
+            </div>
+            <div class="numpad__digit">
+                <button :class="{ 'is-disabled': activeIndex > 2 }"
+                        :disabled="activeIndex>2||!this.isOpen"
+                        @click="goToNext()"
+                        @mouseup="blurEl($refs.nextButton)"
+                        @touchstart="arrowPressed('right')"
+                        @touchend="goToNext"
+                        ref="nextButton">
+                    <svg viewBox="0 0 32 32" class="triangle">
+                        <path class="path1" d="M24 16l-14.4 8v-16l14.4 8z"></path>
+                    </svg>
+                </button>
+                <div class="numpad__ripple"
+                     :class="{ 'is-pressed': arrowKeys.right.pressed }"></div>
+            </div>
+        </div>
     </div>
-    <div class="numpad__arrows">
-      <div class="numpad__digit">
-        <button
-          :class="{ 'is-disabled': activeIndex <= 0 }"
-          :disabled="activeIndex <= 0 || !this.isOpen"
-          @click="goToPrevious()"
-          @mouseup="blurEl($refs.previousButton)"
-          @touchstart="arrowPressed('left')"
-          @touchend="goToPrevious"
-          ref="previousButton"
-        >
-          <svg viewBox="0 0 32 32" class="triangle">
-            <path class="path1" d="M22.4 8v16l-14.4-8 14.4-8z"></path>
-          </svg>
-        </button>
-        <div
-          class="numpad__ripple"
-          :class="{ 'is-pressed': arrowKeys.left.pressed }"
-        ></div>
-      </div>
-      <div class="numpad__digit">
-        <button
-          :class="{ 'is-disabled': activeIndex > 2 }"
-          :disabled="activeIndex > 2 || !this.isOpen"
-          @click="goToNext()"
-          @mouseup="blurEl($refs.nextButton)"
-          @touchstart="arrowPressed('right')"
-          @touchend="goToNext"
-          ref="nextButton"
-        >
-          <svg viewBox="0 0 32 32" class="triangle">
-            <path class="path1" d="M24 16l-14.4 8v-16l14.4 8z"></path>
-          </svg>
-        </button>
-        <div
-          class="numpad__ripple"
-          :class="{ 'is-pressed': arrowKeys.right.pressed }"
-        ></div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -63,7 +55,8 @@ export default {
     return store;
   },
   computed: {
-    numbers () {
+      numbers() {
+          if (!this.time) return [];
       return filteredDigits(this.activeIndex, this.digits, this.time);
     }
   }
