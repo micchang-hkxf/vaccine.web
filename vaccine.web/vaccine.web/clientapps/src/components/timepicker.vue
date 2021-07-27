@@ -3,7 +3,7 @@
 </template>
 
 <script>
-    import timepicker from './vue-timepicker/Timepicker'
+    import timepicker from './vue-timepicker/timepicker'
     export default {
         data() {
             return {
