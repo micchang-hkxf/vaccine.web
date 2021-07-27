@@ -7,8 +7,7 @@
     export default {
         data() {
             return {
-
-                time: '13:20'
+                time: '12:00'
             };
         },
         created() {

@@ -1231,6 +1231,7 @@
                 console.log('fileImport')
             },
             formAction: function (result) {
+                debugger;
                 var errMsg=""
                 if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) >=
                     Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_end_time)) {

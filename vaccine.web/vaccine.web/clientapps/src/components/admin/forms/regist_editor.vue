@@ -198,8 +198,7 @@
                         <timepicker v-model="model.regist_station_end_time"></timepicker>
                     </v-col>
                 </v-row>
-                <v-row>
-
+                <!--<v-row>
                     <v-col cols="3">
                         <v-menu v-model="start"
                                 ref="tmenu"
@@ -220,14 +219,7 @@
                                               outlined
                                               dense></v-text-field>
                             </template>
-                            <!--<v-time-picker v-model="model.regist_station_start_time"
-                                :max="model.regist_station_end_time"
-                                v-if="start"
-                                ampm-in-title
-                                @click:minute="$refs.tmenu.save()"
-                                scrollable>
-                    <v-spacer></v-spacer>
-                </v-time-picker>-->
+     
                         </v-menu>
                     </v-col>
                     <v-col cols="1"><span style="display:flex;justify-content:center;color:#626781">-</span></v-col>
@@ -260,7 +252,7 @@
                         </v-menu>
                     </v-col>
 
-                </v-row>
+                </v-row>-->
 
                 <v-row>
                     <v-col cols="6">
@@ -469,8 +461,8 @@
 <script>
 
     import comDialog from 'components/dialog'
-    import timepicker from 'components/timepicker'
-    //import timepicker from 'components/vue-timepicker/Timepicker'
+    ///import timepicker from 'components/timepicker'
+    import timepicker from 'components/vue-timepicker/Timepicker'
     import { mapActions, mapGetters } from 'vuex'
 
     export default {
