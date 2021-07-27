@@ -6,10 +6,12 @@
         </template>
         <template v-slot:app-content>
             <div id="app">
-                <com-timepicker>
+                {{timeOne}}
+                <com-timepicker v-model="timeOne">
 
                 </com-timepicker>
-                <com-timepicker>
+                {{timeTwo}}
+                <com-timepicker v-model="timeTwo">
 
                 </com-timepicker>
             </div>
@@ -25,10 +27,12 @@
 <script>
     import appMenu from 'components/main/menu'
     import appLayout from 'components/app_layout'
-    import comTimepicker from 'components/timepicker'
+    import comTimepicker from 'components/vue-timepicker/timepicker'
     export default {
         // router,
         data: () => ({
+            timeTwo: '13:00',
+            timeOne: '14:00',
         }),
         computed: {
         },

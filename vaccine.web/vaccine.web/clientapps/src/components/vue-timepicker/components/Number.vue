@@ -35,7 +35,7 @@ export default {
     return store;
   },
   computed: {
-    isDisabled () {
+    isDisabled :function() {
       !this.number.active || !this.isOpen;
     }
   }
