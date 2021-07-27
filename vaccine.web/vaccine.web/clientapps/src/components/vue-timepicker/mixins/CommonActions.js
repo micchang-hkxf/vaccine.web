@@ -28,13 +28,13 @@ export default {
 
       this.$set(this.time, this.activeIndex, digit);
 
-      if (this.activeIndex === 3) {
-        if (this.$parent.$parent === undefined) {
-          this.$emit('close');
-        } else {
-          this.$parent.$parent.$emit('close');
-        }
-      }
+      //if (this.activeIndex === 3) {
+      //  if (this.$parent.$parent === undefined) {
+      //    this.$emit('close');
+      //  } else {
+      //    this.$parent.$parent.$emit('close');
+      //  }
+      //}
 
       this.goToNext();
     },
