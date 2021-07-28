@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     isDisabled :function() {
-      !this.number.active || !this.isOpen;
+      return !this.number.active || !this.isOpen;
     }
   }
 };
