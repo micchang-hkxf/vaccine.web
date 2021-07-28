@@ -1,5 +1,10 @@
 ﻿import axios from 'axios';
 import siteConfig from "project/site.config"
+import vueCookies from 'vue-cookies'
+
+import Vue from 'vue'
+Vue.use(vueCookies)
+Vue.$cookies.config('1d')
 
 export default {
     namespaced: true,
@@ -86,15 +91,20 @@ export default {
             return JSON.parse(window.sessionStorage.getItem('auditTypes'));
         },
         clear: () => {
+            Vue.$cookies.remove("x-token");
+            //document.cookie = 'x-token=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
             return window.sessionStorage.clear();
         }
     },
     mutations: {
         setSessionId: (state, sessionId) => {
             window.sessionStorage.setItem('sessionId', sessionId);
+            
         },
         setToken: (state, token) => {
             window.sessionStorage.setItem('x_token', token);
+            Vue.$cookies.set('x-token', token);
+            //document.cookie = 'x-token=' + token;
         },
         setZones: (state, zones) => {
             window.sessionStorage.setItem('zones', JSON.stringify(zones));
