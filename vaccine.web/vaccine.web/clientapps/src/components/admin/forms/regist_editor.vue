@@ -190,12 +190,12 @@
                 </v-row>
                 <v-row>
                     <v-col cols="3">
-                        <timepicker v-model="model.regist_station_start_time"></timepicker>
+                        <com-timepicker v-model="regist_station_start_time"></com-timepicker>
                     </v-col>
                     <v-col cols="1">
                     </v-col>
                     <v-col cols="3">
-                        <timepicker v-model="model.regist_station_end_time"></timepicker>
+                        <com-timepicker v-model="regist_station_end_time"></com-timepicker>
                     </v-col>
                 </v-row>
                 <!--<v-row>
@@ -461,8 +461,7 @@
 <script>
 
     import comDialog from 'components/dialog'
-    ///import timepicker from 'components/timepicker'
-    import timepicker from 'components/vue-timepicker/Timepicker'
+    import comTimepicker from 'components/vue-timepicker/timepicker'
     import { mapActions, mapGetters } from 'vuex'
 
     export default {
@@ -506,7 +505,9 @@
             regist_institution_name: "",
             rules: {
                 required: v => !!v || '必填',
-            }
+            },
+            regist_station_start_time:"00:00",
+            regist_station_end_time: "00:00"
         }),
         watch: {
             'getInstitutions': function () {
@@ -543,6 +544,10 @@
 
                 this.$set(this, "regist_institution_code", model.regist_institution_code);
                 this.$set(this, "regist_institution_name", model.regist_district_name + "/" + model.regist_village_name);
+
+                this.$set(this, "regist_station_start_time", model.regist_station_start_time);
+                this.$set(this, "regist_station_end_time", model.regist_station_end_time);
+
                 this.model = Object.assign(this.defaultItem, model);
                 this.model.regist_type = { id: model.regist_type };
                 this.$refs.dialogPanel.open();
@@ -551,7 +556,6 @@
             create: function (model) {
                 this.mode = 'new';
                 this.model = Object.assign(this.defaultItem, model);
-
                 this.$refs.dialogPanel.open();
 
             },
@@ -568,6 +572,8 @@
 
             save: function () {
                 if (this.$refs.form.validate()) {
+                    this.model.regist_station_start_time = this.regist_station_start_time;
+                    this.model.regist_station_end_time = this.regist_station_end_time;
                     this.action({ mode: this.mode, action: 'save', model: this.model });
                     //console.log(this.model);
                     //this.$refs.dialogPanel.close();
@@ -612,7 +618,7 @@
 
         },
         components: {
-            comDialog, timepicker
+            comDialog, comTimepicker
         }
     }
 </script>
