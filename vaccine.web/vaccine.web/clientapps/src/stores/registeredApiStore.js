@@ -9,7 +9,9 @@ export default {
             return new Promise((resolve, reject) => {
 
                 var results = { datas: [], state: '', totalCount: 0 };
-
+                if (params.keyWord == "") {
+                    params.keyWord = "none";
+                }
                 var apiUrl = `${state.apiRoot}api/ApplyLog/` + params.keyWord;
                 axios.get(apiUrl, {
                     params: {
