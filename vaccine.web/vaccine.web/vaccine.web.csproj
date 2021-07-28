@@ -46,7 +46,6 @@
   <ItemGroup>
     <Folder Include="clientapps\public\images\" />
     <Folder Include="clientapps\public\login\" />
-    <Folder Include="clientapps\src\components\vue-timepicker\" />
     <Folder Include="clientapps\src\stores\regist\dynamic\" />
   </ItemGroup>
 

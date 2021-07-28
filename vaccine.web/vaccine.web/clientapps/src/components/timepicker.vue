@@ -3,12 +3,11 @@
 </template>
 
 <script>
-    import timepicker from './vue-timepicker/Timepicker'
+    import timepicker from './vue-timepicker/timepicker'
     export default {
         data() {
             return {
-
-                time: '13:20'
+                time: '12:00'
             };
         },
         created() {
