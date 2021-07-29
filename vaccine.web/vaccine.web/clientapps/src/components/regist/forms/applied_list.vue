@@ -118,15 +118,18 @@
 </template>
 
 <script>
+    import { mapActions, mapGetters } from 'vuex'
     export default {
         // router,
         data: () => ({
             appBar: {
                 elevation: 0,
                 height: '144px'
-            }
+            },
+            applieds:[] ,
         }),
         computed: {
+            ...mapGetters('regist', [ 'getUserInfo']),
         },
         props: {
 
@@ -135,7 +138,16 @@
 
         },
         methods: {
-
+            ...mapActions('regist', ['loadAppliedList']),
+            reload: function () {
+                if (!this.getUserInfo) return;
+                this.loadAppliedList(this.getUserInfo).then((applieds) => {
+                    this.applieds.splice(0);
+                    applieds.forEach(f => {
+                        this.applieds.push(f);
+                    });
+                });
+            }
         },
         components: {
         }

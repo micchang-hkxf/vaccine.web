@@ -62,7 +62,7 @@
             },
             toTpPass: function () {
                 if (!this.getUserInfo) {
-                    this.toTpPassLogin(`/apply/${this.activeId}`);
+                    this.toTpPassLogin(`/regist/#/apply/${this.activeId}`);
                     return;
                 }
                 this.$router.push({ path: `/apply/${this.activeId}` });

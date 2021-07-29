@@ -10,7 +10,7 @@
             </v-tabs>
             <div class="action-container">
                 <v-tabs-items v-model="tab">
-                    <v-tab-item key="0" value="regist" class="regist-container">
+                    <v-tab-item key="0" value="regist" class="regist-container" eager>
                         <div class="action-sub-title">請選擇疫苗類型：</div>
                         <div class="action-content d-flex flex-row justify-space-around">
                             <div class="action d-flex flex-column justify-center align-center" @click.stop="toRegist(group)" v-for="(group,index) in getVaccineGroups" :key="`group_${index}`">
@@ -21,8 +21,8 @@
                             </div>
                         </div>
                     </v-tab-item>
-                    <v-tab-item key="1" value="applied" class="applied-container">
-                        <applied-list v-if="isLogin"></applied-list>
+                    <v-tab-item key="1" value="applied" eager class="applied-container">
+                        <applied-list ref="applieds" v-show="isLogin"></applied-list>
                     </v-tab-item>
                 </v-tabs-items>
                 <login-switch ref="switch" :login-done="toLogin"></login-switch>
@@ -74,8 +74,11 @@
             tab: function (newValue) {
                 console.log(newValue)
                 if (newValue != 'applied') return;
-                if (!this.getUserInfo)
+                if (!this.getUserInfo) {
                     this.$refs.switch.create();
+                    return;
+                }
+                this.$refs.applieds.reload();
             }
         },
         methods: {
@@ -85,8 +88,13 @@
                 this.$router.push({ name: 'unapply', query: { groupId: group.groupId } });
             },
             toLogin: function () {
-                this.$router.push({ name: 'regist', query: { mode: 'applied' } });
                 this.$refs.switch.close();
+                this.$nextTick(() => {
+                    window.location.href = '/regist/#/regist?mode=applied';
+                });
+                //window.location.reload();
+                //window.location.href = '/regist/#/regist?mode=applied';
+                //this.$router.push({ name: 'regist', query: { mode: 'applied' } });
             },
             loginUser: function () {
 

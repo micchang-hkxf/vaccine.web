@@ -2,6 +2,16 @@
 export default {
     namespaced: true,
     actions: {
+        loadAppliedList: function ({ state }) {
+            console.log(state);
+            return new Promise((reslove) => {
+                var results = [
+                    { groupName: '肺鏈、流感', groupId: 'influenza' },
+                    { groupName: '新冠肺炎', groupId: 'covid' },
+                ];
+                reslove(results);
+            });
+        },
         loacVaccineGroups: function ({ commit }) {
             return new Promise((reslove) => {
                 var results = {
@@ -41,16 +51,13 @@ export default {
                 reslove(results);
             });
         },
-        setUserInfo: function ({ commit }, userInfo) {
+        setUserInfo: function ({ commit, getters }, userInfo) {
             return new Promise((reslove) => {
-                var results = {
-                    datas: userInfo, state: ''
-                };
-                commit('saveUserInfo', { ...userInfo, uName: '使用者' });
-                reslove(results);
+                commit('saveUserInfo', userInfo);
+                reslove(getters.getUserInfo);
             });
         },
-        checkUserInfo: function ({ commit }, userInfo) {
+        checkUserInfo: function ({ dispatch, rootGetters  }, userInfo) {
             return new Promise((reslove) => {
                 var results = {
                     uName: '張閔傑', //使用者名稱
@@ -60,11 +67,13 @@ export default {
                     captcha: userInfo.captcha, //生日登入 captcha
                     type: 'identify'
                 };
-                commit('saveUserInfo', results);
-                reslove(results);
+                dispatch('setUserInfo', results).then(() => {
+                    console.log('return userInfo', rootGetters );
+                    reslove(rootGetters.getUserInfo);
+                });
             });
         },
-        loadUserInfo: function ({ commit }, token) {
+        loadUserInfo: function ({ dispatch, rootGetters  }, token) {
             return new Promise((reslove) => {
                 console.log(token);
                 var results = {
@@ -76,23 +85,26 @@ export default {
                     captcha: '', //生日登入 captcha
                     type: 'taipei-pass'
                 };
-                commit('saveUserInfo', results);
-                reslove(results);
+                dispatch('setUserInfo', results).then(() => {
+                    console.log('return userInfo', rootGetters );
+                    reslove(rootGetters.getUserInfo);
+                });
             });
         },
     },
     state: {
         vaccineGroups: [],
         vaccineBrands: [],
-        userInfo: null
+        userInfo: null,        
     },
     getters: {
         getVaccineGroups: (state) => state.vaccineGroups,
         getVaccineBrands: (state) => state.vaccineBrands,
-        getUserInfo: () => {
-            if (!sessionStorage.getItem("userInfo")) return null;
-            return JSON.parse(sessionStorage.getItem("userInfo"));
-        },
+        getUserInfo: (state) => {
+            if (!state.userInfo && sessionStorage.getItem("userInfo")!=null)
+                state.userInfo = JSON.stringify(sessionStorage.getItem("userInfo"));
+            return state.userInfo;
+        }
     },
     mutations: {
         saveVaccineGroups: (state, groups) => {
@@ -104,11 +116,8 @@ export default {
             brands.forEach(f => state.vaccineBrands.push(f));
         },
         saveUserInfo: (state, userInfo) => {
+            state.userInfo = userInfo;
             sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
-            //if (!!state.userInfo)
-            //    state.userInfo = Object.assign(state.userInfo, userInfo);
-            //else
-            //    state.userInfo = Object.assign({}, userInfo);
         },
     },
     modules: {
