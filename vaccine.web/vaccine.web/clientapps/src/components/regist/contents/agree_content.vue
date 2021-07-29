@@ -27,25 +27,27 @@
                 <!--<v-btn :to="{name:'apply'}">申請</v-btn>
         <v-btn :to="{name:'regist'}">返回</v-btn>-->
             </div>
-            <login-editor ref="login"></login-editor>
+            <login-editor ref="login" login-done="userSign"></login-editor>
         </template>
     </app-layout>
 </template>
 
 <script>
-    import { mapActions } from 'vuex'
+    import { mapActions, mapGetters } from 'vuex'
     import appLayout from 'components/regist/regist_layout'
     import applyViewer from 'components/regist/forms/apply_viewer'
     import loginEditor from 'components/regist/forms/login_editor'
     export default {
         // router,
         data: () => ({
+            activeId: 555 ,
             appBar: {
                 elevation: 0,
                 height: '144px'
             }, isNeedLogin: true
         }),
         computed: {
+            ...mapGetters('regist', ['getUserInfo']),
         },
         props: {
 
@@ -55,14 +57,26 @@
         },
         methods: {
             ...mapActions('regist', ['setUserInfo']),
+            toTpPassLogin: function (redUrl) {
+                window.location.href = `/tppass?redirect=${encodeURIComponent(redUrl)}`
+            },
             toTpPass: function () {
-                this.setUserInfo({ uid: 'A123456789', birth: '2021/6/9', type: 'taipei-pass' }).then(() => {
-                    this.$router.push({ name: 'apply' });
-                });
+                if (!this.getUserInfo) {
+                    this.toTpPassLogin(`/apply/${this.activeId}`);
+                    return;
+                }
+                this.$router.push({ path: `/apply/${this.activeId}` });
             },
             toLogin: function () {
-                this.$refs.login.create();
+                if (!this.getUserInfo) {
+                    this.$refs.login.create();
+                    return;
+                }
+                this.$router.push({ path: `/apply/${this.activeId}` });
             },
+            userSign: function () {
+                this.$router.push({ path: `/apply/${this.activeId}` });
+            }
         },
         components: {
             appLayout, applyViewer, loginEditor

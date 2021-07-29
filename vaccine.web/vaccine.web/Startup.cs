@@ -79,7 +79,7 @@ namespace VuetifyProjectTemplate
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=admin}/{action=Index}"
+                    template: "{controller=regist}/{action=Index}"
                 );
             });
         }

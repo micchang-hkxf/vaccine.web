@@ -51,8 +51,10 @@
             days: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
             uid: null,
             year: 108,
-            month: 1, 
-            day: 1 ,
+            month: 1,
+            day: 1,
+            sessionId: '',
+            captcha:''
 
         }),
         computed: {
@@ -67,20 +69,27 @@
 
         },
         methods: {
-            ...mapActions('regist', ['setUserInfo']),
+            ...mapActions('regist', ['setUserInfo', 'checkUserInfo']),
             create: function () {
                 if (this.getUserInfo) {
-                    this.loginDone(this.getUserInfo); 
+                    this.loginDone(this.getUserInfo);
                     return;
                 }
                 this.isShow = true;
             },
-            login: function () {
+            login: function () {                
                 if (!this.uid || !this.birth) return;
-                this.setUserInfo({ uid: this.uid, birth: this.birth , type: 'identity' })
-                .then(() => {
-                    this.$router.push({ name:'apply' });
-                    this.close();
+                var comp = this;
+
+                this.checkUserInfo({
+                    identify: this.uid,
+                    birthday: this.birth,
+                    sessionId: this.sessionId,
+                    captcha: this.captcha,
+                    type: 'identity'
+                }).then((user) => {
+                    comp.loginDone(user);
+                    comp.close();
                 }).catch(() => {
                     alert('無法登入');
                 });
@@ -98,7 +107,7 @@
 <style scoped>
 
     .login-editor/deep/ .v-btn {
-        min-width:130px!important;
+        min-width: 130px !important;
     }
 
     .login-editor/deep/ .v-input {
@@ -152,5 +161,4 @@
         .login-editor/deep/ .login-actions .v-btn {
             width: 60px !important;
         }
-
 </style>

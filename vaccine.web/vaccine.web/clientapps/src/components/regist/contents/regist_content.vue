@@ -22,7 +22,7 @@
                         </div>
                     </v-tab-item>
                     <v-tab-item key="1" value="applied" class="applied-container">
-                        <applied-list v-if="isTpPass"></applied-list>
+                        <applied-list v-if="isLogin"></applied-list>
                     </v-tab-item>
                 </v-tabs-items>
                 <login-switch ref="switch" :login-done="toLogin"></login-switch>
@@ -51,9 +51,8 @@
         }),
         computed: {
             ...mapGetters('regist', ['getVaccineGroups', 'getUserInfo']),
-            isTpPass: function () {
+            isLogin: function () {
                 if (!this.getUserInfo) return false;
-                if (this.getUserInfo.type != 'taipei-pass') return false;
                 return true;
             },
         },
@@ -62,7 +61,12 @@
             var comp = this;
             if (comp.$route.params.mode)
                 this.$nextTick(() => {
-                    comp.$set(comp, 'tab', comp.$route.params.mode);
+                        comp.$set(comp, 'tab', comp.$route.params.mode);
+                })
+
+            if (comp.$route.query.mode)
+                this.$nextTick(() => {
+                    comp.$set(comp, 'tab', comp.$route.query.mode);
                 })
             this.loacVaccineGroups();
         },
@@ -70,8 +74,8 @@
             tab: function (newValue) {
                 console.log(newValue)
                 if (newValue != 'applied') return;
-                if (this.isTpPass) return;
-                this.$refs.switch.create();
+                if (!this.getUserInfo)
+                    this.$refs.switch.create();
             }
         },
         methods: {
@@ -81,7 +85,7 @@
                 this.$router.push({ name: 'unapply', query: { groupId: group.groupId } });
             },
             toLogin: function () {
-                this.setUserInfo({ uid: 'A123456789', birth: '2021/6/9', type: 'taipei-pass' });
+                this.$router.push({ name: 'regist', query: { mode: 'applied' } });
                 this.$refs.switch.close();
             },
             loginUser: function () {
