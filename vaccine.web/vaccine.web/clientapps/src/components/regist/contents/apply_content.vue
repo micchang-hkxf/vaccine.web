@@ -15,8 +15,8 @@
             </div>-->
             <div class="apply-container">
 
-                <div class="activity-name">五月份新冠肺炎疫苗接種</div>
-                <div class="activity-name-descript">內湖區西康里 | COVID-19疫苗(AZ) | 王慶森診所</div>
+                <div class="activity-name">{{session.sessionName}}</div>
+                <div class="activity-name-descript">{{session.zoneName}}-{{session.villageName}}│{{session.groupName}}</div>
 
                 <div class="apply-field">
                     <div class="apply-field-label">姓名<span class="red--text">*</span></div>
@@ -33,7 +33,7 @@
                 <div class="apply-field">
                     <div class="apply-field-label">生日<span class="red--text">*</span></div>
                     <div class="apply-field-container d-flex justify-space-between">
-                        <v-select :items="years" placeholder="yyy">
+                        <v-select :items="years" placeholder="yyyy">
 
                         </v-select>
                         <v-select :items="months" placeholder="mm">
@@ -53,34 +53,26 @@
                     </div>
                 </div>
                 <div class="apply-field">
-                    <div class="apply-field-label">電話<span class="red--text">*</span></div>
+                    <div class="apply-field-label">手機（簡訊通知）</div>
                     <div class="apply-field-container">
                         <v-text-field class="apply-field-text" placeholder="請輸入手機號碼"></v-text-field>
                     </div>
                 </div>
                 <div class="apply-field">
-                    <div class="apply-field-label">戶籍<span class="red--text">*</span></div>
+                    <div class="apply-field-label">戶籍</div>
                     <div class="apply-field-container">
                         <v-text-field class="apply-field-text" placeholder="台北市（原）"></v-text-field>
                     </div>
                 </div>
                 <div class="apply-field display type">
-                    <div class="apply-field-label">接種疫苗<span class="red--text">*</span></div>
+                    <div class="apply-field-label">接種疫苗</div>
                     <div class="apply-field-container">
                         <div class="apply-field-type d-flex justify-space-between">
                             <div class="apply-field-type-icon d-flex justify-start align-center">
                                 <img src="/regist/select_vaccine.svg" />
                             </div>
                             <div class="apply-field-type-text d-flex justify-start align-center">
-                                公費流感疫苗
-                            </div>
-                        </div>
-                        <div class="apply-field-type d-flex justify-space-between">
-                            <div class="apply-field-type-icon d-flex justify-start align-center">
-                                <img src="/regist/select_vaccine.svg" />
-                            </div>
-                            <div class="apply-field-type-text d-flex justify-start align-center">
-                                公費肺炎鏈球菌疫苗(中央75歲以上)
+                                {{session.brandName}}
                             </div>
                         </div>
                     </div>
@@ -88,7 +80,7 @@
                 <v-divider></v-divider>
 
                 <div class="apply-field display descript">
-                    <div class="apply-field-label">活動申明<span class="red--text">*</span></div>
+                    <div class="apply-field-label">活動申明</div>
                     <div class="apply-field-container descript-area">
                         為避免重複接種，報名後請勿再自行前往院所接種或跨里報名，接種當日，將再次檢核接種資格，屆時依現場判讀可接種之疫苗別為準。
                     </div>
@@ -123,9 +115,10 @@
                 elevation: 0,
                 height: '144px'
             }, isNeedLogin: true,
-            years: [108],
-            months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-            days: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+            //years: [108],
+            years: Array.from({ length: new Date().getFullYear() - 1910 }, (value, index) => new Date().getFullYear() - index),
+            months: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+            days: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
         }),
         computed: {
         },
@@ -133,7 +126,8 @@
 
         },
         created: function () {
-
+            //this.session = this.$store.getters['regist/user/getActivityApply'];
+            this.session = JSON.parse(window.sessionStorage.getItem('activityApply'));
         },
         methods: {
             sendApply: function () {

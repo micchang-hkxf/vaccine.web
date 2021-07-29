@@ -85,6 +85,9 @@ export default {
         getAuditTypes: () => {
             return JSON.parse(window.sessionStorage.getItem('auditTypes'));
         },
+        getActivityApply: () => {
+            return JSON.parse(window.sessionStorage.getItem('activityApply'));
+        },
         clear: () => {
             return window.sessionStorage.clear();
         }
@@ -107,6 +110,9 @@ export default {
         },
         setAuditTypes: (state, auditTypes) => {
             window.sessionStorage.setItem('auditTypes', JSON.stringify(auditTypes));
+        },
+        setActivityApply: (state, activityApply) => {
+            window.sessionStorage.setItem('activityApply', JSON.stringify(activityApply));
         }
     },
     modules: {

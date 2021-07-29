@@ -1,28 +1,31 @@
 ﻿<template>
     <div class="apply-viewer">
 
-        <div class="activity-name">五月份新冠肺炎疫苗接種</div>
-        <div class="activity-name-descript">內湖區西康里 | COVID-19疫苗(AZ) | 王慶森診所</div>
+        <div class="activity-name">{{session.sessionName}}</div>
+        <div class="activity-name-descript">{{session.zoneName}}-{{session.villageName}}│{{session.groupName}}</div>
 
         <div class="activity-detail-title">疫苗廠牌</div>
-        <div class="activity-detail-descript">AstraZeneca(AZ)</div>
+        <div class="activity-detail-descript">{{session.brandName}}</div>
 
-        <div class="activity-detail-title">設站起訖時間</div>
-        <div class="activity-detail-descript">2021/05/08, 08:30 - 11:30</div>
+        <div class="activity-detail-title">接種日期</div>
+        <div class="activity-detail-descript">{{$moment(session.sessionStart).format('YYYY/MM/DD')}},{{$moment(session.sessionStart).format('HH:mm')}}-{{$moment(session.sessionEnd).format('HH:mm')}}</div>
 
-        <div class="activity-detail-title">報名開放起迄時間</div>
-        <div class="activity-detail-descript"> 2021/04/10,08:00 - 2021/05/05,20:00</div>
+        <div class="activity-detail-title">事先報名</div>
+        <div class="activity-detail-descript">{{$moment(session.registStart).format('YYYY/MM/DD,HH:mm')}} - {{$moment(session.registEnd).format('YYYY/MM/DD,HH:mm')}}</div>
 
         <div class="activity-detail-title">設站地點</div>
-        <div class="activity-detail-descript">台北市內湖區西康里西康路30號</div>
+        <div class="activity-detail-descript">{{session.implementAddr}}</div>
 
         <div class="activity-detail-title">開放名額</div>
-        <div class="activity-detail-descript"><span>240</span> / <span class="disabled">300</span></div>
+        <div class="activity-detail-descript" v-if="session.totalCount === session.maxLimit"><span class="full">名額已滿</span></div>
+        <div class="activity-detail-descript" v-else><span>{{session.totalCount}}</span> / <span class="disabled">{{session.maxLimit}}</span></div>
 
     </div>
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
+
     export default {
         // router,
         data: () => ({
@@ -37,10 +40,11 @@
 
         },
         created: function () {
-
+            this.session = this.$route.params;
+            this.setActivityApply(this.session);
         },
         methods: {
-
+            ...mapActions('regist', ['setActivityApply']),
         },
         components: {
         }
@@ -65,9 +69,12 @@
         font-size: 16px !important;
         color: #434969 !important;
     }
-        .apply-viewer/deep/ .activity-detail-descript .disabled {
-            font-size: 16px !important;
-            color: rgba(67,73,105,0.5) !important;
-        }
+    .apply-viewer/deep/ .activity-detail-descript .disabled {
+        font-size: 16px !important;
+        color: rgba(67,73,105,0.5) !important;
+    }
 
+    .apply-viewer/deep/ .activity-detail-descript .full {
+        color: #F4A95F;
+    }
 </style>

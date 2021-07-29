@@ -103,24 +103,81 @@
     .done-dialog/deep/ {
     }
 
-        .done-dialog/deep/ .v-overlay__scrim {
-        }
+    .done-dialog/deep/ .v-overlay__scrim {
+    }
 
+    .done-dialog/deep/ .done-header {
+        font-size: 16px !important;
+        color: #626781 !important;
+        display: block;
+    }
 
-        .done-dialog/deep/ .done-header {
-            font-size: 16px !important;
-            color: #626781 !important;
-        }
+    .done-dialog/deep/ .done-header .done-header-title {
+        text-align: center;
+        font: normal normal normal 20px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781;
+        margin: 16px 0 10px 0;
+    }
 
-        .done-dialog/deep/ .done-container {
-        }
+    .done-dialog/deep/ .done-container {
+    }
 
+    .done-dialog/deep/ .done-container .field-container {
+        background: #F4F4F6 0% 0% no-repeat padding-box;
+        color: #626781;
+        text-align: center;
+        padding: 16px;
+        opacity: 1;
+    }
 
-        .done-dialog/deep/ .done-actions {
-        }
+    .done-dialog/deep/ .done-container .field-container .title {
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0;
+    }
 
-            .done-dialog/deep/ .done-actions .v-btn {
-                width: 60px !important;
-            }
+    .done-dialog/deep/ .done-container .field-container .datetime{
+        font: normal normal normal 12px/16px Noto Sans T Chinese;
+        letter-spacing: 0;
+        color: #43496980;
+    }
+
+    .done-dialog/deep/ .done-container .field-container .address{
+        font: normal normal normal 12px/16px Noto Sans T Chinese;
+        letter-spacing: 0;
+        color: #43496980;
+    }
+
+    .done-dialog/deep/ .done-container .field-container .order-tip {
+        font: normal normal normal 12px/16px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #43496980;
+        margin-top: 10px;
+    }
+
+    .done-dialog/deep/ .done-container .field-container .order{
+        font: normal normal bold 32px/16px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781;
+        margin: 10px 0;
+    }
+
+    .done-dialog/deep/ .done-actions {
+        display: block !important;
+        padding: 0 20px;
+        margin-bottom: 20px; 
+    }
+
+    .done-dialog/deep/ .done-actions .descript {
+        font: normal normal normal 12px/16px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781;
+        opacity: 1;
+        margin-bottom: 20px;
+    }
+
+    .done-dialog/deep/ .done-actions .v-btn {
+        margin-bottom: 24px;
+    }
 
 </style>
