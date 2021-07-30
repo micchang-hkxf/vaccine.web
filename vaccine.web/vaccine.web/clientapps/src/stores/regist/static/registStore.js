@@ -63,6 +63,21 @@ export default {
                 resolve(results);
             });
         },
+        getBeforeApply: function ({ state }) {
+            return new Promise((resolve) => {
+                console.log(state);
+                var results = { datas: [], state: '' };
+                /*
+                // 是否已報名其他場次
+                var results = {
+                    datas: [
+                        { activityName: '四月份新冠肺炎疫苗接種' },
+                    ], state: ''
+                };
+                */
+                resolve(results);
+            });
+        }
     },
     state: {
         vaccineGroups: [],

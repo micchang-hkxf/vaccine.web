@@ -61,8 +61,10 @@
         methods: {
             create: function (info) {
                 this.isShow = true;
-                this.session = JSON.parse(window.sessionStorage.getItem('activityApply'));
+                this.session = this.$store.getters['regist/user/getActivityApply'];
                 this.session.checkJobId = info.checkJobId;
+                //
+                this.$store.getters['regist/user/removeItem']('activityApply');
             },
             finish: function () {
                 this.isShow = false;

@@ -117,6 +117,23 @@
                     了解
                 </template>
             </com-confirm>
+            <!---->
+            <com-confirm ref="alertRegistered" ref-key="alertRegistered" :left-click="alertRegisteredLeftClick" :right-click="alertRegisteredRightClick" right-color="rgba(240,82,75,1) !important">
+                <template v-slot:confirm-image>
+                    <v-img src="/alert_warning.svg"></v-img>
+                </template>
+                <template v-slot:confirm-text>
+                    <div class="sub-title">您已報名其他場次</div>
+                    <div class="sub-title-name">{{beforeActivityName}}</div>
+                    <div class="sub-content">是否取消前次登記改為報名本次活動？</div>
+                </template>
+                <template v-slot:confirm-left-btn-text>
+                    保留前次
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    報名本次
+                </template>
+            </com-confirm>
         </template>
     </app-layout>
 </template>
@@ -149,6 +166,7 @@
             year: '',
             month: '',
             day: '',
+            beforeActivityName: '',
         }),
         computed: {
         },
@@ -156,12 +174,12 @@
 
         },
         created: function () {
-            //this.session = this.$store.getters['regist/user/getActivityApply'];
-            this.session = JSON.parse(window.sessionStorage.getItem('activityApply'));
+            this.session = this.$store.getters['regist/user/getActivityApply'];
             window.scrollTo(0, 0);
+            this.checkBeforeApply();
         },
         methods: {
-            ...mapActions('regist', ['checkApply']),
+            ...mapActions('regist', ['checkApply', 'getBeforeApply']),
             sendApply: function () {
                 var comp = this;
                 var isvaild = comp.$refs.applyForm.validate();
@@ -172,7 +190,7 @@
                 var data = {
                     uName: comp.uName,
                     uId: comp.uId,
-                    bd: new Date(comp.year + '-' + comp.month + '-' + comp.day),
+                    bd: comp.year + '-' + comp.month + '-' + comp.day + 'T00:00:00',
                     mbNo: comp.mbNo,
                     census: comp.census,
                 };
@@ -197,8 +215,29 @@
                         comp.$bus.$emit('loading_hide4');
                     });
             },
+            checkBeforeApply: function () {
+                var comp = this;
+                setTimeout(() => {
+                    comp.getBeforeApply()
+                        .then(function (result) {
+                            if (result.datas.length > 0) {
+                                comp.beforeActivityName = result.datas[0].activityName;
+                                comp.$bus.$emit('alertRegistered_show', true);
+                            }
+                        })
+                        .catch(ex => {
+                            console.log(ex);
+                        });
+                }, 0);
+            },
             alertClick: function () {
                 this.$bus.$emit('alert_show', false);
+            },
+            alertRegisteredLeftClick: function () {
+                this.$router.push({ name: 'regist' });
+            },
+            alertRegisteredRightClick: function () {
+                this.$bus.$emit('alertRegistered_show', false);
             }
         },
         components: {
@@ -389,6 +428,14 @@
         color: #626781;
     }
 
+    .apply-content/deep/ .sub-title-name {
+        text-align: center;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #77CCDB;
+        margin-top: 10px;
+    }
+
     .apply-content/deep/ .sub-content {
         text-align: center;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
@@ -399,5 +446,9 @@
 
     .apply-content/deep/ .v-dialog .v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
         background: #626781 0% 0% no-repeat padding-box !important;
+    }
+
+    .apply-content/deep/ .v-dialog .confirm-left-btns-text {
+        color: #FFF;
     }
 </style>
