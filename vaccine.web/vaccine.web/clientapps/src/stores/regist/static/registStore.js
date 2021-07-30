@@ -4,7 +4,7 @@ export default {
     namespaced: true,
     actions: {
         loacVaccineGroups: function ({  commit }) {
-            return new Promise((reslove) => {
+            return new Promise((resolve) => {
                 var results = {
                     datas: [
                         { groupName: '肺鏈、流感', groupId: 'influenza' },
@@ -12,11 +12,11 @@ export default {
                     ], state: ''
                 };
                 commit('saveVaccineGroups', results.datas);
-                reslove(results);
+                resolve(results);
             });
         },
         loacVaccineSessions: function ({ state }, param ) {
-            return new Promise((reslove) => {
+            return new Promise((resolve) => {
                 console.log(param);
                 console.log(state);
                 var results = {
@@ -25,11 +25,11 @@ export default {
                         { sessionName: '四月份新冠肺炎疫苗接種', sessionId: '002', zoneName: '內湖區', zoneId: 'A011', villageName: '紫雲里', villageId: '', sessionStart: '2021/4/25 09:00:00', sessionEnd: '2021/4/25 11:00:00', registStart: '2021/4/10 09:00:00', registEnd: '2021/4/22 09:00:00', maxLimit: 300, totalCount: 300, brandId: 'az', brandName: 'AstraZeneca(AZ)', implementAddr: '台北市內湖區西康里西康路30號', groupName: '新冠肺炎', signUp: false },                        
                     ], state: ''
                 };
-                reslove(results);
+                resolve(results);
             });
         },
         loacVaccineBrands: function ({ commit }, group) {
-            return new Promise((reslove) => {
+            return new Promise((resolve) => {
                 console.log(group);
                 var results = {
                     datas: [
@@ -39,21 +39,30 @@ export default {
                     ], state: ''
                 };
                 commit('saveVaccineBrands', results.datas);
-                reslove(results);
+                resolve(results);
             });
         },
         setUserInfo: function ({ commit }, userInfo) {
-            return new Promise((reslove) => {
+            return new Promise((resolve) => {
                 var results = {
                     datas: userInfo , state: ''
                 };
                 commit('saveUserInfo', { ...userInfo, uName:'使用者' });
-                reslove(results);
+                resolve(results);
             });
         },
         setActivityApply: function ({ commit }, activityApply) {
             commit('user/setActivityApply', activityApply);
-        }
+        },
+        checkApply: function ({state}, datas) {
+            return new Promise((resolve) => {
+                console.log(state);
+                var results = {
+                    datas: datas, state: ''
+                };
+                resolve(results);
+            });
+        },
     },
     state: {
         vaccineGroups: [],

@@ -12,19 +12,19 @@
             <v-card-text class="done-container">
                 <div class="field-container">
                     <div class="title full-width">
-                        五月份新冠肺炎疫苗接種
+                        {{session.sessionName}}
                     </div>
                     <div class="datetime full-width">
-                        2021/05/08, 08:30 - 11:30 
+                        {{$moment(session.sessionStart).format('YYYY/MM/DD')}},{{$moment(session.sessionStart).format('HH:mm')}}-{{$moment(session.sessionEnd).format('HH:mm')}}
                     </div>
                     <div class="address full-width">
-                        台北市內湖區西康里西康路30號
+                        {{session.implementAddr}}
                     </div>
                     <div class="order-tip full-width">
                         序號：
                     </div>
                     <div class="order">
-                        012
+                        {{session.checkJobId}}
                     </div>
                 </div>
             </v-card-text>
@@ -32,7 +32,7 @@
                 <div class="descript">
                     為避免重複接種，報名後請勿再自行前往院所接種或跨里報名，接種當日，將再次檢核接種資格，屆時依現場判讀可接種之疫苗別為準。
                 </div>
-                <v-btn class="done-action full-width" color="#626781" width="100%" @click.stop="isShow=false">了解</v-btn>
+                <v-btn class="done-action full-width" color="#626781" width="100%" @click.stop="finish">了解</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -59,8 +59,14 @@
 
         },
         methods: {
-            create: function () {
+            create: function (info) {
                 this.isShow = true;
+                this.session = JSON.parse(window.sessionStorage.getItem('activityApply'));
+                this.session.checkJobId = info.checkJobId;
+            },
+            finish: function () {
+                this.isShow = false;
+                location.replace('/regist');
             }
         },
         components: {
