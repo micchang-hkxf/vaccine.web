@@ -73,7 +73,7 @@ export default {
                 });
             });
         },
-        loadUserInfo: function ({ dispatch, rootGetters  }, token) {
+        loadUserInfo: function ( { dispatch, rootGetters }, token) {
             return new Promise((reslove) => {
                 console.log(token);
                 var results = {

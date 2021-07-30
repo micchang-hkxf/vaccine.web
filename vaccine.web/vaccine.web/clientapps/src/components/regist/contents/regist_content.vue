@@ -22,6 +22,7 @@
                         </div>
                     </v-tab-item>
                     <v-tab-item key="1" value="applied" eager class="applied-container">
+                        {{getUserInfo}}
                         <applied-list ref="applieds" v-show="isLogin"></applied-list>
                     </v-tab-item>
                 </v-tabs-items>
@@ -89,12 +90,13 @@
             },
             toLogin: function () {
                 this.$refs.switch.close();
-                this.$nextTick(() => {
-                    window.location.href = '/regist/#/regist?mode=applied';
-                });
+                //this.$nextTick(() => {
+                //    //window.location.href = '/regist/#/regist?mode=applied';
+                //    this.$router.go()
+                //    //this.$router.push({ name: 'regist', query: { mode: 'applied' } });
+                //});
                 //window.location.reload();
-                //window.location.href = '/regist/#/regist?mode=applied';
-                //this.$router.push({ name: 'regist', query: { mode: 'applied' } });
+                
             },
             loginUser: function () {
 
