@@ -90,6 +90,9 @@ export default {
         getAuditTypes: () => {
             return JSON.parse(window.sessionStorage.getItem('auditTypes'));
         },
+        getActivityApply: () => {
+            return JSON.parse(window.sessionStorage.getItem('activityApply'));
+        },
         clear: () => {
             Vue.$cookies.remove("x-token");
             //document.cookie = 'x-token=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
@@ -117,6 +120,9 @@ export default {
         },
         setAuditTypes: (state, auditTypes) => {
             window.sessionStorage.setItem('auditTypes', JSON.stringify(auditTypes));
+        },
+        setActivityApply: (state, activityApply) => {
+            window.sessionStorage.setItem('activityApply', JSON.stringify(activityApply));
         }
     },
     modules: {
