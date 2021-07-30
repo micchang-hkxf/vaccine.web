@@ -22,7 +22,6 @@
                         </div>
                     </v-tab-item>
                     <v-tab-item key="1" value="applied" eager class="applied-container">
-                        {{getUserInfo}}
                         <applied-list ref="applieds" v-show="isLogin"></applied-list>
                     </v-tab-item>
                 </v-tabs-items>
