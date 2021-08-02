@@ -55,6 +55,9 @@
                 if (!this.getUserInfo) return false;
                 return true;
             },
+            isRecords: function () {
+                return this.tab == 'applied';
+            },
         },
         props: [],
         created: function () {

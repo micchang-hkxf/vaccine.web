@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-
-namespace vaccine.web.Helpers
+ namespace vaccine.web.Helpers
 {
     public static class ApiHelper
     {
-
-        public static ResultType ApiGet<ResultType>(this HttpClient Client, string ApiUrl)
+         public static ResultType ApiGet<ResultType>(this HttpClient Client, string ApiUrl)
         {
             try
             {

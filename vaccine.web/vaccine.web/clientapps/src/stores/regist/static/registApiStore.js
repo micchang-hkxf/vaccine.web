@@ -6,6 +6,20 @@ import { Promise } from "core-js";
 export default {
     namespaced: true,
     actions: {
+        loadAppliedList: function ({ state }, userInfo) {
+            return new Promise((reslove) => {
+                console.log(state);
+                var results = [
+                    { groupName: '肺鏈、流感', groupId: 'influenza' },
+                    { groupName: '新冠肺炎', groupId: 'covid' },
+                ];
+
+                if (userInfo)
+                    reslove(results);
+                else
+                    reslove([]);
+            });
+        },
         loacVaccineGroups: function ({  commit }) {
             return new Promise((resolve) => {
                 var results = {
@@ -109,14 +123,59 @@ export default {
                 resolve(results);
             });
         },
-        setUserInfo: function ({ commit }, userInfo) {
-            return new Promise((resolve) => {
-                var results = {
-                    datas: userInfo , state: ''
-                };
-                commit('saveUserInfo', { ...userInfo, uName:'使用者' });
-                resolve(results);
+        setUserInfo: function ({ commit, getters }, userInfo) {
+            return new Promise((reslove) => {
+                commit('saveUserInfo', userInfo);
+                reslove(getters.getUserInfo);
             });
+        },
+        checkUserInfo: function ({ dispatch, rootGetters }, userInfo) {
+            return new Promise((reslove) => {
+                var results = {
+                    uName: '張閔傑', //使用者名稱
+                    birthday: userInfo.birthday, //使用者生日
+                    identify: userInfo.identify, //使用者身分證
+                    sessionId: userInfo.sessionId, //生日登入 sessionId
+                    captcha: userInfo.captcha, //生日登入 captcha
+                    type: 'identify'
+                };
+                dispatch('loadAppliedList', userInfo).then(() => {
+                    dispatch('setUserInfo', results).then(() => {
+                        console.log('return userInfo', rootGetters);
+                        reslove(rootGetters.getUserInfo);
+                    });
+                });
+            });
+        },
+        loadUserInfo: function ({ state,commit }, token) {
+            var tokenInfo = {
+                token: token, //台北通 token
+                type: 'taipei-pass'
+            }
+            return new Promise((resolve, reject) => {
+                var apiUrl = `${state.apiRoot}api/my`;
+                var apiHeader = {
+                    headers: {
+                        'x-token' : token 
+                    }
+                }
+                axios.get(apiUrl, apiHeader).then(res => {
+                    var userInfo = {
+                        uName: res.uName, //使用者名稱
+                        birthday: res.bd, //使用者生日
+                        identify: res.uid, //使用者身分證
+                        token: token, //台北通 token
+                        sessionId: null, //生日登入 sessionId
+                        captcha: null, //生日登入 captcha
+                        type: 'taipei-pass'
+                    };
+                    commit('saveUserInfo', { ...userInfo, ...tokenInfo });
+                    resolve(userInfo);
+                }).catch(() => {
+                    reject();
+                });
+            });
+
         },
         setActivityApply: function ({ commit }, activityApply) {
             commit('user/setActivityApply', activityApply);
@@ -155,7 +214,12 @@ export default {
     getters: {
         getVaccineGroups: (state) => state.vaccineGroups,
         getVaccineBrands: (state) => state.vaccineBrands,
-        getUserInfo: (state) => state.userInfo, 
+        getUserInfo: (state) => {
+            if (!state.userInfo && sessionStorage.getItem("userInfo") != null)
+                state.userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+            return state.userInfo;
+        },
+        getApiRoot: function () { return siteConfig.apiRoot; }
     },
     mutations: {
         saveVaccineGroups: (state, groups) => {
@@ -167,10 +231,8 @@ export default {
             brands.forEach(f => state.vaccineBrands.push(f));
         },
         saveUserInfo: (state, userInfo) => {
-            if (!!state.userInfo)
-                state.userInfo = Object.assign(state.userInfo, userInfo);
-            else 
-                state.userInfo = Object.assign({}, userInfo);
+            state.userInfo = userInfo;
+            sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
         },
     },
     modules: {

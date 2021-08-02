@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
+using vaccine.web.Helpers;
 
 namespace vaccine.web.Controllers
 {
@@ -20,13 +22,14 @@ namespace vaccine.web.Controllers
             {
                 if (string.IsNullOrEmpty(Status.Code)) throw new Exception("Code 錯誤");
                 if (string.IsNullOrEmpty(Status.State)) throw new Exception("State 錯誤");
-                Response.Cookies.Append("x-token", "xxxxxxxxxxxx", Constants.GetCookieOption());
-                Response.Cookies.Append("red_url",string.Empty,new CookieOptions() { Expires = DateTimeOffset.Now.AddSeconds(-1) });
+                var Token = GetUserTokeByCode(Status.Code);
+                Response.Cookies.Append("x-token", Token, new CookieOptions() { Expires=DateTimeOffset.Now.AddDays(1) });
                 return new RedirectResult($"~/regist/#/oauth?redirect={HttpUtility.UrlEncode(Status.State)}");
             }
             catch (Exception ex)
             {
-                return new RedirectResult($"~/regist/#/oauth/error?redirect={HttpUtility.UrlEncode(Status.State)}");                
+                Response.Cookies.Append("error", "true", new CookieOptions() { Expires = DateTimeOffset.Now.AddDays(1) });
+                return new RedirectResult($"~/regist/#/oauth?redirect={HttpUtility.UrlEncode(Status.State)}");
             }
 
         }
@@ -36,7 +39,7 @@ namespace vaccine.web.Controllers
         //    try
         //    {
         //        return new RedirectResult($"https://localhost:44324/authorize{Request.QueryString}");
-        //        //return new RedirectResult($"~/regist/#/oauth?redirect={HttpUtility.UrlEncode(Status.State)}");
+        //        return new RedirectResult($"~/regist/#/oauth?redirect={HttpUtility.UrlEncode(Status.State)}");
         //    }
         //    catch (Exception ex)
         //    {
@@ -50,8 +53,7 @@ namespace vaccine.web.Controllers
         {
             try
             {
-                var Redirect = new RedirectResult($"{Constants.SiteSetting.tpPassOauth}/oauth/authorize?response_type=code&client_id={Constants.SiteSetting.tpPassClientId}&redirectUri={HttpUtility.UrlEncode(Status.Redirect)}&scope={HttpUtility.UrlEncode(Constants.SiteSetting.tpPassClientScope)}&state=abcd123456");
-                Response.Cookies.Append("red_url", HttpUtility.UrlEncode(Status.Redirect));
+                var Redirect = new RedirectResult($"{Constants.SiteSetting.tpPassOauth}/oauth/authorize?response_type=code&client_id={Constants.SiteSetting.tpPassClientId}&redirectUri={HttpUtility.UrlEncode(Status.Redirect)}&scope={HttpUtility.UrlEncode(Constants.SiteSetting.tpPassClientScope)}&state={HttpUtility.UrlEncode(Status.Redirect)}");
                 return Redirect;
                 //return new RedirectResult($"~/authorize?code=testTpPassLogin&state={HttpUtility.UrlEncode(Status.Redirect)}");
             }
@@ -67,6 +69,33 @@ namespace vaccine.web.Controllers
             public string Code { get; set; }
             public string State { get; set; }
             public string Redirect { get; set; }
+        }
+
+        public class CodeToken
+        {
+            public string access_Token { get; set; }
+            public string token_Type { get; set; }
+        }
+
+        private string GetUserTokeByCode(string Code)
+        {
+            try
+            {
+                using (var Client = new HttpClient())
+                {
+                    var ApiUrl = $"{Constants.ApiRoot}api/token?code={Code}";
+                    var Tokens = Client.ApiGet<CodeToken>(ApiUrl);
+                    return Tokens.access_Token;
+                }
+            }
+            catch (Exception ex)
+            {
+                var message = $"無法識別使用者!";
+                var except = new Exception(message, ex);
+                except.Data.Add("code", Code);
+                except.Data.Add("api", $"{Constants.ApiRoot}api/token?code={Code}");
+                throw except;
+            }
         }
 
     }

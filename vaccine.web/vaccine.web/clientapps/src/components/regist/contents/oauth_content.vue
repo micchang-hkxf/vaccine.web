@@ -3,7 +3,6 @@
 </template>
 
 <script>
-    import client from 'stores/clientHelper'
     import { mapActions } from 'vuex'
     export default {
         // router,
@@ -12,10 +11,15 @@
         computed: {
         },
         created: function () {
-            var token = client.getCookie('x-token');
+            var error = this.$cookies.get('error');
+            if (!error) {
+                window.location.href = this.$route.query.redirect;
+                return;
+            }
+            var token = this.$cookies.get('x-token');
             if (!token) return;
             this.loadUserInfo(token).then(() => {
-                client.setCookie('x-token', null);
+                this.$cookies.remove('x-token');
                 window.location.href = this.$route.query.redirect;
             });
         },

@@ -2,6 +2,10 @@
 import '@fortawesome/fontawesome-free/css/all.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+//vue-cookie
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
+
 //Vuex 
 import Vuex from 'vuex'
 Vue.use(Vuex)

@@ -1,6 +1,5 @@
 ﻿<template>
     <div>
-
         <v-dialog v-model="isShow">
             <v-card class="login-switch">
                 <v-card-title class="login-header">請確認您的身份以查詢記錄<v-spacer></v-spacer><v-icon>close</v-icon></v-card-title>
@@ -33,7 +32,7 @@
             year: 108,
             month: 1, 
             day: 1 ,
-
+            isLoginError:false
         }),
         computed: {
             ...mapGetters('regist', ['getUserInfo']),
@@ -50,6 +49,12 @@
             ...mapActions('regist', ['saveUserInfo']),
             create: function () {
                 var comp = this;
+                var error = this.$cookies.get('error');
+                if (error) {
+                    this.$cookies.remove('error');
+                    alert('error');
+                    return;
+                }
                 if (comp.getUserInfo) {
                     comp.loginDone(comp.getUserInfo); 
                     return;
