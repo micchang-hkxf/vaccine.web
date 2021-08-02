@@ -95,7 +95,7 @@
                 this.loacVaccineSessions({
                     groupId: this.groupId,
                     brandId: this.filterBrandId, 
-                    keyword: this.filterKeyword, 
+                    keyword: this.filterKeyword,
                 }).then(r => {
                     this.sessions.splice(0);
                     r.datas.forEach(f => this.sessions.push(f));
