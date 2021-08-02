@@ -27,6 +27,16 @@
                         </v-select>
                     </div>
                 </div>
+                <div class="login-field">
+                    <div class="login-field-label">驗證碼 <span class="red--text">*</span></div>
+                    <div class="login-field-container d-flex justify-space-between">
+                        <v-text-field v-model="captcha" class="captcha-field">
+                            <template v-slot:append-outer>
+                                <img :src="getCaptchaUrl" />
+                            </template>
+                        </v-text-field>
+                    </div>
+                </div>
             </v-card-text>
             <v-card-actions class="login-actions d-flex justify-space-between">
                 <v-btn class="cancel-action" color="#626781" width="130px" @click.stop="isShow=false">取消</v-btn>
@@ -51,36 +61,50 @@
             days: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
             uid: null,
             year: 108,
-            month: 1, 
-            day: 1 ,
+            month: 1,
+            day: 1,
+            sessionId: '',
+            captcha:''
 
         }),
         computed: {
-            ...mapGetters('regist', ['getUserInfo']),
+            ...mapGetters('regist', ['getUserInfo','getApiRoot']),
             birth: function () {
                 if (!this.year || !this.month || !this.day) return;
                 return new Date(this.year + 1911, this.month, this.day);
+            },
+            getCaptchaUrl: function () {
+                return `${this.getApiRoot}api/captcha?sessionId=${this.sessionId}`;
             }
         },
         props: ['loginDone'],
         created: function () {
-
+            
         },
         methods: {
-            ...mapActions('regist', ['setUserInfo']),
+            ...mapActions('regist', ['setUserInfo', 'checkUserInfo']),
             create: function () {
                 if (this.getUserInfo) {
-                    this.loginDone(this.getUserInfo); 
+                    this.loginDone(this.getUserInfo);
                     return;
                 }
                 this.isShow = true;
+                this.sessionId = parseInt(Math.random(0,900000) + 100000) ;
             },
-            login: function () {
+            login: function () {                
                 if (!this.uid || !this.birth) return;
-                this.setUserInfo({ uid: this.uid, birth: this.birth , type: 'identity' })
-                .then(() => {
-                    this.$router.push({ name:'apply' });
-                    this.close();
+                if (!this.sessionId || !this.captcha) return;
+                var comp = this;
+
+                this.checkUserInfo({
+                    identify: this.uid,
+                    birthday: this.birth,
+                    sessionId: this.sessionId,
+                    captcha: this.captcha,
+                    type: 'identity'
+                }).then((user) => {
+                    comp.loginDone(user);
+                    comp.close();
                 }).catch(() => {
                     alert('無法登入');
                 });
@@ -96,9 +120,12 @@
 </script>
 
 <style scoped>
+    .captcha-field .v-input__slot {
+        border-style:none;
+    }
 
     .login-editor/deep/ .v-btn {
-        min-width:130px!important;
+        min-width: 130px !important;
     }
 
     .login-editor/deep/ .v-input {
@@ -152,5 +179,4 @@
         .login-editor/deep/ .login-actions .v-btn {
             width: 60px !important;
         }
-
 </style>

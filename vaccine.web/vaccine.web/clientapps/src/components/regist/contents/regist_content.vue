@@ -10,7 +10,7 @@
             </v-tabs>
             <div class="action-container">
                 <v-tabs-items v-model="tab">
-                    <v-tab-item key="0" value="regist" class="regist-container">
+                    <v-tab-item key="0" value="regist" class="regist-container" eager>
                         <div class="action-sub-title">請選擇疫苗類型：</div>
                         <div class="action-content d-flex flex-row justify-space-around">
                             <div class="action d-flex flex-column justify-center align-center" @click.stop="toRegist(group)" v-for="(group,index) in getVaccineGroups" :key="`group_${index}`">
@@ -21,8 +21,8 @@
                             </div>
                         </div>
                     </v-tab-item>
-                    <v-tab-item key="1" value="applied" class="applied-container">
-                        <applied-list v-if="isTpPass"></applied-list>
+                    <v-tab-item key="1" value="applied" eager class="applied-container">
+                        <applied-list ref="applieds" v-show="isLogin"></applied-list>
                     </v-tab-item>
                 </v-tabs-items>
                 <login-switch ref="switch" :login-done="toLogin"></login-switch>
@@ -51,9 +51,8 @@
         }),
         computed: {
             ...mapGetters('regist', ['getVaccineGroups', 'getUserInfo']),
-            isTpPass: function () {
+            isLogin: function () {
                 if (!this.getUserInfo) return false;
-                if (this.getUserInfo.type != 'taipei-pass') return false;
                 return true;
             },
         },
@@ -62,7 +61,12 @@
             var comp = this;
             if (comp.$route.params.mode)
                 this.$nextTick(() => {
-                    comp.$set(comp, 'tab', comp.$route.params.mode);
+                        comp.$set(comp, 'tab', comp.$route.params.mode);
+                })
+
+            if (comp.$route.query.mode)
+                this.$nextTick(() => {
+                    comp.$set(comp, 'tab', comp.$route.query.mode);
                 })
             this.loacVaccineGroups();
         },
@@ -70,8 +74,11 @@
             tab: function (newValue) {
                 console.log(newValue)
                 if (newValue != 'applied') return;
-                if (this.isTpPass) return;
-                this.$refs.switch.create();
+                if (!this.getUserInfo) {
+                    this.$refs.switch.create();
+                    return;
+                }
+                this.$refs.applieds.reload();
             }
         },
         methods: {
@@ -81,8 +88,14 @@
                 this.$router.push({ name: 'unapply', query: { groupId: group.groupId } });
             },
             toLogin: function () {
-                this.setUserInfo({ uid: 'A123456789', birth: '2021/6/9', type: 'taipei-pass' });
                 this.$refs.switch.close();
+                //this.$nextTick(() => {
+                //    //window.location.href = '/regist/#/regist?mode=applied';
+                //    this.$router.go()
+                //    //this.$router.push({ name: 'regist', query: { mode: 'applied' } });
+                //});
+                //window.location.reload();
+                
             },
             loginUser: function () {
 

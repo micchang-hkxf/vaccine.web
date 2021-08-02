@@ -5,17 +5,19 @@
             <v-card class="login-switch">
                 <v-card-title class="login-header">請確認您的身份以查詢記錄<v-spacer></v-spacer><v-icon>close</v-icon></v-card-title>
                 <v-card-text class="login-container">
-                    <v-btn color="#77CCDB">利用台北通帳號登入</v-btn>
-                    <v-btn color="#77CCDB">手動輸入資料</v-btn>
+                    <v-btn color="#77CCDB" @click="toTpPassLogin('/regist/#/regist?mode=applied')">利用台北通帳號登入</v-btn>
+                    <v-btn color="#77CCDB" @click="toLocalLogin()">手動輸入資料</v-btn>
                     <v-btn color="#626781">取消</v-btn>
                 </v-card-text>
             </v-card>
         </v-dialog>
+        <login ref="login" :login-done="userSign"></login>
     </div>
 </template>
 
 <script>
     import { mapActions, mapGetters } from 'vuex'
+    import login from 'components/regist/forms/login_editor'
 
     export default {
         // router,
@@ -54,7 +56,13 @@
                 }
                 comp.isShow = true;
             },
-            login: function () {
+            toTpPassLogin: function (redUrl) {
+                window.location.href = `/tppass?redirect=${encodeURIComponent(redUrl)}`
+            },
+            toLocalLogin: function () {
+                this.$refs.login.create();
+            },
+            userSign: function () {
                 var comp = this;
                 comp.close();
                 comp.loginDone(comp.getUserInfo);
@@ -63,9 +71,10 @@
                 var comp = this;
                 comp.isShow = false;
             }
+
         },
         components: {
-
+            login
         }
     }
 </script>

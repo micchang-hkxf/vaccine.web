@@ -1,10 +1,25 @@
-﻿import userStore from "stores/userStore"
+﻿import siteConfig from "project/site.config"
+import userStore from "stores/userStore"
 
 export default {
     namespaced: true,
     actions: {
-        loacVaccineGroups: function ({  commit }) {
-            return new Promise((resolve) => {
+        loadAppliedList: function ({ state }, userInfo) {
+            return new Promise((reslove) => {
+                console.log(state);
+                var results = [
+                    { groupName: '肺鏈、流感', groupId: 'influenza' },
+                    { groupName: '新冠肺炎', groupId: 'covid' },
+                ];
+
+                if (userInfo)
+                    reslove(results);
+                else
+                    reslove([]);
+            });
+        },
+        loacVaccineGroups: function ({ commit }) {
+            return new Promise((reslove) => {
                 var results = {
                     datas: [
                         { groupName: '肺鏈、流感', groupId: 'influenza' },
@@ -15,8 +30,8 @@ export default {
                 resolve(results);
             });
         },
-        loacVaccineSessions: function ({ state }, param ) {
-            return new Promise((resolve) => {
+        loacVaccineSessions: function ({ state }, param) {
+            return new Promise((reslove) => {
                 console.log(param);
                 console.log(state);
                 var results = {
@@ -42,10 +57,41 @@ export default {
                 resolve(results);
             });
         },
-        setUserInfo: function ({ commit }, userInfo) {
-            return new Promise((resolve) => {
+        setUserInfo: function ({ commit, getters }, userInfo) {
+            return new Promise((reslove) => {
+                commit('saveUserInfo', userInfo);
+                reslove(getters.getUserInfo);
+            });
+        },
+        checkUserInfo: function ({ dispatch, rootGetters }, userInfo) {
+            return new Promise((reslove) => {
                 var results = {
-                    datas: userInfo , state: ''
+                    uName: '張閔傑', //使用者名稱
+                    birthday: userInfo.birthday, //使用者生日
+                    identify: userInfo.identify, //使用者身分證
+                    sessionId: userInfo.sessionId, //生日登入 sessionId
+                    captcha: userInfo.captcha, //生日登入 captcha
+                    type: 'identify'
+                };
+                dispatch('loadAppliedList', userInfo).then(() => {
+                    dispatch('setUserInfo', results).then(() => {
+                        console.log('return userInfo', rootGetters);
+                        reslove(rootGetters.getUserInfo);
+                    });
+                });
+            });
+        },
+        loadUserInfo: function ({ dispatch, rootGetters }, token) {
+            return new Promise((reslove) => {
+                console.log(token);
+                var results = {
+                    uName: '張閔傑', //使用者名稱
+                    birthday: '1982/11/10', //使用者生日
+                    identify: 'A00000000', //使用者身分證
+                    token: token, //台北通 token
+                    sessionId: '', //生日登入 sessionId
+                    captcha: '', //生日登入 captcha
+                    type: 'taipei-pass'
                 };
                 commit('saveUserInfo', { ...userInfo, uName:'使用者' });
                 resolve(results);
@@ -80,6 +126,7 @@ export default {
         }
     },
     state: {
+        ...siteConfig,
         vaccineGroups: [],
         vaccineBrands: [],
         userInfo: null
@@ -87,7 +134,12 @@ export default {
     getters: {
         getVaccineGroups: (state) => state.vaccineGroups,
         getVaccineBrands: (state) => state.vaccineBrands,
-        getUserInfo: (state) => state.userInfo, 
+        getUserInfo: (state) => {
+            if (!state.userInfo && sessionStorage.getItem("userInfo") != null)
+                state.userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+            return state.userInfo;
+        },
+        getApiRoot: function () { return siteConfig.apiRoot; }
     },
     mutations: {
         saveVaccineGroups: (state, groups) => {
@@ -99,10 +151,8 @@ export default {
             brands.forEach(f => state.vaccineBrands.push(f));
         },
         saveUserInfo: (state, userInfo) => {
-            if (!!state.userInfo)
-                state.userInfo = Object.assign(state.userInfo, userInfo);
-            else 
-                state.userInfo = Object.assign({}, userInfo);
+            state.userInfo = userInfo;
+            sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
         },
     },
     modules: {
