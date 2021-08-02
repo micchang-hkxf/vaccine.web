@@ -25,30 +25,41 @@
                             {{session.sessionName}}
                         </div>
                         <div class="action-info-sec-subject">
-                            {{session.zoneName}}-{{session.villageName}}
+                            {{session.zoneName}}-{{session.villageName}}│{{session.groupName}}
                         </div>
                     </div>
-                    <v-divider></v-divider>
                     <div class="action-info-detail d-flex flex-column justify-center">
                         <div class="d-flex flex-row justify-space-between">
+                            <div class="action-info-title text-left">疫苗廠牌：</div>
+                            <div class="action-info-data text-right">{{session.brandName}}</div>
+                        </div>
+                        <div class="d-flex flex-row justify-space-between">
                             <div class="action-info-title text-left">接種日期：</div>
-                            <div class="action-info-data text-right">{{$moment(session.sessionStart).format('YYYY/MM/DD')}}, {{$moment(session.sessionStart).format('HH:mm')}}-{{$moment(session.sessionEnd).format('HH:mm')}}</div>
+                            <div class="action-info-data text-right">{{$moment(session.sessionStart).format('YYYY/MM/DD')}},{{$moment(session.sessionStart).format('HH:mm')}}-{{$moment(session.sessionEnd).format('HH:mm')}}</div>
                         </div>
                         <div class="d-flex flex-row justify-space-between">
                             <div class="action-info-title text-left">事先報名：</div>
                             <div class="action-info-data text-right">
-                                {{$moment(session.registStart).format('YYYY/MM/DD ,HH:mm')}}<br />- {{$moment(session.registEnd).format('YYYY/MM/DD ,HH:mm')}}
+                                {{$moment(session.registStart).format('YYYY/MM/DD,HH:mm')}}<br /> - {{$moment(session.registEnd).format('YYYY/MM/DD,HH:mm')}}
                             </div>
                         </div>
                         <div class="d-flex flex-row justify-space-between">
                             <div class="action-info-title text-left">開放名額：</div>
-                            <div class="action-info-data text-right">{{session.totalCount}} / {{session.maxLimit}}</div>
+                            <div class="action-info-data text-right" v-if="session.totalCount === session.maxLimit">
+                                <span class="full">名額已滿</span>
+                            </div>
+                            <div class="action-info-data text-right" v-else>
+                                {{session.totalCount}} / <span class="disabled">{{session.maxLimit}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="action-button d-flex justify-center align-center">
-                    <v-btn color="#736DB9" height="100%" width="100%" :to="{ name: 'agree' }">
+                    <v-btn color="#736DB9" height="100%" width="100%" :to="{ name: 'agree', params: session }" v-if="session.signUp">
                         報名
+                    </v-btn>
+                    <v-btn color="#626781" height="100%" width="100%" :to="{ name: 'agree', params: session }" v-else>
+                        查看
                     </v-btn>
                 </div>
             </v-card>
@@ -232,5 +243,13 @@
 
     .unapply-list/deep/ .action:not(:first-child) {
         margin-top: 16px;
+    }
+
+    .unapply-list/deep/ .action-info-detail .disabled {
+        color: rgba(67,73,105,0.5) !important;
+    }
+
+    .unapply-list/deep/ .action-info-detail .full {
+        color: #F4A95F;
     }
 </style>

@@ -62,7 +62,8 @@ export default {
     },
     state: {
         ...siteConfig,
-        moduleEnabled: 'vuex module 已啟用'
+        moduleEnabled: 'vuex module 已啟用',
+        activityApply: null,
     },
     getters: {
         getSessionId: () => {
@@ -89,6 +90,17 @@ export default {
         },
         getAuditTypes: () => {
             return JSON.parse(window.sessionStorage.getItem('auditTypes'));
+        },
+        getActivityApply: (state) => {
+            var data = window.sessionStorage.getItem('activityApply');
+            if (data !== null) {
+                state.activityApply = data;
+                return JSON.parse(data);
+            }
+            return data;
+        },
+        removeItem: () => (key) => {
+            return window.sessionStorage.removeItem(key);
         },
         clear: () => {
             Vue.$cookies.remove("x-token");
@@ -117,6 +129,10 @@ export default {
         },
         setAuditTypes: (state, auditTypes) => {
             window.sessionStorage.setItem('auditTypes', JSON.stringify(auditTypes));
+        },
+        setActivityApply: (state, activityApply) => {
+            state.activityApply = JSON.stringify(activityApply);
+            window.sessionStorage.setItem('activityApply', JSON.stringify(activityApply));
         }
     },
     modules: {
