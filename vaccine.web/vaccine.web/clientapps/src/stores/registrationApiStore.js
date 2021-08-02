@@ -180,10 +180,16 @@ export default {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Detail/` + params.id;
                 var results = { datas: [], state: '', totalCount: 0 };
-                
-                axios.get(apiUrl,
-                    rootGetters['user/getApiHeader']
-                ).then(res => {
+
+                axios.get(apiUrl, {
+                    params: {
+                        page: 1,
+                        rows: 10
+                    },
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
                     results.totalCount = res.data.totalRows;
 
                     var datas = [];
@@ -292,16 +298,44 @@ export default {
                 });
             });
         },
-        execCheck: function ({ state }, data) {
+        execCheck: function ({ state, rootGetters }, data) {
             return new Promise(function (resolve, reject) {
-                // TODO:
-                var result = { id: data.id, state: state, cnt: 2 };
-                try {
-                    resolve(result);
-                    alert('已執行 (' + data.id + ')');
-                } catch (e) {
-                    reject(result);
-                }
+                var apiUrl = `${state.apiRoot}api/Activity/StartCheck`;
+                var results = { id: data.id, state: state, cnt: 0 };
+                axios.get(apiUrl, {
+                    params: {
+                        ActivityId: data.id
+                    },
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    results.datas = res.data;
+                    resolve(results);
+                }).catch(ex => {
+                    results.datas = ex;
+                    reject(results);
+                });
+            });
+        },
+        reExecCheck: function ({ state, rootGetters }, data) {
+            return new Promise(function (resolve, reject) {
+                var apiUrl = `${state.apiRoot}api/Activity/ReCheck`;
+                var results = { id: data.id, state: state, cnt: 0 };
+                axios.get(apiUrl, {
+                    params: {
+                        ReCheckId: data.id
+                    },
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    results.datas = res.data;
+                    resolve(results);
+                }).catch(ex => {
+                    results.datas = ex;
+                    reject(results);
+                });
             });
         },
         doubleCheck: function ({ state }, data) {

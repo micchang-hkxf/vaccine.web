@@ -1156,7 +1156,7 @@
         },
         methods: {
             ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadMedicals', 'loadMedicalsByVillage',
-                                         'loadRegistForm', 'loadDetailForm', 'getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile', 'execCheck',
+                'loadRegistForm', 'loadDetailForm', 'getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile', 'execCheck','reExecCheck',
                                          'doubleCheck', 'registForm', 'updateRegist', 'removeRegist','importRegistForm']),
             getRegistForm: function (page) {
                 var params = {
@@ -1487,22 +1487,29 @@
             againCheck: function () {
                 var comp = this;
                 comp.alertMessage = '';
+                comp.$bus.$emit('type1_show4', "資料處理中...");
                 comp.execCheck({ id: comp.detailId })
                     .then(function (result) {
-                        switch (result.state) {
-                            case 'not found':
-                                comp.alertMessage = '不存在';
-                                break;
-                            default:
-                                break;
+          
+                        if (result.datas != "" && result.cnt >= 0) {
+                              //取得排程id後, 再call 複檢Api
+                            comp.reExecCheck({ id: result.datas })
+                                .then(function (ret) {
+                                    console.log(ret);
+                                })
+                                .catch(function () {
+                                    comp.alertMessage = '網站異常，請稍後再試';
+                                });
+                        } else {
+                            comp.alertMessage = '複檢錯誤';
                         }
-
+                        
                         if (comp.alertMessage !== '') {
                             comp.$bus.$emit('alert_show', true);
                             return;
                         }
-
                         comp.detailAbnormalCnt = result.cnt;
+                        comp.$bus.$emit('type1_hide4');
                     })
                     .catch(function () {
                         comp.alertMessage = '網站異常，請稍後再試';
