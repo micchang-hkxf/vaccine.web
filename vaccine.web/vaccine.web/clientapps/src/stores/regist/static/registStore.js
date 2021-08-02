@@ -1,15 +1,19 @@
-﻿
+﻿import siteConfig from "project/site.config"
 export default {
     namespaced: true,
     actions: {
-        loadAppliedList: function ({ state }) {
-            console.log(state);
+        loadAppliedList: function ({ state }, userInfo) {
             return new Promise((reslove) => {
+                console.log(state);
                 var results = [
                     { groupName: '肺鏈、流感', groupId: 'influenza' },
                     { groupName: '新冠肺炎', groupId: 'covid' },
                 ];
-                reslove(results);
+
+                if (userInfo)
+                    reslove(results);
+                else
+                    reslove([]);
             });
         },
         loacVaccineGroups: function ({ commit }) {
@@ -57,7 +61,7 @@ export default {
                 reslove(getters.getUserInfo);
             });
         },
-        checkUserInfo: function ({ dispatch, rootGetters  }, userInfo) {
+        checkUserInfo: function ({ dispatch, rootGetters }, userInfo) {
             return new Promise((reslove) => {
                 var results = {
                     uName: '張閔傑', //使用者名稱
@@ -67,13 +71,15 @@ export default {
                     captcha: userInfo.captcha, //生日登入 captcha
                     type: 'identify'
                 };
-                dispatch('setUserInfo', results).then(() => {
-                    console.log('return userInfo', rootGetters );
-                    reslove(rootGetters.getUserInfo);
+                dispatch('loadAppliedList', userInfo).then(() => {
+                    dispatch('setUserInfo', results).then(() => {
+                        console.log('return userInfo', rootGetters);
+                        reslove(rootGetters.getUserInfo);
+                    });
                 });
             });
         },
-        loadUserInfo: function ( { dispatch, rootGetters }, token) {
+        loadUserInfo: function ({ dispatch, rootGetters }, token) {
             return new Promise((reslove) => {
                 console.log(token);
                 var results = {
@@ -86,25 +92,27 @@ export default {
                     type: 'taipei-pass'
                 };
                 dispatch('setUserInfo', results).then(() => {
-                    console.log('return userInfo', rootGetters );
+                    console.log('return userInfo', rootGetters);
                     reslove(rootGetters.getUserInfo);
                 });
             });
         },
     },
     state: {
+        ...siteConfig,
         vaccineGroups: [],
         vaccineBrands: [],
-        userInfo: null,        
+        userInfo: null,
     },
     getters: {
         getVaccineGroups: (state) => state.vaccineGroups,
         getVaccineBrands: (state) => state.vaccineBrands,
         getUserInfo: (state) => {
-            if (!state.userInfo && sessionStorage.getItem("userInfo")!=null)
-                state.userInfo = JSON.stringify(sessionStorage.getItem("userInfo"));
+            if (!state.userInfo && sessionStorage.getItem("userInfo") != null)
+                state.userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
             return state.userInfo;
-        }
+        },
+        getApiRoot: function () { return siteConfig.apiRoot; }
     },
     mutations: {
         saveVaccineGroups: (state, groups) => {

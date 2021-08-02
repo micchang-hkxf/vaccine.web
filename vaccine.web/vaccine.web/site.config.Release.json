@@ -1,5 +1,8 @@
 ﻿{
   "apiRoot": "https://devvm.japaneast.cloudapp.azure.com/VAC/",
+  "tpPassOauth": "https://id.taipei/tpcd/",
+  "tpPassClientId": "2717a73d51b9d96c8cee71dd7689073bfa05740b",
+  "tpPassClientScope": "uuid account real_name email phone_no birthday",
   "configEnabled": "Releasee整合組態設定已啟用",
   "requestSystem": "PC"
 }

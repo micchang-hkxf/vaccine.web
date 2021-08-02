@@ -33,7 +33,19 @@ namespace vaccine.web
             { "wv_subscribe" , "subscribe" } ,
         };
 
-        public static dynamic SiteSetting { get; set; }
+        public static SiteSetting SiteSetting { get; set; }
+    }
+
+
+    public class SiteSetting
+    {
+        public string apiRoot { get; set; }
+        public string tpPassOauth { get; set; }
+        public string tpPassClientId { get; set; }
+        public string tpPassClientScope { get; set; }
+        public string configEnabled { get; set; }
+        public string requestSystem { get; set; }
     }
 
 }
+

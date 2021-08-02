@@ -27,6 +27,16 @@
                         </v-select>
                     </div>
                 </div>
+                <div class="login-field">
+                    <div class="login-field-label">驗證碼 <span class="red--text">*</span></div>
+                    <div class="login-field-container d-flex justify-space-between">
+                        <v-text-field v-model="captcha" class="captcha-field">
+                            <template v-slot:append-outer>
+                                <img :src="getCaptchaUrl" />
+                            </template>
+                        </v-text-field>
+                    </div>
+                </div>
             </v-card-text>
             <v-card-actions class="login-actions d-flex justify-space-between">
                 <v-btn class="cancel-action" color="#626781" width="130px" @click.stop="isShow=false">取消</v-btn>
@@ -58,15 +68,18 @@
 
         }),
         computed: {
-            ...mapGetters('regist', ['getUserInfo']),
+            ...mapGetters('regist', ['getUserInfo','getApiRoot']),
             birth: function () {
                 if (!this.year || !this.month || !this.day) return;
                 return new Date(this.year + 1911, this.month, this.day);
+            },
+            getCaptchaUrl: function () {
+                return `${this.getApiRoot}api/captcha?sessionId=${this.sessionId}`;
             }
         },
         props: ['loginDone'],
         created: function () {
-
+            
         },
         methods: {
             ...mapActions('regist', ['setUserInfo', 'checkUserInfo']),
@@ -76,9 +89,11 @@
                     return;
                 }
                 this.isShow = true;
+                this.sessionId = parseInt(Math.random(0,900000) + 100000) ;
             },
             login: function () {                
                 if (!this.uid || !this.birth) return;
+                if (!this.sessionId || !this.captcha) return;
                 var comp = this;
 
                 this.checkUserInfo({
@@ -105,6 +120,9 @@
 </script>
 
 <style scoped>
+    .captcha-field .v-input__slot {
+        border-style:none;
+    }
 
     .login-editor/deep/ .v-btn {
         min-width: 130px !important;
