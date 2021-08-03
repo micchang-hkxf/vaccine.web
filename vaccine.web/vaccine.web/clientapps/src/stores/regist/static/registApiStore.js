@@ -152,7 +152,7 @@ export default {
                 token: token, //台北通 token
                 type: 'taipei-pass'
             }
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve/*, reject*/) => {
                 var apiUrl = `${state.apiRoot}api/my`;
                 var apiHeader = {
                     headers: {
@@ -172,7 +172,17 @@ export default {
                     commit('saveUserInfo', { ...userInfo, ...tokenInfo });
                     resolve(userInfo);
                 }).catch(() => {
-                    reject();
+                    var userInfo = {
+                        uName: '', //使用者名稱
+                        birthday: '', //使用者生日
+                        identify: '', //使用者身分證
+                        token: token, //台北通 token
+                        sessionId: null, //生日登入 sessionId
+                        captcha: null, //生日登入 captcha
+                        type: 'taipei-pass'
+                    };
+                    commit('saveUserInfo', { ...userInfo, ...tokenInfo });
+                    resolve(userInfo);
                 });
             });
 

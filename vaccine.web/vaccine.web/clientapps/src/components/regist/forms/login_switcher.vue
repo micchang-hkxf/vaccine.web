@@ -52,6 +52,7 @@
                 var error = this.$cookies.get('error');
                 if (error) {
                     this.$cookies.remove('error');
+                    this.isLoginError = true;
                     alert('error');
                     return;
                 }

@@ -12,7 +12,7 @@
         },
         created: function () {
             var error = this.$cookies.get('error');
-            if (!error) {
+            if (error) {
                 window.location.href = this.$route.query.redirect;
                 return;
             }
@@ -20,7 +20,7 @@
             if (!token) return;
             this.loadUserInfo(token).then(() => {
                 this.$cookies.remove('x-token');
-                window.location.href = this.$route.query.redirect;
+                window.location.href = this.$route.query.redirect ;
             });
         },
         methods: {
