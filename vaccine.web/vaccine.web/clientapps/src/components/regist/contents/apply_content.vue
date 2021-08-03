@@ -53,17 +53,17 @@
                         </div>
                     </div>
                     <div class="apply-field">
-                        <div class="apply-field-label">手機（簡訊通知）</div>
+                        <div class="apply-field-label">手機（簡訊通知）<span class="red--text">*</span></div>
                         <div class="apply-field-container">
-                            <v-text-field class="apply-field-text" placeholder="請輸入手機號碼" v-model="mbNo"></v-text-field>
+                            <v-text-field class="apply-field-text" placeholder="請輸入手機號碼" v-model="mbNo" :rules="[rules.required]"></v-text-field>
                         </div>
                     </div>
-                    <div class="apply-field">
+                    <!--<div class="apply-field">
                         <div class="apply-field-label">戶籍</div>
                         <div class="apply-field-container">
                             <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="apply-field display type">
                         <div class="apply-field-label">接種疫苗</div>
                         <div class="apply-field-container">
@@ -143,7 +143,7 @@
     import applyDone from 'components/regist/forms/apply_done'
     import comLoading from 'components/loading'
     import comConfirm from 'components/confirm'
-    import { mapActions } from 'vuex'
+    import { mapActions, mapGetters } from 'vuex'
 
     export default {
         // router,
@@ -152,8 +152,7 @@
                 elevation: 0,
                 height: '144px'
             }, isNeedLogin: true,
-            //years: [108],
-            years: Array.from({ length: new Date().getFullYear() - 1910 }, (value, index) => new Date().getFullYear() - index),
+            years: Array.from({ length: new Date().getFullYear() - 1910 }, (value, index) => (new Date().getFullYear() - index).toString()),
             months: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
             days: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
             rules: {
@@ -167,8 +166,10 @@
             month: '',
             day: '',
             beforeActivityName: '',
+            checkJobId: '',
         }),
         computed: {
+            ...mapGetters('regist', ['getUserInfo']),
         },
         props: {
 
@@ -188,11 +189,13 @@
                 comp.$bus.$emit('loading_show4', '資料處理中...');
 
                 var data = {
+                    activityId: comp.session.sessionId,
                     uName: comp.uName,
                     uId: comp.uId,
                     bd: comp.year + '-' + comp.month + '-' + comp.day + 'T00:00:00',
                     mbNo: comp.mbNo,
                     census: comp.census,
+                    checkJobId: comp.checkJobId
                 };
 
                 comp.checkApply(data)
@@ -201,34 +204,68 @@
 
                         comp.$bus.$emit('loading_hide4');
 
-                        // 登記完成
-                        var info = {
-                            checkJobId: '01'
-                        };
+                        if (result.datas.length > 0) {
+                            // 登記完成
+                            var info = {
+                                checkJobId: result.datas[0]['applyNo']
+                            };
 
-                        comp.$refs.done.create(info);
-
-                        // 名額已滿
-                        //comp.$bus.$emit('alert_show', true);
+                            comp.$refs.done.create(info);
+                        }
                     })
-                    .catch(function () {
+                    .catch(ex => {
+                        console.log(ex);
                         comp.$bus.$emit('loading_hide4');
                     });
             },
             checkBeforeApply: function () {
                 var comp = this;
-                setTimeout(() => {
-                    comp.getBeforeApply()
-                        .then(function (result) {
-                            if (result.datas.length > 0) {
-                                comp.beforeActivityName = result.datas[0].activityName;
-                                comp.$bus.$emit('alertRegistered_show', true);
-                            }
-                        })
-                        .catch(ex => {
-                            console.log(ex);
-                        });
-                }, 0);
+                comp.checkJobId = '';
+
+                var userInfo = comp.getUserInfo;
+                if (userInfo !== null) {
+                    // default data
+                    comp.uName = userInfo.uName;
+                    comp.uId = userInfo.identify;
+                    comp.year = userInfo.birthday.substr(0,4);
+                    comp.month = userInfo.birthday.substr(5, 2);
+                    comp.day = userInfo.birthday.substr(8, 2);
+
+                    var data = {
+                        activityId: comp.session.sessionId,
+                        sessionId: userInfo.sessionId,
+                        captcha: userInfo.captcha,
+                        uId: userInfo.identify,
+                        bd: userInfo.birthday,
+                        type: userInfo.type
+                    };
+
+                    setTimeout(() => {
+                        comp.getBeforeApply(data)
+                            .then(function (result) {
+                                if (result.datas.length > 0) {
+                                    if (!result.datas[0]['canApply']) {
+                                        // 其他場重複
+                                        if (result.datas[0]['actName'] !== '') {
+                                            comp.beforeActivityName = result.datas[0].actName;
+                                            comp.$bus.$emit('alertRegistered_show', true);
+                                        }
+                                        
+                                        // TODO: 名額已滿
+                                        //comp.$bus.$emit('alert_show', true);
+
+                                        // TODO: 其他
+
+                                    } else {
+                                        comp.checkJobId = result.datas[0]['checkJobId'];
+                                    }
+                                }
+                            })
+                            .catch(ex => {
+                                console.log(ex);
+                            });
+                    }, 0);
+                }
             },
             alertClick: function () {
                 this.$bus.$emit('alert_show', false);

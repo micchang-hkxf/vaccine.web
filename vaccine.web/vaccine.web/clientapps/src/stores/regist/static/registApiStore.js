@@ -180,28 +180,52 @@ export default {
         setActivityApply: function ({ commit }, activityApply) {
             commit('user/setActivityApply', activityApply);
         },
-        checkApply: function ({state}, datas) {
-            return new Promise((resolve) => {
-                console.log(state);
-                var results = {
-                    datas: datas, state: ''
-                };
-                resolve(results);
+        checkApply: function ({ state }, params) {
+            return new Promise((resolve, reject) => {
+                var apiUrl = `${state.apiRoot}api/Activity/Apply/Web/${params.activityId}`;
+                var results = { datas: [], state: '' };
+
+                axios.post(apiUrl, {
+                    uId: params.uId,
+                    bd: params.bd,
+                    mbNo: params.mbNo,
+                    uName: params.uName,
+                    checkJobId: params.checkJobId
+                }).then(res => {
+                    results.datas[0] = res.data;
+                    resolve(results);
+                }).catch(ex => {
+                    results.state = 'error';
+                    results.datas = ex;
+                    reject(results);
+                });
             });
         },
-        getBeforeApply: function ({ state }) {
-            return new Promise((resolve) => {
-                console.log(state);
+        getBeforeApply: function ({ state }, params) {
+            return new Promise((resolve, reject) => {
+                var apiUrl = `${state.apiRoot}api/Activity/Apply/Web/${params.activityId}/Check`;
                 var results = { datas: [], state: '' };
-                /*
-                // 是否已報名其他場次
-                var results = {
-                    datas: [
-                        { activityName: '四月份新冠肺炎疫苗接種' },
-                    ], state: ''
-                };
-                */
-                resolve(results);
+
+                var sourceType = 0;
+                if (params.type === 'identify') {
+                    sourceType = 2;
+                }
+
+                axios.post(apiUrl, {
+                    sessionId: params.sessionId.toString(),
+                    captcha: params.captcha,
+                    uId: params.uId,
+                    bd: params.bd,
+                    sourceType: sourceType,
+                    token: ''
+                }).then(res => {
+                    results.datas[0] = res.data;
+                    resolve(results);
+                }).catch(ex => {
+                    results.state = 'error';
+                    results.datas = ex;
+                    reject(results);
+                });
             });
         }
     },
