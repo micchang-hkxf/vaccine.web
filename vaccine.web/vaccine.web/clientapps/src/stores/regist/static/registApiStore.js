@@ -7,17 +7,13 @@ export default {
     namespaced: true,
     actions: {
         loadAppliedList: function ({ state }, userInfo) {
-            return new Promise((reslove) => {
-                console.log(state);
-                var results = [
-                    { groupName: '肺鏈、流感', groupId: 'influenza' },
-                    { groupName: '新冠肺炎', groupId: 'covid' },
-                ];
-
-                if (userInfo)
-                    reslove(results);
-                else
-                    reslove([]);
+            return new Promise((resolve, reject) => {
+                var apiUrl = `${state.apiRoot}api/applylog?uid=${userInfo.identify}&bd=${userInfo.birthday}`;
+                axios.get(apiUrl).then(res => {
+                    resolve(res);
+                }).catch((ex) => {
+                    reject(ex);
+                });
             });
         },
         loacVaccineGroups: function ({  commit }) {
@@ -139,11 +135,9 @@ export default {
                     captcha: userInfo.captcha, //生日登入 captcha
                     type: 'identify'
                 };
-                dispatch('loadAppliedList', userInfo).then(() => {
-                    dispatch('setUserInfo', results).then(() => {
-                        console.log('return userInfo', rootGetters);
-                        reslove(rootGetters.getUserInfo);
-                    });
+                dispatch('setUserInfo', results).then(() => {
+                    console.log('return userInfo', rootGetters);
+                    reslove(rootGetters.getUserInfo);
                 });
             });
         },

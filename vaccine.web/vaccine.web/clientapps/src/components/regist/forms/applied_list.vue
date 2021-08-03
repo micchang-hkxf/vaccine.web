@@ -9,26 +9,26 @@
             </v-text-field>
         </div>
         <div class="action-container">
-            <v-card class="action d-flex flex-row" elevation="0">
+            <v-card class="action d-flex flex-row" elevation="0" v-for="(applied , idx) in applieds" :key="idx">
                 <div class="action-info d-flex flex-column justify-center">
                     <div class="action-info-header d-flex flex-column">
                         <div class="action-info-subject">
-                            五月份新冠肺炎疫苗接種
+                            {{applied.activityName}}
                         </div>
                         <div class="action-info-sec-subject">
-                            內湖區-西康里
+                            {{applied.region.distName}}-{{applied.region.villageName}}
                         </div>
                     </div>
                     <v-divider></v-divider>
                     <div class="action-info-detail d-flex flex-column justify-center">
                         <div class="d-flex flex-row justify-space-between">
                             <div class="action-info-title text-left">接種日期：</div>
-                            <div class="action-info-data text-right">2021/04/10, 08:30-11:30</div>
+                            <div class="action-info-data text-right">{{applied.implementDate}}</div>
                         </div>
                         <div class="d-flex flex-row justify-space-between">
                             <div class="action-info-title text-left">事先報名：</div>
                             <div class="action-info-data text-right">
-                                2021/04/01,08:00<br />- 2021/04/07,20:00
+                                {{applied.signUpTime}}<br />- {{applied.signUpTime}}
                             </div>
                         </div>
                         <div class="d-flex flex-row justify-space-between">

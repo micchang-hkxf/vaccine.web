@@ -2,11 +2,11 @@
     <div>
         <v-dialog v-model="isShow">
             <v-card class="login-switch">
-                <v-card-title class="login-header">請確認您的身份以查詢記錄<v-spacer></v-spacer><v-icon>close</v-icon></v-card-title>
+                <v-card-title class="login-header">請確認您的身份以查詢記錄<v-spacer></v-spacer><span @click="cancel"><v-icon>close</v-icon></span></v-card-title>
                 <v-card-text class="login-container">
                     <v-btn color="#77CCDB" @click="toTpPassLogin('/regist/#/regist?mode=applied')">利用台北通帳號登入</v-btn>
                     <v-btn color="#77CCDB" @click="toLocalLogin()">手動輸入資料</v-btn>
-                    <v-btn color="#626781">取消</v-btn>
+                    <v-btn color="#626781" @click="cancel">取消</v-btn>
                 </v-card-text>
             </v-card>
         </v-dialog>
@@ -41,12 +41,16 @@
                 return new Date(this.year + 1911, this.month, this.day);
             }
         },
-        props: ['loginDone'],
+        props: ['loginDone','loginCancel'],
         created: function () {
 
         },
         methods: {
             ...mapActions('regist', ['saveUserInfo']),
+            cancel: function () {
+                this.isShow = false;
+                this.loginCancel();
+            },
             create: function () {
                 var comp = this;
                 var error = this.$cookies.get('error');

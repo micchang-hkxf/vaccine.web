@@ -25,7 +25,7 @@
                         <applied-list ref="applieds" v-show="isLogin"></applied-list>
                     </v-tab-item>
                 </v-tabs-items>
-                <login-switch ref="switch" :login-done="toLogin"></login-switch>
+                <login-switch ref="switch" :login-done="toLogin" :login-cancel="loginCancel"></login-switch>
             </div>
         </template>
     </app-layout>
@@ -99,6 +99,9 @@
                 //});
                 //window.location.reload();
                 
+            },
+            loginCancel: function () {
+                this.tab = 'regist';
             },
             loginUser: function () {
 
