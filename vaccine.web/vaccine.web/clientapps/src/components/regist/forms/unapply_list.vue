@@ -2,8 +2,8 @@
     <div class="unapply-list">
         <div class="action-bar">
             <div class="action-bar-filter">
-                <v-select placeholder="全部新冠肺炎疫苗廠牌" v-model="filterBrandId" :items="getVaccineBrands" item-text="brandName" item-value="brandId" hide-details height="48px" v-if="groupId=='covid'" @change="search">
-                </v-select>
+                <!--<v-select placeholder="全部新冠肺炎疫苗廠牌" v-model="filterBrandId" :items="getVaccineBrands" item-text="brandName" item-value="brandId" hide-details height="48px" v-if="groupId=='covid'" @change="search">
+                </v-select>-->
                 <v-text-field placeholder="請輸入行政區、村里或場次標題" v-model="filterKeyword" hide-details dense height="48px" @change="search"  @input="search">
                     <template v-slot:append>
                         <div class="d-flex align-center text-controll">
