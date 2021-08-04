@@ -63,6 +63,12 @@
                     </v-btn>
                 </div>
             </v-card>
+            <div class="null-list" v-if="sessions.length === 0">
+                <div class="null-content">
+                    <img src="/regist/null_list.svg" />
+                    <div>尚無相關場次</div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -251,5 +257,18 @@
 
     .unapply-list/deep/ .action-info-detail .full {
         color: #F4A95F;
+    }
+
+    .unapply-list/deep/ .null-list {
+        text-align: center;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #43496980;
+        min-height: calc(100vh - 256px);
+    }
+
+    .unapply-list/deep/ .null-content {
+        position: relative;
+        top: 112px;
     }
 </style>
