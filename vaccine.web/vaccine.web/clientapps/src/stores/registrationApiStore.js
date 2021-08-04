@@ -161,8 +161,8 @@ export default {
                             regist_station_end_time: data.implementEndTime.substr(11, 5),
                             regist_apply_start_date: data.startApplyDate.substr(0, 10),
                             regist_apply_end_date: data.endApplyDate.substr(0, 10),
-                            regist_review_date: '',
-                            regist_qualified: '',
+                            regist_review_date: (data.reCheckTime == null) ? "" : data.reCheckTime,
+                            regist_qualified: parseInt(data.reCheckCount),
                             regist_quota: data.amount,
                             regist_age_limit: (parseInt(data.actAge) > 0) ? parseInt(data.actAge) :"",
                             regist_unpassed: data.amount - data.leftAmount
@@ -209,7 +209,9 @@ export default {
                             phone: data.mbNo,
                             censusRegister: data.isCitizen ? '北市' : '非北市',
                             type: data.signUpChannel ? '現場報名' : '網路自行報名',
-                            result: data.eligible ? '合格' : '不合格',
+                            //result: data.eligible ? '合格' : '不合格',
+                            result: data.logTypeName,
+                            status: data.logType,//-2 複檢異常 ，-1取消，0複檢不合格，1複檢成功
                             remark: data.memo
                         });
                     });
@@ -363,16 +365,44 @@ export default {
                 });
             });
         },
-        execCheck: function ({ state }, data) {
+        execCheck: function ({ state, rootGetters }, data) {
             return new Promise(function (resolve, reject) {
-                // TODO:
-                var result = { id: data.id, state: state, cnt: 2 };
-                try {
-                    resolve(result);
-                    alert('已執行 (' + data.id + ')');
-                } catch (e) {
-                    reject(result);
-                }
+                var apiUrl = `${state.apiRoot}api/Activity/StartCheck`;
+                var results = { id: data.id, state: state, cnt: 0 };
+                axios.get(apiUrl, {
+                    params: {
+                        ActivityId: data.id
+                    },
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    results.datas = res.data;
+                    resolve(results);
+                }).catch(ex => {
+                    results.datas = ex;
+                    reject(results);
+                });
+            });
+        },
+        reExecCheck: function ({ state, rootGetters }, data) {
+            return new Promise(function (resolve, reject) {
+                var apiUrl = `${state.apiRoot}api/Activity/ReCheck`;
+                var results = { id: data.id, state: state, cnt: 0 };
+                axios.get(apiUrl, {
+                    params: {
+                        ReCheckId: data.id
+                    },
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    results.datas = res.data;
+                    resolve(results);
+                }).catch(ex => {
+                    results.datas = ex;
+                    reject(results);
+                });
             });
         },
         doubleCheck: function ({ state }, data) {
