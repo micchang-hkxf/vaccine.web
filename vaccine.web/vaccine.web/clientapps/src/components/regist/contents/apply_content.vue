@@ -59,11 +59,11 @@
                         </div>
                     </div>
                     <!--<div class="apply-field">
-                        <div class="apply-field-label">戶籍</div>
-                        <div class="apply-field-container">
-                            <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
-                        </div>
-                    </div>-->
+                <div class="apply-field-label">戶籍</div>
+                <div class="apply-field-container">
+                    <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
+                </div>
+            </div>-->
                     <div class="apply-field display type">
                         <div class="apply-field-label">接種疫苗</div>
                         <div class="apply-field-container">
@@ -134,6 +134,51 @@
                     報名本次
                 </template>
             </com-confirm>
+            <!---->
+            <com-confirm ref="alertNoConform" ref-key="alertNoConform" :right-click="alertNoConformClick">
+                <template v-slot:confirm-image>
+                    <v-img src="/alert_warning.svg"></v-img>
+                </template>
+                <template v-slot:confirm-text>
+                    <div class="sub-content">很抱歉， 您尚未符合接種資格</div>
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    了解
+                </template>
+            </com-confirm>
+            <!---->
+            <com-confirm ref="alertUnknow" ref-key="alertUnknow" :right-click="alertUnknowClick">
+                <template v-slot:confirm-image>
+                    <v-img src="/alert_warning.svg"></v-img>
+                </template>
+                <template v-slot:confirm-text>
+                    <div class="sub-title">無法識別</div>
+                    <div class="sub-content">請重新嘗試或改用其他方式登記</div>
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    了解
+                </template>
+            </com-confirm>
+            <!---->
+            <com-confirm ref="alertApplyNo" ref-key="alertApplyNo" :right-click="alertApplyNoClick">
+                <template v-slot:confirm-image>
+                    <v-img src="/alert_success.svg"></v-img>
+                </template>
+                <template v-slot:confirm-text>
+                    <div class="sub-title">您已報名本次活動</div>
+                    <div class="sub-content">
+                        <div class="order-tip full-width">
+                            序號：
+                        </div>
+                        <div class="order">
+                            {{applyNo}}
+                        </div>
+                    </div>
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    了解
+                </template>
+            </com-confirm>
         </template>
     </app-layout>
 </template>
@@ -144,6 +189,7 @@
     import comLoading from 'components/loading'
     import comConfirm from 'components/confirm'
     import { mapActions, mapGetters } from 'vuex'
+    import moment from "moment";
 
     export default {
         // router,
@@ -167,6 +213,7 @@
             day: '',
             beforeActivityName: '',
             checkJobId: '',
+            applyNo: '',
         }),
         computed: {
             ...mapGetters('regist', ['getUserInfo']),
@@ -227,10 +274,10 @@
                     // default data
                     comp.uName = userInfo.uName;
                     comp.uId = userInfo.identify;
-                    comp.year = userInfo.birthday.substr(0,4);
-                    comp.month = userInfo.birthday.substr(5, 2);
-                    comp.day = userInfo.birthday.substr(8, 2);
-
+                    comp.year = moment(userInfo.birthday).format('YYYY');
+                    comp.month = moment(userInfo.birthday).format('MM');
+                    comp.day = moment(userInfo.birthday).format('DD');
+                    
                     var data = {
                         activityId: comp.session.sessionId,
                         sessionId: userInfo.sessionId,
@@ -244,38 +291,66 @@
                         comp.getBeforeApply(data)
                             .then(function (result) {
                                 if (result.datas.length > 0) {
+                                    // 未符合接種資格
                                     if (!result.datas[0]['canApply']) {
-                                        // 其他場重複
-                                        if (result.datas[0]['actName'] !== '') {
-                                            comp.beforeActivityName = result.datas[0].actName;
-                                            comp.$bus.$emit('alertRegistered_show', true);
-                                        }
-                                        
-                                        // TODO: 名額已滿
-                                        //comp.$bus.$emit('alert_show', true);
-
-                                        // TODO: 其他
-
-                                    } else {
-                                        comp.checkJobId = result.datas[0]['checkJobId'];
+                                        comp.$bus.$emit('alertNoConform_show', true);
+                                        return;
                                     }
+
+                                    // 已報名其他場次
+                                    if (result.datas[0]['messageCode'] === 3 && result.datas[0]['actName'] !== '') {
+                                        comp.beforeActivityName = result.datas[0].actName;
+                                        comp.$bus.$emit('alertRegistered_show', true);
+                                        return;
+                                    }
+
+                                    // 已報名本次活動
+                                    if (result.datas[0]['messageCode'] === 1 && result.datas[0]['applyNo'] !== null) {
+                                        comp.applyNo = result.datas[0]['applyNo'];
+                                        comp.$bus.$emit('alertApplyNo_show', true);
+                                        return;
+                                    }
+
+                                    // 名額已滿
+                                    if (result.datas[0]['messageCode'] === 4) {
+                                        comp.$bus.$emit('alert_show', true);
+                                        return;
+                                    }
+                                    
+                                    comp.checkJobId = result.datas[0]['checkJobId'];
                                 }
                             })
                             .catch(ex => {
                                 console.log(ex);
+                                // 無法識別
+                                comp.$bus.$emit('alertUnknow_show', true);
                             });
                     }, 0);
                 }
             },
             alertClick: function () {
                 this.$bus.$emit('alert_show', false);
+                this.$router.push({ name: 'regist' });
             },
             alertRegisteredLeftClick: function () {
+                this.$bus.$emit('alertRegistered_show', false);
                 this.$router.push({ name: 'regist' });
             },
             alertRegisteredRightClick: function () {
                 this.$bus.$emit('alertRegistered_show', false);
-            }
+            },
+            alertNoConformClick: function () {
+                this.$bus.$emit('alertNoConform_show', false);
+                this.$router.push({ name: 'regist' });
+            },
+            alertUnknowClick: function () {
+                this.$bus.$emit('alertUnknow_show', false);
+                this.$router.push({ name: 'regist' });
+            },
+            alertApplyNoClick: function () {
+                this.$bus.$emit('alertApplyNo_show', false);
+                this.$router.push({ name: 'regist' });
+            },
         },
         components: {
             appLayout, applyDone, comLoading, comConfirm
@@ -487,5 +562,19 @@
 
     .apply-content/deep/ .v-dialog .confirm-left-btns-text {
         color: #FFF;
+    }
+
+    .apply-content/deep/ .v-dialog .order-tip {
+        font: normal normal normal 12px/16px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #43496980;
+        margin-top: 10px;
+    }
+
+    .apply-content/deep/ .v-dialog .order {
+        font: normal normal bold 32px/16px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781;
+        margin: 10px 0;
     }
 </style>

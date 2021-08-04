@@ -2,7 +2,7 @@
     <app-layout :app-bar="appBar" class="unapply-content">
         <template v-slot:regist-title>
             「<span v-if="groupId=='influenza'">肺鏈、流感</span>
-              <span v-if="groupId=='covid'">新冠肺炎</span>疫苗」選擇種接場次
+              <span v-if="groupId=='covid'">新冠肺炎</span>疫苗」選擇接種場次
         </template>
         <template v-slot:regist-content>
             <unapply-list :group-id="groupId"></unapply-list>
