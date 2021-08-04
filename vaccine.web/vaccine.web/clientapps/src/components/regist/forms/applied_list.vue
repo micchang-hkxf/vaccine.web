@@ -143,6 +143,7 @@
                 if (!this.getUserInfo) return;
                 this.loadAppliedList(this.getUserInfo).then((applieds) => {
                     this.applieds.splice(0);
+                    if (!applieds) return;
                     applieds.forEach(f => {
                         this.applieds.push(f);
                     });

@@ -32,7 +32,7 @@ namespace vaccine.web.Controllers
                 var TodayExpire = Constants.GetCookieOption();
                 TodayExpire.Expires = DateTimeOffset.Now.AddDays(1);
                 Response.Cookies.Append("error", "true", TodayExpire);
-                Result.RedirectTo = $"~/regist/#/oauth?redirect={HttpUtility.UrlEncode(Status.State)}";
+                Result.RedirectTo = $"/regist/#/oauth?redirect={HttpUtility.UrlEncode(Status.State)}";
                 return View(Result);
             }
         }
@@ -40,6 +40,7 @@ namespace vaccine.web.Controllers
         public class TpwvOauthResult {
             public string RedirectTo { get; set; }
         }
+
         public class TpwvOauthStatus
         {
             public string Code { get; set; }

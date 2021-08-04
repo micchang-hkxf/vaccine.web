@@ -1,16 +1,16 @@
 ﻿import userStore from "stores/userStore"
 import siteConfig from "project/site.config"
 import axios from 'axios'
-import { Promise } from "core-js";
+import Vue from 'vue';
 
 export default {
     namespaced: true,
     actions: {
         loadAppliedList: function ({ state }, userInfo) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/applylog?uid=${userInfo.identify}&bd=${userInfo.birthday}`;
+                var apiUrl = `${state.apiRoot}api/applylog?uid=${userInfo.identify}&bd=${Vue.moment(new Date(userInfo.birthday)).format('YYYY/MM/DD')}`;
                 axios.get(apiUrl).then(res => {
-                    resolve(res);
+                    resolve(res.data);
                 }).catch((ex) => {
                     reject(ex);
                 });

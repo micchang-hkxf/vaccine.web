@@ -1,5 +1,5 @@
 ﻿<template>
-    <div>
+    <div class="login-switch-container">
         <v-dialog v-model="isShow">
             <v-card class="login-switch">
                 <v-card-title class="login-header">請確認您的身份以查詢記錄<v-spacer></v-spacer><span @click="cancel"><v-icon>close</v-icon></span></v-card-title>
@@ -10,13 +10,34 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
         <login ref="login" :login-done="userSign"></login>
+
+
+        <com-confirm ref="loginError" right-color="loginErrorButton" right-outlined="" ref-key="confirm2" :right-click="closeAlert">
+            <template v-slot:confirm-image>
+                <v-img src="/alert_warning.svg"></v-img>
+            </template>
+            <template v-slot:confirm-title>
+                無法登入
+            </template>
+            <template v-slot:confirm-text>
+                請重新嘗試或改用其他方式登入
+            </template>
+
+            <template v-slot:confirm-right-btn-text>
+                <font color="black">了解</font>
+            </template>
+
+        </com-confirm>
+
     </div>
 </template>
 
 <script>
     import { mapActions, mapGetters } from 'vuex'
     import login from 'components/regist/forms/login_editor'
+    import comConfirm from 'components/confirm'
 
     export default {
         // router,
@@ -57,7 +78,7 @@
                 if (error) {
                     this.$cookies.remove('error');
                     this.isLoginError = true;
-                    alert('error');
+                    this.$refs.loginError.open();
                     return;
                 }
                 if (comp.getUserInfo) {
@@ -80,16 +101,31 @@
             close: function () {
                 var comp = this;
                 comp.isShow = false;
+            },
+            closeAlert: function () {
+                this.$refs.loginError.close();
+                this.create();
             }
 
         },
         components: {
-            login
+            login, comConfirm
         }
     }
 </script>
 
+<style>
+    .loginErrorButton {
+        background-color: #626781 !important;
+    }
+
+        .loginErrorButton font {
+            color: white !important;
+        }
+
+</style>
 <style scoped>
+
     .login-switch/deep/ .login-header {
         font-size: 16px !important;
         color: #626781 !important;

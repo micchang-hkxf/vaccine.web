@@ -75,7 +75,6 @@
         },
         watch: {
             tab: function (newValue) {
-                console.log(newValue)
                 if (newValue != 'applied') return;
                 if (!this.getUserInfo) {
                     this.$refs.switch.create();
