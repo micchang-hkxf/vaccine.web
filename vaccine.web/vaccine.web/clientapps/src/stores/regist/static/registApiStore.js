@@ -111,7 +111,7 @@ export default {
                 reslove(getters.getUserInfo);
             });
         },
-        checkUserInfo: function ({ dispatch, rootGetters }, userInfo) {
+        checkUserInfo: function ({ dispatch }, userInfo) {
             return new Promise((reslove) => {
                 var results = {
                     uName: '張閔傑', //使用者名稱
@@ -121,9 +121,8 @@ export default {
                     captcha: userInfo.captcha, //生日登入 captcha
                     type: 'identify'
                 };
-                dispatch('setUserInfo', results).then(() => {
-                    console.log('return userInfo', rootGetters);
-                    reslove(rootGetters.getUserInfo);
+                dispatch('setUserInfo', results).then((user) => {
+                    reslove(user);
                 });
             });
         },

@@ -40,7 +40,7 @@
 
         },
         created: function () {
-            this.session = this.$route.params;
+            this.session = this.$store.getters['regist/user/getActivityApply'];
             this.setActivityApply(this.session);
         },
         methods: {
