@@ -721,13 +721,13 @@
 
                                 <template v-slot:item.modify="{item}">
                                     <template>
-                                        <v-btn color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result === '系統異常' ? 'hidden' : ''">
+                                        <v-btn color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.status == -2 ? 'hidden' : ''">
                                             <v-icon left color='white' size="15">
                                                 mdi-arrow-down
                                             </v-icon>
                                             <span style="color:white">下載同意書</span>
                                         </v-btn>
-                                        <v-btn color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.result !== '系統異常' ? 'hidden' : ''" class="btn-warning">
+                                        <v-btn color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.status != -2 ? 'hidden' : ''" class="btn-warning">
                                             <span style="color:white">人工複檢</span>
                                         </v-btn>
                                     </template>
@@ -1103,6 +1103,8 @@
             artificialName: '',
             artificialBirthday: '',
             artificialIdentity: '',
+            applyNo: 0,
+            activityId:'',
             alertImgSrc:"",
             successIcon: '/alert_success.svg',
             warningIcon: '/alert_warning.svg',
@@ -1161,7 +1163,7 @@
         },
         methods: {
             ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadMedicals', 'loadMedicalsByVillage',
-                                         'loadRegistForm', 'loadDetailForm', 'getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile', 'execCheck',
+                'loadRegistForm', 'loadDetailForm', 'getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile', 'execCheck','reExecCheck',
                                          'doubleCheck', 'registForm', 'updateRegist', 'removeRegist','importRegistForm']),
             getRegistForm: function (page) {
                 var params = {
@@ -1316,7 +1318,7 @@
                     console.log(r.datas);
                     comp.alertTitle = '連線異常';
                     comp.alertText = '請稍後再試!';
-                    comp.alertImgSrc = comp.successIcon;
+                    comp.alertImgSrc = comp.alertIcon;
                     comp.$refs.warringAlert.open();
                     comp.$bus.$emit('type1_hide4');
                 });
@@ -1441,6 +1443,7 @@
                 console.log('item', item);
             },
             detailItem: function (item) {
+          
                 this.detailId = item.regist_id;//item.id;
                 this.detailTitle = item.regist_title;//item.title;
                 this.detailType = item.regist_type_name; //item.type;
@@ -1482,13 +1485,18 @@
                 };
                 this.loadDetailForm(params).then((r) => {
                     this.detailTotalCount = r.totalCount;
+                    this.activityId = r.activityId;
+                  
                     this.detailItems.splice(0);
                     r.datas.forEach((x) => {
                         var str = x.identity.substr(1, 5);
                         var code = x.identity.replace(str, '●●●●●');
                         x.identity = code;
 
-                        if (['不合格', '已取消'].includes(x.result) || x.result.indexOf('不合格') !== -1) {
+                        //if (['不合格', '已取消'].includes(x.result) || x.result.indexOf('不合格') !== -1) {
+                        //    x['disabled'] = true;
+                        //}
+                        if (x.status != 1 && x.status != -2  && x.status != 3) {
                             x['disabled'] = true;
                         }
 
@@ -1501,22 +1509,42 @@
             againCheck: function () {
                 var comp = this;
                 comp.alertMessage = '';
+                comp.$bus.$emit('type1_show4', "資料處理中...");
                 comp.execCheck({ id: comp.detailId })
                     .then(function (result) {
-                        switch (result.state) {
-                            case 'not found':
-                                comp.alertMessage = '不存在';
-                                break;
-                            default:
-                                break;
+
+                        if (result.datas != "" && result.cnt >= 0) {
+                            //取得排程id後, 再call 複檢Api
+                            comp.reExecCheck({ id: result.datas })
+                                .then(function (ret) {
+                                    console.log(ret);
+                                    if (ret.datas.memo == "執行成功") {//執行中 ,執行成功 ,執行異常
+                                        comp.alertImgSrc = comp.successIcon;
+                                        comp.alertTitle = "執行成功";
+                                    } else if (ret.datas.memo == "執行中" ) {
+                                        comp.alertImgSrc = comp.warningIcon;
+                                        comp.alertTitle = "執行中，請稍後再試";
+                                    } else {
+                                        comp.alertImgSrc = comp.warningIcon;
+                                        comp.alertTitle = ret.datas.memo;
+                                    }
+                                    comp.$refs.registAlert.open();
+                                    comp.detailAbnormalCnt = ret.cnt;
+                                    return;
+                                })
+                                .catch(function () {
+                                    comp.alertMessage = '網站異常，請稍後再試';
+                                });
+                        } else {
+                            comp.alertMessage = '複檢錯誤';
                         }
 
                         if (comp.alertMessage !== '') {
                             comp.$bus.$emit('alert_show', true);
                             return;
                         }
-
-                        comp.detailAbnormalCnt = result.cnt;
+                        
+                        comp.$bus.$emit('type1_hide4');
                     })
                     .catch(function () {
                         comp.alertMessage = '網站異常，請稍後再試';
@@ -1624,11 +1652,12 @@
                     });
             },
             artificialAction: function (item) {
+     
                 this.artificialId = item.id;
                 this.artificialName = item.name;
-                this.artificialBirthday = item.birthday;
+                this.artificialBirthday = item.birthday.replace(/\//g, '-')+'T00:00:00';
                 this.artificialIdentity = item.identity;
-
+                this.applyNo = item.id;
                 this.$bus.$emit('dialogDoubleCheck_show', true);
 
                 this.$refs.doubleCheckForm.reset();
@@ -1642,20 +1671,15 @@
                 if (!isvaild) return;
                 
                 comp.alertMessage = '';
-                comp.doubleCheck({ id: comp.artificialId, result: comp.artificialResult })
+                comp.doubleCheck({ activityId: comp.activityId, applyNo: comp.applyNo, bd:comp.artificialBirthday, result: comp.artificialResult })
                     .then(function (result) {
-                        switch (result.state) {
-                            case 'not found':
-                                comp.alertMessage = '不存在';
-                                break;
-                            default:
-                                break;
-                        }
-
-                        if (comp.alertMessage !== '') {
-                            comp.$bus.$emit('alert_show', true);
-                            return;
-                        }
+                        console.log(result);
+    
+                        comp.alertTitle = '人工複檢完成';
+                        comp.alertText = '';
+                        comp.alertImgSrc = comp.successIcon;
+                        comp.$refs.registAlert.open();
+                        comp.$refs.fileViewer.close();
 
                         comp.$bus.$emit('dialogDoubleCheck_show', false);
                     })

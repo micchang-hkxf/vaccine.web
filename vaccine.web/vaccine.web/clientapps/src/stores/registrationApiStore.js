@@ -161,8 +161,8 @@ export default {
                             regist_station_end_time: data.implementEndTime.substr(11, 5),
                             regist_apply_start_date: data.startApplyDate.substr(0, 10),
                             regist_apply_end_date: data.endApplyDate.substr(0, 10),
-                            regist_review_date: '',
-                            regist_qualified: '',
+                            regist_review_date: (data.reCheckTime == null) ? "" : data.reCheckTime,
+                            regist_qualified: parseInt(data.reCheckCount),
                             regist_quota: data.amount,
                             regist_age_limit: (parseInt(data.actAge) > 0) ? parseInt(data.actAge) :"",
                             regist_unpassed: data.amount - data.leftAmount
@@ -195,7 +195,7 @@ export default {
                     }
                 }).then(res => {
                     results.totalCount = res.data.totlaCount;
-
+                    results.activityId = res.data.activityId;
                     var datas = [];
                     res.data.data.forEach((data) => {
                         datas.push({
@@ -209,7 +209,10 @@ export default {
                             phone: data.mbNo,
                             censusRegister: data.isCitizen ? '北市' : '非北市',
                             type: data.signUpChannel ? '現場報名' : '網路自行報名',
-                            result: data.eligible ? '合格' : '不合格',
+                            //result: data.eligible ? '合格' : '不合格',
+                            result: data.logTypeName,
+                            status: data.logType,//-2 複檢異常 ，-1取消，0複檢不合格，1複檢成功, 2複檢不合格（人工複檢），3複檢合格（人工複檢）
+                            //status: -2,//test only
                             remark: data.memo
                         });
                     });
@@ -363,31 +366,76 @@ export default {
                 });
             });
         },
-        execCheck: function ({ state }, data) {
+        execCheck: function ({ state, rootGetters }, data) {
             return new Promise(function (resolve, reject) {
-                // TODO:
-                var result = { id: data.id, state: state, cnt: 2 };
-                try {
-                    resolve(result);
-                    alert('已執行 (' + data.id + ')');
-                } catch (e) {
-                    reject(result);
-                }
+                var apiUrl = `${state.apiRoot}api/Activity/StartCheck`;
+                var results = { id: data.id, state: state, cnt: 0 };
+                axios.get(apiUrl, {
+                    params: {
+                        ActivityId: data.id
+                    },
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    results.datas = res.data;
+                    resolve(results);
+                }).catch(ex => {
+                    results.datas = ex;
+                    reject(results);
+                });
             });
         },
-        doubleCheck: function ({ state }, data) {
+        reExecCheck: function ({ state, rootGetters }, data) {
             return new Promise(function (resolve, reject) {
-                // TODO:
+                var apiUrl = `${state.apiRoot}api/Activity/ReCheck`;
+                var results = { id: data.id, state: state, cnt: 0 };
+                axios.get(apiUrl, {
+                    params: {
+                        ReCheckId: data.id
+                    },
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    results.datas = res.data;
+                    resolve(results);
+                }).catch(ex => {
+                    results.datas = ex;
+                    reject(results);
+                });
+            });
+        },
+        doubleCheck: function ({ state, rootGetters }, data) {
+            return new Promise(function (resolve, reject) {
+                var ckret = (data.result.id == "pass") ? true : false;
+               
                 var result = { id: data.id, state: state };
-                try {
-                    console.log(data.result.id);
-                    console.log(data.result.state);
-
+                var setData = {
+                    "applyNo": data.applyNo,
+                    "actId": data.activityId,
+                    "bd":data.bd,
+                    "isReChecked": ckret,
+                };
+                //console.log(setData);
+         
+                axios({
+                    method: 'post',
+                    url: `${state.apiRoot}api/Activity/ForceCheck?api-version=1.0`,
+                    data: setData,
+                    responseType: 'json',
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    result.datas = res.data;
                     resolve(result);
-                    alert('人工複檢 (' + data.result.state + ')');
-                } catch (e) {
+                    }).catch(ex => {
+                        resolve(result);
+                    result.datas = ex;
                     reject(result);
-                }
+                });
+
             });
         },
         registForm: function ({ state, rootGetters}, data) {
