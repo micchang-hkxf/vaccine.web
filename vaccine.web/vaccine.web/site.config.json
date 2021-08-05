@@ -2,7 +2,7 @@
   "apiRoot": "https://devvm.japaneast.cloudapp.azure.com/VAC/",
   "tpPassOauth": "https://demo.jrsys.com.tw/tpcd/",
   "tpPassClientId": "2717a73d51b9d96c8cee71dd7689073bfa05740b",
-  "tpPassClientScope": "uuid account real_name phone_no birthday",
+  "tpPassClientScope": "uuid id_no account member_type real_name phone_no birthday formatted_name verify_level",
   "configEnabled": "Debug整合組態設定已啟用",
   "requestSystem": "PC"
 }

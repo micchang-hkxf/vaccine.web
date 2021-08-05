@@ -141,9 +141,9 @@ export default {
                 }
                 axios.get(apiUrl, apiHeader).then(res => {
                     var userInfo = {
-                        uName: res.uName, //使用者名稱
-                        birthday: res.bd, //使用者生日
-                        identify: res.uid, //使用者身分證
+                        uName: res.data.uName, //使用者名稱
+                        birthday: res.data.bd, //使用者生日
+                        identify: res.data.uid, //使用者身分證
                         token: token, //台北通 token
                         sessionId: null, //生日登入 sessionId
                         captcha: null, //生日登入 captcha
