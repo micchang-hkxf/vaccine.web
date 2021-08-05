@@ -1103,6 +1103,8 @@
             artificialName: '',
             artificialBirthday: '',
             artificialIdentity: '',
+            applyNo: 0,
+            activityId:'',
             alertImgSrc:"",
             successIcon: '/alert_success.svg',
             warningIcon: '/alert_warning.svg',
@@ -1316,7 +1318,7 @@
                     console.log(r.datas);
                     comp.alertTitle = '連線異常';
                     comp.alertText = '請稍後再試!';
-                    comp.alertImgSrc = comp.successIcon;
+                    comp.alertImgSrc = comp.alertIcon;
                     comp.$refs.warringAlert.open();
                     comp.$bus.$emit('type1_hide4');
                 });
@@ -1483,6 +1485,8 @@
                 };
                 this.loadDetailForm(params).then((r) => {
                     this.detailTotalCount = r.totalCount;
+                    this.activityId = r.activityId;
+                  
                     this.detailItems.splice(0);
                     r.datas.forEach((x) => {
                         var str = x.identity.substr(1, 5);
@@ -1492,7 +1496,7 @@
                         //if (['不合格', '已取消'].includes(x.result) || x.result.indexOf('不合格') !== -1) {
                         //    x['disabled'] = true;
                         //}
-                        if (x.status != 1 && x.status !=-2) {
+                        if (x.status != 1 && x.status != -2  && x.status != 3) {
                             x['disabled'] = true;
                         }
 
@@ -1648,11 +1652,12 @@
                     });
             },
             artificialAction: function (item) {
+     
                 this.artificialId = item.id;
                 this.artificialName = item.name;
-                this.artificialBirthday = item.birthday;
+                this.artificialBirthday = item.birthday.replace(/\//g, '-')+'T00:00:00';
                 this.artificialIdentity = item.identity;
-
+                this.applyNo = item.id;
                 this.$bus.$emit('dialogDoubleCheck_show', true);
 
                 this.$refs.doubleCheckForm.reset();
@@ -1666,20 +1671,15 @@
                 if (!isvaild) return;
                 
                 comp.alertMessage = '';
-                comp.doubleCheck({ id: comp.artificialId, result: comp.artificialResult })
+                comp.doubleCheck({ activityId: comp.activityId, applyNo: comp.applyNo, bd:comp.artificialBirthday, result: comp.artificialResult })
                     .then(function (result) {
-                        switch (result.state) {
-                            case 'not found':
-                                comp.alertMessage = '不存在';
-                                break;
-                            default:
-                                break;
-                        }
-
-                        if (comp.alertMessage !== '') {
-                            comp.$bus.$emit('alert_show', true);
-                            return;
-                        }
+                        console.log(result);
+    
+                        comp.alertTitle = '人工複檢完成';
+                        comp.alertText = '';
+                        comp.alertImgSrc = comp.successIcon;
+                        comp.$refs.registAlert.open();
+                        comp.$refs.fileViewer.close();
 
                         comp.$bus.$emit('dialogDoubleCheck_show', false);
                     })

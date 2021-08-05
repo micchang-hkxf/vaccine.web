@@ -195,7 +195,7 @@ export default {
                     }
                 }).then(res => {
                     results.totalCount = res.data.totlaCount;
-
+                    results.activityId = res.data.activityId;
                     var datas = [];
                     res.data.data.forEach((data) => {
                         datas.push({
@@ -211,7 +211,8 @@ export default {
                             type: data.signUpChannel ? '現場報名' : '網路自行報名',
                             //result: data.eligible ? '合格' : '不合格',
                             result: data.logTypeName,
-                            status: data.logType,//-2 複檢異常 ，-1取消，0複檢不合格，1複檢成功
+                            status: data.logType,//-2 複檢異常 ，-1取消，0複檢不合格，1複檢成功, 2複檢不合格（人工複檢），3複檢合格（人工複檢）
+                            //status: -2,//test only
                             remark: data.memo
                         });
                     });
@@ -405,19 +406,36 @@ export default {
                 });
             });
         },
-        doubleCheck: function ({ state }, data) {
+        doubleCheck: function ({ state, rootGetters }, data) {
             return new Promise(function (resolve, reject) {
-                // TODO:
+                var ckret = (data.result.id == "pass") ? true : false;
+               
                 var result = { id: data.id, state: state };
-                try {
-                    console.log(data.result.id);
-                    console.log(data.result.state);
-
+                var setData = {
+                    "applyNo": data.applyNo,
+                    "actId": data.activityId,
+                    "bd":data.bd,
+                    "isReChecked": ckret,
+                };
+                //console.log(setData);
+         
+                axios({
+                    method: 'post',
+                    url: `${state.apiRoot}api/Activity/ForceCheck?api-version=1.0`,
+                    data: setData,
+                    responseType: 'json',
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    result.datas = res.data;
                     resolve(result);
-                    alert('人工複檢 (' + data.result.state + ')');
-                } catch (e) {
+                    }).catch(ex => {
+                        resolve(result);
+                    result.datas = ex;
                     reject(result);
-                }
+                });
+
             });
         },
         registForm: function ({ state, rootGetters}, data) {
