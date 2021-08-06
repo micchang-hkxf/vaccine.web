@@ -119,6 +119,7 @@ export default {
                     identify: userInfo.identify, //使用者身分證
                     sessionId: userInfo.sessionId, //生日登入 sessionId
                     captcha: userInfo.captcha, //生日登入 captcha
+                    token: null, //台北通 token
                     type: 'identify'
                 };
                 dispatch('setUserInfo', results).then((user) => {
