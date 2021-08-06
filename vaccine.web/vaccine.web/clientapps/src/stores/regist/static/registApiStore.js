@@ -144,9 +144,9 @@ export default {
                         birthday: res.data.bd, //使用者生日
                         identify: res.data.uid, //使用者身分證
                         token: token, //台北通 token
+                        type: 'taipei-pass',
                         sessionId: null, //生日登入 sessionId
                         captcha: null, //生日登入 captcha
-                        type: 'taipei-pass'
                     };
                     commit('saveUserInfo', { ...userInfo, ...tokenInfo });
                     resolve(userInfo);
