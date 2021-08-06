@@ -236,7 +236,7 @@
                 this.$router.push({ path: `agree/${this.$route.params.vote_no}` })
                 return;
             }
-
+            
             this.session = this.$store.getters['regist/user/getActivityApply'];
             window.scrollTo(0, 0);
             this.checkBeforeApply();

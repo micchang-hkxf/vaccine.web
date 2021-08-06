@@ -6,9 +6,9 @@ import Vue from 'vue';
 export default {
     namespaced: true,
     actions: {
-        loadAppliedList: function ({ state }, userInfo) {
+        loadAppliedList: function ({ state }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/applylog?uid=${userInfo.identify}&bd=${Vue.moment(new Date(userInfo.birthday)).format('YYYY/MM/DD')}`;
+                var apiUrl = `${state.apiRoot}api/applylog?uid=${params.identify}&bd=${Vue.moment(new Date(params.birthday)).format('YYYY/MM/DD')}&keyword=${params.keyword}`;
                 axios.get(apiUrl).then(res => {
                     resolve(res.data);
                 }).catch((ex) => {
