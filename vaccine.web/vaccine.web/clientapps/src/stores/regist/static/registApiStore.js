@@ -197,7 +197,9 @@ export default {
                 var results = { datas: [], state: '' };
 
                 var sourceType = 0;
-                if (params.type === 'identify') {
+                if (params.type === 'taipei-pass') {
+                    sourceType = 1;
+                } else if (params.type === 'identify') {
                     sourceType = 2;
                 }
 
@@ -207,7 +209,7 @@ export default {
                     uId: params.uId,
                     bd: params.bd,
                     sourceType: sourceType,
-                    token: ''
+                    token: params.token
                 }).then(res => {
                     results.datas[0] = res.data;
                     resolve(results);

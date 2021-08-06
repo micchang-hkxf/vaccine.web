@@ -299,7 +299,8 @@
                         captcha: userInfo.captcha,
                         uId: userInfo.identify,
                         bd: userInfo.birthday,
-                        type: userInfo.type
+                        type: userInfo.type,
+                        token: userInfo.token
                     };
 
                     setTimeout(() => {
