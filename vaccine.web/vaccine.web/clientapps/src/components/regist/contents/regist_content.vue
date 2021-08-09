@@ -91,6 +91,7 @@
             },
             toLogin: function () {
                 this.$refs.switch.close();
+                this.$refs.applieds.reload();
                 //this.$nextTick(() => {
                 //    //window.location.href = '/regist/#/regist?mode=applied';
                 //    this.$router.go()
