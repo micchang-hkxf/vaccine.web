@@ -41,7 +41,7 @@
 
         },
         created: function () {
-
+            
         },
         methods: {
             toTpton: function () {

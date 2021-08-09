@@ -6,9 +6,9 @@ import Vue from 'vue';
 export default {
     namespaced: true,
     actions: {
-        loadAppliedList: function ({ state }, userInfo) {
+        loadAppliedList: function ({ state }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/applylog?uid=${userInfo.identify}&bd=${Vue.moment(new Date(userInfo.birthday)).format('YYYY/MM/DD')}`;
+                var apiUrl = `${state.apiRoot}api/applylog?uid=${params.identify}&bd=${Vue.moment(new Date(params.birthday)).format('YYYY/MM/DD')}&keyword=${params.keyword}`;
                 axios.get(apiUrl).then(res => {
                     resolve(res.data);
                 }).catch((ex) => {
@@ -111,7 +111,7 @@ export default {
                 reslove(getters.getUserInfo);
             });
         },
-        checkUserInfo: function ({ dispatch, rootGetters }, userInfo) {
+        checkUserInfo: function ({ dispatch }, userInfo) {
             return new Promise((reslove) => {
                 var results = {
                     uName: '張閔傑', //使用者名稱
@@ -119,11 +119,11 @@ export default {
                     identify: userInfo.identify, //使用者身分證
                     sessionId: userInfo.sessionId, //生日登入 sessionId
                     captcha: userInfo.captcha, //生日登入 captcha
+                    token: null, //台北通 token
                     type: 'identify'
                 };
-                dispatch('setUserInfo', results).then(() => {
-                    console.log('return userInfo', rootGetters);
-                    reslove(rootGetters.getUserInfo);
+                dispatch('setUserInfo', results).then((user) => {
+                    reslove(user);
                 });
             });
         },
@@ -145,9 +145,9 @@ export default {
                         birthday: res.data.bd, //使用者生日
                         identify: res.data.uid, //使用者身分證
                         token: token, //台北通 token
+                        type: 'taipei-pass',
                         sessionId: null, //生日登入 sessionId
                         captcha: null, //生日登入 captcha
-                        type: 'taipei-pass'
                     };
                     commit('saveUserInfo', { ...userInfo, ...tokenInfo });
                     resolve(userInfo);
@@ -197,7 +197,9 @@ export default {
                 var results = { datas: [], state: '' };
 
                 var sourceType = 0;
-                if (params.type === 'identify') {
+                if (params.type === 'taipei-pass') {
+                    sourceType = 1;
+                } else if (params.type === 'identify') {
                     sourceType = 2;
                 }
 
@@ -207,7 +209,7 @@ export default {
                     uId: params.uId,
                     bd: params.bd,
                     sourceType: sourceType,
-                    token: ''
+                    token: params.token
                 }).then(res => {
                     results.datas[0] = res.data;
                     resolve(results);

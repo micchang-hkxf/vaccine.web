@@ -101,7 +101,9 @@
                 <v-btn color="#736DB9" :to="{ name:'agree', params: session }">上一步</v-btn>
                 <v-btn color="#736DB9" @click.stop="sendApply()">確定報名</v-btn>
             </div>
+
             <apply-done ref="done"></apply-done>
+
             <!--共用 loading -->
             <com-loading ref-key="loading"></com-loading>
             <!---->
@@ -179,6 +181,7 @@
                     了解
                 </template>
             </com-confirm>
+
         </template>
     </app-layout>
 </template>
@@ -222,6 +225,18 @@
 
         },
         created: function () {
+            var error = this.$cookies.get('error');
+            if (error) {
+                this.$cookies.remove('error');
+                this.isLoginError = true;
+                this.$refs.loginError.open();
+                return;
+            }
+            if (!this.getUserInfo) {
+                this.$router.push({ path: `agree/${this.$route.params.vote_no}` })
+                return;
+            }
+            
             this.session = this.$store.getters['regist/user/getActivityApply'];
             window.scrollTo(0, 0);
             this.checkBeforeApply();
@@ -279,12 +294,13 @@
                     comp.day = moment(userInfo.birthday).format('DD');
                     
                     var data = {
-                        activityId: comp.session.sessionId,
+                        activityId: this.$route.params.vote_no,
                         sessionId: userInfo.sessionId,
                         captcha: userInfo.captcha,
                         uId: userInfo.identify,
                         bd: userInfo.birthday,
-                        type: userInfo.type
+                        type: userInfo.type,
+                        token: userInfo.token
                     };
 
                     setTimeout(() => {

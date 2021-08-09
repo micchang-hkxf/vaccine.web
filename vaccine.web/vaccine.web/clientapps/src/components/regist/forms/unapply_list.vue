@@ -55,10 +55,10 @@
                     </div>
                 </div>
                 <div class="action-button d-flex justify-center align-center">
-                    <v-btn color="#736DB9" height="100%" width="100%" :to="{ name: 'agree', params: session }" v-if="session.signUp">
+                    <v-btn color="#736DB9" height="100%" width="100%" @click="toSession(session)" v-if="session.signUp">
                         報名
                     </v-btn>
-                    <v-btn color="#626781" height="100%" width="100%" :to="{ name: 'agree', params: session }" v-else>
+                    <v-btn color="#626781" height="100%" width="100%" @click="toSession(session)" v-else>
                         查看
                     </v-btn>
                 </div>
@@ -96,7 +96,7 @@
             this.search();
         },
         methods: {
-            ...mapActions('regist', ['loacVaccineSessions','loacVaccineBrands']),
+            ...mapActions('regist', ['loacVaccineSessions', 'loacVaccineBrands','setActivityApply']),
             search: function () {
                 this.loacVaccineSessions({
                     groupId: this.groupId,
@@ -106,6 +106,11 @@
                     this.sessions.splice(0);
                     r.datas.forEach(f => this.sessions.push(f));
                 })
+            },
+            toSession: function (session) {
+                this.setActivityApply(session).then(() => {
+                    this.$router.push({ path: 'agree/' + session.sessionId, params: session });
+                });
             },
             clear: function () {
                 this.filterBrandId = '';

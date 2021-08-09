@@ -11,13 +11,13 @@
             <div class="agree-actions" v-if="isNeedLogin">
                 <div class="action-header">請選擇登記方式：</div>
                 <div class="action-content d-flex flex-row justify-space-between">
-                    <div class="action tp-pass d-flex flex-column justify-center align-center" @click.stop="toTpPass()">
+                    <div class="action tp-pass d-flex flex-column justify-center align-center" @click="toTpPass($route.params.vote_no)">
                         <div>
                             <img src="/regist/tp_pass.svg">
                         </div>
                         <div class="action-label">台北通帳號登入</div>
                     </div>
-                    <div class="action d-flex flex-column justify-center align-center" @click.stop="toLogin()">
+                    <div class="action d-flex flex-column justify-center align-center" @click.stop="$refs.switch.toLocalLogin()">
                         <div>
                             <img src="/regist/editor_pen.svg">
                         </div>
@@ -27,7 +27,7 @@
                 <!--<v-btn :to="{name:'apply'}">申請</v-btn>
         <v-btn :to="{name:'regist'}">返回</v-btn>-->
             </div>
-            <login-editor ref="login" login-done="userSign"></login-editor>
+            <login-switch ref="switch" :login-done="loginDone" :login-cancel="loginCancel"></login-switch>
         </template>
     </app-layout>
 </template>
@@ -36,7 +36,7 @@
     import { mapActions, mapGetters } from 'vuex'
     import appLayout from 'components/regist/regist_layout'
     import applyViewer from 'components/regist/forms/apply_viewer'
-    import loginEditor from 'components/regist/forms/login_editor'
+    import loginSwitch from 'components/regist/forms/login_switcher'
     export default {
         // router,
         data: () => ({
@@ -57,29 +57,29 @@
         },
         methods: {
             ...mapActions('regist', ['setUserInfo']),
-            toTpPassLogin: function (redUrl) {
-                window.location.href = `/tppass?redirect=${encodeURIComponent(redUrl)}`
+            toTpPass: function (sessionId) {
+                this.$refs.switch.toTpPassLogin(`/regist/#/apply/${sessionId}`);
             },
-            toTpPass: function () {
-                if (!this.getUserInfo) {
-                    this.toTpPassLogin(`/regist/#/apply/${this.activeId}`);
-                    return;
-                }
-                this.$router.push({ path: `/apply/${this.activeId}` });
+            
+            loginDone: function () {
+                this.$router.push({ path: `/apply/${this.$route.params.vote_no}` });
             },
-            toLogin: function () {
-                if (!this.getUserInfo) {
-                    this.$refs.login.create();
-                    return;
-                }
-                this.$router.push({ path: `/apply/${this.activeId}` });
+            loginCancel: function () {
+
             },
-            userSign: function () {
-                this.$router.push({ path: `/apply/${this.activeId}` });
-            }
+            //toLogin: function () {
+            //    if (!this.getUserInfo) {
+            //        this.$refs.login.create();
+            //        return;
+            //    }
+            //    this.$router.push({ path: `/apply/${this.activeId}` });
+            //},
+            //userSign: function () {
+            //    this.$router.push({ path: `/apply/${this.activeId}` });
+            //}
         },
         components: {
-            appLayout, applyViewer, loginEditor
+            appLayout, applyViewer, loginSwitch
         }
     }
 </script>

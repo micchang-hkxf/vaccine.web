@@ -9,7 +9,7 @@
                     完成報名！
                 </div>
             </v-card-title>
-            <v-card-text class="done-container">
+            <v-card-text class="done-container" v-if="isShow">
                 <div class="field-container">
                     <div class="title full-width">
                         {{session.sessionName}}
