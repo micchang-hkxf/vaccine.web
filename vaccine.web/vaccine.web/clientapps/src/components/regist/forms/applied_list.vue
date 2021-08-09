@@ -26,7 +26,7 @@
                         </div>
                         <div class="d-flex flex-row justify-space-between">
                             <div class="action-info-title text-left">接種日期：</div>
-                            <div class="action-info-data text-right">{{$moment(applied.implementDate).format('YYYY/MM/DD')}}</div>
+                            <div class="action-info-data text-right">{{$moment(applied.implementStartTime).format('YYYY/MM/DD')}},{{$moment(applied.implementStartTime).format('HH:mm')}}-{{$moment(applied.implementEndTime).format('HH:mm')}}</div>
                         </div>
                         <div class="d-flex flex-row justify-space-between">
                             <div class="action-info-title text-left">事先報名：</div>
@@ -104,18 +104,18 @@
                     villageId: applied.region.villageId,
                     sessionStart: applied.implementStartTime,
                     sessionEnd: applied.implementEndTime,
-                    registStart: '',
-                    registEnd: '',
+                    registStart: applied.registStart,
+                    registEnd: applied.registEnd,
                     maxLimit: applied.maxLimit,
                     totalCount: applied.totalCount,
-                    brandId: '',
-                    brandName: '',
-                    implementAddr: '',
+                    brandId: applied.brandId,
+                    brandName: applied.brandName,
+                    implementAddr: applied.implementAddr,
                     groupName: applied.vaccineGroupName,
                     signUp: false,
                     applyNo: applied.applyNo // 序號
                 };
-
+                
                 this.setActivityApply(session).then(() => {
                     this.$router.push({ path: 'applied', params: session });
                 });
