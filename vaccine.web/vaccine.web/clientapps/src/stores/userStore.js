@@ -93,11 +93,9 @@ export default {
         },
         getActivityApply: (state) => {
             var data = window.sessionStorage.getItem('activityApply');
-            if (data !== null) {
+            if (!state.activityApply && data !== null)
                 state.activityApply = data;
-                return JSON.parse(data);
-            }
-            return data;
+            return JSON.parse(state.activityApply);
         },
         removeItem: () => (key) => {
             return window.sessionStorage.removeItem(key);
@@ -132,7 +130,7 @@ export default {
         },
         setActivityApply: (state, activityApply) => {
             state.activityApply = JSON.stringify(activityApply);
-            window.sessionStorage.setItem('activityApply', JSON.stringify(activityApply));
+            window.sessionStorage.setItem('activityApply', state.activityApply);
         }
     },
     modules: {

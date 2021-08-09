@@ -46,7 +46,6 @@
         },
         created: function () {
             this.session = this.$store.getters['regist/user/getActivityApply'];
-            this.setActivityApply(this.session);
         },
         methods: {
             ...mapActions('regist', ['setActivityApply']),
