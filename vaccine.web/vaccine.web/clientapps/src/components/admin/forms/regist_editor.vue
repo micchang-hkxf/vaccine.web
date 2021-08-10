@@ -189,13 +189,13 @@
                     </v-col>
                 </v-row>
                 <v-row>
-                    <v-col cols="3">
-                        <com-timepicker v-model="regist_station_start_time"></com-timepicker>
+                    <v-col cols="3" class="colsp">
+                        <com-timepicker  v-model="regist_station_start_time" ></com-timepicker>
                     </v-col>
-                    <v-col cols="1">
+                    <v-col cols="1" class="colsp2">
                     </v-col>
-                    <v-col cols="3">
-                        <com-timepicker v-model="regist_station_end_time"></com-timepicker>
+                    <v-col cols="3" class="colsp"  >
+                        <com-timepicker v-model="regist_station_end_time" ></com-timepicker>
                     </v-col>
                 </v-row>
                 <!--<v-row>
@@ -441,7 +441,7 @@
         z-index:999;
     }
     .timepicker-wrap .time {
-        width: 207px !important;
+        width: 100px !important;
         height: 40px !important;
         border-radius: 5px !important;
         border-color: #9E9E9E !important;
@@ -452,6 +452,17 @@
     .timepicker-wrap .timepicker-icon {
         width: 1.5em !important;
         height: 1.5em !important;
+    }
+    .row > .colsp{
+        width:90px !important;
+    }
+    .row > .colsp2 {
+        width: 20px !important;
+    }
+    .timepicker-container > .timepicker {
+        position: fixed !important;
+        top: 20%;
+        left: 50%;
     }
 </style>
 
@@ -614,7 +625,8 @@
                     }
                 });
 
-            },
+            }
+    
 
         },
         components: {
