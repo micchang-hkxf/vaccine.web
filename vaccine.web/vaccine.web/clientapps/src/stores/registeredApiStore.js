@@ -36,6 +36,7 @@ export default {
 
                     results.datas = datas;
                     console.log(datas);
+                    results.totalCount = datas.length;
                     resolve(results);
                 }).catch(ex => {
                     results.datas = ex;

@@ -31,7 +31,7 @@
                         <div class="d-flex flex-row justify-space-between">
                             <div class="action-info-title text-left">事先報名：</div>
                             <div class="action-info-data text-right">
-                                {{$moment(applied.registStart).format('YYYY/MM/DD,HH:mm')}}<br /> - {{$moment(applied.registEnd).format('YYYY/MM/DD,HH:mm')}}
+                                {{$moment(applied.startApplyDate).format('YYYY/MM/DD,HH:mm')}}<br /> - {{$moment(applied.endApplyDate).format('YYYY/MM/DD,HH:mm')}}
                             </div>
                         </div>
                         <div class="d-flex flex-row justify-space-between">
@@ -41,9 +41,36 @@
                     </div>
                 </div>
                 <div class="action-button d-flex justify-center align-center">
-                    <v-btn color="rgba(119,204,219,0.5)" height="100%" width="100%" elevation="0" @click="toSession(applied)">
-                        報名
-                    </v-btn>
+                    <template v-if="applied.messageCode === 1 && $moment(now) < $moment(applied.implementStartTime)">
+                        <v-btn class="btn-not-started" height="100%" width="100%" elevation="0" @click="toSession(applied)">
+                            接種 未開始
+                        </v-btn>
+                    </template>
+                    <template v-else-if="applied.messageCode === 1 && $moment(applied.implementStartTime) <= $moment(now) && $moment(now) <= $moment(applied.implementEndTime)">
+                        <v-btn class="btn-in-progress" height="100%" width="100%" elevation="0" @click="toSession(applied)">
+                            接種 進行中
+                        </v-btn>
+                    </template>
+                    <template v-else-if="applied.messageCode === 1 && $moment(now) > $moment(applied.implementEndTime)">
+                        <v-btn class="btn-over" height="100%" width="100%" elevation="0" @click="toSession(applied)">
+                            接種 已結束
+                        </v-btn>
+                    </template>
+                    <template v-else-if="applied.messageCode === 2 || applied.messageCode === 3">
+                        <v-btn class="btn-over" height="100%" width="100%" elevation="0" @click="toSession(applied)">
+                            複檢 未通過
+                        </v-btn>
+                    </template>
+                    <template v-else-if="applied.messageCode === 4 || applied.messageCode === 5">
+                        <v-btn class="btn-over" height="100%" width="100%" elevation="0" @click="toSession(applied)">
+                            報名 已取消
+                        </v-btn>
+                    </template>
+                    <template v-else>
+                        <v-btn class="btn-over" height="100%" width="100%" elevation="0" @click="toSession(applied)">
+                            異常
+                        </v-btn>
+                    </template>
                 </div>
             </v-card>
             <div class="null-list" v-if="applieds.length === 0">
@@ -67,6 +94,7 @@
             },
             applieds: [],
             filterKeyword: '',
+            now: new Date()
         }),
         computed: {
             ...mapGetters('regist', [ 'getUserInfo']),
@@ -104,8 +132,8 @@
                     villageId: applied.region.villageId,
                     sessionStart: applied.implementStartTime,
                     sessionEnd: applied.implementEndTime,
-                    registStart: applied.registStart,
-                    registEnd: applied.registEnd,
+                    registStart: applied.startApplyDate,
+                    registEnd: applied.endApplyDate,
                     maxLimit: applied.maxLimit,
                     totalCount: applied.totalCount,
                     brandId: applied.brandId,
@@ -113,7 +141,8 @@
                     implementAddr: applied.implementAddr,
                     groupName: applied.vaccineGroupName,
                     signUp: false,
-                    applyNo: applied.applyNo // 序號
+                    applyNo: applied.applyNo,
+                    messageCode: applied.messageCode
                 };
                 
                 this.setActivityApply(session).then(() => {
@@ -211,6 +240,7 @@
         padding-right: 16px;
         padding-top: 16px;
         padding-bottom: 16px;
+        margin-bottom: 78px;
     }
 
     .applied-list/deep/ .action-info-detail {
@@ -245,5 +275,26 @@
     .applied-list/deep/ .null-content {
         position: relative;
         top: 112px;
+    }
+
+    .applied-list/deep/ .btn-not-started {
+        background: #77CCDB80 0% 0% no-repeat padding-box !important;
+        opacity: 1;
+    }
+
+    .applied-list/deep/ .btn-in-progress {
+        background: #77CCDB 0% 0% no-repeat padding-box !important;
+        opacity: 1;
+    }
+
+    .applied-list/deep/ .btn-over {
+        background: #4349691A 0% 0% no-repeat padding-box !important;
+        opacity: 1;
+    }
+
+    .applied-list/deep/ .action-container [class^="btn-"] .v-btn__content {
+        width: 70px;
+        white-space: normal;
+        word-break: keep-all;
     }
 </style>

@@ -237,6 +237,7 @@
         padding-right: 16px;
         padding-top: 16px;
         padding-bottom: 16px;
+        margin-bottom: 78px;
     }
 
     .unapply-list/deep/ .action-info-detail {

@@ -4,9 +4,36 @@
             活動內容
         </template>
         <template v-slot:regist-content>
-            <div class="applied-header d-flex justify-center align-center">
-                接種未開始
-            </div>
+            <template v-if="session.messageCode === 1 && $moment(now) < $moment(session.sessionStart)">
+                <div class="applied-header btn-not-started d-flex justify-center align-center">
+                    接種未開始
+                </div>
+            </template>
+            <template v-else-if="session.messageCode === 1 && $moment(session.sessionStart) <= $moment(now) && $moment(now) <= $moment(session.sessionEnd)">
+                <div class="applied-header btn-in-progress d-flex justify-center align-center">
+                    接種進行中
+                </div>
+            </template>
+            <template v-else-if="session.messageCode === 1 && $moment(now) > $moment(session.sessionEnd)">
+                <div class="applied-header btn-over d-flex justify-center align-center">
+                    接種已結束
+                </div>
+            </template>
+            <template v-else-if="session.messageCode === 2 || session.messageCode === 3">
+                <div class="applied-header btn-over d-flex justify-center align-center">
+                    複檢未通過
+                </div>
+            </template>
+            <template v-else-if="session.messageCode === 4 || session.messageCode === 5">
+                <div class="applied-header btn-over d-flex justify-center align-center">
+                    報名已取消
+                </div>
+            </template>
+            <template v-else>
+                <div class="applied-header btn-over d-flex justify-center align-center">
+                    異常
+                </div>
+            </template>
             <div class="applied-container">
                 <apply-viewer></apply-viewer>
                 <v-divider></v-divider>
@@ -17,9 +44,27 @@
                     </div>
                 </div>
             </div>
-            <div class="applied-actions" v-if="isNeedLogin">
-                <v-btn :to="{name:'apply'}">我要取消報名</v-btn>                
+            <div class="applied-actions" v-if="isNeedLogin && (session.messageCode === 1 || session.messageCode === 2)">
+                <v-btn @click.stop="cancelRegistered()">我要取消報名</v-btn>
             </div>
+            <!--共用 loading -->
+            <com-loading ref-key="loading"></com-loading>
+            <!---->
+            <com-confirm ref="alertRegistered" ref-key="alertRegistered" :left-click="alertRegisteredLeftClick" :right-click="alertRegisteredRightClick" right-color="rgba(240,82,75,1) !important">
+                <template v-slot:confirm-image>
+                    <v-img src="/alert_warning.svg"></v-img>
+                </template>
+                <template v-slot:confirm-text>
+                    <div class="sub-title">取消報名？</div>
+                    <div class="sub-title-name">{{session.sessionName}}</div>
+                </template>
+                <template v-slot:confirm-left-btn-text>
+                    保留
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    我要取消
+                </template>
+            </com-confirm>
         </template>
     </app-layout>
 </template>
@@ -27,32 +72,69 @@
 <script>
     import appLayout from 'components/regist/regist_layout'
     import applyViewer from 'components/regist/forms/apply_viewer'
+    import comLoading from 'components/loading'
+    import comConfirm from 'components/confirm'
+    import { mapActions, mapGetters } from 'vuex'
+
     export default {
         // router,
         data: () => ({
             appBar: {
                 elevation: 0,
                 height: '144px'
-            }, isNeedLogin: true
+            },
+            isNeedLogin: true,
+            now: new Date()
         }),
         computed: {
+            ...mapGetters('regist', ['getUserInfo']),
         },
         props: {
 
         },
         created: function () {
-            
+            this.session = this.$store.getters['regist/user/getActivityApply'];
+            window.scrollTo(0, 0);
         },
         methods: {
+            ...mapActions('regist', ['deleteApply']),
             toTpton: function () {
 
             },
             toLogin: function () {
 
             },
+            cancelRegistered: function () {
+                this.$bus.$emit('alertRegistered_show', true);
+            },
+            alertRegisteredLeftClick: function () {
+                this.$bus.$emit('alertRegistered_show', false);
+            },
+            alertRegisteredRightClick: function () {
+                var comp = this;
+
+                var userInfo = comp.getUserInfo;
+
+                if (userInfo !== null) {
+                    comp.$bus.$emit('loading_show4', '資料處理中...');
+
+                    comp.deleteApply({ uid: userInfo.identify, activityId: comp.session.sessionId })
+                        .then(function (result) {
+                            console.log(result);
+                            comp.$bus.$emit('loading_hide4');
+                            comp.$bus.$emit('alertRegistered_show', false);
+                            comp.$router.push({ name: 'regist', params: { mode: 'applied' } });
+                        })
+                        .catch(ex => {
+                            console.log(ex);
+                            comp.$bus.$emit('loading_hide4');
+                            comp.$bus.$emit('alertRegistered_show', false);
+                        });
+                }
+            },
         },
         components: {
-            appLayout, applyViewer
+            appLayout, applyViewer, comLoading, comConfirm
         }
     }
 </script>
@@ -64,7 +146,7 @@
     }
 
     .applied-content/deep/ .descript-content {
-        padding-top: 16px;
+        padding: 16px 0;
     }
 
     .applied-content/deep/ .descript-header {
@@ -79,6 +161,7 @@
         padding-top: 24px !important;
         padding-left: 24px !important;
         padding-right: 24px !important;
+        margin-bottom: 78px;
     }
 
     .applied-content/deep/ .applied-actions {
@@ -88,11 +171,11 @@
         padding-bottom: 24px !important;
     }
 
-        .applied-content/deep/ .applied-actions .v-btn {
-            width: 100% !important;
-            background-color: #F0524B!important;
-            color:white!important;
-        }
+    .applied-content/deep/ .applied-actions .v-btn {
+        width: 100% !important;
+        background-color: #F0524B!important;
+        color:white!important;
+    }
 
     .applied-content/deep/ .action {
         font-size: 16px;
@@ -103,22 +186,31 @@
         border-radius: 10px;
     }
 
-        .applied-content/deep/ .action.tp-pass {
-            background-color: #77CCDB;
-        }
-
-
+    .applied-content/deep/ .action.tp-pass {
+        background-color: #77CCDB;
+    }
 
     .applied-content/deep/ .action-label {
         margin-top: 16px;
     }
-
 
     .applied-content/deep/ .applied-header {
         background-color: rgba(119,204,219,0.5)!important;
         font-size:16px!important;
         color:white!important;
         height:48px!important;
+    }
+
+    .applied-content/deep/ .applied-header.btn-not-started {
+        background: #77CCDB80 0% 0% no-repeat padding-box !important;
+    }
+
+    .applied-content/deep/ .applied-header.btn-in-progress {
+        background: #77CCDB 0% 0% no-repeat padding-box !important;
+    }
+
+    .applied-content/deep/ .applied-header.btn-over {
+        background: #4349691A 0% 0% no-repeat padding-box !important;
     }
 
     .applied-content/deep/ .step-one {
@@ -159,5 +251,24 @@
         margin-top: 26px !important;
         margin-left: -30% !important;
         margin-right: -30% !important;
+    }
+
+    .applied-content/deep/ .confirm-text {
+        display: block;
+    }
+
+    .applied-content/deep/ .sub-title {
+        text-align: center;
+        font: normal normal normal 20px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781;
+    }
+
+    .applied-content/deep/ .sub-title-name {
+        text-align: center;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #77CCDB;
+        margin-top: 10px;
     }
 </style>

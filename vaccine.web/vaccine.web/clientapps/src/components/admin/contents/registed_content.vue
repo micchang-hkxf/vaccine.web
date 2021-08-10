@@ -84,8 +84,8 @@
     export default {
         // router,
         data: () => ({
-            totalCount: 12,
-            itemsPerPage: 3,
+            totalCount: 0,
+            itemsPerPage: 5,
             totalVisible: 4,
             showSelect: false,           
             keyWord: '',
