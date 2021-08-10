@@ -18,6 +18,8 @@
     .v-dialog {
         border-radius: 0px 0px 8px 8px !important;
         box-shadow: none !important;
+        overflow-y: hidden !important;
+        overflow-x: hidden !important;
     }
     .dialog-content {
         padding: 16px;

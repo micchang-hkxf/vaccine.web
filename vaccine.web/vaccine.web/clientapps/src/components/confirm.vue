@@ -68,6 +68,8 @@
     .v-dialog {
         box-shadow: none !important;
         border-radius: 8px !important;
+        overflow-y: hidden !important;
+        overflow-x: hidden;
     }
 
     .v-btn--contained {

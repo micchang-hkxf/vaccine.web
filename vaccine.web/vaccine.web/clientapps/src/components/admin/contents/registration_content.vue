@@ -133,7 +133,7 @@
 
 
 
-                            <com-dialog ref="fileViewer" ref-key="two" width="25%">
+                            <com-dialog ref="fileViewer" ref-key="two" width="40%">
                                 <template v-slot:toolbar>
                                     建立報名表-檔案匯入
                                     <v-spacer></v-spacer>
@@ -166,7 +166,7 @@
 
                                             <v-btn color="secondary">
                                                 <v-img src="/download.svg"></v-img>
-                                                <span><a href="ActivityExample.xlsx">下載報名表格式範本</a></span>
+                                                <span ><a href="ActivityExample.xlsx" class="file-btn-text">下載報名表格式範本</a></span>
                                             </v-btn>
                                         </div>
 
@@ -851,16 +851,18 @@
 
 
     .registration-list .file-btn-container {
-        display: flex;
-        justify-content: space-around;
+        display: inline-flex;
+        justify-content: space-between;
         margin-top: 5px;
         margin-bottom: 10px;
+        width: 100%;
     }
 
     .registration-list .file-btn-text {
         padding-left: 10px;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         color: #ffffff;
+        text-decoration: none;
     }
 
     .registration-list .modify-btn-text {
