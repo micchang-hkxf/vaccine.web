@@ -1,10 +1,11 @@
 ﻿<template>
+
     <div class="timepicker-container">
         <div class="timepicker-wrap">
             <svg class="timepicker-icon timepicker-icon__clock" viewBox="0 0 32 32">
                 <path class="path1" d="M20.586 23.414l-6.586-6.586v-8.828h4v7.172l5.414 5.414zM16 0c-8.837 0-16 7.163-16 16s7.163 16 16 16 16-7.163 16-16-7.163-16-16-16zM16 28c-6.627 0-12-5.373-12-12s5.373-12 12-12c6.627 0 12 5.373 12 12s-5.373 12-12 12z"></path>
             </svg>
-            <input type="text" class="time" ref="timeInput" :value="value"
+            <input type="text" class="time" ref="timeInput" :value="value" 
                    @focus="open">
         </div>
         <div class="timepicker" tabindex="0"
@@ -17,6 +18,7 @@
                     <v-icon style="color:lawngreen;font-size:20px;" @click="close(false)">done</v-icon>
                 </span>
             </div>
+           
             <div class="timepicker__time">
                 <div class="flex-wrap">
                     <time-unit :value="time[0]" index="0"></time-unit>
@@ -54,12 +56,13 @@
         data() {
             return {
                 time: null,
-                isOpen: false,
+                isOpen: false
             };
         },
         created() {
             this.time = this.value.replace(':', '').split('');
             this.$on('close', this.close);
+    
         },
         computed: {
             filteredDigits() {
@@ -86,12 +89,17 @@
         },
         methods: {
             open() {
+                if (document.querySelectorAll('.is-open').length > 0) {
+                    return;
+                }
                 this.time = this.value.replace(':', '').split('');
                 this.$refs.timeInput.blur();
                 this.$refs.timepicker.focus();
                 this.myOpen = this.isOpen = true;
                 this.myTimes = this.time;
                 this.activeIndex = 0;
+               
+         
             },
             close(cancel) {
                 let isCancelled = cancel || false;
@@ -166,6 +174,7 @@
     }
 
     .timepicker {
+
         position: absolute;
         background: #FBFBFF;
         width: 100vw;
