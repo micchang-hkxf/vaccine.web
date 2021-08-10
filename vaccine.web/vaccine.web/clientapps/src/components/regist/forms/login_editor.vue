@@ -7,7 +7,7 @@
                     <div class="login-field">
                         <div class="login-field-label">身份證字號<span class="red--text">*</span></div>
                         <div class="login-field-container">
-                            <v-text-field class="login-field-text" v-model="uid" placeholder="請輸入您的身分證字號" :rules="[v=>!!v||'請輸入您的身分證字號']"></v-text-field>
+                            <v-text-field class="login-field-text" v-model="uid" placeholder="請輸入您的身分證字號" :rules="[v=>!!v||'請輸入您的身分證字號', checkUid]" maxlength="10"></v-text-field>
                         </div>
                     </div>
                     <div class="login-field">
@@ -135,7 +135,14 @@
             },
             close: function () {
                 this.isShow = false;
-            }
+            },
+            checkUid: function () {
+                var re = /^[A-Z]{1}[1-2]{1}[0-9]{8}$/;
+                if (!re.test(this.uid)) {
+                    return '身份證字號格式不正確！';
+                }
+                return true;
+            },
         },
         watch: {
             month: function (val) {
