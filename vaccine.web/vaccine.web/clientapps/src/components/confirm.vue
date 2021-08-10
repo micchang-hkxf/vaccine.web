@@ -64,7 +64,7 @@
 </template>
 
 
-<style>
+<style scoped>
     .v-dialog {
         box-shadow: none !important;
         border-radius: 8px !important;

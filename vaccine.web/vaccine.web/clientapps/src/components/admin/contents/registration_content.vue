@@ -128,12 +128,13 @@
                                         </v-list-item-action-text>
                                     </v-list-item>
 
+
                                 </v-list>
                             </v-menu>
 
 
 
-                            <com-dialog ref="fileViewer" ref-key="two" width="40%">
+                            <com-dialog ref="fileViewer" ref-key="two" key="file-upload-dialog" width="40%"> 
                                 <template v-slot:toolbar>
                                     建立報名表-檔案匯入
                                     <v-spacer></v-spacer>
@@ -160,13 +161,12 @@
                                                    type="file"
                                                    style="display:none"
                                                    accept=".xlsx,xls"
-                                                   @change="onFileChanged"
-                                                   >
+                                                   @change="onFileChanged">
                                             <v-spacer></v-spacer>
 
                                             <v-btn color="secondary">
                                                 <v-img src="/download.svg"></v-img>
-                                                <span ><a href="ActivityExample.xlsx" class="file-btn-text">下載報名表格式範本</a></span>
+                                                <span><a href="ActivityExample.xlsx" class="file-btn-text">下載報名表格式範本</a></span>
                                             </v-btn>
                                         </div>
 
@@ -183,7 +183,7 @@
 
                             <!--新增-->
                             <editor ref="registNewEditor" ref-key="two" width="60%" :title="title" :saveBtnName="saveBtnName" :action="formAction"></editor>
-                            <com-dialog ref="registViewer" ref-key="two" width="60%">
+                            <com-dialog ref="registViewer" ref-key="two" width="60%" key="regist-new-editor">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
                                     <v-spacer></v-spacer>
@@ -336,7 +336,7 @@
 
                             <!--編輯-->
                             <editor ref="registEdit" ref-key="two" width="60%" :title="title" :saveBtnName="saveBtnName" :action="editFormAction"></editor>
-                            <com-dialog ref="registEditViewer" ref-key="two" width="60%">
+                            <com-dialog ref="registEditViewer" ref-key="two" width="60%" key="regist-new-viewer">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
                                     <v-spacer></v-spacer>
@@ -487,7 +487,7 @@
                             </com-dialog>
 
 
-                            <com-confirm ref="registAlert" ref-key="confirm" :right-click="alertRightClick">
+                            <com-confirm ref="registAlert" ref-key="confirm" :right-click="alertRightClick" key="regist-alert-confirm">
                                 <template v-slot:confirm-image>
                                     <v-img v-bind:src="alertImgSrc"></v-img>
                                 </template>
@@ -505,7 +505,7 @@
                             </com-confirm>
 
 
-                            <com-confirm ref="removeAlert" ref-key="confirm" :right-click="removeRightClick" :left-click="removeLeftClick">
+                            <com-confirm ref="removeAlert" ref-key="confirm" :right-click="removeRightClick" :left-click="removeLeftClick" key="remove-alert-confirm">
                                 <template v-slot:confirm-image>
                                     <v-img src="/alert_remove.svg"></v-img>
                                 </template>
@@ -524,7 +524,7 @@
                             </com-confirm>
 
 
-                            <com-confirm ref="successUploadAlert" ref-key="confirm" :right-click="successUploadRightClick">
+                            <com-confirm ref="successUploadAlert" ref-key="confirm" :right-click="successUploadRightClick" key="success-update-confirm">
                                 <template v-slot:confirm-image>
                                     <v-img src="/alert_success.svg"></v-img>
                                 </template>
@@ -540,7 +540,7 @@
                                     確認
                                 </template>
                             </com-confirm>
-                            <com-confirm ref="warringAlert" ref-key="warringAlert" :right-click="closeRightClick">
+                            <com-confirm ref="warringAlert" ref-key="warringAlert" :right-click="closeRightClick"  key="warring-alert-confirm">
                                 <template v-slot:confirm-image>
                                     <v-img src="/alert_warning.svg"></v-img>
                                 </template>
@@ -631,7 +631,7 @@
                         </template>
                     </com-table>
                     <!--共用 alert -->
-                    <com-confirm ref="alert" ref-key="alert" :right-click="alertClick">
+                    <com-confirm ref="alert" ref-key="alert" :right-click="alertClick" key="alert-message-confirm">
                         <template v-slot:confirm-image>
                             <v-img src="/alert_warning.svg"></v-img>
                         </template>
@@ -643,7 +643,7 @@
                         </template>
                     </com-confirm>
                     <!---->
-                    <com-dialog ref="dialogDetail" ref-key="dialogDetail" width="100%">
+                    <com-dialog ref="dialogDetail" ref-key="dialogDetail" width="100%" key="regist-list-dialog">
                         <template v-slot:toolbar>
                             場次內容
                             <v-spacer></v-spacer>
@@ -737,7 +737,7 @@
                         </template>
                     </com-dialog>
 
-                    <com-dialog ref="dialogDoubleCheck" ref-key="dialogDoubleCheck" width="368">
+                    <com-dialog ref="dialogDoubleCheck" ref-key="dialogDoubleCheck" width="368" key="regist-recheck-dialog">
                         <template v-slot:toolbar>
                             人工複檢作業
                             <v-spacer></v-spacer>
@@ -800,14 +800,20 @@
 </template>
 
 <style>
+    .file-upload-dialog {
+        min-width: 300px;
+    }
+
     * {
         font-family: "微軟正黑體", "Roboto", sans-serif, "Arial", "Font Awesome 5 Free", "Material Design Icons", "Material Icons", "sans-serif";
         font-weight: 400;
         font-size: 14px;
     }
+
     .registration-list .v-list-item__title {
         color: #000000 !important;
     }
+
     .registration-list .app-content {
         background-color: #F2F3F7;
     }
@@ -885,6 +891,7 @@
         text-align: left;
         opacity: 1;
     }
+
     .registration-list .add-btn-text {
         color: white;
         padding-left: 5px;
@@ -934,9 +941,9 @@
         display: inline-flex;
     }
 
-    .registration-list .detail-action .v-btn {
-        margin: 3px 5px;
-    }
+        .registration-list .detail-action .v-btn {
+            margin: 3px 5px;
+        }
 
     .registration-list .detail-result-abnormal {
         /*font: normal normal normal 16px/24px Noto Sans T Chinese;*/
@@ -1001,6 +1008,31 @@
         border: thin solid rgba(98,103, 129,0.2) !important;
     }
 
+    .v-dialog {
+        overflow-x: auto !important;
+        overflow-y: auto !important;
+    }
+
+        /*-------滾動條整體樣式----*/
+        .v-dialog::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        /*滾動條裡面小方塊樣式*/
+        .v-dialog::-webkit-scrollbar-thumb {
+            border-radius: 100px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            background: #736DB9;
+        }
+
+        /*滾動條裡面軌道樣式*/
+        .v-dialog::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            background: rgba(0,0,0,0.1);
+        }
+
     /* Extra small devices (portrait phones, less than 576px) */
     @media (max-width: 575.98px) {
         .v-data-table > div {
@@ -1063,10 +1095,10 @@
             selectInstitution: '',
             keyWord: '',
             itemKey: 'regist_id',
-            items: [],  
-            registId:[],
+            items: [],
+            registId: [],
             title: '',
-            saveBtnName:'',
+            saveBtnName: '',
             //model: {
             //    regist_title: '',
             //    regist_type: '',
@@ -1075,7 +1107,7 @@
             //    regist_date: new Date().toISOString().substr(0, 10),
             //},
             result: {},
-            viewerTitle:'',
+            viewerTitle: '',
             alertTitle: '',
             alertText: '',
             compSelectedItems: [],
@@ -1106,8 +1138,8 @@
             artificialBirthday: '',
             artificialIdentity: '',
             applyNo: 0,
-            activityId:'',
-            alertImgSrc:"",
+            activityId: '',
+            alertImgSrc: "",
             successIcon: '/alert_success.svg',
             warningIcon: '/alert_warning.svg',
             alertIcon: '/alert_warning.svg',
@@ -1141,12 +1173,12 @@
                 regist_station_end_time: '',
                 regist_apply_start_date: '',
                 regist_apply_end_date: '',
-                regist_review_date: '',///checkTime              
+                regist_review_date: '',///checkTime
                 regist_qualified: 423,
                 regist_quota: 500,
                 regist_unpassed: 45,
                 uploadFile: null,
-                finalData:[]
+                finalData: []
             },
         }),
         computed: {
@@ -1160,13 +1192,13 @@
             this.loadDists();
             //this.loadMedicals();
             this.getRegistForm(1);
- 
-            
+
+
         },
         methods: {
             ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadMedicals', 'loadMedicalsByVillage',
-                'loadRegistForm', 'loadDetailForm', 'getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile', 'execCheck','reExecCheck',
-                                         'doubleCheck', 'registForm', 'updateRegist', 'removeRegist','importRegistForm']),
+                'loadRegistForm', 'loadDetailForm', 'getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile', 'execCheck', 'reExecCheck',
+                'doubleCheck', 'registForm', 'updateRegist', 'removeRegist', 'importRegistForm']),
             getRegistForm: function (page) {
                 var params = {
                     vaccine: this.selectVaccine,
@@ -1196,9 +1228,9 @@
                 this.compSelectedItems.splice(0);
                 items.forEach((x) => this.compSelectedItems.push(x));
                 this.$forceUpdate();
-                this.$refs.removeAlert.open();                
+                this.$refs.removeAlert.open();
                 console.log('delete', items)
-               
+
             },
             manualInput: function () {
                 this.title = '建立報名表';
@@ -1209,45 +1241,45 @@
                 console.log('manualInput')
             },
             editItem: function (item) {
-                  //regist_type=0會有問題,無法設定v-select值??? vue bug??
-               
+                //regist_type=0會有問題,無法設定v-select值??? vue bug??
+
                 var today = new Date();
-                if (item.regist_unpassed >0 || today > new Date(item.regist_apply_start_date)) {
+                if (item.regist_unpassed > 0 || today > new Date(item.regist_apply_start_date)) {
                     this.alertTitle = '拒絕修改';
                     this.alertText = '已經開始報名，無法再修改資料';
                     this.alertImgSrc = this.alertIcon;
                     this.$refs.warringAlert.open();
                     return false;
                 }
-               //
+                //
                 //Object.assign(this.model, item);
                 this.saveBtnName = "儲存";
                 this.title = '編輯報名表2';
                 this.viewerTitle = '編輯報名資訊確認';
                 this.$refs.registEdit.open(item);
                 console.log('edit', item);
-    
-                this.loadMedicalsByVillage({ "name": item.regist_village_name});
-             
+
+                this.loadMedicalsByVillage({ "name": item.regist_village_name });
+
             },
             fileImport: function () {
                 this.$refs.fileViewer.open();
                 console.log('fileImport')
             },
             formAction: function (result) {
-                var errMsg=""
+                var errMsg = ""
                 if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) >=
                     Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_end_time)) {
                     errMsg = "(開始施打時間)必須早於(結束施打時間)";
                 }
 
                 if (Date.parse(result.model.regist_apply_start_date) > Date.parse(result.model.regist_apply_end_date)) {
-                    errMsg= "(事先開放報名開始時間)必須早於(事先開放報名結束時間)";
+                    errMsg = "(事先開放報名開始時間)必須早於(事先開放報名結束時間)";
                 }
-    
+
                 if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) <
                     Date.parse(result.model.regist_apply_end_date)) {
-                    errMsg= "(開放報名結束時間)必須早於(開始施打時間)";
+                    errMsg = "(開放報名結束時間)必須早於(開始施打時間)";
                 }
 
                 if (errMsg != "") {
@@ -1256,7 +1288,7 @@
                     this.$refs.fileViewer.close();
                     this.$refs.warringAlert.open();
                 } else {
-                     //mappping
+                    //mappping
                     result.model.regist_type_name = result.model.regist_type.name;
                     result.model.regist_brand_name = result.model.regist_brand.name;
                     result.model.regist_village_name = result.model.regist_village.name;
@@ -1266,12 +1298,12 @@
                     result.model.regist_district_name = result.model.regist_district.name;
 
                     Object.assign(this.result, result);
- 
-   
+
+
                     switch (result.action) {
                         case 'save':
                             this.$refs.registViewer.open();
-                           
+
                             console.log('save2', result)
                             break;
 
@@ -1282,7 +1314,7 @@
                 }
             },
             editFormAction: function (result) {
-    
+
                 Object.assign(this.result, result);
                 switch (result.action) {
                     case 'save':
@@ -1303,7 +1335,7 @@
             },
             saveRegist: function () {
                 //console.log('result', this.result)
-        
+
                 this.$refs.registViewer.close();
                 this.$refs.registNewEditor.close();
                 this.$bus.$emit('type1_show4', "資料處理中...");
@@ -1325,8 +1357,8 @@
                     comp.$bus.$emit('type1_hide4');
                 });
 
-        
-                
+
+
             },
             editSaveRegist: function () {
                 console.log('updateresult', this.result)
@@ -1334,7 +1366,7 @@
                 this.updateRegist(comp.result).then(function (ret) {
                     comp.$bus.$emit('type1_hide4');
                     comp.alertTitle = '110年五月份新冠疫苗施打預先報名';
-      
+
                     if (ret.datas == 200) {
                         comp.alertText = '已成功變更報名表';
                         comp.alertImgSrc = comp.successIcon;
@@ -1353,13 +1385,13 @@
                     comp.alertImgSrc = this.alertIcon;
                     comp.$refs.warringAlert.open();
                     comp.$bus.$emit('type1_hide4');
-                 });
+                });
 
 
 
             },
             backToEdit: function () {
-       
+
                 this.$refs.registViewer.close();
                 this.$refs.registNewEditor.show();
             },
@@ -1381,7 +1413,7 @@
                 this.$refs.warringAlert.close();
             },
             removeRightClick: function () {
-     
+
                 console.log('compSelectedItems', this.compSelectedItems);
                 this.$bus.$emit(`confirm_show`, false);
                 var comp = this;
@@ -1407,20 +1439,20 @@
                         comp.alertTitle = '刪除失敗';
                         comp.alertText = '處理錯誤，請重新嘗試';
                     }
-                    
+
                     comp.errorImgSrc = comp.warningIcon;
                     comp.$refs.registAlert.open();
-                 });
+                });
 
 
 
-                
-                
+
+
             },
             removeItem: function (item) {
                 this.compSelectedItems.splice(0);
-                this.compSelectedItems.push(item);               
-                this.$refs.removeAlert.open();          
+                this.compSelectedItems.push(item);
+                this.$refs.removeAlert.open();
                 console.log('remove', item);
             },
             removeLeftClick: function () {
@@ -1445,7 +1477,7 @@
                 console.log('item', item);
             },
             detailItem: function (item) {
-          
+
                 this.detailId = item.regist_id;//item.id;
                 this.detailTitle = item.regist_title;//item.title;
                 this.detailType = item.regist_type_name; //item.type;
@@ -1488,7 +1520,7 @@
                 this.loadDetailForm(params).then((r) => {
                     this.detailTotalCount = r.totalCount;
                     this.activityId = r.activityId;
-                  
+
                     this.detailItems.splice(0);
                     r.datas.forEach((x) => {
                         var str = x.identity.substr(1, 5);
@@ -1498,7 +1530,7 @@
                         //if (['不合格', '已取消'].includes(x.result) || x.result.indexOf('不合格') !== -1) {
                         //    x['disabled'] = true;
                         //}
-                        if (x.status != 1 && x.status != -2  && x.status != 3) {
+                        if (x.status != 1 && x.status != -2 && x.status != 3) {
                             x['disabled'] = true;
                         }
 
@@ -1523,7 +1555,7 @@
                                     if (ret.datas.memo == "執行成功") {//執行中 ,執行成功 ,執行異常
                                         comp.alertImgSrc = comp.successIcon;
                                         comp.alertTitle = "執行成功";
-                                    } else if (ret.datas.memo == "執行中" ) {
+                                    } else if (ret.datas.memo == "執行中") {
                                         comp.alertImgSrc = comp.warningIcon;
                                         comp.alertTitle = "執行中，請稍後再試";
                                     } else {
@@ -1545,7 +1577,7 @@
                             comp.$bus.$emit('alert_show', true);
                             return;
                         }
-                        
+
                         comp.$bus.$emit('type1_hide4');
                     })
                     .catch(function () {
@@ -1654,10 +1686,10 @@
                     });
             },
             artificialAction: function (item) {
-     
+
                 this.artificialId = item.id;
                 this.artificialName = item.name;
-                this.artificialBirthday = item.birthday.replace(/\//g, '-')+'T00:00:00';
+                this.artificialBirthday = item.birthday.replace(/\//g, '-') + 'T00:00:00';
                 this.artificialIdentity = item.identity;
                 this.applyNo = item.id;
                 this.$bus.$emit('dialogDoubleCheck_show', true);
@@ -1671,12 +1703,12 @@
                 var comp = this;
                 var isvaild = comp.$refs.doubleCheckForm.validate();
                 if (!isvaild) return;
-                
+
                 comp.alertMessage = '';
-                comp.doubleCheck({ activityId: comp.activityId, applyNo: comp.applyNo, bd:comp.artificialBirthday, result: comp.artificialResult })
+                comp.doubleCheck({ activityId: comp.activityId, applyNo: comp.applyNo, bd: comp.artificialBirthday, result: comp.artificialResult })
                     .then(function (result) {
                         console.log(result);
-    
+
                         comp.alertTitle = '人工複檢完成';
                         comp.alertText = '';
                         comp.alertImgSrc = comp.successIcon;
@@ -1692,7 +1724,7 @@
             },
             cancelDoubleCheck: function () {
                 this.$bus.$emit('dialogDoubleCheck_show', false);
-            },         
+            },
             onUploadClick() {
                 this.$refs.excelUploader.click();
             },
@@ -1700,7 +1732,7 @@
 
                 console.log(this.finalData);
                 if (this.finalData.length > 0) {
-                    
+
                     var comp = this;
                     comp.importRegistForm(comp.finalData).then(function (ret) {
                         console.log(ret.datas);
@@ -1722,9 +1754,9 @@
                 }
             },
             onFileChanged(event) {
-           
+
                 this.uploadFile = event.target.files ? event.target.files[0] : null;
-      
+
                 if (this.uploadFile) {
                     const reader = new FileReader();
                     //var ss = this.$store;
@@ -1744,7 +1776,7 @@
                         //    return Object.keys(object).find(key => object[key] === value);
                         //}
                         var i, j;
-                        var fv = function(nameKey, myArray ,name){
+                        var fv = function (nameKey, myArray, name) {
                             for (i = 0; i < myArray.length; i++) {
                                 if (myArray[i][name] === nameKey) {
                                     return myArray[i];
@@ -1760,15 +1792,15 @@
                         var zz, zzz, mm, villageName;
                         comp.finalData = [];
                         for (j = 4; j < data.length; j++) {
-           
+
                             if (!data[j][0]) {
-                                console.log("line "+(j+1)+"is null");
+                                console.log("line " + (j + 1) + "is null");
                                 continue;
                             }
                             vv = fv(data[j][0], v, 'groupName');
                             comp.finalData[k] = data[j];
-                            
-                               //疫苗種類
+
+                            //疫苗種類
                             if (vv) {
                                 vvv = fv(data[j][1], vv['vaccines'], 'itemName');
                                 //console.log(vv['groupName'] + "@" + vvv['itemName'] + "@" + vvv['itemId']);
@@ -1779,10 +1811,10 @@
                                     console.log('疫苗種類', "error line:" + (j + 1));
                                 }
                             } else {
-                                console.log('疫苗類型',"error line:"+(j+1));
+                                console.log('疫苗類型', "error line:" + (j + 1));
                             }
-                        
-                               //行政區域
+
+                            //行政區域
                             zz = fv(data[j][3], z, 'distName');
                             if (zz) {
                                 comp.finalData[k][3] = zz['distId'];
@@ -1796,10 +1828,10 @@
                             } else {
                                 console.log('行政區域', "error line:" + (j + 1));
                             }
-                              //醫療院所
-                         
+                            //醫療院所
+
                             mm = fv(villageName, m, 'villageName');
-                
+
                             if (mm && mm['uName'] == data[j][6]) {
                                 comp.finalData[k][6] = mm['id'];
                             } else {
@@ -1808,12 +1840,12 @@
 
                             k++;
                         }
-                          //console.log(finalData);
+                        //console.log(finalData);
                         comp.$bus.$emit('type1_hide4');
                     }
 
-                   reader.readAsBinaryString(this.uploadFile);
-                   
+                    reader.readAsBinaryString(this.uploadFile);
+
                 }
             }
         },
