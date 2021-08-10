@@ -13,19 +13,24 @@
 
 
         <template v-for="(header,index) in computedHeaders" v-slot:[header.headerTemplateName]>
+            <span class="table-header-contant" :key="`table-header-${index}`">
 
-            <span :key="index" v-if="!header.hasHeaderTemplate"> {{header.text}}</span>
+                <span :key="index" v-if="!header.hasHeaderTemplate"> {{header.text}}</span>
 
-            <slot :name="header.headerTemplateName" v-if="header.hasHeaderTemplate" :header="header"></slot>
+                <slot :name="header.headerTemplateName" v-if="header.hasHeaderTemplate" :header="header"></slot>
+            </span>
 
         </template>
 
 
         <template v-for="(header,index) in computedHeaders" v-slot:[header.templateName]="{item}">
 
-            <span :key="index" v-if="!header.hasTemplate"> {{item[header.value]}}</span>
+            <span :key="`table-content-${index}`">
 
-            <slot :name="header.templateName" v-if="header.hasTemplate" :item="item"></slot>
+                <span :key="index" v-if="!header.hasTemplate"> {{item[header.value]}}</span>
+
+                <slot :name="header.templateName" v-if="header.hasTemplate" :item="item"></slot>
+            </span>
 
         </template>
         <!--<template v-slot:item.checked="{ item }">
@@ -63,6 +68,9 @@
   
 
 <style>
+    .table-header-contant {
+        white-space:nowrap;
+    }
     .row, .col {
         /*margin: 0px !important;
         padding: 0px !important;*/
@@ -93,6 +101,36 @@
         color: #736DB9;
     }
 
+
+
+
+    .v-data-table__wrapper {
+        /*height: 650px;
+        overflow: scroll;
+        overflow-x: hidden;*/
+        padding-left: 10px;
+        padding-right: 15px;
+    }
+
+    /*-------滾動條整體樣式----*/
+        .v-data-table__wrapper::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+    /*滾動條裡面小方塊樣式*/
+        .v-data-table__wrapper::-webkit-scrollbar-thumb {
+            border-radius: 100px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            background: #736DB9;
+        }
+
+    /*滾動條裡面軌道樣式*/
+        .v-data-table__wrapper::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            background: rgba(0,0,0,0.1);
+        }
 </style>
 
 
