@@ -15,48 +15,42 @@
 </template>
 <style scoped>
 
-    .content-one,.content-two {
-        width:100%;
-    }
-
     .content-two {
-        margin-top:24px;
+        position: relative;
+        top: 20px;
     }
 
     .welcome-panel {
-        width: 100vw;
         height: 100vh;
-        position: absolute;
-        top: 0px;
-        left: 0px;
         background-color: #736DB9;
     }
 
     .welcome-image-container {
-        margin-top:68px;        
-        width:100vw;
-        display:flex;
-        justify-content:center;
+        position: relative;
+        top: 58px;
+        width: 180px;
+        margin: 0 auto;
+        min-height: 205px;
+        display: flex;
+        justify-content: center;
     }
 
     .welcome-button-container {
-        margin-top: 40px;
+        position: relative;
+        top: 70px;
         justify-content: center;
-        margin-left: 32px;
-        margin-right: 32px;
-        width: calc(100vw - 64px);
+        padding-left: 32px;
+        padding-right: 32px;
         color: #FFFFFF;
         opacity: 0.6;
-        font-size: 16px/24px;
     }
 
     .welcome-actions-container {
-        width: 100%;
-        position: absolute;
-        top: calc(100vh - 64px);
-        margin-top: 8px;
-        display: flex!important;
-        justify-content: space-around!important;
+        position: relative;
+        top: 110px;
+        min-height: 50px;
+        display: flex !important;
+        justify-content: space-around !important;
     }
 
     .welcome-actions-container .v-btn {
