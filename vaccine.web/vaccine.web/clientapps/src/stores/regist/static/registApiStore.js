@@ -219,7 +219,32 @@ export default {
                     reject(results);
                 });
             });
-        }
+        },
+        deleteApply: function ({ state }, params) {
+            return new Promise((resolve, reject) => {
+                var apiUrl = `${state.apiRoot}api/Activity/Apply/Web/${params.activityId}`;
+                var results = { datas: [], state: '' };
+
+                if (params.uid !== null) {
+                    axios.delete(apiUrl, {
+                        params: {
+                            uId: params.uid
+                        }
+                    }).then(res => {
+                        results.state = 'success';
+                        results.datas = res.data;
+                        resolve(results);
+                    }).catch(ex => {
+                        results.state = 'error';
+                        results.datas = ex;
+                        reject(results);
+                    });
+                } else {
+                    results.state = 'parameter error';
+                    resolve(results);
+                }
+            });
+        },
     },
     state: {
         ...siteConfig,
