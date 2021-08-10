@@ -7,30 +7,13 @@ export default {
     namespaced: true,
     actions: {
         loadVaccines: function ({ state, commit, rootGetters }, params) {
-            var datas = [],brands=[];
+          
+            var datas = [];
             var vaccines = rootGetters['user/getVaccines'];
             if (vaccines !== null) {
-                vaccines.forEach((data) => {
-                    datas.push({
-                        id: data.groupId,
-                        name: data.groupName
-                    });
-
-                    if (params && (data.groupId === params.id)) {
-                        data.vaccines.forEach((subdata) => {
-                            //console.log(data.groupName + ":" + subdata.itemId + "@" + subdata.itemName);
-                            brands.push({
-                                id: subdata.itemId,
-                                name: subdata.itemName
-                            });
-                        });
-                    }
-                });
-                state.vaccines = datas;
-                state.brands = brands;
-                return;
+                commit('setVaccinesData', { 'vaccines':vaccines, 'params':params });
             }
-                
+            
             var apiUrl = `${state.apiRoot}api/DataItem/Vaccines`;
 
             axios.get(apiUrl,
@@ -45,8 +28,11 @@ export default {
                 state.vaccines = datas;
                     
                 commit('user/setVaccines', res.data);
+                commit('setVaccinesData', { 'vaccines': res.data, 'params': params } );
             });
         },
+   
+
         loadDists: function ({ state, rootGetters }) {
             var zones = rootGetters['user/getZones'];
             var dists = [];
@@ -661,6 +647,28 @@ export default {
         },
     },
     mutations: {
+        setVaccinesData: function (state, d ){
+   
+            var datas = [], brands = [];
+            d.vaccines.forEach((data) => {
+                datas.push({
+                    id: data.groupId,
+                    name: data.groupName
+                });
+
+                if (d.params && (data.groupId === d.params.id)) {
+                    data.vaccines.forEach((subdata) => {
+                        console.log(data.groupName + ":" + subdata.itemId + "@" + subdata.itemName);
+                        brands.push({
+                            id: subdata.itemId,
+                            name: subdata.itemName
+                        });
+                    });
+                }
+            });
+            state.vaccines = datas;
+            state.brands = brands;
+        }
     },
     modules: {
         user: userStore
