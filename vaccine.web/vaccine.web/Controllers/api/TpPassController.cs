@@ -35,6 +35,12 @@ namespace vaccine.web.Controllers
 
         //}
 
+        //public class TpwvOauthStatus
+        //{
+        //    public string Code { get; set; }
+        //    public string State { get; set; }
+        //    public string Redirect { get; set; }
+        //}
         //[Route("authorize"), HttpGet]
         //public IActionResult Authorze([FromQuery]TpwvOauthStatus Status)
         //{

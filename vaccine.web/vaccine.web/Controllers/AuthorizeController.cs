@@ -15,6 +15,8 @@ namespace vaccine.web.Controllers
     {
         public IActionResult Index(TpwvOauthStatus Status)
         {
+            if (Constants.SiteSetting.oauthProxy)
+                return Redirect($"{Constants.SiteSetting.oauthTerminal}authorize{Request.QueryString}");
             var Result = new TpwvOauthResult();
             try
             {
@@ -22,6 +24,8 @@ namespace vaccine.web.Controllers
                 if (string.IsNullOrEmpty(Status.State)) throw new Exception("State 錯誤");
                 var Token = GetUserTokeByCode(Status.Code);
                 var TodayExpire = Constants.GetCookieOption();
+                Response.Cookies.Delete("error");
+                Response.Cookies.Delete("error_message");
                 TodayExpire.Expires = DateTimeOffset.Now.AddDays(1);
                 Response.Cookies.Append("x-token", Token, TodayExpire);                
                 Result.RedirectTo = $"/regist/#/oauth?redirect={HttpUtility.UrlEncode(Status.State)}";
@@ -32,13 +36,18 @@ namespace vaccine.web.Controllers
                 var TodayExpire = Constants.GetCookieOption();
                 TodayExpire.Expires = DateTimeOffset.Now.AddDays(1);
                 Response.Cookies.Append("error", "true", TodayExpire);
+                Response.Cookies.Append("error_message", ex.Message, TodayExpire);
+                Result.Message = ex.Message;
                 Result.RedirectTo = $"/regist/#/oauth?redirect={HttpUtility.UrlEncode(Status.State)}";
                 return View(Result);
             }
         }
 
+
+
         public class TpwvOauthResult {
             public string RedirectTo { get; set; }
+            public string Message { get; set; }
         }
 
         public class TpwvOauthStatus
@@ -67,7 +76,7 @@ namespace vaccine.web.Controllers
             }
             catch (Exception ex)
             {
-                var message = $"無法識別使用者!";
+                var message = $"無法向台北通識別使用者!(code=>token error)";
                 var except = new Exception(message, ex);
                 except.Data.Add("code", Code);
                 except.Data.Add("api", $"{Constants.ApiRoot}api/token?code={Code}");

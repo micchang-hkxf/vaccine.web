@@ -2,7 +2,7 @@
   <div class="time-unit">
     <transition-group :name="transitionName" tag="div">
       <div class="time-unit__value" 
-        @click="setActiveIndex(index)"
+        @click.stop="setActiveIndex(index)"
         v-for="number in numbers" :key="number">
           {{ number }}
         </div>

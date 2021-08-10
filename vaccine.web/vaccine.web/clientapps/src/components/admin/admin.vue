@@ -15,7 +15,6 @@
 </template>
 
 <style>
-
     .personal_col {
         width: 80px !important;
         height: 60px !important;

@@ -7,10 +7,10 @@
             <div class="numpad__digit">
                 <button :class="{ 'is-disabled': activeIndex <= 0 }"
                         :disabled="activeIndex<=0||!this.isOpen"
-                        @click="goToPrevious()"
-                        @mouseup="blurEl($refs.previousButton)"
-                        @touchstart="arrowPressed('left')"
-                        @touchend="goToPrevious"
+                        @click.stop="goToPrevious()"
+                        @mouseup.stop="blurEl($refs.previousButton)"
+                        @touchstart.stop="arrowPressed('left')"
+                        @touchend.stop="goToPrevious"
                         ref="previousButton">
                     <svg viewBox="0 0 32 32" class="triangle">
                         <path class="path1" d="M22.4 8v16l-14.4-8 14.4-8z"></path>
@@ -22,10 +22,10 @@
             <div class="numpad__digit">
                 <button :class="{ 'is-disabled': activeIndex > 2 }"
                         :disabled="activeIndex>2||!this.isOpen"
-                        @click="goToNext()"
-                        @mouseup="blurEl($refs.nextButton)"
-                        @touchstart="arrowPressed('right')"
-                        @touchend="goToNext"
+                        @click.stop="goToNext()"
+                        @mouseup.stop="blurEl($refs.nextButton)"
+                        @touchstart.stop="arrowPressed('right')"
+                        @touchend.stop="goToNext"
                         ref="nextButton">
                     <svg viewBox="0 0 32 32" class="triangle">
                         <path class="path1" d="M24 16l-14.4 8v-16l14.4 8z"></path>

@@ -13,8 +13,8 @@
             <div class="timepicker__header d-flex justify-space-between">
                 設定時間
                 <span class=" d-flex justify-end">
-                    <v-icon style="color:white;font-size:20px;" @click="close(true)">close</v-icon>
-                    <v-icon style="color:lawngreen;font-size:20px;" @click="close(false)">done</v-icon>
+                    <v-icon style="color:white;font-size:20px;" @click.stop="close(true)">close</v-icon>
+                    <v-icon style="color:lawngreen;font-size:20px;" @click.stop="close(false)">done</v-icon>
                 </span>
             </div>
             <div class="timepicker__time">

@@ -3,10 +3,10 @@
     <button
       :class="{ 'is-disabled': !number.active }"
       :disabled="isDisabled"
-      @mousedown="digitPressed(number.value)"
-      @mouseup="digitSelected(number.value, $event) && blurEl($refs.numButton)"
-      @touchstart="digitPressed(number.value)"
-      @touchend="digitSelected(number.value, $event)"
+      @mousedown.stop="digitPressed(number.value)"
+      @mouseup.stop="digitSelected(number.value, $event) && blurEl($refs.numButton)"
+      @touchstart.stop="digitPressed(number.value)"
+      @touchend.stop="digitSelected(number.value, $event)"
       ref="numButton"
       >
       {{ number.value }}

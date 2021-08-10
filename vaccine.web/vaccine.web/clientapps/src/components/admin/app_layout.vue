@@ -1,7 +1,7 @@
 ﻿<template>
     <!-- App.vue -->
     <v-app>
-        <v-navigation-drawer app clipped v-model="showNavi">
+        <v-navigation-drawer app clipped v-model="showNavi" hide-overlay fixed stateless>
             <div class="app-navigation" v-if="$slots['navigation']">
                 <slot name="navigation" />
             </div>

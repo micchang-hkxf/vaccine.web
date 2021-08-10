@@ -45,6 +45,9 @@ namespace vaccine.web
         public string tpPassClientScope { get; set; }
         public string configEnabled { get; set; }
         public string requestSystem { get; set; }
+        public bool oauthProxy { get; set; }
+
+        public string oauthTerminal { get; set; }
     }
 
 }
