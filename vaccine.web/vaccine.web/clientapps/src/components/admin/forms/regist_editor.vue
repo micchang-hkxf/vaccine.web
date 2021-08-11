@@ -188,14 +188,14 @@
                         <div>  <span class="regist-title">設站時段設定</span><span class="red--text">*</span></div>
                     </v-col>
                 </v-row>
-                <v-row>
+                <v-row >
                     <v-col cols="3" class="colsp">
-                        <com-timepicker  v-model="regist_station_start_time" ></com-timepicker>
-                    </v-col>
-                    <v-col cols="1" class="colsp2">
-                    </v-col>
-                    <v-col cols="3" class="colsp"  >
-                        <com-timepicker v-model="regist_station_end_time" ></com-timepicker>
+                        <table >
+                            <tr>
+                                <td><com-timepicker v-model="regist_station_start_time"></com-timepicker></td>
+                                <td style="padding-left: 10px"><com-timepicker v-model="regist_station_end_time"></com-timepicker></td>
+                            </tr>
+                        </table>
                     </v-col>
                 </v-row>
                 <!--<v-row>
@@ -453,17 +453,13 @@
         width: 1.5em !important;
         height: 1.5em !important;
     }
-    .row > .colsp{
-        width:90px !important;
-    }
-    .row > .colsp2 {
-        width: 20px !important;
-    }
+
     .timepicker-container > .timepicker {
         position: fixed !important;
         top: 20%;
         left: 50%;
     }
+
 </style>
 
 
