@@ -52,6 +52,12 @@
                                 {{session.totalCount}} / <span class="disabled">{{session.maxLimit}}</span>
                             </div>
                         </div>
+                        <div class="d-flex flex-row justify-space-between" v-if="session.actAge !== null">
+                            <div class="action-info-title text-left">年齡限制：</div>
+                            <div class="action-info-data text-right">
+                                {{session.actAge}}歲以上
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="action-button d-flex justify-center align-center">
@@ -239,11 +245,11 @@
         padding-bottom: 16px;
         margin-bottom: 78px;
     }
-
+    /*
     .unapply-list/deep/ .action-info-detail {
         padding-top: 16px!important;
     }    
-
+    */
     .unapply-list/deep/ .v-text-field__details {
         display: none;
     }
