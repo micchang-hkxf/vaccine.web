@@ -454,11 +454,6 @@
         height: 1.5em !important;
     }
 
-    .timepicker-container > .timepicker {
-        position: fixed !important;
-        top: 20%;
-        left: 50%;
-    }
 
 </style>
 
