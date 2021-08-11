@@ -142,7 +142,9 @@
                     groupName: applied.vaccineGroupName,
                     signUp: false,
                     applyNo: applied.applyNo,
-                    messageCode: applied.messageCode
+                    messageCode: applied.messageCode,
+                    actName: applied.actName,
+                    cancelTime: applied.cancelTime
                 };
                 
                 this.setActivityApply(session).then(() => {
@@ -289,6 +291,7 @@
 
     .applied-list/deep/ .btn-over {
         background: #4349691A 0% 0% no-repeat padding-box !important;
+        color: #43496980 !important;
         opacity: 1;
     }
 
