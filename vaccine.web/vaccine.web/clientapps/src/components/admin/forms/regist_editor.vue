@@ -406,9 +406,9 @@
 
 
     .edit-form {
-        height: 650px;
+        /*height: 650px;
         overflow: scroll;
-        overflow-x: hidden;
+        overflow-x: hidden;*/
         padding-left: 10px;
         padding-right: 15px;
     }
