@@ -68,19 +68,26 @@ export default {
         },
         loadMedicals: function ({ state, commit, rootGetters }) {
             var medicals = rootGetters['user/getMedicals'];
-            if (medicals !== null) return;
+            if (medicals !== null) {
+                commit('setInstitutions', medicals);
+                return;
+            }
 
             var apiUrl = `${state.apiRoot}api/DataItem/Medical`;
 
             axios.get(apiUrl,
                 rootGetters['user/getApiHeader']
             ).then(res => {
+                commit('setInstitutions', res.data);
                 commit('user/setMedicals', res.data);
             });
         },
-        loadMedicalsByVillage: function ({ state, rootGetters }, params) {
+        loadMedicalsByVillage: function ({ commit, rootGetters }, params) {
             var medicals = rootGetters['user/getMedicals'];
-            if (medicals === null) return;
+            if (medicals === null) {
+                commit('setInstitutions', medicals);
+                return;
+            }
             var datas = [];
  
             medicals.forEach((medical) => {
@@ -92,7 +99,7 @@ export default {
                     });
                 }
             });
-            state.institutions = datas;
+            commit('setInstitutions', datas);
         },
    
 
@@ -562,8 +569,7 @@ export default {
                 var result = { state: state }, actIdLists="";
                 data.forEach((d) => {
                     actIdLists+='&actIdList='+d.regist_id;
-                });
-               
+                });               
                 console.log('remove', data);
                 axios({
                     method: 'delete',
@@ -668,6 +674,10 @@ export default {
             });
             state.vaccines = datas;
             state.brands = brands;
+        },
+        setInstitutions: function (state, institutions) {
+            state.institutions.splice(0);
+            institutions.forEach(f => state.institutions.push(f));
         }
     },
     modules: {

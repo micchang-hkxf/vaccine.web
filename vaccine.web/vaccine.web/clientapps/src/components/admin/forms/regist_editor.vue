@@ -119,7 +119,7 @@
                         <div> <span class="regist-title">醫療院所</span><span class="red--text">*</span></div>
                         <v-select v-model="model.regist_institution"
                                   :items="getInstitutions"
-                                  item-text="name"
+                                  item-text="uName"
                                   item-value="id"
                                   placeholder="請選擇醫療院所"
                                   :menu-props="{ bottom: true, offsetY: true }"
@@ -521,10 +521,10 @@
             regist_station_end_time: "00:00"
         }),
         watch: {
-            'getInstitutions': function () {
-                this.regist_institution_code = "";
-                this.regist_institution_name = "";
-            },
+            //'getInstitutions': function () {
+            //    this.regist_institution_code = "";
+            //    this.regist_institution_name = "";
+            //},
         },
         computed: {
             ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders']),
