@@ -55,7 +55,7 @@
                     <v-img src="/alert_warning.svg"></v-img>
                 </template>
                 <template v-slot:confirm-text>
-                    <div class="sub-title">取消報名？</div>
+                    <div class="sub-title">取消本次報名？</div>
                     <div class="sub-title-name">{{session.sessionName}}</div>
                 </template>
                 <template v-slot:confirm-left-btn-text>

@@ -80,6 +80,7 @@ export default {
                             implementAddr: data.implementAddr,
                             groupName: data.vaccineGroupName,
                             signUp: new Date().getTime() < new Date(data.endApplyDate).getTime(),
+                            actAge: data.actAge,
                         });
                     });
 

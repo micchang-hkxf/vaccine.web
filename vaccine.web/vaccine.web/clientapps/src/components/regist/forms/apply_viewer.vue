@@ -16,15 +16,20 @@
         <div class="activity-detail-title">設站地點</div>
         <div class="activity-detail-descript">{{session.implementAddr}}</div>
 
-        <div v-if="typeof session.applyNo === 'undefined'">
+        <template v-if="typeof session.applyNo === 'undefined'">
             <div class="activity-detail-title">開放名額</div>
             <div class="activity-detail-descript" v-if="session.totalCount === session.maxLimit"><span class="full">名額已滿</span></div>
             <div class="activity-detail-descript" v-else><span>{{session.totalCount}}</span> / <span class="disabled">{{session.maxLimit}}</span></div>
-        </div>
-        <div v-else>
+
+            <template v-if="session.actAge !== null">
+                <div class="activity-detail-title">年齡限制</div>
+                <div class="activity-detail-descript">{{session.actAge}}歲以上</div>
+            </template>
+        </template>
+        <template v-else>
             <div class="activity-detail-title">序號</div>
             <div class="activity-detail-descript">{{session.applyNo}}</div>
-        </div>
+        </template>
     </div>
 </template>
 
