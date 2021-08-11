@@ -24,9 +24,17 @@
                     複檢未通過
                 </div>
             </template>
-            <template v-else-if="session.messageCode === 4 || session.messageCode === 5">
-                <div class="applied-header btn-over d-flex justify-center align-center">
+            <template v-else-if="session.messageCode === 4">
+                <div class="applied-header btn-cancel btn-other d-flex justify-center align-center">
                     報名已取消
+                    <div>{{$moment(session.cancelTime).format('YYYY/MM/DD,HH:mm')}}</div>
+                    <div v-if="session.messageCode === 4">( 已報名其他場次：{{session.actName}} )</div>
+                </div>
+            </template>
+            <template v-else-if="session.messageCode === 5">
+                <div class="applied-header btn-cancel d-flex justify-center align-center">
+                    報名已取消
+                    <div>{{$moment(session.cancelTime).format('YYYY/MM/DD,HH:mm')}}</div>
                 </div>
             </template>
             <template v-else>
@@ -211,6 +219,24 @@
 
     .applied-content/deep/ .applied-header.btn-over {
         background: #4349691A 0% 0% no-repeat padding-box !important;
+        color: #43496980 !important;
+    }
+
+    .applied-content/deep/ .applied-header.btn-cancel {
+        background: #4349691A 0% 0% no-repeat padding-box !important;
+        color: #43496980 !important;
+        display: block !important;
+        text-align: center;
+    }
+
+    .applied-content/deep/ .applied-header.btn-cancel > DIV {
+        font: normal normal normal 12px/16px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #62678180;
+    }
+
+    .applied-content/deep/ .applied-header.btn-other {
+        height: 60px !important;
     }
 
     .applied-content/deep/ .step-one {
