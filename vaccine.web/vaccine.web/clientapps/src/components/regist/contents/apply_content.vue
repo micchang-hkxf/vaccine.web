@@ -53,9 +53,9 @@
                         </div>
                     </div>
                     <div class="apply-field">
-                        <div class="apply-field-label">手機（簡訊通知）<span class="red--text">*</span></div>
+                        <div class="apply-field-label">手機（簡訊通知）</div>
                         <div class="apply-field-container">
-                            <v-text-field class="apply-field-text" placeholder="請輸入手機號碼" v-model="mbNo" :rules="[rules.required]"></v-text-field>
+                            <v-text-field class="apply-field-text" placeholder="請輸入手機號碼" v-model="mbNo"></v-text-field>
                         </div>
                     </div>
                     <!--<div class="apply-field">
