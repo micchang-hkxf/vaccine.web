@@ -307,7 +307,7 @@
                                                 <v-list-item-subtitle>{{result.model.regist_quota}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line v-if="result.model.regist_age_limit >0">
+                                        <v-list-item two-line v-if="result.model.regist_age_limit > 0">
                                             <v-list-item-content>
                                                 <v-list-item-title>報名者最低年齡限制</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_age_limit}}</v-list-item-subtitle>
@@ -461,7 +461,7 @@
 
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line v-if="result.model.regist_age_limit >0">
+                                        <v-list-item two-line v-if="result.model.regist_age_limit > 0">
                                             <v-list-item-content>
                                                 <v-list-item-title>報名者最低年齡限制</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_age_limit}}</v-list-item-subtitle>
@@ -1178,6 +1178,7 @@
                 regist_qualified: 423,
                 regist_quota: 500,
                 regist_unpassed: 45,
+                regist_age_limit: 0,
                 uploadFile: null,
                 finalData: []
             },
@@ -1191,10 +1192,8 @@
         created: function () {
             this.loadVaccines();
             this.loadDists();
-            //this.loadMedicals();
+            this.loadMedicals();
             this.getRegistForm(1);
-
-
         },
         methods: {
             ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadMedicals', 'loadMedicalsByVillage',
@@ -1490,7 +1489,7 @@
                 this.detailRegistrationTime = item.regist_apply_start_date + ' - ' + item.regist_apply_end_date;   //item.registrationTime;
                 this.detailCntQuota = item.regist_unpassed;   //item.cntQuota;
                 this.detailTotalQuota = item.regist_quota;    //item.totalQuota;
-                this.detailAgeLimit = item.regist_age_limit === '' ? '無' : item.regist_age_limit;
+                this.detailAgeLimit = item.regist_age_limit === 0 ? '無' : item.regist_age_limit;
                 this.detailAbnormalCnt = item.regist_abnormalCnt;   //item.abnormalCnt;
                 this.detailCheckTime = item.regist_review_date;   //item.checkTime;
                 this.detailCheckPassCnt = item.regist_qualified; //item.checkPassCnt;

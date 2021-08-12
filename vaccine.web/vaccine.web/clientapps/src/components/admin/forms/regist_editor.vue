@@ -8,7 +8,7 @@
             </v-btn>
         </template>
         <template v-slot:content>
-            <v-form class="edit-form" v-model="valid" ref="form">
+            <v-form class="edit-form" v-model="valid" ref="form" autocomplete="off">
                 <v-row>
                     <v-col cols="4">
                         <div><span class="regist-title">接種類型</span> <span class="red--text">*</span></div>
@@ -29,14 +29,14 @@
                     </v-col>
 
                 </v-row>
-                <v-row>
+                <v-row v-if="getShowBrand">
                     <v-col cols="4">
-                        <div><span class="regist-title">新冠肺炎疫苗廠牌</span> <span class="red--text">*</span></div>
+                        <div><span class="regist-title">疫苗廠牌</span> <span class="red--text">*</span></div>
                         <v-select v-model="model.regist_brand"
                                   :items="getBrands"
                                   item-text="name"
                                   item-value="id"
-                                  placeholder="請選擇新冠肺炎疫苗廠牌"
+                                  placeholder="請選擇疫苗廠牌"
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   :rules="[rules.required]"
                                   outlined
@@ -119,7 +119,7 @@
                         <div> <span class="regist-title">醫療院所</span><span class="red--text">*</span></div>
                         <v-select v-model="model.regist_institution"
                                   :items="getInstitutions"
-                                  item-text="uName"
+                                  item-text="name"
                                   item-value="id"
                                   placeholder="請選擇醫療院所"
                                   :menu-props="{ bottom: true, offsetY: true }"
@@ -469,24 +469,11 @@
     export default {
         data: () => ({
             mode: '',
-            brands: [
-                { id: 'az', name: 'AstraZeneca' },
-                { id: 'bnt', name: 'Pfizer-BioNTech' },
-            ],
-            vaccines: [
-                { id: 'influenza', name: '肺鏈流感' },
-                { id: 'coronavirus', name: '新冠肺炎' },
-
-            ],
-            districts: [
-                { id: 'neihu', name: '內湖區' },
-                { id: 'nangang', name: '南港區' },
-
-            ],
-            villages: [
-                { id: 'xikang', name: '西康里' }
-            ],
-            institutions: [{ id: 'wang', name: '王慶森診所' }, { id: 'wang2', name: '王慶森2診所' }, { id: 'wang3', name: '王慶森3診所' }],
+            brands: [],
+            vaccines: [],
+            districts: [],
+            villages: [],
+            institutions: [],
             date: new Date().toISOString().substr(0, 10),
             menu: false,
             apply: false,
@@ -509,7 +496,7 @@
                 required: v => !!v || '必填',
             },
             regist_station_start_time:"00:00",
-            regist_station_end_time: "00:00"
+            regist_station_end_time: "23:59",
         }),
         watch: {
             //'getInstitutions': function () {
@@ -518,7 +505,7 @@
             //},
         },
         computed: {
-            ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders']),
+            ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders', 'getShowBrand']),
             defaultItem: function () {
                 return this.default;
             }
@@ -526,14 +513,11 @@
         props: ['width', 'title', 'action', 'saveBtnName'],
 
         created: function () {
-            this.loadVaccines();
             this.loadDists();
-            this.loadMedicals();
-
+            //this.loadMedicals();
         },
         mounted: function () {
-            console.log(this.$refs.form);
-
+            //console.log(this.$refs.form);
         },
 
         methods: {
@@ -565,6 +549,8 @@
                 for (var nn in this.model) {
                     if (nn == "regist_quota") {
                         this.model[nn] = 500;
+                    } else if (nn == "regist_age_limit") {
+                        this.model[nn] = 0;
                     } else {
                         this.model[nn] = "";
                     }

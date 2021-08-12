@@ -11,7 +11,16 @@ export default {
             var datas = [];
             var vaccines = rootGetters['user/getVaccines'];
             if (vaccines !== null) {
-                commit('setVaccinesData', { 'vaccines':vaccines, 'params':params });
+                vaccines.forEach((data) => {
+                    datas.push({
+                        id: data.groupId,
+                        name: data.groupName,
+                        requireSubitem: data.requireSubitem
+                    });
+                });
+                state.vaccines = datas;
+                commit('setBrandData', { 'vaccines': vaccines, 'params': params });
+                return;
             }
             
             var apiUrl = `${state.apiRoot}api/DataItem/Vaccines`;
@@ -22,13 +31,14 @@ export default {
                 res.data.forEach((data) => {
                     datas.push({
                         id: data.groupId,
-                        name: data.groupName
+                        name: data.groupName,
+                        requireSubitem: data.requireSubitem
                     });
                 });
                 state.vaccines = datas;
                     
                 commit('user/setVaccines', res.data);
-                commit('setVaccinesData', { 'vaccines': res.data, 'params': params } );
+                commit('setBrandData', { 'vaccines': res.data, 'params': params } );
             });
         },
    
@@ -436,10 +446,10 @@ export default {
                 console.log('new', data);
 
                 var result = { data: [], state: state }
-  
+                
                 var setData = [{
                     vaccineGroupId: data.model.regist_type.id,
-                    vaccineIds: [data.model.regist_brand.id],
+                    vaccineIds: typeof data.model.regist_brand.id === 'undefined' ? null : [data.model.regist_brand.id],
                     title: data.model.regist_title,
                     implementDate: data.model.regist_station_date,
                     implementStartDate: data.model.regist_station_date + "T" + data.model.regist_station_start_time,
@@ -451,7 +461,7 @@ export default {
                     endApplyDate: data.model.regist_apply_end_date,
                     amount: parseInt(data.model.regist_quota),
                     medicalIds: [data.model.regist_institution.id],
-                    actAge: parseInt(data.model.regist_age_limit),
+                    actAge: typeof data.model.regist_age_limit === 'undefined' ? 0 : parseInt(data.model.regist_age_limit),
                     //remarks: [data.model.remarks],
                 }];
                 console.log("setData", setData);
@@ -529,7 +539,7 @@ export default {
                 console.log('update',data)
                 var setData = {
                     vaccineGroupId: data.model.regist_type.id,
-                    vaccineIds: data.model.regist_brand.id ? [data.model.regist_brand.id]:[data.model.regist_brand],
+                    vaccineIds: typeof data.model.regist_brand.id === 'undefined' ? null : [data.model.regist_brand.id],
                     title: data.model.regist_title,
                     implementDate: data.model.regist_station_date.replace(/\//g, '-'),
                     implementStartDate: data.model.regist_station_date.replace(/\//g, '-') + "T" + data.model.regist_station_start_time + ":00",
@@ -541,8 +551,8 @@ export default {
                     endApplyDate: data.model.regist_apply_end_date.replace(/\//g, '-'),
                     amount: parseInt(data.model.regist_quota),
                     medicalIds: [data.model.regist_institution_code],
-                    actAge: parseInt(data.model.regist_age_limit),
-                      //remarks: [data.model.remarks],
+                    actAge: typeof data.model.regist_age_limit === 'undefined' ? 0 : parseInt(data.model.regist_age_limit),
+                    //remarks: [data.model.remarks],
                 };
          
                 console.log('setData', setData);
@@ -628,6 +638,7 @@ export default {
             { text: '備註', value: 'remark', sortable: false, flex: 6 },
             { text: '', value: 'modify', sortable: false },
         ],
+        showBrand: false,
     },
     getters: {
         getHeaders: state => {
@@ -651,33 +662,28 @@ export default {
         getBrands: state => {
             return state.brands;
         },
+        getShowBrand: state => {
+            return state.showBrand;
+        },
     },
     mutations: {
-        setVaccinesData: function (state, d ){
-   
-            var datas = [], brands = [];
+        setBrandData: function (state, d ) {
+            var brands = [];
             d.vaccines.forEach((data) => {
-                datas.push({
-                    id: data.groupId,
-                    name: data.groupName
-                });
-
                 if (d.params && (data.groupId === d.params.id)) {
                     data.vaccines.forEach((subdata) => {
-                        console.log(data.groupName + ":" + subdata.itemId + "@" + subdata.itemName);
                         brands.push({
                             id: subdata.itemId,
                             name: subdata.itemName
                         });
                     });
+                    state.showBrand = d.params.requireSubitem;
                 }
             });
-            state.vaccines = datas;
             state.brands = brands;
         },
         setInstitutions: function (state, institutions) {
-            state.institutions.splice(0);
-            institutions.forEach(f => state.institutions.push(f));
+            state.institutions = institutions;
         }
     },
     modules: {
