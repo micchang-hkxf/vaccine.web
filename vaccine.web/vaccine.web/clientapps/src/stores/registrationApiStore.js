@@ -167,7 +167,7 @@ export default {
                             regist_review_date: (data.reCheckTime == null) ? "" : data.reCheckTime,
                             regist_qualified: parseInt(data.reCheckCount),
                             regist_quota: data.amount,
-                            regist_age_limit: (parseInt(data.actAge) > 0) ? parseInt(data.actAge) :"",
+                            regist_age_limit: parseInt(data.actAge),
                             regist_unpassed: data.amount - data.leftAmount
                         });
                     });
@@ -449,7 +449,7 @@ export default {
                 
                 var setData = [{
                     vaccineGroupId: data.model.regist_type.id,
-                    vaccineIds: typeof data.model.regist_brand.id === 'undefined' ? null : [data.model.regist_brand.id],
+                    vaccineIds: typeof data.model.regist_brand.id === 'undefined' ? [] : [data.model.regist_brand.id],
                     title: data.model.regist_title,
                     implementDate: data.model.regist_station_date,
                     implementStartDate: data.model.regist_station_date + "T" + data.model.regist_station_start_time,
@@ -539,7 +539,7 @@ export default {
                 console.log('update',data)
                 var setData = {
                     vaccineGroupId: data.model.regist_type.id,
-                    vaccineIds: typeof data.model.regist_brand.id === 'undefined' ? null : [data.model.regist_brand.id],
+                    vaccineIds: typeof data.model.regist_brand.id === 'undefined' ? [] : [data.model.regist_brand.id],
                     title: data.model.regist_title,
                     implementDate: data.model.regist_station_date.replace(/\//g, '-'),
                     implementStartDate: data.model.regist_station_date.replace(/\//g, '-') + "T" + data.model.regist_station_start_time + ":00",

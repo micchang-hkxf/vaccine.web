@@ -201,82 +201,63 @@
                                                 <v-list-item-subtitle>{{result.model.regist_type_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line>
+                                        <v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
                                             <v-list-item-content>
                                                 <v-list-item-title>新冠肺炎疫苗廠牌</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>場次標題</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_title}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>設站行政區</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_district_name}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
-
                                                 <v-list-item-title>設站村里</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_village_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>設站地點</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_place}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>醫療院所</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_institution_name}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>機構代碼</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_institution_code}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>機構所在行政區</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_instution_district_name}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
 
                                         <v-divider></v-divider>
+
                                         <v-list-item two-line>
                                             <v-list-item-content>
-
-                                                <v-list-item-title>
-                                                    設站時間
-
-                                                </v-list-item-title>
+                                                <v-list-item-title>設站時間</v-list-item-title>
                                                 <v-list-item-subtitle>
                                                     {{result.model.regist_station_date}} ,
                                                     {{result.model.regist_station_start_time}}-{{result.model.regist_station_end_time}}
-
                                                 </v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -296,24 +277,21 @@
                                                 <v-list-item-content>
                                                     <v-list-item-title>接種資格複審時間</v-list-item-title>
                                                     <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
-
                                                 </v-list-item-content>
                                             </v-list-item>-->
                                         <v-divider></v-divider>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>報名名額上限</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_quota}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line v-if="result.model.regist_age_limit > 0">
+                                        <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>報名者最低年齡限制</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_age_limit}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>備註</v-list-item-title>
@@ -354,82 +332,63 @@
                                                 <v-list-item-subtitle>{{result.model.regist_type_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line>
+                                        <v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
                                             <v-list-item-content>
                                                 <v-list-item-title>新冠肺炎疫苗廠牌</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>場次標題</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_title}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>設站行政區</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_district_name}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
-
                                                 <v-list-item-title>設站村里</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_village_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>設站地點</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_place}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>醫療院所</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_institution_name}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>機構代碼</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_institution_code}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>機構所在行政區</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_instution_district_name}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
 
                                         <v-divider></v-divider>
+
                                         <v-list-item two-line>
                                             <v-list-item-content>
-
-                                                <v-list-item-title>
-                                                    設站時間
-
-                                                </v-list-item-title>
+                                                <v-list-item-title>設站時間</v-list-item-title>
                                                 <v-list-item-subtitle>
                                                     {{result.model.regist_station_date}} ,
                                                     {{result.model.regist_station_start_time}}-{{result.model.regist_station_end_time}}
-
                                                 </v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -452,34 +411,32 @@
 
                                                 </v-list-item-content>
                                             </v-list-item>-->
+
                                         <v-divider></v-divider>
 
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>報名名額上限</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_quota}}</v-list-item-subtitle>
-
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line v-if="result.model.regist_age_limit > 0">
+                                        <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>報名者最低年齡限制</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_age_limit}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>備註</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
+
                                         <v-divider></v-divider>
                                     </div>
-
                                 </template>
                                 <template v-slot:action>
-
                                     <v-spacer></v-spacer>
                                     <v-btn outlined :ripple="false" @click="backToEdit2"><span style="color:#626781;">修改</span></v-btn>
                                     <v-btn @click="editSaveRegist" color="primary" :ripple="false">確定</v-btn>
@@ -659,7 +616,7 @@
                                 <div>報名開放時間：{{detailRegistrationTime}}</div>
                                 <div>承辦醫院：{{detailInstitution}}（{{detailInstutionDistrict}}）</div>
                                 <div>報名名額：<span :class="detailCntQuota >= detailTotalQuota ? 'color-red' : ''">{{detailCntQuota}}</span>/<span style="color:#626781">{{detailTotalQuota}}</span></div>
-                                <div>年齡限制：{{detailAgeLimit}}</div>
+                                <div>年齡限制：{{detailAgeLimit}}歲以上</div>
                             </div>
                             <hr />
                             <!---->
@@ -1254,7 +1211,7 @@
                 //
                 //Object.assign(this.model, item);
                 this.saveBtnName = "儲存";
-                this.title = '編輯報名表2';
+                this.title = '編輯報名表';
                 this.viewerTitle = '編輯報名資訊確認';
                 this.$refs.registEdit.open(item);
                 console.log('edit', item);
@@ -1343,7 +1300,7 @@
                 this.registForm(comp.result).then(function (ret) {
                     console.log(ret.datas);
                     comp.$bus.$emit('type1_hide4');
-                    comp.alertTitle = '110年五月份新冠疫苗施打預先報名';
+                    comp.alertTitle = comp.result.model.regist_title;
                     comp.alertText = '成功建立報名表';
                     comp.alertImgSrc = comp.successIcon;
                     comp.$refs.registAlert.open();
@@ -1356,16 +1313,13 @@
                     comp.$refs.warringAlert.open();
                     comp.$bus.$emit('type1_hide4');
                 });
-
-
-
             },
             editSaveRegist: function () {
                 console.log('updateresult', this.result)
                 var comp = this;
                 this.updateRegist(comp.result).then(function (ret) {
                     comp.$bus.$emit('type1_hide4');
-                    comp.alertTitle = '110年五月份新冠疫苗施打預先報名';
+                    comp.alertTitle = comp.result.model.regist_title;
 
                     if (ret.datas == 200) {
                         comp.alertText = '已成功變更報名表';
@@ -1386,17 +1340,12 @@
                     comp.$refs.warringAlert.open();
                     comp.$bus.$emit('type1_hide4');
                 });
-
-
-
             },
             backToEdit: function () {
-
                 this.$refs.registViewer.close();
                 this.$refs.registNewEditor.show();
             },
             backToEdit2: function () {
-
                 this.$refs.registEditViewer.close();
                 this.$refs.registEdit.show();
             },
@@ -1443,11 +1392,6 @@
                     comp.errorImgSrc = comp.warningIcon;
                     comp.$refs.registAlert.open();
                 });
-
-
-
-
-
             },
             removeItem: function (item) {
                 this.compSelectedItems.splice(0);
@@ -1489,7 +1433,7 @@
                 this.detailRegistrationTime = item.regist_apply_start_date + ' - ' + item.regist_apply_end_date;   //item.registrationTime;
                 this.detailCntQuota = item.regist_unpassed;   //item.cntQuota;
                 this.detailTotalQuota = item.regist_quota;    //item.totalQuota;
-                this.detailAgeLimit = item.regist_age_limit === 0 ? '無' : item.regist_age_limit;
+                this.detailAgeLimit = item.regist_age_limit;
                 this.detailAbnormalCnt = item.regist_abnormalCnt;   //item.abnormalCnt;
                 this.detailCheckTime = item.regist_review_date;   //item.checkTime;
                 this.detailCheckPassCnt = item.regist_qualified; //item.checkPassCnt;
