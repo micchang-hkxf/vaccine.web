@@ -193,7 +193,7 @@
             width: 250px;
             border-radius: 0;
             top: 50px;
-            left: 50%;
+            left: 125%;
             height: auto;
         }
 

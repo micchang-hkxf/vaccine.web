@@ -187,6 +187,17 @@
                 set: function () {
                     null;
                 }
+            },
+            isNotMobile: function () {
+                return !(this.mobileClass["mobile-ios"] || this.mobileClass["mobile-android"]);
+            },
+            mobileClass: function () {
+                return {
+                    "mobile-ios": navigator.userAgent.indexOf('Mobile') != -1 && navigator.userAgent.indexOf('iPhone OS') != -1,
+                    "mobile-android": navigator.userAgent.indexOf('Mobile') != -1 && navigator.userAgent.indexOf('Linux') != -1,
+                    "lang-tw": this.getLangType == 'tw',
+                    "lang-en": this.getLangType == 'en',
+                };
             }
         },
         props: {
