@@ -7,30 +7,22 @@ export default {
     namespaced: true,
     actions: {
         loadVaccines: function ({ state, commit, rootGetters }, params) {
-            var datas = [],brands=[];
+          
+            var datas = [];
             var vaccines = rootGetters['user/getVaccines'];
             if (vaccines !== null) {
                 vaccines.forEach((data) => {
                     datas.push({
                         id: data.groupId,
-                        name: data.groupName
+                        name: data.groupName,
+                        requireSubitem: data.requireSubitem
                     });
-
-                    if (params && (data.groupId === params.id)) {
-                        data.vaccines.forEach((subdata) => {
-                            //console.log(data.groupName + ":" + subdata.itemId + "@" + subdata.itemName);
-                            brands.push({
-                                id: subdata.itemId,
-                                name: subdata.itemName
-                            });
-                        });
-                    }
                 });
                 state.vaccines = datas;
-                state.brands = brands;
+                commit('setBrandData', { 'vaccines': vaccines, 'params': params });
                 return;
             }
-                
+            
             var apiUrl = `${state.apiRoot}api/DataItem/Vaccines`;
 
             axios.get(apiUrl,
@@ -39,14 +31,18 @@ export default {
                 res.data.forEach((data) => {
                     datas.push({
                         id: data.groupId,
-                        name: data.groupName
+                        name: data.groupName,
+                        requireSubitem: data.requireSubitem
                     });
                 });
                 state.vaccines = datas;
                     
                 commit('user/setVaccines', res.data);
+                commit('setBrandData', { 'vaccines': res.data, 'params': params } );
             });
         },
+   
+
         loadDists: function ({ state, rootGetters }) {
             var zones = rootGetters['user/getZones'];
             var dists = [];
@@ -82,19 +78,26 @@ export default {
         },
         loadMedicals: function ({ state, commit, rootGetters }) {
             var medicals = rootGetters['user/getMedicals'];
-            if (medicals !== null) return;
+            if (medicals !== null) {
+                commit('setInstitutions', medicals);
+                return;
+            }
 
             var apiUrl = `${state.apiRoot}api/DataItem/Medical`;
 
             axios.get(apiUrl,
                 rootGetters['user/getApiHeader']
             ).then(res => {
+                commit('setInstitutions', res.data);
                 commit('user/setMedicals', res.data);
             });
         },
-        loadMedicalsByVillage: function ({ state, rootGetters }, params) {
+        loadMedicalsByVillage: function ({ commit, rootGetters }, params) {
             var medicals = rootGetters['user/getMedicals'];
-            if (medicals === null) return;
+            if (medicals === null) {
+                commit('setInstitutions', medicals);
+                return;
+            }
             var datas = [];
  
             medicals.forEach((medical) => {
@@ -106,7 +109,7 @@ export default {
                     });
                 }
             });
-            state.institutions = datas;
+            commit('setInstitutions', datas);
         },
    
 
@@ -144,8 +147,8 @@ export default {
                             regist_title: data.activityTitle,
                             regist_type: data.vaccineGroupId,
                             regist_type_name: data.vaccineGroupName,
-                            regist_brand: (data.vaccines[0]!=undefined) ? data.vaccines[0].itemId:"",
-                            regist_brand_name: (data.vaccines[0]!=undefined) ? data.vaccines[0].itemName : "",
+                            regist_brand: (data.vaccines[0] != undefined) ? data.vaccines[0].itemId : "",
+                            regist_brand_name: (data.vaccines[0] != undefined) ? data.vaccines[0].itemName : "",
                             regist_district: data.region.distId,
                             regist_district_name: data.region.distName,
                             regist_village: data.region.villageId,
@@ -156,14 +159,15 @@ export default {
                             regist_institution_code: data.medicalInfo.length > 0 ? data.medicalInfo[0].medicalId : '',
                             regist_instution_district: data.medicalInfo.length > 0 ? data.medicalInfo[0].distId : '',
                             regist_instution_district_name: data.medicalInfo.length > 0 ? data.medicalInfo[0].distName + '/' + data.region.villageName : '',
-                            regist_station_date: data.implementDate.substr(0, 10).replace(/-/g, '/'),
+                            regist_station_date: data.implementDate.substr(0, 10),
                             regist_station_start_time: data.implementStartTime.substr(11, 5),
                             regist_station_end_time: data.implementEndTime.substr(11, 5),
-                            regist_apply_start_date: data.startApplyDate.substr(0, 16).replace(/-/g, '/').replace('T', ' '),
-                            regist_apply_end_date: data.endApplyDate.substr(0, 16).replace(/-/g, '/').replace('T', ' '),
-                            regist_review_date: '',              
-                            regist_qualified: '',
+                            regist_apply_start_date: data.startApplyDate.substr(0, 10),
+                            regist_apply_end_date: data.endApplyDate.substr(0, 10),
+                            regist_review_date: (data.reCheckTime == null) ? "" : data.reCheckTime,
+                            regist_qualified: parseInt(data.reCheckCount),
                             regist_quota: data.amount,
+                            regist_age_limit: parseInt(data.actAge),
                             regist_unpassed: data.amount - data.leftAmount
                         });
                     });
@@ -181,17 +185,20 @@ export default {
                 var apiUrl = `${state.apiRoot}api/Activity/Detail/` + params.id;
                 var results = { datas: [], state: '', totalCount: 0 };
 
+                var keyword = params.keyWord === '' ? null : params.keyWord;
+
                 axios.get(apiUrl, {
                     params: {
-                        page: 1,
-                        rows: 10
+                        page: params.page,                      // 頁數
+                        rows: params.pageSize,                  // 每頁筆數
+                        keyword: keyword,                       // 關鍵字
                     },
                     headers: {
                         'x-token': rootGetters['user/getToken']
                     }
                 }).then(res => {
-                    results.totalCount = res.data.totalRows;
-
+                    results.totalCount = res.data.totlaCount;
+                    results.activityId = res.data.activityId;
                     var datas = [];
                     res.data.data.forEach((data) => {
                         datas.push({
@@ -205,8 +212,11 @@ export default {
                             phone: data.mbNo,
                             censusRegister: data.isCitizen ? '北市' : '非北市',
                             type: data.signUpChannel ? '現場報名' : '網路自行報名',
-                            result: data.eligible ? '合格' : '不合格',
-                            remark: ''
+                            //result: data.eligible ? '合格' : '不合格',
+                            result: data.logTypeName,
+                            status: data.logType,//-2 複檢異常 ，-1取消，0複檢不合格，1複檢成功, 2複檢不合格（人工複檢），3複檢合格（人工複檢）
+                            //status: -2,//test only
+                            remark: data.memo
                         });
                     });
 
@@ -221,20 +231,34 @@ export default {
         
         getCompleteFile: function ({ state, rootGetters }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement`;
+                var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement?activityId=` + params.id;
                 var results = { datas: [], state: '' };
-
-                axios.get(apiUrl, {
-                    params: {
-                        activityId: params.id
-                    },
+                
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
                     headers: {
                         'x-token': rootGetters['user/getToken']
+                    },
+                    method: 'GET'
+                })
+                .then(res => res.blob().then(blob => {
+                    const filename = '完整接種同意書.xlsx';
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        navigator.msSaveBlob(blob, filename); // 兼容IE10
+                    } else {
+                        const a = document.createElement('a');
+                        document.body.appendChild(a);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = filename;
+                        a.target = '_blank';
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(apiUrl);
                     }
-                }).then(res => {
-                    results.datas = res.data;
+
                     resolve(results);
-                }).catch(ex => {
+                })).catch(ex => {
                     results.datas = ex;
                     reject(results);
                 });
@@ -242,20 +266,34 @@ export default {
         },
         getSignUpFile: function ({ state, rootGetters }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/Activity/Export/ApplyList`;
+                var apiUrl = `${state.apiRoot}api/Activity/Export/ApplyList?activityId=` + params.id;
                 var results = { datas: [], state: '' };
 
-                axios.get(apiUrl, {
-                    params: {
-                        activityId: params.id
-                    },
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
                     headers: {
                         'x-token': rootGetters['user/getToken']
+                    },
+                    method: 'GET'
+                })
+                .then(res => res.blob().then(blob => {
+                    const filename = '報名清冊.xlsx';
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        navigator.msSaveBlob(blob, filename); // 兼容IE10
+                    } else {
+                        const a = document.createElement('a');
+                        document.body.appendChild(a);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = filename;
+                        a.target = '_blank';
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(apiUrl);
                     }
-                }).then(res => {
-                    results.datas = res.data;
+
                     resolve(results);
-                }).catch(ex => {
+                })).catch(ex => {
                     results.datas = ex;
                     reject(results);
                 });
@@ -263,20 +301,34 @@ export default {
         },
         getVaccinationFile: function ({ state, rootGetters }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/Activity/Export/VaccinationList`;
+                var apiUrl = `${state.apiRoot}api/Activity/Export/VaccinationList?activityId=` + params.id;
                 var results = { datas: [], state: '' };
 
-                axios.get(apiUrl, {
-                    params: {
-                        activityId: params.id
-                    },
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
                     headers: {
                         'x-token': rootGetters['user/getToken']
+                    },
+                    method: 'GET'
+                })
+                .then(res => res.blob().then(blob => {
+                    const filename = '施打清冊.xlsx';
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        navigator.msSaveBlob(blob, filename); // 兼容IE10
+                    } else {
+                        const a = document.createElement('a');
+                        document.body.appendChild(a);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = filename;
+                        a.target = '_blank';
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(apiUrl);
                     }
-                }).then(res => {
-                    results.datas = res.data;
+
                     resolve(results);
-                }).catch(ex => {
+                })).catch(ex => {
                     results.datas = ex;
                     reject(results);
                 });
@@ -286,13 +338,32 @@ export default {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement/` + params.id;
                 var results = { datas: [], state: '' };
+                
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    },
+                    method: 'GET'
+                })
+                .then(res => res.blob().then(blob => {
+                    const filename = params.name + '_接種同意書_' + new Date().toISOString().substr(0, 10) + '.pdf';
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        navigator.msSaveBlob(blob, filename); // 兼容IE10
+                    } else {
+                        const a = document.createElement('a');
+                        document.body.appendChild(a);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = filename;
+                        a.target = '_blank';
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(apiUrl);
+                    }
 
-                axios.get(apiUrl,
-                    rootGetters['user/getApiHeader']
-                ).then(res => {
-                    results.datas = res.data;
                     resolve(results);
-                }).catch(ex => {
+                })).catch(ex => {
                     results.datas = ex;
                     reject(results);
                 });
@@ -338,19 +409,36 @@ export default {
                 });
             });
         },
-        doubleCheck: function ({ state }, data) {
+        doubleCheck: function ({ state, rootGetters }, data) {
             return new Promise(function (resolve, reject) {
-                // TODO:
+                var ckret = (data.result.id == "pass") ? true : false;
+               
                 var result = { id: data.id, state: state };
-                try {
-                    console.log(data.result.id);
-                    console.log(data.result.state);
-
+                var setData = {
+                    "applyNo": data.applyNo,
+                    "actId": data.activityId,
+                    "bd":data.bd,
+                    "isReChecked": ckret,
+                };
+                //console.log(setData);
+         
+                axios({
+                    method: 'post',
+                    url: `${state.apiRoot}api/Activity/ForceCheck?api-version=1.0`,
+                    data: setData,
+                    responseType: 'json',
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    result.datas = res.data;
                     resolve(result);
-                    alert('人工複檢 (' + data.result.state + ')');
-                } catch (e) {
+                    }).catch(ex => {
+                        resolve(result);
+                    result.datas = ex;
                     reject(result);
-                }
+                });
+
             });
         },
         registForm: function ({ state, rootGetters}, data) {
@@ -358,10 +446,10 @@ export default {
                 console.log('new', data);
 
                 var result = { data: [], state: state }
-  
+                
                 var setData = [{
                     vaccineGroupId: data.model.regist_type.id,
-                    vaccineIds: [data.model.regist_brand.id],
+                    vaccineIds: typeof data.model.regist_brand.id === 'undefined' ? [] : [data.model.regist_brand.id],
                     title: data.model.regist_title,
                     implementDate: data.model.regist_station_date,
                     implementStartDate: data.model.regist_station_date + "T" + data.model.regist_station_start_time,
@@ -373,7 +461,7 @@ export default {
                     endApplyDate: data.model.regist_apply_end_date,
                     amount: parseInt(data.model.regist_quota),
                     medicalIds: [data.model.regist_institution.id],
-                    //ageLimit: [data.model.age_limit],
+                    actAge: typeof data.model.regist_age_limit === 'undefined' ? 0 : parseInt(data.model.regist_age_limit),
                     //remarks: [data.model.remarks],
                 }];
                 console.log("setData", setData);
@@ -416,8 +504,8 @@ export default {
                         implementEndDate: d[7] + "T" + d[9] + ":00",
                         startApplyDate: d[10],
                         endApplyDate: d[11],
-                        amount: parseInt(d[12])
-                        //ageLimit: parseInt(d[13]),
+                        amount: parseInt(d[12]),
+                        actAge: parseInt(d[13]),
                         //remarks: parseInt(d[14]),
                     });
                 }
@@ -451,7 +539,7 @@ export default {
                 console.log('update',data)
                 var setData = {
                     vaccineGroupId: data.model.regist_type.id,
-                    vaccineIds: data.model.regist_brand.id ? [data.model.regist_brand.id]:[data.model.regist_brand],
+                    vaccineIds: typeof data.model.regist_brand.id === 'undefined' ? [] : [data.model.regist_brand.id],
                     title: data.model.regist_title,
                     implementDate: data.model.regist_station_date.replace(/\//g, '-'),
                     implementStartDate: data.model.regist_station_date.replace(/\//g, '-') + "T" + data.model.regist_station_start_time + ":00",
@@ -459,12 +547,12 @@ export default {
                     stationAddr: data.model.regist_place,
                     distId: data.model.regist_district,
                     villageId: (typeof data.model.regist_village == "object") ? data.model.regist_village.id : data.model.regist_village,
-                    startApplyDate: data.model.regist_apply_start_date.replace(/\//g, '-').replace(' ', 'T')+":00",
-                    endApplyDate: data.model.regist_apply_end_date.replace(/\//g, '-').replace(' ', 'T') + ":00",
+                    startApplyDate: data.model.regist_apply_start_date.replace(/\//g, '-'),
+                    endApplyDate: data.model.regist_apply_end_date.replace(/\//g, '-'),
                     amount: parseInt(data.model.regist_quota),
                     medicalIds: [data.model.regist_institution_code],
-                      //ageLimit: [data.model.age_limit],
-                      //remarks: [data.model.remarks],
+                    actAge: typeof data.model.regist_age_limit === 'undefined' ? 0 : parseInt(data.model.regist_age_limit),
+                    //remarks: [data.model.remarks],
                 };
          
                 console.log('setData', setData);
@@ -491,8 +579,7 @@ export default {
                 var result = { state: state }, actIdLists="";
                 data.forEach((d) => {
                     actIdLists+='&actIdList='+d.regist_id;
-                });
-               
+                });               
                 console.log('remove', data);
                 axios({
                     method: 'delete',
@@ -551,6 +638,7 @@ export default {
             { text: '備註', value: 'remark', sortable: false, flex: 6 },
             { text: '', value: 'modify', sortable: false },
         ],
+        showBrand: false,
     },
     getters: {
         getHeaders: state => {
@@ -574,8 +662,29 @@ export default {
         getBrands: state => {
             return state.brands;
         },
+        getShowBrand: state => {
+            return state.showBrand;
+        },
     },
     mutations: {
+        setBrandData: function (state, d ) {
+            var brands = [];
+            d.vaccines.forEach((data) => {
+                if (d.params && (data.groupId === d.params.id)) {
+                    data.vaccines.forEach((subdata) => {
+                        brands.push({
+                            id: subdata.itemId,
+                            name: subdata.itemName
+                        });
+                    });
+                    state.showBrand = d.params.requireSubitem;
+                }
+            });
+            state.brands = brands;
+        },
+        setInstitutions: function (state, institutions) {
+            state.institutions = institutions;
+        }
     },
     modules: {
         user: userStore

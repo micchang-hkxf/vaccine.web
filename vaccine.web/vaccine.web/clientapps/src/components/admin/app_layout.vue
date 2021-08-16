@@ -1,7 +1,7 @@
 ﻿<template>
     <!-- App.vue -->
     <v-app>
-        <v-navigation-drawer app clipped v-model="showNavi">
+        <v-navigation-drawer app clipped v-model="showNavi" hide-overlay fixed stateless>
             <div class="app-navigation" v-if="$slots['navigation']">
                 <slot name="navigation" />
             </div>
@@ -187,6 +187,17 @@
                 set: function () {
                     null;
                 }
+            },
+            isNotMobile: function () {
+                return !(this.mobileClass["mobile-ios"] || this.mobileClass["mobile-android"]);
+            },
+            mobileClass: function () {
+                return {
+                    "mobile-ios": navigator.userAgent.indexOf('Mobile') != -1 && navigator.userAgent.indexOf('iPhone OS') != -1,
+                    "mobile-android": navigator.userAgent.indexOf('Mobile') != -1 && navigator.userAgent.indexOf('Linux') != -1,
+                    "lang-tw": this.getLangType == 'tw',
+                    "lang-en": this.getLangType == 'en',
+                };
             }
         },
         props: {
@@ -263,6 +274,14 @@
                 comp.getUserInfoData().then(function (result) {
                     //console.log(result);
                     comp.user = result.datas.data;
+                    //var user = result.datas.data;
+                    //var rr = '';
+                    //user.zones[0].data.forEach(f => {
+                    //    f.data.forEach(g => {
+                    //        rr += `${f.distName},${g.villageName} \r\n`;
+                    //    })
+                    //})
+                    //console.log(rr);
                 }).catch(function () {
                     window.location.href = "/login";
                 });

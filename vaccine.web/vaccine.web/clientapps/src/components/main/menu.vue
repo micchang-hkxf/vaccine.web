@@ -29,6 +29,13 @@
             </v-list-item-content>
         </v-list-item>
 
+        <v-list-item @click="toPages('timepicker')">
+            <v-list-item-content>
+                <v-list-item-title>Timepicker</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+
+
         <v-list-item @click="openPages('/admin')">
             <v-list-item-content>
                 <v-list-item-title>Layout</v-list-item-title>
@@ -92,7 +99,7 @@
         </v-list-item>
 
         <v-divider></v-divider>
-        
+
         <v-list-item @click="toPages('api')">
             <v-list-item-content>
                 <v-list-item-title>API</v-list-item-title>

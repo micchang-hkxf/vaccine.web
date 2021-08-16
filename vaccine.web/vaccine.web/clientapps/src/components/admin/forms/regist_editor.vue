@@ -1,5 +1,5 @@
 ﻿<template>
-    <com-dialog ref="dialogPanel" ref-key="two" :width="width" >
+    <com-dialog ref="dialogPanel" ref-key="two" :width="width">
         <template v-slot:toolbar>
             {{title}}
             <v-spacer></v-spacer>
@@ -8,7 +8,7 @@
             </v-btn>
         </template>
         <template v-slot:content>
-            <v-form class="edit-form" v-model="valid" ref="form">
+            <v-form class="edit-form" v-model="valid" ref="form" autocomplete="off">
                 <v-row>
                     <v-col cols="4">
                         <div><span class="regist-title">接種類型</span> <span class="red--text">*</span></div>
@@ -29,14 +29,14 @@
                     </v-col>
 
                 </v-row>
-                <v-row>
+                <v-row v-if="getShowBrand">
                     <v-col cols="4">
-                        <div><span class="regist-title">新冠肺炎疫苗廠牌</span> <span class="red--text">*</span></div>
+                        <div><span class="regist-title">疫苗廠牌</span> <span class="red--text">*</span></div>
                         <v-select v-model="model.regist_brand"
                                   :items="getBrands"
                                   item-text="name"
                                   item-value="id"
-                                  placeholder="請選擇新冠肺炎疫苗廠牌"
+                                  placeholder="請選擇疫苗廠牌"
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   :rules="[rules.required]"
                                   outlined
@@ -162,6 +162,7 @@
                                               dense></v-text-field>
                             </template>
                             <v-date-picker v-model="model.regist_station_date"
+                                           @change="dateClicked"
                                            no-title
                                            scrollable>
                                 <v-spacer></v-spacer>
@@ -187,7 +188,17 @@
                         <div>  <span class="regist-title">設站時段設定</span><span class="red--text">*</span></div>
                     </v-col>
                 </v-row>
-                <v-row>
+                <v-row >
+                    <v-col cols="3" class="colsp">
+                        <table >
+                            <tr>
+                                <td><com-timepicker v-model="regist_station_start_time"></com-timepicker></td>
+                                <td style="padding-left: 10px"><com-timepicker v-model="regist_station_end_time"></com-timepicker></td>
+                            </tr>
+                        </table>
+                    </v-col>
+                </v-row>
+                <!--<v-row>
                     <v-col cols="3">
                         <v-menu v-model="start"
                                 ref="tmenu"
@@ -197,6 +208,7 @@
                                 offset-y
                                 min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
+
                                 <v-text-field v-model="model.regist_station_start_time"
                                               append-icon="mdi-clock-outline"
                                               :rules="[rules.required]"
@@ -207,14 +219,7 @@
                                               outlined
                                               dense></v-text-field>
                             </template>
-                            <v-time-picker v-model="model.regist_station_start_time"
-                                           :max="model.regist_station_end_time"
-                                           v-if="start"
-                                           ampm-in-title
-                                           @click:minute="$refs.tmenu.save()"
-                                           scrollable>
-                                <v-spacer></v-spacer>
-                            </v-time-picker>
+     
                         </v-menu>
                     </v-col>
                     <v-col cols="1"><span style="display:flex;justify-content:center;color:#626781">-</span></v-col>
@@ -247,7 +252,7 @@
                         </v-menu>
                     </v-col>
 
-                </v-row>
+                </v-row>-->
 
                 <v-row>
                     <v-col cols="6">
@@ -272,6 +277,7 @@
                             </template>
                             <v-date-picker v-model="model.regist_apply_start_date"
                                            no-title
+                                           @change="dateClicked"
                                            scrollable>
                                 <v-spacer></v-spacer>
                                 <v-btn text
@@ -309,6 +315,7 @@
                             </template>
                             <v-date-picker v-model="model.regist_apply_end_date"
                                            no-title
+                                           @change="dateClicked"
                                            scrollable>
                                 <v-spacer></v-spacer>
                                 <v-btn text
@@ -323,6 +330,8 @@
                                        @click="$refs.apply2.save(model.regist_apply_end_date)">
                                     OK
                                 </v-btn>
+
+
                             </v-date-picker>
                         </v-menu>
                         <!--<div style="margin-bottom:15px;"><span class="regist-title">報名者接種資格複檢時間：{{model.regist_review_date}}</span> </div>-->
@@ -333,6 +342,7 @@
                 <v-divider></v-divider>
                 <v-row>
                     <v-col cols="6">
+            
                         <div style="margin-top:15px;"><span class="regist-title">報名名額上限設定</span></div>
                         <v-text-field v-model="model.regist_quota"
                                       placeholder="請輸入報名名額上限設定(預設無限制)"
@@ -347,7 +357,7 @@
                 <v-row>
                     <v-col cols="6">
                         <div style="margin-top:15px;"><span class="regist-title">報名者最低年齡限制</span></div>
-                        <v-text-field v-model="model.age_limit"
+                        <v-text-field v-model="model.regist_age_limit"
                                       placeholder="請輸入年齡下限(預設無限制)"
                                       required
                                       type="number"
@@ -379,14 +389,15 @@
             <v-btn @click="cancel" outlined :ripple="false"><span style="color:#626781;">取消</span></v-btn>
             <v-btn color="primary" @click="save" :ripple="false"><span>{{saveBtnName}}</span></v-btn>
 
-        </template>     
+        </template>
     </com-dialog>
 
 </template>
 <style scoped>
     .v-btn--outlined {
-        border: thin solid rgba(98 ,103, 129 ,0.2) !important;
+        border: thin solid rgba(98,103, 129,0.2) !important;
     }
+
     .regist-title {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
@@ -395,33 +406,54 @@
 
 
     .edit-form {
-        height: 650px;
+        /*height: 650px;
         overflow: scroll;
-        overflow-x: hidden;
+        overflow-x: hidden;*/
         padding-left: 10px;
         padding-right: 15px;
     }
 
-    /*-------滾動條整體樣式----*/
-    .edit-form::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
+        /*-------滾動條整體樣式----*/
+        .edit-form::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
 
-    /*滾動條裡面小方塊樣式*/
+        /*滾動條裡面小方塊樣式*/
         .edit-form::-webkit-scrollbar-thumb {
             border-radius: 100px;
             -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
             background: #736DB9;
         }
 
-    /*滾動條裡面軌道樣式*/
-    .edit-form::-webkit-scrollbar-track {
-        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        border-radius: 20px
-        ;
-        background: rgba(0,0,0,0.1);
+        /*滾動條裡面軌道樣式*/
+        .edit-form::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            background: rgba(0,0,0,0.1);
+        }
+</style>
+<style>
+    .v-date-picker-table .v-btn--rounded:hover {
+        background-color: #d4ffd6 !important
     }
+    .timepicker {
+        z-index:999;
+    }
+    .timepicker-wrap .time {
+        width: 100px !important;
+        height: 40px !important;
+        border-radius: 5px !important;
+        border-color: #9E9E9E !important;
+    }
+    .timepicker-wrap {
+        color: #9E9E9E !important;
+    }
+    .timepicker-wrap .timepicker-icon {
+        width: 1.5em !important;
+        height: 1.5em !important;
+    }
+
 
 </style>
 
@@ -429,30 +461,19 @@
 
 
 <script>
+
     import comDialog from 'components/dialog'
+    import comTimepicker from 'components/vue-timepicker/timepicker'
     import { mapActions, mapGetters } from 'vuex'
 
-    export default {     
+    export default {
         data: () => ({
-            mode:'',          
-            brands: [
-                { id: 'az', name: 'AstraZeneca' },
-                { id: 'bnt', name: 'Pfizer-BioNTech' },               
-            ],            
-            vaccines: [
-                { id: 'influenza', name: '肺鏈流感' },
-                { id: 'coronavirus', name: '新冠肺炎' },
-
-            ],
-            districts: [
-                { id: 'neihu', name: '內湖區' },
-                { id: 'nangang', name: '南港區' },
-
-            ],
-            villages: [
-                { id: 'xikang', name: '西康里' }
-            ],
-            institutions: [{ id: 'wang', name: '王慶森診所' }, { id: 'wang2', name: '王慶森2診所' }, { id: 'wang3', name: '王慶森3診所' }],
+            mode: '',
+            brands: [],
+            vaccines: [],
+            districts: [],
+            villages: [],
+            institutions: [],
             date: new Date().toISOString().substr(0, 10),
             menu: false,
             apply: false,
@@ -472,74 +493,80 @@
             regist_institution_code: "",
             regist_institution_name: "",
             rules: {
-                required: v => !!v || '必填',              
-            }
+                required: v => !!v || '必填',
+            },
+            regist_station_start_time:"00:00",
+            regist_station_end_time: "23:59",
         }),
         watch: {
-            'getInstitutions': function () {
-                this.regist_institution_code = "";
-                this.regist_institution_name = "";
-             },
+            //'getInstitutions': function () {
+            //    this.regist_institution_code = "";
+            //    this.regist_institution_name = "";
+            //},
         },
         computed: {
-            ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders']),
+            ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders', 'getShowBrand']),
             defaultItem: function () {
                 return this.default;
             }
         },
-        props: ['width', 'title', 'action','saveBtnName'],
+        props: ['width', 'title', 'action', 'saveBtnName'],
 
         created: function () {
-            this.loadVaccines();
             this.loadDists();
-            this.loadMedicals();
-
+            //this.loadMedicals();
         },
         mounted: function () {
-            console.log(this.$refs.form);
-
+            //console.log(this.$refs.form);
         },
-     
+
         methods: {
             ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadBrands', 'loadMedicals', 'loadMedicalsByVillage']),
             open: function (model) {
                 this.mode = 'edit';
-       
+
                 this.loadVaccines({ id: model.regist_type });
                 this.loadVillages({ id: model.regist_district });
-             
+
                 this.$set(this, "regist_institution_code", model.regist_institution_code);
-                this.$set(this, "regist_institution_name", model.regist_district_name + "/" + model.regist_village_name );
-                this.model =Object.assign(this.defaultItem, model);
+                this.$set(this, "regist_institution_name", model.regist_district_name + "/" + model.regist_village_name);
+
+                this.$set(this, "regist_station_start_time", model.regist_station_start_time);
+                this.$set(this, "regist_station_end_time", model.regist_station_end_time);
+
+                this.model = Object.assign(this.defaultItem, model);
                 this.model.regist_type = { id: model.regist_type };
                 this.$refs.dialogPanel.open();
             },
 
             create: function (model) {
                 this.mode = 'new';
-                this.model=Object.assign(this.defaultItem, model);
-                
+                this.model = Object.assign(this.defaultItem, model);
                 this.$refs.dialogPanel.open();
-               
+
             },
             reset: function () {
                 for (var nn in this.model) {
                     if (nn == "regist_quota") {
                         this.model[nn] = 500;
+                    } else if (nn == "regist_age_limit") {
+                        this.model[nn] = 0;
                     } else {
                         this.model[nn] = "";
                     }
-                    
-               }
+
+                }
             },
 
             save: function () {
                 if (this.$refs.form.validate()) {
+                    this.model.regist_station_start_time = this.regist_station_start_time;
+                    this.model.regist_station_end_time = this.regist_station_end_time;
                     this.action({ mode: this.mode, action: 'save', model: this.model });
                     //console.log(this.model);
-                    //this.$refs.dialogPanel.close();   
-                }   
-                
+                    //this.$refs.dialogPanel.close();
+                }
+
             },
             show: function () {
                 //this.$refs.dialogPanel.open();
@@ -549,14 +576,14 @@
                 this.$refs.dialogPanel.close();
             },
             cancel: function () {
-                
+
                 this.$refs.dialogPanel.close();
             },
             closeDialog: function () {
                 //this.$refs.dialogPanel.open();
             },
             setMedicalInfo: function (event) {
-    
+
                 this.$store.state.registration.institutions.forEach((d) => {
                     if (d.id === event.id) {
 
@@ -564,11 +591,23 @@
                         this.regist_institution_name = d.from;
                     }
                 });
+            },
+            dateClicked(val) {
+                var allDates = document.querySelectorAll(".v-date-picker-table .v-btn .v-btn__content");
+                allDates.forEach((x) => {
+                    if (parseInt(val.split('-')[2]) == x.innerHTML.replace("日", "")) {
+                        x.parentNode.style = "background-color: #d4ffd6 !important";
+                    } else {
+                        x.parentNode.style = '';
+                    }
+                });
+
             }
+    
 
         },
         components: {
-            comDialog
+            comDialog, comTimepicker
         }
     }
 </script>

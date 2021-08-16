@@ -1,6 +1,6 @@
 ﻿<template>
     <v-dialog v-model="isShow" :width="width">
-        <v-card class="mx-auto" >
+        <v-card>
             <v-toolbar color="primary" class="dialog-toolbar">
                 <slot name="toolbar" :close="close"></slot>
             </v-toolbar>
@@ -18,6 +18,8 @@
     .v-dialog {
         border-radius: 0px 0px 8px 8px !important;
         box-shadow: none !important;
+        overflow-y: hidden !important;
+        overflow-x: hidden !important;
     }
     .dialog-content {
         padding: 16px;

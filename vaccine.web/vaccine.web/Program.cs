@@ -17,7 +17,7 @@ namespace VuetifyProjectTemplate
         public static void Main(string[] args)
         {
             var SiteSetting = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}\\site.config.json");
-            Constants.SiteSetting = JsonConvert.DeserializeObject(SiteSetting);
+            Constants.SiteSetting = JsonConvert.DeserializeObject<SiteSetting>(SiteSetting);
             CreateWebHostBuilder(args).Build().Run();
         }
 

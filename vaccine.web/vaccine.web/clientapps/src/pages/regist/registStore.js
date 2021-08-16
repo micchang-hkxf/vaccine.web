@@ -1,8 +1,7 @@
 ﻿import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
-import userStore from "stores/userStore"
-//import configStore from "stores/configStore"
+import registStore from "stores/regist/static/registApiStore"
 
 export default new Vuex.Store({
     actions: {
@@ -14,7 +13,6 @@ export default new Vuex.Store({
     mutations: {
     },
     modules: {
-        user: userStore,
-        //config: configStore
+        regist: registStore,
     }
 })

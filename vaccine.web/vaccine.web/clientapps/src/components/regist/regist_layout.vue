@@ -1,5 +1,8 @@
 ﻿<template>
     <app-layout :app-bar="appBar">
+        <template v-slot:extension v-if="$slots['regist-extension']">
+            <slot name="regist-extension"></slot>
+        </template>
         <template v-slot:app-bar>
             <div class="regist-header d-flex flex-column">
                 <div class="logo-title d-flex flex-row justify-center">
@@ -29,7 +32,8 @@
         data: () => ({
             appBar: {
                 elevation: 0,
-                height:'144px'
+                height: '144px',
+                fixed:true
             }
         }),
         computed: {
@@ -56,7 +60,6 @@
         padding-top: 5px !important;
         max-width: 200%;
         font-size: 16px !important;
-        font-weight: bold !important;
     }
     .logo-title {
         max-width: 200%;

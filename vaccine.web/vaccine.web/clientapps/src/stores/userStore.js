@@ -1,5 +1,10 @@
 ﻿import axios from 'axios';
 import siteConfig from "project/site.config"
+import vueCookies from 'vue-cookies'
+
+import Vue from 'vue'
+Vue.use(vueCookies)
+Vue.$cookies.config('1d')
 
 export default {
     namespaced: true,
@@ -57,7 +62,8 @@ export default {
     },
     state: {
         ...siteConfig,
-        moduleEnabled: 'vuex module 已啟用'
+        moduleEnabled: 'vuex module 已啟用',
+        activityApply: null,
     },
     getters: {
         getSessionId: () => {
@@ -85,16 +91,30 @@ export default {
         getAuditTypes: () => {
             return JSON.parse(window.sessionStorage.getItem('auditTypes'));
         },
+        getActivityApply: (state) => {
+            var data = window.sessionStorage.getItem('activityApply');
+            if (!state.activityApply && data !== null)
+                state.activityApply = data;
+            return JSON.parse(state.activityApply);
+        },
+        removeItem: () => (key) => {
+            return window.sessionStorage.removeItem(key);
+        },
         clear: () => {
+            Vue.$cookies.remove("x-token");
+            //document.cookie = 'x-token=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
             return window.sessionStorage.clear();
         }
     },
     mutations: {
         setSessionId: (state, sessionId) => {
             window.sessionStorage.setItem('sessionId', sessionId);
+            
         },
         setToken: (state, token) => {
             window.sessionStorage.setItem('x_token', token);
+            Vue.$cookies.set('x-token', token);
+            //document.cookie = 'x-token=' + token;
         },
         setZones: (state, zones) => {
             window.sessionStorage.setItem('zones', JSON.stringify(zones));
@@ -107,6 +127,10 @@ export default {
         },
         setAuditTypes: (state, auditTypes) => {
             window.sessionStorage.setItem('auditTypes', JSON.stringify(auditTypes));
+        },
+        setActivityApply: (state, activityApply) => {
+            state.activityApply = JSON.stringify(activityApply);
+            window.sessionStorage.setItem('activityApply', state.activityApply);
         }
     },
     modules: {
