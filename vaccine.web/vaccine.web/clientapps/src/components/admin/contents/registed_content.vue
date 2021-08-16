@@ -15,7 +15,7 @@
                     <template v-slot:search-bar>
                         <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
                             <v-row>
-                                <v-col cols="12">
+                                <v-col cols="4">
                                     <v-text-field v-model="keyWord" placeholder="身分證後四碼" outlined dense clearable></v-text-field>
                                 </v-col>
                                 <v-btn icon color="#626781" style="top:5px;" :ripple="false"
