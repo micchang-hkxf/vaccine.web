@@ -78,7 +78,7 @@ export default {
         },
         loadMedicals: function ({ state, commit, rootGetters }) {
             var medicals = rootGetters['user/getMedicals'];
-            if (medicals !== null) {
+            if (medicals !== null && medicals.length >= 1) {
                 commit('setInstitutions', medicals);
                 return;
             }
@@ -88,13 +88,14 @@ export default {
             axios.get(apiUrl,
                 rootGetters['user/getApiHeader']
             ).then(res => {
+                console.log(res.data);
                 commit('setInstitutions', res.data);
                 commit('user/setMedicals', res.data);
             });
         },
         loadMedicalsByVillage: function ({ commit, rootGetters }, params) {
             var medicals = rootGetters['user/getMedicals'];
-            if (medicals === null) {
+            if (medicals === null && medicals.length >= 1) {
                 commit('setInstitutions', medicals);
                 return;
             }
@@ -109,7 +110,9 @@ export default {
                     });
                 }
             });
+            console.log(datas);
             commit('setInstitutions', datas);
+            commit('user/setMedicals', datas);
         },
    
 

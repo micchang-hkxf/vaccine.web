@@ -8,7 +8,7 @@
             </v-btn>
         </template>
         <template v-slot:content>
-            <v-form class="edit-form" v-model="valid" ref="form" autocomplete="off">
+            <v-form class="edit-form" v-model="valid" ref="form" autocomplete="off" v-if="!!getInstitutions">
                 <v-row>
                     <v-col cols="4">
                         <div><span class="regist-title">接種類型</span> <span class="red--text">*</span></div>
@@ -119,7 +119,7 @@
                         <div> <span class="regist-title">醫療院所</span><span class="red--text">*</span></div>
                         <v-select v-model="model.regist_institution"
                                   :items="getInstitutions"
-                                  item-text="name"
+                                  item-text="uName"
                                   item-value="id"
                                   placeholder="請選擇醫療院所"
                                   :menu-props="{ bottom: true, offsetY: true }"
