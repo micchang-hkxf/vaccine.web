@@ -292,12 +292,12 @@
                                                 <v-list-item-subtitle>{{result.model.regist_age_limit}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line>
+                                        <!--<v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>備註</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
                                             </v-list-item-content>
-                                        </v-list-item>
+                                        </v-list-item>-->
 
                                         <v-divider></v-divider>
                                     </div>
@@ -426,12 +426,12 @@
                                                 <v-list-item-subtitle>{{result.model.regist_age_limit}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line>
+                                        <!--<v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title>備註</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
                                             </v-list-item-content>
-                                        </v-list-item>
+                                        </v-list-item>-->
 
                                         <v-divider></v-divider>
                                     </div>
