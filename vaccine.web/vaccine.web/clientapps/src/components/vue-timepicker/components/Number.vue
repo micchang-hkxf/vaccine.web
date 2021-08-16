@@ -1,6 +1,7 @@
 <template>
   <div class="numpad__digit" >
     <button
+      type="button"
       :class="{ 'is-disabled': !number.active }"
       :disabled="isDisabled"
       @mousedown.stop="digitPressed(number.value)"
