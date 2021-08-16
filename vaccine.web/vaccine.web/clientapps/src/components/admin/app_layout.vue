@@ -268,20 +268,9 @@
                 this.$bus.$emit(`confirm_show`, false);
             },
             getUserInfo() {
-                
-
                 var comp = this;
                 comp.getUserInfoData().then(function (result) {
-                    //console.log(result);
-                    comp.user = result.datas.data;
-                    //var user = result.datas.data;
-                    //var rr = '';
-                    //user.zones[0].data.forEach(f => {
-                    //    f.data.forEach(g => {
-                    //        rr += `${f.distName},${g.villageName} \r\n`;
-                    //    })
-                    //})
-                    //console.log(rr);
+                    comp.user = result.datas;
                 }).catch(function () {
                     window.location.href = "/login";
                 });

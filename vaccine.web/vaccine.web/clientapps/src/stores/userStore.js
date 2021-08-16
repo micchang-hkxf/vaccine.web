@@ -9,11 +9,19 @@ Vue.$cookies.config('1d')
 export default {
     namespaced: true,
     actions: {
-        getUserInfoData({ state, rootGetters }) {
+        getUserInfoData({ state, commit, rootGetters }) {
   
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
                 //console.log(state);
+
+                var info = rootGetters['user/getReGetInfo'];
+                if (info !== null) {
+                    results.datas = info;
+                    resolve(results);
+                    return;
+                }
+
                 axios({
                     method: 'get',
                     url: `${state.apiRoot}api/User/ReGetInfo?api-version=1.0`,
@@ -22,7 +30,8 @@ export default {
                         "X-Token": rootGetters['user/getToken'],
                     }
                 }).then(res => {
-                    results.datas = res;
+                    commit('setReGetInfo', res.data);
+                    results.datas = res.data;
                     resolve(results);
                 }).catch(ex => {
                     results.state = 'error';
@@ -64,6 +73,7 @@ export default {
         ...siteConfig,
         moduleEnabled: 'vuex module 已啟用',
         activityApply: null,
+        reGetInfo: null,
     },
     getters: {
         getSessionId: () => {
@@ -96,6 +106,12 @@ export default {
             if (!state.activityApply && data !== null)
                 state.activityApply = data;
             return JSON.parse(state.activityApply);
+        },
+        getReGetInfo: (state) => {
+            var data = window.sessionStorage.getItem('reGetInfo');
+            if (!state.reGetInfo && data !== null)
+                state.reGetInfo = data;
+            return JSON.parse(state.reGetInfo);
         },
         removeItem: () => (key) => {
             return window.sessionStorage.removeItem(key);
@@ -131,6 +147,10 @@ export default {
         setActivityApply: (state, activityApply) => {
             state.activityApply = JSON.stringify(activityApply);
             window.sessionStorage.setItem('activityApply', state.activityApply);
+        },
+        setReGetInfo: (state, reGetInfo) => {
+            state.reGetInfo = JSON.stringify(reGetInfo);
+            window.sessionStorage.setItem('reGetInfo', state.reGetInfo);
         }
     },
     modules: {
