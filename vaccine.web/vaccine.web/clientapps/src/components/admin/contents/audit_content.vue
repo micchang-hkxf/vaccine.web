@@ -18,7 +18,7 @@
                     <template v-slot:search-bar>
                         <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
                             <v-row>
-                                <v-col cols="7">
+                                <v-col cols="5">
                                     <v-select v-model="selectType"
                                               :items="getTypes"
                                               item-text="name"
@@ -33,7 +33,7 @@
                                               return-object>
                                     </v-select>
                                 </v-col>
-                                <v-col cols="7">
+                                <v-col cols="5">
                                     <v-text-field v-model="keyWord" placeholder="使用者/所屬單位/檔名關鍵字" outlined dense clearable></v-text-field>
                                 </v-col>
                                 <v-btn icon color="#626781" style="top:5px;" :ripple="false"
