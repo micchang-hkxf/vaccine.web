@@ -514,7 +514,7 @@
 
         created: function () {
             this.loadDists();
-            //this.loadMedicals();
+            this.loadMedicals();
         },
         mounted: function () {
             //console.log(this.$refs.form);

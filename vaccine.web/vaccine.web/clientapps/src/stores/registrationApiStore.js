@@ -79,6 +79,7 @@ export default {
         loadMedicals: function ({ state, commit, rootGetters }) {
             var medicals = rootGetters['user/getMedicals'];
             if (medicals !== null && medicals.length >= 1) {
+                commit('user/setMedicals', medicals);
                 commit('setInstitutions', medicals);
                 return;
             }
@@ -95,7 +96,8 @@ export default {
         },
         loadMedicalsByVillage: function ({ commit, rootGetters }, params) {
             var medicals = rootGetters['user/getMedicals'];
-            if (medicals === null && medicals.length >= 1) {
+            if (medicals !== null && medicals.length >= 1) {
+                commit('user/setMedicals', medicals);
                 commit('setInstitutions', medicals);
                 return;
             }

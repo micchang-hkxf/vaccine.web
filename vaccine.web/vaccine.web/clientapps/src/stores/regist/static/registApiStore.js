@@ -205,7 +205,7 @@ export default {
                 }
 
                 axios.post(apiUrl, {
-                    sessionId: params.sessionId.toString(),
+                    sessionId: params.sessionId,
                     captcha: params.captcha,
                     uId: params.uId,
                     bd: params.bd,
