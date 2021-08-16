@@ -237,9 +237,10 @@
           
                 //todo
                 var loginAccount = this.user.acc,
-                    accMobile = this.$refs.passwordEditor.newPassword;
+                    accMobile = this.$refs.passwordEditor.newPassword,
+                    accMobileSrc = this.$refs.passwordEditor.oldPassword;
                 
-                var oriPd = crypto.createHash('sha256').update(loginAccount + accMobile).digest('base64'),
+                var oriPd = crypto.createHash('sha256').update(loginAccount + accMobileSrc).digest('base64'),
                     newPd = crypto.createHash('sha256').update(loginAccount + accMobile).digest('base64');
 
                 var setdata = {
