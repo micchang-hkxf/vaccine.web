@@ -367,7 +367,7 @@
                     </v-col>
 
                 </v-row>
-                <v-row>
+                <!--<v-row>
                     <v-col cols="6">
                         <div style="margin-top:15px;"><span class="regist-title">備註</span></div>
                         <v-text-field v-model="model.remarks"
@@ -378,7 +378,7 @@
                         </v-text-field>
                     </v-col>
 
-                </v-row>
+                </v-row>-->
                 <v-divider></v-divider>
             </v-form>
             <!--<v-divider></v-divider>-->
