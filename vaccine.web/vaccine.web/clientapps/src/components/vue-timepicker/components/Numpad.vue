@@ -5,7 +5,8 @@
         </div>
         <div class="numpad__arrows">
             <div class="numpad__digit">
-                <button :class="{ 'is-disabled': activeIndex <= 0 }"
+                <button type="button"
+                        :class="{ 'is-disabled': activeIndex <= 0 }"
                         :disabled="activeIndex<=0||!this.isOpen"
                         @click.stop="goToPrevious()"
                         @mouseup.stop="blurEl($refs.previousButton)"
@@ -20,7 +21,8 @@
                      :class="{ 'is-pressed': arrowKeys.left.pressed }"></div>
             </div>
             <div class="numpad__digit">
-                <button :class="{ 'is-disabled': activeIndex > 2 }"
+                <button type="button"
+                        :class="{ 'is-disabled': activeIndex > 2 }"
                         :disabled="activeIndex>2||!this.isOpen"
                         @click.stop="goToNext()"
                         @mouseup.stop="blurEl($refs.nextButton)"
