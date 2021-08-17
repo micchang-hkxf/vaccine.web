@@ -13,8 +13,7 @@
                 <v-card style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
                     <com-table ref="table" ref-key="table" :headers="getHeaders" :items="items" :itemKey="itemKey" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               :change-page="changePage" :row-click="handleRowClick"
-                               style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
+                               :change-page="changePage" :row-click="handleRowClick" style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
 
                         <template v-slot:item.regist_quota="{item}">
                             <!--<div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>-->
@@ -1042,7 +1041,7 @@
     import XLSX from 'xlsx'
     export default {
         // router,
-        data: () => ({
+        data: () => ({          
             totalCount: 0,
             itemsPerPage: 5,
             totalVisible: 4,
@@ -1168,17 +1167,20 @@
                     pageSize: this.itemsPerPage,
                     page: page,
                 };
+              
                 this.loadRegistForm(params).then((r) => {
                     this.totalCount = r.totalCount;
-                    this.items.splice(0);
+                    this.items.splice(0);                 
                     r.datas.forEach((x) => this.items.push(x));
+                    this.$refs.table.gofrontPage(page);
                 }).catch((e) => {
                     console.log(e);
 
-                });
+                    });
+              
             },
             changePage: function (pager) {
-                console.log(pager);
+                console.log('c',pager);
                 ///{ page: 2, pageSize: 20}
                 this.getRegistForm(pager.page);
             },
@@ -1376,6 +1378,7 @@
                         comp.alertImgSrc = comp.successIcon;
                         comp.getRegistForm(1);
                         comp.$refs.table.clearAll();
+                      
                     } else {
                         this.alertImgSrc = comp.alertIcon;
                         comp.alertTitle = '刪除失敗';

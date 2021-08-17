@@ -8,7 +8,7 @@
         </template>
         <template v-slot:app-content>
             <v-card>
-                <com-table ref-key="table" :headers="headers" :items="items" :total-count="totalCount"
+                <com-table ref="auditTable" ref-key="table" :headers="headers" :items="items" :total-count="totalCount"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
                            :change-page="changePage"
                            style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
@@ -50,7 +50,7 @@
                         <span> 檔案下載紀錄 : </span>
                         <v-spacer></v-spacer>
                         <template>
-                            <v-btn v-on="on" color="#626781" :ripple="false" @click.stop="addFile">
+                            <v-btn  color="#626781" :ripple="false" @click.stop="addFile">
                                 <v-icon left color='white' size="15">fas fa-plus</v-icon>
                                 <span style="color:white">新增案件抽查表</span>
                             </v-btn>
@@ -59,10 +59,10 @@
                     <template v-slot:item.modify="{item}">
                         <template>
                             <!--<v-btn dark icon v-on="on" @click.stop="downloadFile">
-                        <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
-                        <span style="color:white">下載</span>
-                    </v-btn>-->
-                            <v-btn v-on="on" color="#736DB9" @click.stop="downloadFile(item)" :ripple="false">
+        <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
+        <span style="color:white">下載</span>
+    </v-btn>-->
+                            <v-btn  color="#736DB9" @click.stop="downloadFile(item)" :ripple="false">
                                 <v-icon left color='white' size="15">
                                     mdi-arrow-down
                                 </v-icon>
@@ -269,6 +269,7 @@
                     this.totalCount = r.totalCount;
                     this.items.splice(0);
                     r.datas.forEach((x) => this.items.push(x));
+                    this.$refs.auditTable.gofrontPage(page);
                 }).catch((e) => {
                     console.log(e);
 

@@ -8,7 +8,7 @@
         </template>
         <template v-slot:app-content>
             <v-card>
-                <com-table ref-key="table" :headers="headers" :items="items" :total-count="totalCount"
+                <com-table ref="registedTable" ref-key="table" :headers="headers" :items="items" :total-count="totalCount"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
                            :change-page="changePage"
                            style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
@@ -133,6 +133,8 @@
                         x.identity=code
                         this.items.push(x);
                     })
+
+                    this.$refs.registedTable.gofrontPage(page);
                 }).catch((e) => {
                     console.log(e);
 
