@@ -136,7 +136,7 @@
 
 <script>
     export default {
-        props: ['refKey', 'headers', 'items', 'itemKey', 'totalCount', 'itemsPerPage', 'totalVisible', 'showSelect', 'disabledProp', 'changePage','rowClick'],
+        props: ['refKey', 'headers', 'items', 'itemKey', 'totalCount', 'itemsPerPage', 'totalVisible', 'showSelect', 'disabledProp', 'changePage', 'rowClick'],
         data: () => ({
             page:1,
             isShow: false,
@@ -189,6 +189,7 @@
             this.$bus.$on(`${comp.refKey}_switch`, function () {
                 comp.$set(comp, "isShow", !comp.isShow);
             });
+           
         },
         methods: {
             rowClass: function (item) {
@@ -219,6 +220,9 @@
                 this.rowClick(item);
                //console.log('a', a);
                // console.log('row', item);
+            },
+            gofrontPage: function (value) {
+                this.page = value;
             }
         },
         components: {

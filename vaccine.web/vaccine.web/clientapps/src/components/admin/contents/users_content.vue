@@ -9,7 +9,7 @@
         <template v-slot:app-content>
             <com-loading ref-key="type1"></com-loading>
             <div id="app" class="table-list">
-                <com-table ref-key="table" :headers="headers" :items="items" :total-count="totalCount" disabled-prop="disabled"
+                <com-table ref="userTable" ref-key="table" :headers="headers" :items="items" :total-count="totalCount" disabled-prop="disabled"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
                            :change-page="changePage" style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
                     <template v-slot:item.isEnable="items">
@@ -578,6 +578,7 @@
                     page: page,
                     rows: this.itemsPerPage,
                 };
+                
                 if (this.selectRole) {
                     filter.userType = this.selectRole.id;
                 }
@@ -606,12 +607,14 @@
                     comp.$bus.$emit('type1_hide4');
                     comp.totalCount = result.totalCount;
                     comp.items = [];
+                  
                     result.datas.forEach(f => comp.items.push(f))
+                    comp.$refs.userTable.gofrontPage(page);
                     if (!finddata ) {
                         comp.$bus.$emit('alert_show', true);
                         return;
                     }
-           
+                   
     
                 }).catch(function () {
                     comp.errorTitle = '處理錯誤，請重新嘗試';
