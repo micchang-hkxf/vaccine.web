@@ -145,7 +145,7 @@ export default {
                     
                     var datas = [];
                     res.data.data.forEach((data) => {
-                        
+                        //console.log(data);
                         datas.push({
                             regist_id: data.activityId,
                             regist_create_date: data.createDate.substr(0, 10).replace(/-/g, '/'),
@@ -173,7 +173,8 @@ export default {
                             regist_qualified: parseInt(data.reCheckCount),
                             regist_quota: data.amount,
                             regist_age_limit: parseInt(data.actAge),
-                            regist_unpassed: data.amount - data.leftAmount
+                            regist_unpassed: data.amount - data.leftAmount,
+                            regist_isrechecked: data.isReChecked
                         });
                     });
 
@@ -226,7 +227,7 @@ export default {
                             status: data.logType,//-2 複檢異常 ，-1取消，0複檢不合格，1複檢成功, 2複檢不合格（人工複檢），3複檢合格（人工複檢）
                             //status: -2,//test only
                             remark:vacc//備註
-                           
+                     
                         });
                     });
 
@@ -243,7 +244,7 @@ export default {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement?activityId=` + params.id;
                 var results = { datas: [], state: '' };
-                
+        
                 fetch(apiUrl, {
                     cache: 'no-cache',
                     credentials: 'same-origin',
@@ -253,7 +254,7 @@ export default {
                     method: 'GET'
                 })
                 .then(res => res.blob().then(blob => {
-                    const filename = '完整接種同意書.xlsx';
+                    const filename = '完整接種同意書.pdf';
                     if (window.navigator.msSaveOrOpenBlob) {
                         navigator.msSaveBlob(blob, filename); // 兼容IE10
                     } else {
@@ -346,7 +347,7 @@ export default {
         },
         getAgreeFile: function ({ state, rootGetters }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement/` + params.id;
+                var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement/` + params.id +'?ActivityId='+params.activityId;
                 var results = { datas: [], state: '' };
                 
                 fetch(apiUrl, {

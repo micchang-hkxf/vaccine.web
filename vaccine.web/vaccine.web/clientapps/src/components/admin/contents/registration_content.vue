@@ -1101,6 +1101,8 @@
             warningIcon: '/alert_warning.svg',
             alertIcon: '/alert_warning.svg',
             artificialResult: '',
+            isReChecked: false,
+            downloadErrorMessage:'複檢結果至少要有一筆成功才能下載',
             artificialOptions: [
                 { state: '複檢合格', id: 'pass' },
                 { state: '複檢不合格', id: 'nopass' },
@@ -1407,8 +1409,16 @@
             },
             dowloadAgreeItem: function (item) {
                 //console.log('Agree', item);
-                this.detailId = item.regist_id;
-                this.downloadCompleteFile();
+                if (item.regist_isrechecked) {
+                    this.detailId = item.regist_id;
+                    this.downloadCompleteFile();
+                } else {
+                    this.alertTitle = this.downloadErrorMessage;
+                    this.alertText = '';
+                    this.alertImgSrc = this.warningIcon;
+                    this.$refs.registAlert.open();
+                }
+               
             },
             dowloadRegistItem: function (item) {
                 //console.log('Regist', item);
@@ -1424,7 +1434,7 @@
                 console.log('item', item);
             },
             detailItem: function (item) {
-
+                this.isReChecked = item.regist_isrechecked //是否複檢成功
                 this.detailId = item.regist_id;//item.id;
                 this.detailTitle = item.regist_title;//item.title;
                 this.detailType = item.regist_type_name; //item.type;
@@ -1535,6 +1545,14 @@
             downloadCompleteFile: function () {
                 var comp = this;
                 comp.alertMessage = '';
+                if (!comp.isReChecked) {
+                    comp.alertTitle = comp.downloadErrorMessage;
+                    comp.alertText = '';
+                    comp.alertImgSrc = comp.warningIcon;
+                    comp.$refs.registAlert.open();
+                    return false;
+                }
+
                 comp.getCompleteFile({ id: comp.detailId })
                     .then(function (result) {
                         switch (result.state) {
@@ -1560,7 +1578,7 @@
             downloadSignUpFile: function () {
                 var comp = this;
                 comp.alertMessage = '';
-                comp.getSignUpFile({ id: comp.detailId })
+                comp.getSignUpFile({ id: comp.detailId})
                     .then(function (result) {
                         switch (result.state) {
                             case 'not found':
@@ -1610,7 +1628,8 @@
             downloadAgreeFile: function (item) {
                 var comp = this;
                 comp.alertMessage = '';
-                comp.getAgreeFile({ id: item.id, name: item.name })
+                console.log(item);
+                comp.getAgreeFile({ id: item.id, name: item.name, activityId: this.activityId })
                     .then(function (result) {
                         switch (result.state) {
                             case 'not found':
