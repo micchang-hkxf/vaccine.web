@@ -8,7 +8,7 @@
                 <apply-viewer></apply-viewer>
                 <v-divider></v-divider>
             </div>
-            <div class="agree-actions" v-if="isNeedLogin">
+            <div class="agree-actions" v-if="isNeedLogin && isShow">
                 <div class="action-header">請選擇登記方式：</div>
                 <div class="action-content d-flex flex-row justify-space-between">
                     <div class="action tp-pass d-flex flex-column justify-center align-center" @click="toTpPass($route.params.vote_no)">
@@ -37,6 +37,8 @@
     import appLayout from 'components/regist/regist_layout'
     import applyViewer from 'components/regist/forms/apply_viewer'
     import loginSwitch from 'components/regist/forms/login_switcher'
+    import moment from "moment";
+
     export default {
         // router,
         data: () => ({
@@ -44,7 +46,10 @@
             appBar: {
                 elevation: 0,
                 height: '144px'
-            }, isNeedLogin: true
+            },
+            isNeedLogin: true,
+            isShow: false,
+            now: new Date()
         }),
         computed: {
             ...mapGetters('regist', ['getUserInfo']),
@@ -53,6 +58,11 @@
 
         },
         created: function () {
+            this.isShow = false;
+            this.session = this.$store.getters['regist/user/getActivityApply'];
+            if (moment(this.session.registStart) <= moment(this.now) && moment(this.now) <= moment(this.session.registEnd)) {
+                this.isShow = true;
+            }
             window.scrollTo(0, 0);
         },
         methods: {
@@ -84,8 +94,12 @@
     }
 </script>
 <style scoped>
+    .agree-content/deep/ .app-content {
+        margin-bottom: 78px;
+    }
+
     .agree-content/deep/ .action-header {
-        padding-top:24px!important;
+        padding-top: 24px !important;
     }
     .agree-content/deep/ .v-divider {
         margin-top: 24px !important;
