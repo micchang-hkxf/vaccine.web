@@ -1757,7 +1757,7 @@
                         for (j = 4; j < data.length; j++) {
 
                             if (!data[j][0]) {
-                                console.log("line " + (j + 1) + "is null");
+                                //console.log("line " + (j + 1) + "is null");
                                 continue;
                             }
                             vv = fv(data[j][0], v, 'groupName');
@@ -1779,10 +1779,12 @@
 
                             //行政區域
                             zz = fv(data[j][3], z, 'distName');
+                 
                             if (zz) {
                                 comp.finalData[k][3] = zz['distId'];
-                                zzz = fv(data[j][4], zz['data'], 'villageName');
-                                villageName = data[j][4];
+                                zzz = fv(data[j][4].trim(), zz['data'], 'villageName');
+                 
+                                villageName = data[j][4].trim();
                                 if (zzz) {
                                     comp.finalData[k][4] = zzz['villageId'];
                                 } else {
@@ -1795,7 +1797,7 @@
 
                             mm = fv(villageName, m, 'villageName');
 
-                            if (mm && mm['uName'] == data[j][6]) {
+                            if (mm && mm['uName'] == data[j][6].trim()) {
                                 comp.finalData[k][6] = mm['id'];
                             } else {
                                 console.log('醫療院所', "error line:" + (j + 1));

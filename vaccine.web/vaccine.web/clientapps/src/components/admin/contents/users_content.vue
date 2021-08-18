@@ -107,13 +107,13 @@
                                         </v-btn>手動輸入
                                     </v-list-item-action-text>
                                 </v-list-item>
-                                <v-list-item @click.stop="importItem(item)">
+                                <!--<v-list-item @click.stop="importItem(item)">
                                     <v-list-item-action-text>
                                         <v-btn icon dense>
                                             <v-icon small>far fa-trash-alt</v-icon>
                                         </v-btn>檔案匯入
                                     </v-list-item-action-text>
-                                </v-list-item>
+                                </v-list-item>-->
 
                             </v-list>
                         </v-menu>
