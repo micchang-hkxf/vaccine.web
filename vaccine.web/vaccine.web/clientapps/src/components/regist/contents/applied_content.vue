@@ -52,7 +52,7 @@
                     </div>
                 </div>
             </div>
-            <div class="applied-actions" v-if="isNeedLogin && (session.messageCode === 1 || session.messageCode === 2)">
+            <div class="applied-actions" v-if="isNeedLogin && (session.messageCode === 1 || session.messageCode === 2 )&& ($moment(now) <= $moment(session.sessionEnd))">
                 <v-btn @click.stop="cancelRegistered()">我要取消報名</v-btn>
             </div>
             <!--共用 loading -->
