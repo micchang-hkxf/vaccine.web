@@ -116,9 +116,9 @@ export default {
             return new Promise((reslove) => {
                 var results = {
                     uName: '張閔傑', //使用者名稱
-                    birthday: userInfo.birthday, //使用者生日
+                    birthday: Vue.moment(userInfo.birthday).format('YYYY-MM-DD'), //使用者生日
                     identify: userInfo.identify, //使用者身分證
-                    sessionId: userInfo.sessionId, //生日登入 sessionId
+                    sessionId: userInfo.sessionId.toString(), //生日登入 sessionId
                     captcha: userInfo.captcha, //生日登入 captcha
                     token: null, //台北通 token
                     type: 'identify'
