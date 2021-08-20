@@ -73,7 +73,7 @@
                                         <img src="/regist/select_vaccine.svg" />
                                     </div>
                                     <div class="apply-field-type-text d-flex justify-start align-center">
-                                        {{vaccine}}
+                                        {{vaccine.itemName}}
                                     </div>
                                 </div>
                             </template>
@@ -333,14 +333,14 @@
                                         comp.$bus.$emit('alertRegistered_show', true);
                                         return;
                                     }
-
+                                    
                                     // 已報名本次活動
                                     if (result.datas[0]['messageCode'] === 1 && result.datas[0]['applyNo'] !== null) {
                                         comp.applyNo = result.datas[0]['applyNo'];
                                         comp.$bus.$emit('alertApplyNo_show', true);
                                         return;
                                     }
-
+                                    
                                     // 名額已滿
                                     if (result.datas[0]['messageCode'] === 4) {
                                         comp.$bus.$emit('alert_show', true);
