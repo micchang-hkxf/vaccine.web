@@ -67,14 +67,26 @@
                     <div class="apply-field display type">
                         <div class="apply-field-label">接種疫苗</div>
                         <div class="apply-field-container">
-                            <div class="apply-field-type d-flex justify-space-between">
-                                <div class="apply-field-type-icon d-flex justify-start align-center">
-                                    <img src="/regist/select_vaccine.svg" />
+                            <template v-if="vaccines.length > 0">
+                                <div class="apply-field-type d-flex justify-space-between" v-for="(vaccine , idx) in vaccines" :key="`vaccine_${idx}`">
+                                    <div class="apply-field-type-icon d-flex justify-start align-center">
+                                        <img src="/regist/select_vaccine.svg" />
+                                    </div>
+                                    <div class="apply-field-type-text d-flex justify-start align-center">
+                                        {{vaccine.itemName}}
+                                    </div>
                                 </div>
-                                <div class="apply-field-type-text d-flex justify-start align-center">
-                                    {{session.brandName}}
+                            </template>
+                            <template v-else>
+                                <div class="apply-field-type d-flex justify-space-between">
+                                    <div class="apply-field-type-icon d-flex justify-start align-center">
+                                        <img src="/regist/select_vaccine.svg" />
+                                    </div>
+                                    <div class="apply-field-type-text d-flex justify-start align-center">
+                                        {{session.brandName}}
+                                    </div>
                                 </div>
-                            </div>
+                            </template>
                         </div>
                     </div>
                     <v-divider></v-divider>
@@ -217,6 +229,7 @@
             beforeActivityName: '',
             checkJobId: '',
             applyNo: '',
+            vaccines: []
         }),
         computed: {
             ...mapGetters('regist', ['getUserInfo']),
@@ -283,6 +296,7 @@
             checkBeforeApply: function () {
                 var comp = this;
                 comp.checkJobId = '';
+                comp.vaccines = [];
 
                 var userInfo = comp.getUserInfo;
                 if (userInfo !== null) {
@@ -319,14 +333,14 @@
                                         comp.$bus.$emit('alertRegistered_show', true);
                                         return;
                                     }
-
+                                    
                                     // 已報名本次活動
                                     if (result.datas[0]['messageCode'] === 1 && result.datas[0]['applyNo'] !== null) {
                                         comp.applyNo = result.datas[0]['applyNo'];
                                         comp.$bus.$emit('alertApplyNo_show', true);
                                         return;
                                     }
-
+                                    
                                     // 名額已滿
                                     if (result.datas[0]['messageCode'] === 4) {
                                         comp.$bus.$emit('alert_show', true);
@@ -334,6 +348,7 @@
                                     }
                                     
                                     comp.checkJobId = result.datas[0]['checkJobId'];
+                                    comp.vaccines = result.datas[0]['vaccines'];
                                 }
                             })
                             .catch(ex => {

@@ -28,7 +28,7 @@
                 <div class="applied-header btn-cancel btn-other d-flex justify-center align-center">
                     報名已取消
                     <div>{{$moment(session.cancelTime).format('YYYY/MM/DD,HH:mm')}}</div>
-                    <div v-if="session.messageCode === 4">( 已報名其他場次：{{session.actName}} )</div>
+                    <div>( 已報名其他場次：{{session.actName}} )</div>
                 </div>
             </template>
             <template v-else-if="session.messageCode === 5">

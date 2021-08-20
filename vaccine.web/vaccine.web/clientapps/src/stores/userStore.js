@@ -74,6 +74,7 @@ export default {
         moduleEnabled: 'vuex module 已啟用',
         activityApply: null,
         reGetInfo: null,
+        medicals: null,
     },
     getters: {
         getSessionId: () => {
@@ -95,8 +96,11 @@ export default {
         getVaccines: () => {
             return JSON.parse(window.sessionStorage.getItem('vaccines'));
         },
-        getMedicals: () => {
-            return JSON.parse(window.sessionStorage.getItem('medicals'));
+        getMedicals: (state) => {
+            var data = window.sessionStorage.getItem('medicals');
+            if (!state.medicals && data !== null)
+                state.medicals = data;
+            return JSON.parse(state.medicals);
         },
         getAuditTypes: () => {
             return JSON.parse(window.sessionStorage.getItem('auditTypes'));
@@ -139,7 +143,8 @@ export default {
             window.sessionStorage.setItem('vaccines', JSON.stringify(vaccines));
         },
         setMedicals: (state, medicals) => {
-            window.sessionStorage.setItem('medicals', JSON.stringify(medicals));
+            state.medicals = JSON.stringify(medicals);
+            window.sessionStorage.setItem('medicals', state.medicals);
         },
         setAuditTypes: (state, auditTypes) => {
             window.sessionStorage.setItem('auditTypes', JSON.stringify(auditTypes));
