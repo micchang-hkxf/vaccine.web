@@ -119,7 +119,7 @@
                         <div> <span class="regist-title">醫療院所</span><span class="red--text">*</span></div>
                         <v-select v-model="model.regist_institution"
                                   :items="getInstitutions"
-                                  item-text="uName"
+                                  item-text="name"
                                   item-value="id"
                                   placeholder="請選擇醫療院所"
                                   :menu-props="{ bottom: true, offsetY: true }"
@@ -513,8 +513,6 @@
         props: ['width', 'title', 'action', 'saveBtnName'],
 
         created: function () {
-            this.loadDists();
-            this.loadMedicals();
         },
         mounted: function () {
             //console.log(this.$refs.form);
@@ -543,7 +541,6 @@
                 this.mode = 'new';
                 this.model = Object.assign(this.defaultItem, model);
                 this.$refs.dialogPanel.open();
-
             },
             reset: function () {
                 for (var nn in this.model) {
@@ -554,8 +551,10 @@
                     } else {
                         this.model[nn] = "";
                     }
-
                 }
+                this.$refs.form.resetValidation();
+                this.regist_institution_code = '';
+                this.regist_institution_name = '';
             },
 
             save: function () {
@@ -572,11 +571,9 @@
                 //this.$refs.dialogPanel.open();
             },
             close: function () {
-
                 this.$refs.dialogPanel.close();
             },
             cancel: function () {
-
                 this.$refs.dialogPanel.close();
             },
             closeDialog: function () {
