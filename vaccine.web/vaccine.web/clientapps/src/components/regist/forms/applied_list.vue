@@ -115,6 +115,11 @@
                     this.applieds.splice(0);
                     if (!applieds) return;
                     applieds.forEach(f => {
+                        var brands = [];
+                        f.vaccines.forEach(v => {
+                            brands.push(v.itemName);
+                        });
+                        f.brandName = brands.join('、');
                         this.applieds.push(f);
                     });
                 });                
