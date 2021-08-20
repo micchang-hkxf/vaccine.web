@@ -17,7 +17,7 @@
                         </div>
                         <div class="action-label">台北通帳號登入</div>
                     </div>
-                    <div class="action d-flex flex-column justify-center align-center" @click.stop="$refs.switch.toLocalLogin()">
+                    <div class="action d-flex flex-column justify-center align-center" @click.stop="toLocalPass($route.params.vote_no)">
                         <div>
                             <img src="/regist/editor_pen.svg">
                         </div>
@@ -70,9 +70,11 @@
             toTpPass: function (sessionId) {
                 this.$refs.switch.toTpPassLogin(`/regist/#/apply/${sessionId}`);
             },
-            
+            toLocalPass: function (sessionId) {
+                this.$refs.switch.toLocalLogin(`/apply/${sessionId}`);
+            },
             loginDone: function () {
-                this.$router.push({ path: `/apply/${this.$route.params.vote_no}` });
+                //this.$router.push({ path: `/apply/${this.$route.params.vote_no}` });
             },
             loginCancel: function () {
 
