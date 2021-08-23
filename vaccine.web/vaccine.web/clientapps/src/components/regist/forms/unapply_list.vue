@@ -141,14 +141,14 @@
         margin:0px!important;
     }
 
-    .col-6 {
+    /*.col-6 {
         flex: 0 0 37% !important;
         max-width: 50%;
-    }
+    }*/
 
     .row {
         display: flex;
-        justify-content:center;
+        justify-content: space-between;
         flex-wrap: wrap !important;
         flex: none !important;
         margin-right: 0px !important;
@@ -327,4 +327,88 @@
         position: relative;
         top: 112px;
     }
+
+
+    @media  (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2){
+        .unapply-list/deep/ .action-container {
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-top: 16px;
+            padding-bottom: 16px;
+            margin-bottom: 78px;
+            display: block;
+            justify-content: center;
+            background-color: #f4f4f4;
+            margin: 0 auto;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .unapply-list .action-bar {
+            /*padding: 16px !important;
+            background-color: #FFFFFF;*/
+            width: 95%;
+            /*margin: 0 auto;*/
+            /*height: 150px;*/
+        }
+
+        .col-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    }
+
+    /* Small devices (landscape phones, 576px and up) */
+    @media (min-width: 480.5px) and (max-width: 767.98px) {
+        .unapply-list/deep/ .action-container {
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-top: 16px;
+            padding-bottom: 16px;
+            margin-bottom: 78px;
+            display: block;
+            justify-content: center;
+            background-color: #f4f4f4;
+            /*#f4f4f4;*/
+            margin: 0 auto;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .unapply-list .action-bar {         
+            width: 100%;
+        }
+
+        .col-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    }
+
+    @media (min-width: 770px) and (max-width: 960px) {
+        .unapply-list/deep/ .action-container {
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-top: 16px;
+            padding-bottom: 16px;
+            margin-bottom: 78px;
+            display: block;
+            justify-content: center;
+            background-color: #f4f4f4;
+            margin: 0 auto;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .unapply-list .action-bar {
+            width: 98%;
+        }
+
+        .col-6 {
+            flex: 0 0 100%;
+            max-width: 50%;
+        }
+    }
+
+
 </style>

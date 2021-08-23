@@ -87,4 +87,6 @@
     .apply-viewer/deep/ .activity-detail-descript .full {
         color: #F4A95F;
     }
+
+   
 </style>
