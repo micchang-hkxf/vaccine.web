@@ -25,7 +25,7 @@
 
         <template v-for="(header,index) in computedHeaders" v-slot:[header.templateName]="{item}">
 
-            <span :key="`table-content-${index}`">
+            <span :key="`table-content-${index}`" :class="`table-content-field ${header.templateName.replaceAll('item.','').replaceAll('_','-')}`">
 
                 <span :key="index" v-if="!header.hasTemplate"> {{item[header.value]}}</span>
 
