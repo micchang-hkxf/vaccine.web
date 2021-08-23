@@ -181,8 +181,8 @@
 
 
                             <!--新增-->
-                            <editor ref="registNewEditor" ref-key="two" width="60%" :title="title" :saveBtnName="saveBtnName" :action="formAction"></editor>
-                            <com-dialog ref="registViewer" ref-key="two" width="60%" key="regist-new-editor">
+                            <editor ref="registNewEditor" ref-key="two" width="40%" :title="title" :saveBtnName="saveBtnName" :action="formAction"></editor>
+                            <com-dialog ref="registViewer" ref-key="two" width="40%" key="regist-new-editor">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
                                     <v-spacer></v-spacer>
@@ -202,7 +202,7 @@
                                         </v-list-item>
                                         <v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
                                             <v-list-item-content>
-                                                <v-list-item-title>新冠肺炎疫苗廠牌</v-list-item-title>
+                                                <v-list-item-title>疫苗廠牌</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -312,8 +312,8 @@
 
 
                             <!--編輯-->
-                            <editor ref="registEdit" ref-key="two" width="60%" :title="title" :saveBtnName="saveBtnName" :action="editFormAction"></editor>
-                            <com-dialog ref="registEditViewer" ref-key="two" width="60%" key="regist-new-viewer">
+                            <editor ref="registEdit" ref-key="two" width="40%" :title="title" :saveBtnName="saveBtnName" :action="editFormAction"></editor>
+                            <com-dialog ref="registEditViewer" ref-key="two" width="40%" key="regist-new-viewer">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
                                     <v-spacer></v-spacer>
@@ -333,7 +333,7 @@
                                         </v-list-item>
                                         <v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
                                             <v-list-item-content>
-                                                <v-list-item-title>新冠肺炎疫苗廠牌</v-list-item-title>
+                                                <v-list-item-title>疫苗廠牌</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -756,6 +756,10 @@
 </template>
 
 <style>
+    span.table-content-field.regist-village-name {
+        width: 200px!important;
+        min-width:200px!important;
+    }
     .file-upload-dialog {
         min-width: 300px;
     }
