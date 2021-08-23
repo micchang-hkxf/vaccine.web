@@ -18,57 +18,62 @@
             </div>
         </div>
         <div class="action-container">
-            <v-card class="action d-flex flex-row" elevation="0" v-for="(session,index) in sessions" :key="`session_${index}`">
-                <div class="action-info d-flex flex-column justify-center">
-                    <div class="action-info-header d-flex flex-column">
-                        <div class="action-info-subject">
-                            {{session.sessionName}}
-                        </div>
-                        <div class="action-info-sec-subject">
-                            {{session.zoneName}}-{{session.villageName}}│{{session.groupName}}
-                        </div>
-                    </div>
-                    <div class="action-info-detail d-flex flex-column justify-center">
-                        <div class="d-flex flex-row justify-space-between" v-if="session.brandName !== ''">
-                            <div class="action-info-title text-left">疫苗廠牌：</div>
-                            <div class="action-info-data text-right">{{session.brandName}}</div>
-                        </div>
-                        <div class="d-flex flex-row justify-space-between">
-                            <div class="action-info-title text-left">接種日期：</div>
-                            <div class="action-info-data text-right">{{$moment(session.sessionStart).format('YYYY/MM/DD')}},{{$moment(session.sessionStart).format('HH:mm')}}-{{$moment(session.sessionEnd).format('HH:mm')}}</div>
-                        </div>
-                        <div class="d-flex flex-row justify-space-between">
-                            <div class="action-info-title text-left">事先報名：</div>
-                            <div class="action-info-data text-right">
-                                {{$moment(session.registStart).format('YYYY/MM/DD,HH:mm')}}<br /> - {{$moment(session.registEnd).format('YYYY/MM/DD,HH:mm')}}
+            <v-row> 
+                <v-col  v-for="(session,index) in sessions" 
+                       :key="`session_${index}`" cols="6" >
+                    <v-card class="action d-flex flex-row" elevation="0">
+                        <div class="action-info d-flex flex-column justify-center">
+                            <div class="action-info-header d-flex flex-column">
+                                <div class="action-info-subject">
+                                    {{session.sessionName}}
+                                </div>
+                                <div class="action-info-sec-subject">
+                                    {{session.zoneName}}-{{session.villageName}}│{{session.groupName}}
+                                </div>
+                            </div>
+                            <div class="action-info-detail d-flex flex-column justify-center">
+                                <div class="d-flex flex-row justify-space-between">
+                                    <div class="action-info-title text-left">疫苗廠牌：</div>
+                                    <div class="action-info-data text-right">{{session.brandName}}</div>
+                                </div>
+                                <div class="d-flex flex-row justify-space-between">
+                                    <div class="action-info-title text-left">接種日期：</div>
+                                    <div class="action-info-data text-right">{{$moment(session.sessionStart).format('YYYY/MM/DD')}},{{$moment(session.sessionStart).format('HH:mm')}}-{{$moment(session.sessionEnd).format('HH:mm')}}</div>
+                                </div>
+                                <div class="d-flex flex-row justify-space-between">
+                                    <div class="action-info-title text-left">事先報名：</div>
+                                    <div class="action-info-data text-right">
+                                        {{$moment(session.registStart).format('YYYY/MM/DD,HH:mm')}}<br /> - {{$moment(session.registEnd).format('YYYY/MM/DD,HH:mm')}}
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row justify-space-between">
+                                    <div class="action-info-title text-left">開放名額：</div>
+                                    <div class="action-info-data text-right" v-if="session.totalCount === session.maxLimit">
+                                        <span class="full">名額已滿</span>
+                                    </div>
+                                    <div class="action-info-data text-right" v-else>
+                                        {{session.totalCount}} / <span class="disabled">{{session.maxLimit}}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row justify-space-between" v-if="session.actAge !== null">
+                                    <div class="action-info-title text-left">年齡限制：</div>
+                                    <div class="action-info-data text-right">
+                                        {{session.actAge}}歲以上
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="d-flex flex-row justify-space-between">
-                            <div class="action-info-title text-left">開放名額：</div>
-                            <div class="action-info-data text-right" v-if="session.totalCount === session.maxLimit">
-                                <span class="full">名額已滿</span>
-                            </div>
-                            <div class="action-info-data text-right" v-else>
-                                {{session.totalCount}} / <span class="disabled">{{session.maxLimit}}</span>
-                            </div>
+                        <div class="action-button d-flex justify-center align-center">
+                            <v-btn color="#736DB9" height="100%" width="100%" @click="toSession(session)" v-if="session.signUp">
+                                報名
+                            </v-btn>
+                            <v-btn color="#626781" height="100%" width="100%" @click="toSession(session)" v-else>
+                                查看
+                            </v-btn>
                         </div>
-                        <div class="d-flex flex-row justify-space-between" v-if="session.actAge !== null">
-                            <div class="action-info-title text-left">年齡限制：</div>
-                            <div class="action-info-data text-right">
-                                {{session.actAge}}歲以上
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="action-button d-flex justify-center align-center">
-                    <v-btn color="#736DB9" height="100%" width="100%" @click="toSession(session)" v-if="session.signUp">
-                        報名
-                    </v-btn>
-                    <v-btn color="#626781" height="100%" width="100%" @click="toSession(session)" v-else>
-                        查看
-                    </v-btn>
-                </div>
-            </v-card>
+                    </v-card>
+                </v-col>
+            </v-row>
             <div class="null-list" v-if="sessions.length === 0">
                 <div class="null-content">
                     <img src="/regist/null_list.svg" />
@@ -131,22 +136,48 @@
 </script>
 <style scoped>
 
+    .col{
+        padding:0px!important;
+        margin:0px!important;
+    }
+
+    .col-6 {
+        flex: 0 0 37% !important;
+        max-width: 50%;
+    }
+
+    .row {
+        display: flex;
+        justify-content:center;
+        flex-wrap: wrap !important;
+        flex: none !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+        align-content: start;
+    }
+
+
+    .v-btn--contained {
+        box-shadow: none  !important;
+    }
+
+
     .unapply-list/deep/ .v-btn:not(.v-btn--disabled) {
         color: white !important;
     }
 
     .unapply-list/deep/ .clear-action {
         background-color: #626781!important;
-        width:40%!important
+        width:20%!important
     }
     .unapply-list/deep/ .search-action {
         background-color: #736DB9 !important;
-        width:40%!important
+        width:20%!important
     }
     
 
     .unapply-list/deep/ .action-bar-bottons {
-        padding-top: 12px !important;
+        padding-top: 25px !important;
     }
     .unapply-list/deep/ .v-input {
         padding-top: 0px !important;
@@ -159,10 +190,11 @@
     .v-application .primary--text {
         color: #736DB9 !important;
         caret-color: #736DB9 !important;
-    } 
+    }
 
     .unapply-list/deep/ {
-        background-color: #F4F4F4 !important;
+        /*background-color: #F4F4F4 !important;*/
+        margin: 0 auto;
     }
 
     .unapply-list/deep/ .action-info-data {
@@ -204,6 +236,9 @@
         height: 168px;
         padding: 16px;
         border-radius:8px!important;
+        width:95%;
+        margin:10px;
+
     }
 
     .unapply-list/deep/ .action-button {
@@ -224,10 +259,14 @@
     }
 
         .unapply-list/deep/ .action-bar {
-            padding-right: 16px !important;
+            /*padding-right: 16px !important;
             padding-left: 16px !important;
-            padding-bottom: 16px !important;
+            padding-bottom: 16px !important;*/
+            padding:16px !important;
             background-color: #FFFFFF;
+            width: 50%;
+            margin: 0 auto;
+            height:150px;
         }
 
         .unapply-list/deep/ .action-bar .v-text-field .transparent {
@@ -238,13 +277,18 @@
         display: none !important;
     }
 
-    .unapply-list/deep/ .action-container {
-        padding-left: 16px;
-        padding-right: 16px;
-        padding-top: 16px;
-        padding-bottom: 16px;
-        margin-bottom: 78px;
-    }
+        .unapply-list/deep/ .action-container {
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-top: 16px;
+            padding-bottom: 16px;
+            margin-bottom: 78px;
+            display: flex;
+            justify-content: center;
+            background-color: #f4f4f4;
+            margin: 0 auto;
+            height: 100vh;
+        }
     /*
     .unapply-list/deep/ .action-info-detail {
         padding-top: 16px!important;
@@ -259,9 +303,9 @@
         height: 100% !important;
     }
 
-    .unapply-list/deep/ .action:not(:first-child) {
+    /*.unapply-list/deep/ .action:not(:first-child) {
         margin-top: 16px;
-    }
+    }*/
 
     .unapply-list/deep/ .action-info-detail .disabled {
         color: rgba(67,73,105,0.5) !important;
