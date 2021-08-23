@@ -1102,6 +1102,7 @@
             alertIcon: '/alert_warning.svg',
             artificialResult: '',
             isReChecked: false,
+            regist_beforeDay: 3,//報名截止時間要於施打時間早3天以上
             downloadErrorMessage:'複檢結果至少要有一筆成功才能下載',
             artificialOptions: [
                 { state: '複檢合格', id: 'pass' },
@@ -1228,6 +1229,7 @@
                 console.log('fileImport')
             },
             formAction: function (result) {
+        
                 var errMsg = ""
                 if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) >=
                     Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_end_time)) {
@@ -1239,10 +1241,10 @@
                 }
 
                 if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) <
-                    Date.parse(result.model.regist_apply_end_date)) {
-                    errMsg = "(開放報名結束時間)必須早於(開始施打時間)";
+                    Date.parse(result.model.regist_apply_end_date) + this.regist_beforeDay*60*60*24*1000) {
+                    errMsg = "(開放報名結束時間)必須早於(開始施打時間)至少" + this.regist_beforeDay+"天";
                 }
-
+              
                 if (errMsg != "") {
                     this.alertTitle = '設定錯誤';
                     this.alertText = errMsg;
