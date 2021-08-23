@@ -79,7 +79,7 @@
             ...mapGetters('regist', ['getUserInfo', 'getApiRoot']),
             birth: function () {
                 if (!this.year || !this.month || !this.day) return;
-                return new Date(this.year + 1911, this.month, this.day);
+                return new Date(this.year + 1911, this.month - 1, this.day);
             },
             getCaptchaUrl: function () {
                 return `${this.getApiRoot}api/captcha?sessionId=${this.sessionId}`;
