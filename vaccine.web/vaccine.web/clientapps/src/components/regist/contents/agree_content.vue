@@ -13,13 +13,16 @@
                 <div class="action-content d-flex flex-row justify-space-between">
                     <div class="action tp-pass d-flex flex-column justify-center align-center" @click="toTpPass($route.params.vote_no)">
                         <div>
-                            <img src="/regist/tp_pass.svg">
+                            <!--<img src="/regist/tp_pass.svg">-->
+                            <img src="/regist/tpp.svg">
                         </div>
                         <div class="action-label">台北通帳號登入</div>
                     </div>
+                  
                     <div class="action d-flex flex-column justify-center align-center" @click.stop="toLocalPass($route.params.vote_no)">
                         <div>
-                            <img src="/regist/editor_pen.svg">
+                            <!--<img src="/regist/editor_pen.svg">-->
+                            <img src="/regist/edit.svg">
                         </div>
                         <div class="action-label">手動輸入資料</div>
                     </div>
@@ -126,8 +129,10 @@
         font-size: 16px;
         color: white;
         background-color: #736DB9;
-        width: 150px !important;
-        height: 150px;
+        /*width: 150px !important;
+        height: 150px;*/
+        width: 300px !important;
+        height: 300px;
         border-radius: 10px;
     }
 
@@ -181,4 +186,72 @@
         margin-left: -30% !important;
         margin-right: -30% !important;
     }
+
+    @media (min-device-width: 320px) and (max-device-width: 540px) and (-webkit-min-device-pixel-ratio: 2) {
+        .agree-content/deep/ .app-content {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .agree-content/deep/ .action {
+            width: 150px !important;
+            height: 150px;
+        }
+
+        img{
+            width:80px;
+        }
+
+    }
+
+
+    @media (min-width: 540.5px) and (max-width: 767.98px) {
+        .agree-content/deep/ .app-content {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .agree-content/deep/ .action {
+            width: 200px !important;
+            height: 200px;
+        }
+
+        img {
+            width: 100px;
+        }
+    }
+
+    @media (min-width: 770px) and (max-width: 960px) {
+        .agree-content/deep/ .app-content {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .agree-content/deep/ .action {
+            width: 240px !important;
+            height: 240px;
+        }
+
+        img {
+            width: 120px;
+        }
+    }
+
+
+    @media (min-width: 960.5px) and (max-width: 1200px) {
+        .agree-content/deep/ .app-content {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .agree-content/deep/ .action {
+            width: 150px !important;
+            height: 150px;
+        }
+
+        img {
+            width: 90px;
+        }
+    }
+
 </style>
