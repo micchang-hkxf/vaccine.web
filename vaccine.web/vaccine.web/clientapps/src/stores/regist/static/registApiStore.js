@@ -61,6 +61,11 @@ export default {
 
                     var datas = [];
                     res.data.data.forEach((data) => {
+                        var brandId = [], brandName = [];
+                        data.vaccines.forEach(v => {
+                            brandId.push(v.itemId);
+                            brandName.push(v.itemName);
+                        });
 
                         datas.push({
                             sessionName: data.activityTitle,
@@ -75,11 +80,11 @@ export default {
                             registEnd: data.endApplyDate,
                             maxLimit: data.amount,
                             totalCount: data.amount - data.leftAmount,
-                            brandId: (data.vaccines[0] != undefined) ? data.vaccines[0].itemId : "",
-                            brandName: (data.vaccines[0] != undefined) ? data.vaccines[0].itemName : "",
+                            brandId: brandId.join('、'),
+                            brandName: brandName.join('、'),
                             implementAddr: data.implementAddr,
                             groupName: data.vaccineGroupName,
-                            signUp: new Date().getTime() < new Date(data.endApplyDate).getTime(),
+                            signUp: (new Date(data.startApplyDate).getTime() <= new Date().getTime()) && (new Date().getTime() <= new Date(data.endApplyDate).getTime()),
                             actAge: data.actAge,
                         });
                     });
