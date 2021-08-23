@@ -13,13 +13,16 @@
                 <div class="action-content d-flex flex-row justify-space-between">
                     <div class="action tp-pass d-flex flex-column justify-center align-center" @click="toTpPass($route.params.vote_no)">
                         <div>
-                            <img src="/regist/tp_pass.svg">
+                            <!--<img src="/regist/tp_pass.svg">-->
+                            <img src="/regist/tpp.svg">
                         </div>
                         <div class="action-label">台北通帳號登入</div>
                     </div>
+                  
                     <div class="action d-flex flex-column justify-center align-center" @click.stop="toLocalPass($route.params.vote_no)">
                         <div>
-                            <img src="/regist/editor_pen.svg">
+                            <!--<img src="/regist/editor_pen.svg">-->
+                            <img src="/regist/edit.svg">
                         </div>
                         <div class="action-label">手動輸入資料</div>
                     </div>
@@ -126,8 +129,10 @@
         font-size: 16px;
         color: white;
         background-color: #736DB9;
-        width: 150px !important;
-        height: 150px;
+        /*width: 150px !important;
+        height: 150px;*/
+        width: 300px !important;
+        height: 300px;
         border-radius: 10px;
     }
 
