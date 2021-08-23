@@ -15,7 +15,7 @@
                         <div class="action-content d-flex flex-row justify-space-around">
                             <div class="action d-flex flex-column justify-center align-center" @click.stop="toRegist(group)" v-for="(group,index) in getVaccineGroups" :key="`group_${index}`">
                                 <div>
-                                    <img src="/regist/regist_logo.png">
+                                    <img src="/regist/regist_logo.svg">
                                 </div>
                                 <div>{{group.groupName}}</div>
                             </div>
@@ -113,37 +113,39 @@
     }
 </script>
 <style scoped>
-    .regist-content .regist-container {
-        padding-left: 24px !important;
-        padding-right: 24px !important;
-    }
-
     .regist-content .action img {
-        width: 72px;
-        height: 60px;
+        width: 80px;
+        height: 80px;
     }
 
     .regist-content .action {
-        font-size: 20px;
-        color: white;
         background-color: #736DB9;
         width: 150px !important;
         height: 150px;
         border-radius: 10px;
+        text-align: center;
+        font: normal normal normal 20px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #FFFFFF;
+        opacity: 1;
+    }
+
+    .regist-content .action-sub-title {
+        position: relative;
+        top: 22px;
+        text-align: left;
+        font: normal normal normal 20px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781;
+        opacity: 1;
+        margin: 0 28px;
     }
 
     .regist-content .action-content {
-        padding-top: 20px;
-    }
-
-    .regist-content .action-sub-title {
-        padding-top: 40px !important;
+        position: relative;
+        top: 44px;
     }
 
     .regist-content .action-container {
-    }
-
-    .regist-content .action-sub-title {
-        font-size: 20px !important;
     }
 </style>

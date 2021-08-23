@@ -13,11 +13,15 @@
         </div>
     </div>
 </template>
-<style scoped>
+<style>
+    body {
+        background: #736DB9 0% 0% no-repeat padding-box;
+        opacity: 1;
+    }
 
     .content-two {
         position: relative;
-        top: 20px;
+        top: 23px;
     }
 
     .welcome-panel {
@@ -27,35 +31,52 @@
 
     .welcome-image-container {
         position: relative;
-        top: 58px;
+        top: 68px;
         width: 180px;
         margin: 0 auto;
-        min-height: 205px;
+        min-height: 201px;
         display: flex;
         justify-content: center;
     }
 
     .welcome-button-container {
         position: relative;
-        top: 70px;
+        top: 105px;
         justify-content: center;
-        padding-left: 32px;
-        padding-right: 32px;
+        margin: 0 32px;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        text-align: center;
+        letter-spacing: 0px;
         color: #FFFFFF;
         opacity: 0.6;
     }
 
+    .content-one, .content-two {
+        max-width: 520px;
+        margin: 0 auto;
+    }
+
     .welcome-actions-container {
         position: relative;
-        top: 110px;
+        top: 190px;
         min-height: 50px;
         display: flex !important;
         justify-content: space-around !important;
+        max-width: 580px;
+        margin: 0 auto;
     }
 
     .welcome-actions-container .v-btn {
         width:40%;
         color:#FFFFFF;
+    }
+
+    .welcome-actions-container .v-btn__content {
+        text-align: center;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #FFFFFF;
+        opacity: 1;
     }
 </style>
 

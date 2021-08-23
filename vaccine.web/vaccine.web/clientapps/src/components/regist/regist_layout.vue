@@ -7,7 +7,7 @@
             <div class="regist-header d-flex flex-column">
                 <div class="logo-title d-flex flex-row justify-center">
                     <div class="regist-icon">
-                        <img src="/regist/regist_logo.png">
+                        <img src="/regist/logo.svg">
                     </div>
                     <div>
                         <div>里辦疫苗接種便民服務 </div>
@@ -57,9 +57,13 @@
         padding-right:8px!important;
     }
     .action-title {
-        padding-top: 5px !important;
-        max-width: 200%;
-        font-size: 16px !important;
+        position: relative;
+        top: 8px;
+        text-align: center;
+        font: normal normal bold 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #FFFFFF;
+        opacity: 1
     }
     .logo-title {
         max-width: 200%;
@@ -71,8 +75,12 @@
         width: calc(100vw - 32px) !important;
         font-size:20px!important;
     }
-    .v-tab.v-tab--active::before {
-        color: black;
+    .v-tab.v-tab--active {
+        text-align: center;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781;
+        opacity: 1;
     }
     .v-tab {
         color: gray;
