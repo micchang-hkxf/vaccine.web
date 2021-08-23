@@ -120,7 +120,7 @@ export default {
         checkUserInfo: function ({ dispatch }, userInfo) {
             return new Promise((reslove) => {
                 var results = {
-                    uName: '張閔傑', //使用者名稱
+                    uName: '', //使用者名稱
                     birthday: Vue.moment(userInfo.birthday).format('YYYY-MM-DD'), //使用者生日
                     //birthday: userInfo.birthday, //使用者生日
                     identify: userInfo.identify, //使用者身分證
