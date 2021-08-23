@@ -234,9 +234,7 @@ export default {
 
                 if (params.uid !== null) {
                     axios.delete(apiUrl, {
-                        params: {
-                            uId: params.uid
-                        }
+                        params: params
                     }).then(res => {
                         results.state = 'success';
                         results.datas = res.data;

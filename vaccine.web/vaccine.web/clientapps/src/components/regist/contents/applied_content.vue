@@ -126,7 +126,7 @@
                 if (userInfo !== null) {
                     comp.$bus.$emit('loading_show4', '資料處理中...');
 
-                    comp.deleteApply({ uid: userInfo.identify, activityId: comp.session.sessionId })
+                    comp.deleteApply({ ...this.getUserInfo, uid: userInfo.identify, activityId: comp.session.sessionId })
                         .then(function (result) {
                             console.log(result);
                             comp.$bus.$emit('loading_hide4');

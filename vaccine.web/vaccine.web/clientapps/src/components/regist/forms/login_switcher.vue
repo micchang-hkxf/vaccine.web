@@ -103,6 +103,7 @@
                 this.setUserInfo(null).then(() => {
                     this.redUrl = redUrl;
                     window.location.href = `/tppass?redirect=${encodeURIComponent(redUrl)}`;
+                    this.$cookies.set('activityApply', window.sessionStorage.getItem('activityApply'));
                 });
             },
             toLocalLogin: function (redPath) {
@@ -143,6 +144,7 @@
                     comp.$router.push({ path: comp.redPath });
                 else
                     comp.$router.push(comp.redParam);
+                this.loginDone();
             },
             close: function () {
                 var comp = this;

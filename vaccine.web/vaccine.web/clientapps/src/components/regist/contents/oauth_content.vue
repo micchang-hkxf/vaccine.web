@@ -16,6 +16,7 @@
                 window.location.href = this.$route.query.redirect;
                 return;
             }
+            window.sessionStorage.getItem('activityApply', this.$cookies.get('activityApply'));
             var token = this.$cookies.get('x-token');
             if (!token) return;
             this.loadUserInfo(token).then(() => {
