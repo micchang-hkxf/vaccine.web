@@ -79,8 +79,6 @@ export default {
         loadMedicals: function ({ state, commit, rootGetters }) {
             var medicals = rootGetters['user/getMedicals'];
             if (medicals !== null && medicals.length >= 1) {
-                commit('user/setMedicals', medicals);
-                commit('setInstitutions', medicals);
                 return;
             }
 
@@ -90,19 +88,13 @@ export default {
                 rootGetters['user/getApiHeader']
             ).then(res => {
                 console.log(res.data);
-                commit('setInstitutions', res.data);
                 commit('user/setMedicals', res.data);
             });
         },
         loadMedicalsByVillage: function ({ commit, rootGetters }, params) {
-            var medicals = rootGetters['user/getMedicals'];
-            if (medicals !== null && medicals.length >= 1) {
-                commit('user/setMedicals', medicals);
-                commit('setInstitutions', medicals);
-                return;
-            }
             var datas = [];
- 
+            var medicals = rootGetters['user/getMedicals'];
+
             medicals.forEach((medical) => {
                 if (medical.villageName === params.name) {
                     datas.push({
@@ -112,9 +104,7 @@ export default {
                     });
                 }
             });
-            console.log(datas);
             commit('setInstitutions', datas);
-            commit('user/setMedicals', datas);
         },
    
 

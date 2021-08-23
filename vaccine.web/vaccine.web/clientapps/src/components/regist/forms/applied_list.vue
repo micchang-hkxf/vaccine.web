@@ -20,7 +20,7 @@
                     </div>
                     <v-divider></v-divider>
                     <div class="action-info-detail d-flex flex-column justify-center">
-                        <div class="d-flex flex-row justify-space-between">
+                        <div class="d-flex flex-row justify-space-between" v-if="applied.brandName !== ''">
                             <div class="action-info-title text-left">疫苗廠牌：</div>
                             <div class="action-info-data text-right">{{applied.brandName}}</div>
                         </div>

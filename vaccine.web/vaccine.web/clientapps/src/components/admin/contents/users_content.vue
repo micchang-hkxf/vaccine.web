@@ -504,8 +504,7 @@
                 var r = this.$store.getters["users/getRoleListById"](item.userType).state;
                 //var a = this.$store.getters["users/getAreaListById"](item.zones[0].cityId).state
                 this.$set(this, "setRole", { id: item.userType ,state:r});
-                this.$set(this, "setArea", { id: parseInt(item.zones[0].data[0].distId), state: item.zones[0].data[0].distName });
-
+                this.$set(this, "setArea", { id: item.zones[0].data[0].distId, state: item.zones[0].data[0].distName });
                 this.$set(this, "setEnable", item.isEnable.toString() == 'true');
         
                // this.setRole = { id: item.userType  };
@@ -623,12 +622,25 @@
                 })
             },
             newItem() {
+
+                this.$set(this, "uName", '');
+                this.$set(this, "acc", '');
+                this.$set(this, "mbNo", '');
+                this.$set(this, "mbNo2", '');
+                this.$set(this, "email", '');
+                this.$set(this, "unitName", '');
+      
+
                 this.$bus.$emit('userform_show', true);
                 this.$set(this, "isReadOnly", false);
                 this.fromSaveConfirmTitle = "確認人員新增資訊";
                 this.fromSaveConfirmMessage = " 請確認內容無誤後點選「確定」完成新增";
-                this.setRole = { id: 2 ,state:"轄區管理員"};
-                this.setArea = { id: 1, state: "A區" };
+                //this.setRole = { id: 2 ,state:"轄區管理員"};
+                //this.setArea = { id: 1, state: "松山區" };
+                this.$set(this, "setRole", { id: 1, state: "轄區管理員" });
+                this.$set(this, "setArea", { id: "2001", state: "松山區" });
+                
+
             },
             importItem() {
                 this.$refs.importfile.$refs.input.click();

@@ -53,7 +53,11 @@
             year: 108,
             month: 1, 
             day: 1 ,
-            isLoginError:false
+            isLoginError: false,
+            loginType:null,
+            redPath: null,
+            redParam: null,
+            redUrl: null,
         }),
         computed: {
             ...mapGetters('regist', ['getUserInfo']),
@@ -67,7 +71,7 @@
 
         },
         methods: {
-            ...mapActions('regist', ['saveUserInfo']),
+            ...mapActions('regist', ['setUserInfo']),
             cancel: function () {
                 this.isShow = false;
                 this.loginCancel();
@@ -88,15 +92,57 @@
                 comp.isShow = true;
             },
             toTpPassLogin: function (redUrl) {
-                window.location.href = `/tppass?redirect=${encodeURIComponent(redUrl)}`
+                this.loginType = 'taipei-pass';
+                this.claerRed();
+                if (this.getUserInfo != null) {
+                    if (this.getUserInfo.type == 'taipei-pass') {
+                        window.location.href = redUrl;
+                        return;
+                    }
+                }
+                this.setUserInfo(null).then(() => {
+                    this.redUrl = redUrl;
+                    window.location.href = `/tppass?redirect=${encodeURIComponent(redUrl)}`;
+                });
             },
-            toLocalLogin: function () {
-                this.$refs.login.create();
+            toLocalLogin: function (redPath) {
+                this.loginType = 'identify';
+                this.claerRed();
+                if (this.getUserInfo != null) {
+                    if (this.getUserInfo.type == 'identify') {
+                        this.$router.push({ path: redPath });
+                        return;
+                    }
+                }
+                this.setUserInfo(null).then(() => {
+                    this.redPath = redPath;
+                    this.$refs.login.create();
+                });
+            },
+            toLocalLoginParam: function (redParam) {
+                this.loginType = 'identify';
+                this.claerRed();
+                if (this.getUserInfo != null) {
+                    if (this.getUserInfo.type == 'identify') {
+                        this.$router.push(redParam);
+                        return;
+                    }
+                }
+                this.setUserInfo(null).then(() => {
+                    this.redParam = redParam;
+                    this.$refs.login.create();
+                });
+            },
+            claerRed: function () {
+                this.redUrl = this.redPath = this.redParam =null;
             },
             userSign: function () {
                 var comp = this;
                 comp.close();
-                comp.loginDone(comp.getUserInfo);
+                if (comp.redPath!=null)
+                    comp.$router.push({ path: comp.redPath });
+                else
+                    comp.$router.push(comp.redParam);
             },
             close: function () {
                 var comp = this;

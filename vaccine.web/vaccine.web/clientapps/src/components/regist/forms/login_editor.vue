@@ -79,7 +79,7 @@
             ...mapGetters('regist', ['getUserInfo', 'getApiRoot']),
             birth: function () {
                 if (!this.year || !this.month || !this.day) return;
-                return new Date(this.year + 1911, this.month, this.day);
+                return new Date(this.year + 1911, this.month - 1, this.day);
             },
             getCaptchaUrl: function () {
                 return `${this.getApiRoot}api/captcha?sessionId=${this.sessionId}`;
@@ -96,7 +96,7 @@
         methods: {
             ...mapActions('regist', ['setUserInfo', 'checkUserInfo']),
             resetSessionId: function () {
-                this.sessionId = parseInt(Math.random(0, 1)*900000 + 100000);
+                this.sessionId = parseInt(Math.random(0, 1) * 900000 + 100000).toString();
             },
             create: function () {
                 if (this.getUserInfo) {

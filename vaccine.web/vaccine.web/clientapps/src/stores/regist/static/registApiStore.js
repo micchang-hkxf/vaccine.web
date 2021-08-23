@@ -61,6 +61,11 @@ export default {
 
                     var datas = [];
                     res.data.data.forEach((data) => {
+                        var brandId = [], brandName = [];
+                        data.vaccines.forEach(v => {
+                            brandId.push(v.itemId);
+                            brandName.push(v.itemName);
+                        });
 
                         datas.push({
                             sessionName: data.activityTitle,
@@ -75,11 +80,11 @@ export default {
                             registEnd: data.endApplyDate,
                             maxLimit: data.amount,
                             totalCount: data.amount - data.leftAmount,
-                            brandId: (data.vaccines[0] != undefined) ? data.vaccines[0].itemId : "",
-                            brandName: (data.vaccines[0] != undefined) ? data.vaccines[0].itemName : "",
+                            brandId: brandId.join('、'),
+                            brandName: brandName.join('、'),
                             implementAddr: data.implementAddr,
                             groupName: data.vaccineGroupName,
-                            signUp: new Date().getTime() < new Date(data.endApplyDate).getTime(),
+                            signUp: (new Date(data.startApplyDate).getTime() <= new Date().getTime()) && (new Date().getTime() <= new Date(data.endApplyDate).getTime()),
                             actAge: data.actAge,
                         });
                     });
@@ -115,10 +120,11 @@ export default {
         checkUserInfo: function ({ dispatch }, userInfo) {
             return new Promise((reslove) => {
                 var results = {
-                    uName: '張閔傑', //使用者名稱
+                    uName: '', //使用者名稱
                     birthday: Vue.moment(userInfo.birthday).format('YYYY-MM-DD'), //使用者生日
+                    //birthday: userInfo.birthday, //使用者生日
                     identify: userInfo.identify, //使用者身分證
-                    sessionId: userInfo.sessionId.toString(), //生日登入 sessionId
+                    sessionId: userInfo.sessionId, //生日登入 sessionId
                     captcha: userInfo.captcha, //生日登入 captcha
                     token: null, //台北通 token
                     type: 'identify'
@@ -143,7 +149,7 @@ export default {
                 axios.get(apiUrl, apiHeader).then(res => {
                     var userInfo = {
                         uName: res.data.uName, //使用者名稱
-                        birthday: res.data.bd, //使用者生日
+                        birthday: Vue.moment(res.data.bd).format('YYYY-MM-DD'), //使用者生日
                         identify: res.data.uid, //使用者身分證
                         token: token, //台北通 token
                         type: 'taipei-pass',
