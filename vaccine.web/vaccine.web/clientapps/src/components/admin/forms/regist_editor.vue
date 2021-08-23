@@ -95,8 +95,7 @@
                                       dense
                                       class="search-filter zone-selector"
                                       append-icon="mdi-chevron-down"
-                                      return-object
-                                      @change="loadMedicalsByVillage">
+                                      return-object>
                             </v-select>
                         </div>
                     </v-col>
@@ -118,8 +117,8 @@
                     <v-col cols="3">
                         <div> <span class="regist-title">醫療院所</span><span class="red--text">*</span></div>
                         <v-select v-model="model.regist_institution"
-                                  :items="getInstitutions"
-                                  item-text="name"
+                                  :items="getMedicals"
+                                  item-text="uName"
                                   item-value="id"
                                   placeholder="請選擇醫療院所"
                                   :menu-props="{ bottom: true, offsetY: true }"
@@ -517,6 +516,7 @@
         },
         computed: {
             ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders', 'getShowBrand']),
+            ...mapGetters('user', ['getMedicals']),
             defaultItem: function () {
                 return this.default;
             }
@@ -566,7 +566,7 @@
                         this.model[nn] = "";
                     }
                 }
-                this.$refs.form.resetValidation();
+//              this.$refs.form.resetValidation();
                 this.regist_institution_code = '';
                 this.regist_institution_name = '';
             },

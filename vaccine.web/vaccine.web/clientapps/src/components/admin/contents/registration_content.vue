@@ -61,8 +61,7 @@
                                                   clearable
                                                   style="margin-right: 10px; width: 210px;"
                                                   class="search-filter"
-                                                  return-object
-                                                  @change="loadMedicalsByVillage">
+                                                  return-object>
                                         </v-select>
                                         <v-select v-model="selectInstitution"
                                                   :items="getInstitutions"
@@ -1225,7 +1224,7 @@
                 this.$refs.registEdit.open(item);
                 console.log('edit', item);
 
-                this.loadMedicalsByVillage({ "name": item.regist_village_name });
+                //this.loadMedicalsByVillage({ "name": item.regist_village_name });
 
             },
             fileImport: function () {

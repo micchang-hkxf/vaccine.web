@@ -74,7 +74,6 @@ export default {
                 });
             });
             state.villages = villages;
-            state.institutions = [];
         },
         loadMedicals: function ({ state, commit, rootGetters }) {
             var medicals = rootGetters['user/getMedicals'];
@@ -91,6 +90,8 @@ export default {
                 commit('user/setMedicals', res.data);
             });
         },
+
+
         loadMedicalsByVillage: function ({ commit, rootGetters }, params) {
             var datas = [];
             var medicals = rootGetters['user/getMedicals'];
