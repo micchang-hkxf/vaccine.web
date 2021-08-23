@@ -141,8 +141,14 @@
         margin:0px!important;
     }
 
+    .col-6 {
+        flex: 0 0 37% !important;
+        max-width: 50%;
+    }
+
     .row {
         display: flex;
+        justify-content:center;
         flex-wrap: wrap !important;
         flex: none !important;
         margin-right: 0px !important;
