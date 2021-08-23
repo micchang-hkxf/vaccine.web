@@ -31,7 +31,7 @@
                         </v-list-item>
                         <v-list-item two-line>
                             <v-list-item-content>
-                                <v-list-item-subtitle>新冠肺炎疫苗廠牌</v-list-item-subtitle>
+                                <v-list-item-subtitle>疫苗廠牌</v-list-item-subtitle>
                                 <v-list-item-title>{{result.model.regist_brand.name}}</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>

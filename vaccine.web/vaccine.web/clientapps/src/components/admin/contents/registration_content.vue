@@ -202,7 +202,7 @@
                                         </v-list-item>
                                         <v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
                                             <v-list-item-content>
-                                                <v-list-item-title>新冠肺炎疫苗廠牌</v-list-item-title>
+                                                <v-list-item-title>疫苗廠牌</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -333,7 +333,7 @@
                                         </v-list-item>
                                         <v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
                                             <v-list-item-content>
-                                                <v-list-item-title>新冠肺炎疫苗廠牌</v-list-item-title>
+                                                <v-list-item-title>疫苗廠牌</v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
