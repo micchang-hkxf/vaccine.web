@@ -196,7 +196,6 @@
         .agree-content/deep/ .action {
             width: 150px !important;
             height: 150px;
-
         }
 
         img{
