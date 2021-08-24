@@ -113,7 +113,17 @@
         }
     }
 </script>
-<style scoped>
+<style>
+    body {
+        background: #FFFFFF !important;
+    }
+
+    .app-content {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
     .regist-content .action img {
         width: 80px;
         height: 80px;
@@ -148,5 +158,88 @@
     }
 
     .regist-content .action-container {
+    }
+
+    /* Extra small devices (portrait phones, less than 576px) */
+    @media (max-width: 575.98px) {
+    }
+
+    /* Small devices (landscape phones, 576px and up) */
+    @media (min-width: 576px) and (max-width: 767.98px) {
+    }
+
+    /** Medium devices (tablets, 768px and up) */
+    @media (min-width: 768px) and (max-width: 991.98px) {
+        .regist-content .action-sub-title {
+            margin: 0 auto;
+        }
+
+        .regist-content .action-content {
+            top: 50px;
+        }
+
+        .regist-content .action {
+            width: 384px !important;
+            height: 383px !important;
+        }
+
+        .regist-content .action img {
+            width: 205px;
+            height: 205px;
+        }
+
+        .v-application .justify-space-around {
+            justify-content: space-between !important;
+        }
+    }
+
+    /* Large devices (desktops, 992px and up) */
+    @media (min-width: 992px) and (max-width: 1199.98px) {
+        .regist-content .action-sub-title {
+            margin: 0 auto;
+        }
+
+        .regist-content .action-content {
+            top: 50px;
+        }
+
+        .regist-content .action {
+            width: 384px !important;
+            height: 383px !important;
+        }
+
+        .regist-content .action img {
+            width: 205px;
+            height: 205px;
+        }
+
+        .v-application .justify-space-around {
+            justify-content: space-between !important;
+        }
+    }
+
+    /* Extra large devices (large desktops, 1200px and up) */
+    @media (min-width: 1200px) {
+        .regist-content .action-sub-title {
+            margin: 0 auto;
+        }
+
+        .regist-content .action-content {
+            top: 50px;
+        }
+
+        .regist-content .action {
+            width: 384px !important;
+            height: 383px !important;
+        }
+
+        .regist-content .action img {
+            width: 205px;
+            height: 205px;
+        }
+
+        .v-application .justify-space-around {
+            justify-content: space-between !important;
+        }
     }
 </style>
