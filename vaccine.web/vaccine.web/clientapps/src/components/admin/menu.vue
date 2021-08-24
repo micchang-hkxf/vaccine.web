@@ -55,6 +55,7 @@
                 window.location.hash = "";
                 this.currentContent = menu;
                 this.$router.push({ name: menu.key });
+            
             },
             menuItemActive: function (menu) {
                 return {

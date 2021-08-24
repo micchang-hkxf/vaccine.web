@@ -36,7 +36,7 @@ export default {
                 commit('user/setAuditTypes', res.data);
             });
         },
-        loadAudit: function ({ state, rootGetters }, params) {
+        loadAudit: function ({ state, rootGetters, dispatch }, params) {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/AuditLog`;
                 var results = { datas: [], state: '', totalCount: 0 };
@@ -74,13 +74,14 @@ export default {
 
                     results.datas = datas;
                     resolve(results);
-                }).catch(ex => {
-                    results.datas = ex;
+                 }).catch((error) => {
+                    dispatch('user/notLoginAdmin', error, { root: true });
+                    results.datas = error;
                     reject(results);
                 });
             });
         },
-        saveAudit: function ({ state, rootGetters }, data) {
+        saveAudit: function ({ state, rootGetters, dispatch }, data) {
             return new Promise(function (resolve, reject) {
                 var apiUrl = `${state.apiRoot}api/AuditLog`;
                 var results = { datas: [], state: '' };
@@ -95,14 +96,15 @@ export default {
                 ).then(res => {
                     results.datas = res.data;
                     resolve(results);
-                }).catch(ex => {
+                }).catch((error) => {
+                    dispatch('user/notLoginAdmin', error, { root: true });
                     results.state = 'error';
-                    results.datas = ex;
+                    results.datas = error;
                     reject(results);
                 });
             });
         },
-        downloadAudit: function ({ state, rootGetters }, data) {
+        downloadAudit: function ({ state, rootGetters, dispatch }, data) {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/AuditLog/dl/` + data.fileId;
                 var results = { datas: [], state: '' };
@@ -131,8 +133,9 @@ export default {
                     }
                     
                     resolve(results);
-                })).catch(ex => {
-                    results.datas = ex;
+                })).catch((error) => {
+                    dispatch('user/notLoginAdmin', error, { root: true });
+                    results.datas = error;
                     reject(results);
                 });
             });

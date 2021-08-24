@@ -232,7 +232,14 @@
                 audit_type: '',
                 audit_reason: ''
             },
-            result: {},
+            result: {
+                model: {
+                    audit_year: '',
+                    audit_month: '',
+                    audit_type: '',
+                    audit_reason: ''
+                }
+            },
             viewerTitle: '',
             alertMessage: '',
         }),
