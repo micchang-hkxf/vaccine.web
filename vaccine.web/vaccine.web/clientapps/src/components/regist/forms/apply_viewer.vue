@@ -85,6 +85,9 @@
     }
 
     .apply-viewer/deep/ .activity-detail-descript .full {
+        text-align: right;
+        font: normal normal normal 12px/20px Noto Sans T Chinese;
+        letter-spacing: 0px;
         color: #F4A95F;
     }
 </style>

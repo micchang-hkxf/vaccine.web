@@ -418,7 +418,12 @@
 
     .apply-content/deep/ .descript-area {
         padding: 16px !important;
-        background-color: rgba(67,73,105,0.06) !important;
+        background: #4349690F 0% 0% no-repeat padding-box;
+        text-align: left;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781;
+        opacity: 1;
     }
 
     .apply-content/deep/ .apply-field-type-icon {
@@ -471,13 +476,20 @@
     }
 
     .apply-content/deep/ .activity-name {
-        font-size: 20px !important;
-        color: #626781 !important;
+        text-align: left;
+        font: normal normal normal 20px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781;
+        opacity: 1;
     }
 
     .apply-content/deep/ .activity-name-descript {
-        font-size: 12px !important;
-        color: rgba(98,103,129,0.5) !important;
+        margin-top: 8px;
+        text-align: left;
+        font: normal normal normal 12px/16px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #62678180;
+        opacity: 1;
     }
 
     .apply-content/deep/ .action-header {

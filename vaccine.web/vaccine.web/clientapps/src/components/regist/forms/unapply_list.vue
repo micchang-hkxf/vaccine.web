@@ -4,10 +4,10 @@
             <div class="action-bar-filter">
                 <!--<v-select placeholder="全部新冠肺炎疫苗廠牌" v-model="filterBrandId" :items="getVaccineBrands" item-text="brandName" item-value="brandId" hide-details height="48px" v-if="groupId=='covid'" @change="search">
                 </v-select>-->
-                <v-text-field placeholder="請輸入行政區、村里或場次標題" v-model="filterKeyword" hide-details dense height="48px" @change="search"  @input="search">
+                <v-text-field placeholder="查詢行政區、村里或場次標題" v-model="filterKeyword" hide-details dense height="48px" @change="search"  @input="search" autocomplete="off">
                     <template v-slot:append>
                         <div class="d-flex align-center text-controll">
-                            <img src="/regist/common_search-24px.svg" />
+                            <img src="/regist/search.svg" />
                         </div>
                     </template>
                 </v-text-field>
@@ -175,22 +175,22 @@
         color: #434969;
     }
 
-        .unapply-list/deep/ .action-info-subject {
-            font-size: 16px;
-            font-weight: bold;
-            color: #434969;
-        }
+    .unapply-list/deep/ .action-info-subject {
+        font-size: 16px;
+        font-weight: bold;
+        color: #434969;
+    }
 
-        .unapply-list/deep/ .action-info-sec-subject {
-            font-size: 12px;
-            color: rgba(98,103,129,0.5) !important;
-            padding-bottom: 8px !important;
-        }
+    .unapply-list/deep/ .action-info-sec-subject {
+        font-size: 12px;
+        color: rgba(98,103,129,0.5) !important;
+        padding-bottom: 8px !important;
+    }
 
-        .unapply-list/deep/ .action-info-title {
-            width: 30%;
-            color: rgba(98,103,129,0.5) !important;
-        }
+    .unapply-list/deep/ .action-info-title {
+        width: 30%;
+        color: rgba(98,103,129,0.5) !important;
+    }
 
     .unapply-list/deep/ .action-info-data {
         width: 70%;
@@ -211,28 +211,28 @@
         height: 100%;
     }
 
-        .unapply-list/deep/ .action-button .v-btn {
-            font-size: 16px;
-            color: #ffffff;
-            width: 64px;
-            margin: 0px;
-        }
+    .unapply-list/deep/ .action-button .v-btn {
+        font-size: 16px;
+        color: #ffffff;
+        width: 64px;
+        margin: 0px;
+    }
 
     .unapply-list/deep/ .action-info {
         width: calc(100% - 64px);
         height: 100%;
     }
 
-        .unapply-list/deep/ .action-bar {
-            padding-right: 16px !important;
-            padding-left: 16px !important;
-            padding-bottom: 16px !important;
-            background-color: #FFFFFF;
-        }
+    .unapply-list/deep/ .action-bar {
+        padding-right: 16px !important;
+        padding-left: 16px !important;
+        padding-bottom: 16px !important;
+        background-color: #FFFFFF;
+    }
 
-        .unapply-list/deep/ .action-bar .v-text-field .transparent {
-            border-color: rgba(54,66,80,0.2) !important;
-        }
+    .unapply-list/deep/ .action-bar .v-text-field .transparent {
+        border-color: rgba(54,66,80,0.2) !important;
+    }
 
     .unapply-list/deep/ .action-bar .v-text-field__details {
         display: none !important;
@@ -268,6 +268,9 @@
     }
 
     .unapply-list/deep/ .action-info-detail .full {
+        text-align: right;
+        font: normal normal normal 12px/20px Noto Sans T Chinese;
+        letter-spacing: 0px;
         color: #F4A95F;
     }
 
@@ -277,10 +280,81 @@
         letter-spacing: 0px;
         color: #43496980;
         min-height: calc(100vh - 256px);
+        width: 100%;
     }
 
     .unapply-list/deep/ .null-content {
         position: relative;
         top: 112px;
+    }
+
+    .unapply-list/deep/ .null-content img {
+        width: 96px;
+        height: 96px;
+    }
+
+    /* Extra small devices (portrait phones, less than 576px) */
+    @media (max-width: 575.98px) {
+    }
+
+    /* Small devices (landscape phones, 576px and up) */
+    @media (min-width: 576px) and (max-width: 767.98px) {
+    }
+
+    /** Medium devices (tablets, 768px and up) */
+    @media (min-width: 768px) and (max-width: 991.98px) {
+        .unapply-list/deep/ .action-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 800px;
+        }
+
+        .unapply-list/deep/ .action {
+            width: 387px;
+            margin: 6px !important;
+        }
+
+        .unapply-list/deep/ .action-container {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
+    /* Large devices (desktops, 992px and up) */
+    @media (min-width: 992px) and (max-width: 1199.98px) {
+        .unapply-list/deep/ .action-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 800px;
+        }
+
+        .unapply-list/deep/ .action {
+            width: 387px;
+            margin: 6px !important;
+        }
+
+        .unapply-list/deep/ .action-container {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
+    /* Extra large devices (large desktops, 1200px and up) */
+    @media (min-width: 1200px) {
+        .unapply-list/deep/ .action-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 800px;
+        }
+
+        .unapply-list/deep/ .action {
+            width: 387px;
+            margin: 6px !important;
+        }
+
+        .unapply-list/deep/ .action-container {
+            padding-left: 0;
+            padding-right: 0;
+        }
     }
 </style>
