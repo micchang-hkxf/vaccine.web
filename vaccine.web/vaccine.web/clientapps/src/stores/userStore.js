@@ -97,10 +97,19 @@ export default {
             return JSON.parse(window.sessionStorage.getItem('vaccines'));
         },
         getMedicals: (state) => {
-            var data = window.sessionStorage.getItem('medicals');
-            if (!state.medicals && data !== null)
-                state.medicals = data;
-            return JSON.parse(state.medicals);
+            if (state.medicals == null) state.medicals = [];
+            try {
+                var data = JSON.parse(window.sessionStorage.getItem('medicals'));
+                if (data !== null) {
+                    state.medicals.splice(0);
+                    data.forEach((f) => {
+                        state.medicals.push(f);
+                    });
+                }
+            } catch (e) {
+                null;
+            }
+            return state.medicals;
         },
         getAuditTypes: () => {
             return JSON.parse(window.sessionStorage.getItem('auditTypes'));
@@ -143,8 +152,15 @@ export default {
             window.sessionStorage.setItem('vaccines', JSON.stringify(vaccines));
         },
         setMedicals: (state, medicals) => {
-            state.medicals = JSON.stringify(medicals);
-            window.sessionStorage.setItem('medicals', state.medicals);
+            if (state.medicals == null) state.medicals = [];
+            if (medicals != null) {
+                medicals.forEach((f) => {
+                    state.medicals.push(f);
+                });
+            }
+            return state.medicals;
+            //state.medicals = JSON.stringify(medicals);
+            //window.sessionStorage.setItem('medicals', state.medicals);
         },
         setAuditTypes: (state, auditTypes) => {
             window.sessionStorage.setItem('auditTypes', JSON.stringify(auditTypes));

@@ -96,7 +96,7 @@
         methods: {
             ...mapActions('regist', ['setUserInfo', 'checkUserInfo']),
             resetSessionId: function () {
-                this.sessionId = parseInt(Math.random(0, 1)*900000 + 100000);
+                this.sessionId = parseInt(Math.random(0, 1) * 900000 + 100000).toString();
             },
             create: function () {
                 if (this.getUserInfo) {

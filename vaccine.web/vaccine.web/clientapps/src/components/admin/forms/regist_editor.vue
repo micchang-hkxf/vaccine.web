@@ -1,7 +1,7 @@
 ﻿<template>
     <com-dialog ref="dialogPanel" ref-key="two" :width="width">
         <template v-slot:toolbar>
-            {{title}}
+            <span class="regist-editor-title">{{title}}</span>
             <v-spacer></v-spacer>
             <v-btn icon @click.stop="close" :ripple="false">
                 <v-icon color="white">fas fa-times</v-icon>
@@ -61,44 +61,43 @@
                     </v-col>
                 </v-row>
                 <v-divider></v-divider>
-                <v-row>
+                <!--<v-row>
                     <v-col cols="12">
                         <div style="margin-top:15px;"><span class="regist-title">設站行政區里</span> <span class="red--text">*</span></div>
                     </v-col>
-                </v-row>
+                </v-row>-->
                 <v-row>
-                    <v-col cols="3">
-                        <v-select v-model="model.regist_district"
-                                  :items="getDistricts"
-                                  item-text="name"
-                                  item-value="id"
-                                  placeholder="請選擇行政區"
-                                  :menu-props="{ bottom: true, offsetY: true }"
-                                  :rules="[rules.required]"
-                                  outlined
-                                  dense
-                                  class="search-filter"
-                                  append-icon="mdi-chevron-down"
-                                  return-object
-                                  @change="loadVillages">
-                        </v-select>
-                    </v-col>
-                    <v-col cols="1"><div></div></v-col>
-                    <v-col cols="3">
-                        <v-select v-model="model.regist_village"
-                                  :items="getVillages"
-                                  item-text="name"
-                                  item-value="id"
-                                  placeholder="請選擇村里"
-                                  :menu-props="{ bottom: true, offsetY: true }"
-                                  :rules="[rules.required]"
-                                  outlined
-                                  dense
-                                  class="search-filter"
-                                  append-icon="mdi-chevron-down"
-                                  return-object
-                                  @change="loadMedicalsByVillage">
-                        </v-select>
+                    <v-col cols="12">
+                        <div><span class="regist-title">設站行政區里</span> <span class="red--text">*</span></div>                        
+                        <div class="d-flex justify-start">
+                            <v-select v-model="model.regist_district"
+                                      :items="getDistricts"
+                                      item-text="name"
+                                      item-value="id"
+                                      placeholder="請選擇行政區"
+                                      :menu-props="{ bottom: true, offsetY: true }"
+                                      :rules="[rules.required]"
+                                      outlined
+                                      dense
+                                      class="search-filter zone-selector"
+                                      append-icon="mdi-chevron-down"
+                                      return-object
+                                      @change="loadVillages">
+                            </v-select>
+                            <v-select v-model="model.regist_village"
+                                      :items="getVillages"
+                                      item-text="name"
+                                      item-value="id"
+                                      placeholder="請選擇村里"
+                                      :menu-props="{ bottom: true, offsetY: true }"
+                                      :rules="[rules.required]"
+                                      outlined
+                                      dense
+                                      class="search-filter zone-selector"
+                                      append-icon="mdi-chevron-down"
+                                      return-object>
+                            </v-select>
+                        </div>
                     </v-col>
                 </v-row>
 
@@ -118,8 +117,8 @@
                     <v-col cols="3">
                         <div> <span class="regist-title">醫療院所</span><span class="red--text">*</span></div>
                         <v-select v-model="model.regist_institution"
-                                  :items="getInstitutions"
-                                  item-text="name"
+                                  :items="getMedicals"
+                                  item-text="uName"
                                   item-value="id"
                                   placeholder="請選擇醫療院所"
                                   :menu-props="{ bottom: true, offsetY: true }"
@@ -163,6 +162,7 @@
                             </template>
                             <v-date-picker v-model="model.regist_station_date"
                                            @change="dateClicked"
+                                           :day-format="dayFormat"
                                            no-title
                                            scrollable>
                                 <v-spacer></v-spacer>
@@ -186,16 +186,8 @@
                 <v-row>
                     <v-col cols="12">
                         <div>  <span class="regist-title">設站時段設定</span><span class="red--text">*</span></div>
-                    </v-col>
-                </v-row>
-                <v-row >
-                    <v-col cols="3" class="colsp">
-                        <table >
-                            <tr>
-                                <td><com-timepicker v-model="regist_station_start_time"></com-timepicker></td>
-                                <td style="padding-left: 10px"><com-timepicker v-model="regist_station_end_time"></com-timepicker></td>
-                            </tr>
-                        </table>
+                        <com-timepicker v-model="regist_station_start_time"></com-timepicker>
+                        <com-timepicker v-model="regist_station_end_time"></com-timepicker>
                     </v-col>
                 </v-row>
                 <!--<v-row>
@@ -278,6 +270,7 @@
                             <v-date-picker v-model="model.regist_apply_start_date"
                                            no-title
                                            @change="dateClicked"
+                                           :day-format="dayFormat"
                                            scrollable>
                                 <v-spacer></v-spacer>
                                 <v-btn text
@@ -316,6 +309,7 @@
                             <v-date-picker v-model="model.regist_apply_end_date"
                                            no-title
                                            @change="dateClicked"
+                                           :day-format="dayFormat"
                                            scrollable>
                                 <v-spacer></v-spacer>
                                 <v-btn text
@@ -394,6 +388,22 @@
 
 </template>
 <style scoped>
+    .timepicker-container {
+        margin-bottom:14px!important;
+    }
+    .regist-editor-title {
+        font-size: 20px !important;
+    }
+    .timepicker-container + .timepicker-container {
+        padding-left: 16px !important;
+    }
+    .zone-selector {
+        width: 200px !important;
+        max-width: 250px !important;
+    }
+    .zone-selector + .zone-selector {
+        padding-left: 16px!important;
+    }
     .v-btn--outlined {
         border: thin solid rgba(98,103, 129,0.2) !important;
     }
@@ -506,6 +516,7 @@
         },
         computed: {
             ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders', 'getShowBrand']),
+            ...mapGetters('user', ['getMedicals']),
             defaultItem: function () {
                 return this.default;
             }
@@ -520,6 +531,9 @@
 
         methods: {
             ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadBrands', 'loadMedicals', 'loadMedicalsByVillage']),
+            dayFormat: function (day) {
+                return this.$moment(day).format("DD");
+            },
             open: function (model) {
                 this.mode = 'edit';
 
@@ -552,7 +566,7 @@
                         this.model[nn] = "";
                     }
                 }
-                this.$refs.form.resetValidation();
+//              this.$refs.form.resetValidation();
                 this.regist_institution_code = '';
                 this.regist_institution_name = '';
             },

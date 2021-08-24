@@ -122,8 +122,9 @@ export default {
                 var results = {
                     uName: '', //使用者名稱
                     birthday: Vue.moment(userInfo.birthday).format('YYYY-MM-DD'), //使用者生日
+                    //birthday: userInfo.birthday, //使用者生日
                     identify: userInfo.identify, //使用者身分證
-                    sessionId: userInfo.sessionId.toString(), //生日登入 sessionId
+                    sessionId: userInfo.sessionId, //生日登入 sessionId
                     captcha: userInfo.captcha, //生日登入 captcha
                     token: null, //台北通 token
                     type: 'identify'
@@ -148,7 +149,7 @@ export default {
                 axios.get(apiUrl, apiHeader).then(res => {
                     var userInfo = {
                         uName: res.data.uName, //使用者名稱
-                        birthday: res.data.bd, //使用者生日
+                        birthday: Vue.moment(res.data.bd).format('YYYY-MM-DD'), //使用者生日
                         identify: res.data.uid, //使用者身分證
                         token: token, //台北通 token
                         type: 'taipei-pass',
@@ -233,9 +234,7 @@ export default {
 
                 if (params.uid !== null) {
                     axios.delete(apiUrl, {
-                        params: {
-                            uId: params.uid
-                        }
+                        params: params
                     }).then(res => {
                         results.state = 'success';
                         results.datas = res.data;
