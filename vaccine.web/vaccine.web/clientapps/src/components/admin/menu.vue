@@ -1,7 +1,7 @@
 ﻿<template>
     <v-list class="menu-list">
         <v-list-item v-for="(menu,index) in menus" :class="menuItemActive(menu)" :key="index" @click="menuActive(menu)">
-            <v-list-item-content>
+            <v-list-item-content :class="menu.key">
                 <v-list-item-title :class="menuTitleActive(menu)">{{menu.text}}</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
@@ -29,9 +29,19 @@
         props: {
 
         },
-
+        mounted: function () {
+            var k = window.location.hash.substr(1),
+                n = (k.substring(1));
+ 
+            var selection = document.querySelector(".v-list-item__content." + n);
+       
+            if (selection) {
+                selection.style.setProperty('background-color', '#FFFFFF0F', 'important');
+            }
+             
+        },
         created: function () {
-
+            
         },
         methods: {
 
@@ -67,6 +77,30 @@
     .menu-list {
         background: #626781 !important;
         height: 100vh !important;
+
     }
+    .v-list-item {
+        padding: 0px 0px 0px 0px !important;
+
+    }
+    .v-list-item__title {
+        padding: 0px 10px !important;
+        font-size: 20px !important;
+        text-align: left !important;
+        font: normal normal normal 20px/24px Noto Sans T Chinese !important;
+        letter-spacing: 0px !important;
+    }
+    .v-list {
+        padding: 0px 0px !important;
+        width: 384px !important;
+    }
+    .v-list-item__content {
+        height: 56px !important;
+    }
+    .v-main {
+        padding: 65px 0px 0px 249px !important;
+    }
+
+
 
 </style>
