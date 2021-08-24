@@ -187,6 +187,22 @@
         margin-right: -30% !important;
     }
 
+    @media (min-device-width: 110px) and (max-device-width: 319px) and (-webkit-min-device-pixel-ratio: 2) {
+        .agree-content/deep/ .app-content {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .agree-content/deep/ .action {
+            width: 150px !important;
+            height: 150px;
+        }
+
+        img {
+            width: 80px;
+        }
+    }
+
     @media (min-device-width: 320px) and (max-device-width: 540px) and (-webkit-min-device-pixel-ratio: 2) {
         .agree-content/deep/ .app-content {
             width: 100%;

@@ -329,7 +329,7 @@
     }
 
 
-    @media  (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2){
+    @media (min-device-width: 100px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
         .unapply-list/deep/ .action-container {
             padding-left: 16px;
             padding-right: 16px;
