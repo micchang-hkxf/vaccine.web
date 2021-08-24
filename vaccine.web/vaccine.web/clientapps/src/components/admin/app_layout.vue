@@ -300,7 +300,9 @@
     .app-content-container {
         height: calc(100% - 72px);
     }
-
+    .v-application--wrap {
+        min-width: calc(100% + 15px) !important;
+    }
     .app-content {
         background-color: #F2F3F7;
     }
@@ -317,4 +319,5 @@
     .layoutmenu .v-list-item__title{
         color: black !important;
     }
+
 </style>

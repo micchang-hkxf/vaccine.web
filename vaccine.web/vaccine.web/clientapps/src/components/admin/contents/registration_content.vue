@@ -92,7 +92,7 @@
 
                         <template v-slot:toolbar-action={selectAll,selectedItems}>
                             <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selectedItems)" :ripple="false">
-                                <span style="color:white">刪除選取項目 ({{selectedItems.length}})</span>
+                                <span :style="selectedItems.length<=0 ? 'color:#62678166' : 'color:white'">刪除選取項目 ({{selectedItems.length}})</span>
                             </v-btn>
                             <v-spacer></v-spacer>
 
@@ -900,9 +900,9 @@
         display: inline-flex;
     }
 
-        .registration-list .detail-action .v-btn {
-            margin: 3px 5px;
-        }
+    .registration-list .detail-action .v-btn {
+        margin: 3px 5px;
+    }
 
     .registration-list .detail-result-abnormal {
         /*font: normal normal normal 16px/24px Noto Sans T Chinese;*/
@@ -1029,6 +1029,28 @@
     /* Extra large devices (large desktops, 1200px and up) */
     @media (min-width: 1200px) {
     }
+    thead tr th {
+        border-top: 1px solid #D8D8DA !important;
+    }
+    .app-content > .v-main__wrap > .v-sheet >.v-toolbar__content>.v-toolbar__title {
+        font: normal normal normal 20px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781 !important;
+        opacity: 1;
+    }
+    .v-toolbar__content > .v-btn--disabled {
+        border-radius: 4px !important;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        background-color: #6267811A !important;
+    }
+    .v-toolbar__content > .v-size--default > .v-btn__content {
+        color: white !important;
+    }
+    .v-main {
+        width: 100% !important;
+    }
+
 
 </style>
 
