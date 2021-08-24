@@ -16,7 +16,7 @@
                         <div>{{   items.item.isEnable.toString()=='true' ? "啟用" : "停用" }}</div>
                     </template>
                     <template v-slot:item.area="items">
-                        <span>{{  getZonesData(items.item) }}</span
+                        <span>{{  getZonesData(items.item) }}</span>
                     </template>
                     <template v-slot:search-bar>
                         <v-row>
