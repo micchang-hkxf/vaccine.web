@@ -69,7 +69,14 @@
 
 <style>
     .table-header-contant {
-        white-space:nowrap;
+        white-space: nowrap;
+    }
+    .v-data-table__wrapper, .table-header-contant {
+        text-align: center;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781 !important;
+        opacity: 1;
     }
     .row, .col {
         /*margin: 0px !important;
