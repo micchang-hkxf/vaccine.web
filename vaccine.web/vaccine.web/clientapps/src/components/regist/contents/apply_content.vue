@@ -317,7 +317,9 @@
                         token: userInfo.token
                     };
 
-                    setTimeout(() => {
+                    //setTimeout(() => {
+                    this.$nextTick(() => {
+
                         comp.getBeforeApply(data)
                             .then(function (result) {
                                 if (result.datas.length > 0) {
@@ -333,20 +335,20 @@
                                         comp.$bus.$emit('alertRegistered_show', true);
                                         return;
                                     }
-                                    
+
                                     // 已報名本次活動
                                     if (result.datas[0]['messageCode'] === 1 && result.datas[0]['applyNo'] !== null) {
                                         comp.applyNo = result.datas[0]['applyNo'];
                                         comp.$bus.$emit('alertApplyNo_show', true);
                                         return;
                                     }
-                                    
+
                                     // 名額已滿
                                     if (result.datas[0]['messageCode'] === 4) {
                                         comp.$bus.$emit('alert_show', true);
                                         return;
                                     }
-                                    
+
                                     comp.checkJobId = result.datas[0]['checkJobId'];
                                     comp.vaccines = result.datas[0]['vaccines'];
                                 }
@@ -356,7 +358,8 @@
                                 // 無法識別
                                 comp.$bus.$emit('alertUnknow_show', true);
                             });
-                    }, 0);
+                    });
+                    //}, 0);
                 }
             },
             alertClick: function () {

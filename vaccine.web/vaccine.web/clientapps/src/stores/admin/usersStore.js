@@ -75,8 +75,6 @@ export default {
 
             });
         },
-
-
         changeUser({ state }, data) {
             return new Promise(function (resolve, reject) {
                 var result = {}

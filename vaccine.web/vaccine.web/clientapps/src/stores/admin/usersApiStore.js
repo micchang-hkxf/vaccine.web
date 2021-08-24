@@ -3,11 +3,11 @@ import siteConfig from "project/site.config"
 export default {
     namespaced: true,
     actions: {
-        searchUser({ state, rootGetters }, params) {
+        searchUser({ state, rootGetters, dispatch }, params) {
             console.log(state);
             return new Promise(function (resolve, reject) {
                 var datas, testmode = false;
-      
+
                 try {
 
                     var apiUrl = (testmode) ? '/testUserList.json' : `${state.apiRoot}api/User?api-version=1.0`,
@@ -88,12 +88,13 @@ export default {
 
                         result.datas = exists;
                         result.state = exists.state
-                       
+
                         resolve(result);
-                   
+
                     })
-                    .catch(error => {
-                        console.log(error);
+                        .catch((error) => {                            
+                            dispatch('user/notLoginAdmin', error, { root: true });
+                            console.log({ error });
                         })
                 } catch (e) {
                     reject(result);
@@ -102,7 +103,7 @@ export default {
             });
         },
 
-        modifyPassword({ state, rootGetters}, setdata) {
+        modifyPassword({ state, rootGetters }, setdata) {
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
                 console.log(state);
@@ -117,18 +118,18 @@ export default {
                 }).then(res => {
                     results.datas = res;
                     resolve(results);
-                 }).catch(ex => {
+                }).catch(ex => {
                     results.state = 'error';
                     results.datas = ex;
                     reject(results);
-                 });
+                });
 
 
             });
 
         },
-        changeUser({ state ,rootGetters }, data) {
-            return new Promise(function (resolve,reject) {
+        changeUser({ state, rootGetters }, data) {
+            return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
                 console.log(state);
                 //var setdata = {
@@ -150,14 +151,14 @@ export default {
                     "mbNo": data.mbNo,
                     "unitName": data.unitName,
                     "userType": data.userType,
-                    "isEnable": data.isEnable=="true",
+                    "isEnable": data.isEnable == "true",
                     "zones": data.zones
                 };
                 var method = "post";//new user
                 if (data.editMode) {
                     method = "put";//update user
                 }
-                 
+
                 axios({
                     method: method,
                     url: `${state.apiRoot}api/User?api-version=1.0`,
@@ -174,8 +175,8 @@ export default {
                     results.datas = ex;
                     reject(results);
                 });
-        
-          
+
+
             });
 
         },
@@ -202,7 +203,7 @@ export default {
             });
 
         },
-    
+
         getAreaList: function ({ state, rootGetters, commit }) {
             var z = rootGetters['user/getZones'];
 
@@ -235,7 +236,7 @@ export default {
                     result.push({ id: item.distId, state: item.distName });
                 });
                 state.arealist = result;
-            } 
+            }
             axios({
                 method: 'get',
                 url: `${state.apiRoot}api/DataItem/ZoneMap?api-version=1.0`,
@@ -245,13 +246,13 @@ export default {
                 },
                 responseType: 'json',
             }).then(function (res) {
-                
+
                 commit('getAreaList', res.data);
                 if (isAdmin) {//搜尋介面管理者看全區
-                    commit('getAreaListBySearchSelector'); 
+                    commit('getAreaListBySearchSelector');
                 }
             });
-            
+
 
         },
     },
@@ -726,7 +727,7 @@ export default {
         getTableItems: state => state.items,
         getAreaItems: state => state.arealist,
         getAllAreaItems: state => state.arealist2,
-        
+
         getRoleItems: state => state.rolelist,
         getRoleListById: state => (id) => {
             return state.rolelist.find(f => f.id === id)
@@ -740,7 +741,7 @@ export default {
 
             var result = [];
             data[0].data.forEach(function (item) {
-               result.push({ id: item.distId, state: item.distName });
+                result.push({ id: item.distId, state: item.distName });
             });
             state.arealist2 = result;
         },

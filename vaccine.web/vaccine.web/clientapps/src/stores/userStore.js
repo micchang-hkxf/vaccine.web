@@ -10,7 +10,7 @@ export default {
     namespaced: true,
     actions: {
         getUserInfoData({ state, commit, rootGetters }) {
-  
+
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
                 //console.log(state);
@@ -41,7 +41,7 @@ export default {
             });
         },
         userLogout({ state, rootGetters }) {
-         
+
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
                 console.log(state);
@@ -57,16 +57,21 @@ export default {
                         "X-Token": rootGetters['user/getToken'],
                     }
                 }).then(res => {
-                  
+
                     results.datas = res;
                     resolve(results);
-                 }).catch(ex => {
-                    
+                }).catch(ex => {
+
                     results.state = 'error';
                     results.datas = ex;
                     reject(results);
                 });
             });
+        },
+        notLoginAdmin({ commit },error) {
+            if (error.response.data.status != 406) return;
+            commit('removeAdminLogin');
+            window.location.href = "/admin";
         }
     },
     state: {
@@ -88,7 +93,7 @@ export default {
                 headers: {
                     'x-token': window.sessionStorage.getItem('x_token')
                 }
-            } ;
+            };
         },
         getZones: () => {
             return JSON.parse(window.sessionStorage.getItem('zones'));
@@ -136,9 +141,13 @@ export default {
         }
     },
     mutations: {
+        removeAdminLogin() {
+            window.sessionStorage.removeItem('x_token');
+            Vue.$cookies.remove('x-token');
+        },
         setSessionId: (state, sessionId) => {
             window.sessionStorage.setItem('sessionId', sessionId);
-            
+
         },
         setToken: (state, token) => {
             window.sessionStorage.setItem('x_token', token);
