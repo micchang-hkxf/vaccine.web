@@ -1,9 +1,9 @@
 ﻿<template>
     <div class="applied-list">
         <div class="action-bar">
-            <v-text-field placeholder="請輸入行政區、村里或場次標題" v-model="filterKeyword" hide-details dense height="48px" outlined @change="search"  @input="search" autocomplete="off">
+            <v-text-field placeholder="查詢行政區、村里或場次標題" v-model="filterKeyword" hide-details dense height="48px" outlined @change="search"  @input="search" autocomplete="off">
                 <template v-slot:append>
-                    <img src="/regist/common_search-24px.svg" />
+                    <img src="/regist/search.svg" />
                 </template>
             </v-text-field>
         </div>
@@ -277,6 +277,7 @@
         letter-spacing: 0px;
         color: #43496980;
         min-height: calc(100vh - 256px);
+        width: 100%;
     }
 
     .applied-list/deep/ .null-content {
@@ -304,5 +305,79 @@
         width: 70px;
         white-space: normal;
         word-break: keep-all;
+    }
+
+    .applied-list/deep/ .action {
+        background-color: #FFF;
+        width: 100% !important;
+        height: 200px !important;
+        text-align: left;
+        font: normal normal normal 12px/20px Noto Sans T Chinese;
+        letter-spacing: 0px;
+    }
+
+    /* Extra small devices (portrait phones, less than 576px) */
+    @media (max-width: 575.98px) {
+    }
+
+    /* Small devices (landscape phones, 576px and up) */
+    @media (min-width: 576px) and (max-width: 767.98px) {
+    }
+
+    /** Medium devices (tablets, 768px and up) */
+    @media (min-width: 768px) and (max-width: 991.98px) {
+        .applied-list/deep/ .action-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 800px;
+        }
+
+        .applied-list/deep/ .action {
+            width: 387px !important;
+            margin: 6px !important;
+        }
+
+        .applied-list/deep/ .action-container {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
+    /* Large devices (desktops, 992px and up) */
+    @media (min-width: 992px) and (max-width: 1199.98px) {
+        .applied-list/deep/ .action-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 800px;
+        }
+
+        .applied-list/deep/ .action {
+            width: 387px !important;
+            margin: 6px !important;
+        }
+
+        .applied-list/deep/ .action-container {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
+    /* Extra large devices (large desktops, 1200px and up) */
+    @media (min-width: 1200px) {
+        .applied-list/deep/ .action-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 800px;
+        }
+
+        .applied-list/deep/ .action {
+            width: 387px !important;
+            margin: 6px !important;
+        }
+
+        .applied-list/deep/ .action-container {
+            padding-left: 0;
+            padding-right: 0;
+        }
     }
 </style>

@@ -13,16 +13,13 @@
                 <div class="action-content d-flex flex-row justify-space-between">
                     <div class="action tp-pass d-flex flex-column justify-center align-center" @click="toTpPass($route.params.vote_no)">
                         <div>
-                            <!--<img src="/regist/tp_pass.svg">-->
-                            <img src="/regist/tpp.svg">
+                            <img src="/regist/tp_pass.svg">
                         </div>
                         <div class="action-label">台北通帳號登入</div>
                     </div>
-                  
-                    <div class="action d-flex flex-column justify-center align-center" @click.stop="toLocalPass($route.params.vote_no)">
+                    <div class="action d-flex flex-column justify-center align-center" @click.stop="$refs.switch.toLocalLogin()">
                         <div>
-                            <!--<img src="/regist/editor_pen.svg">-->
-                            <img src="/regist/edit.svg">
+                            <img src="/regist/editor_pen.svg">
                         </div>
                         <div class="action-label">手動輸入資料</div>
                     </div>
@@ -73,11 +70,9 @@
             toTpPass: function (sessionId) {
                 this.$refs.switch.toTpPassLogin(`/regist/#/apply/${sessionId}`);
             },
-            toLocalPass: function (sessionId) {
-                this.$refs.switch.toLocalLogin(`/apply/${sessionId}`);
-            },
+            
             loginDone: function () {
-                //this.$router.push({ path: `/apply/${this.$route.params.vote_no}` });
+                this.$router.push({ path: `/apply/${this.$route.params.vote_no}` });
             },
             loginCancel: function () {
 
@@ -100,10 +95,7 @@
 </script>
 <style scoped>
     .agree-content/deep/ .app-content {
-        /*margin-bottom: 78px;*/
-        width:65%;
-        margin: 0 auto;
-        /*padding: 32px 16px 87px;*/
+        margin-bottom: 78px;
     }
 
     .agree-content/deep/ .action-header {
@@ -123,24 +115,18 @@
         padding-bottom: 24px !important;
     }
 
-
-
     .agree-content/deep/ .action {
         font-size: 16px;
         color: white;
         background-color: #736DB9;
-        /*width: 150px !important;
-        height: 150px;*/
-        width: 300px !important;
-        height: 300px;
+        width: 152px !important;
+        height: 150px;
         border-radius: 10px;
     }
 
-        .agree-content/deep/ .action.tp-pass {
-            background-color: #77CCDB;
-        }
-
-
+    .agree-content/deep/ .action.tp-pass {
+        background-color: #77CCDB;
+    }
 
     .agree-content/deep/ .action-content {
         padding-top: 20px;
@@ -187,71 +173,80 @@
         margin-right: -30% !important;
     }
 
-    @media (min-device-width: 320px) and (max-device-width: 540px) and (-webkit-min-device-pixel-ratio: 2) {
-        .agree-content/deep/ .app-content {
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        .agree-content/deep/ .action {
-            width: 150px !important;
-            height: 150px;
-        }
-
-        img{
-            width:80px;
-        }
-
+    /* Extra small devices (portrait phones, less than 576px) */
+    @media (max-width: 575.98px) {
     }
 
+    /* Small devices (landscape phones, 576px and up) */
+    @media (min-width: 576px) and (max-width: 767.98px) {
+    }
 
-    @media (min-width: 540.5px) and (max-width: 767.98px) {
-        .agree-content/deep/ .app-content {
-            width: 100%;
-            margin: 0 auto;
-        }
-
+    /** Medium devices (tablets, 768px and up) */
+    @media (min-width: 768px) and (max-width: 991.98px) {
         .agree-content/deep/ .action {
-            width: 200px !important;
-            height: 200px;
+            width: 386px !important;
+            height: 386px;
         }
 
-        img {
-            width: 100px;
+        .agree-content/deep/ .action img {
+            width: 224px;
+            height: 224px;
+        }
+
+        .agree-content/deep/ .agree-container {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        .agree-content/deep/ .agree-actions {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
         }
     }
 
-    @media (min-width: 770px) and (max-width: 960px) {
-        .agree-content/deep/ .app-content {
-            width: 100%;
-            margin: 0 auto;
-        }
-
+    /* Large devices (desktops, 992px and up) */
+    @media (min-width: 992px) and (max-width: 1199.98px) {
         .agree-content/deep/ .action {
-            width: 240px !important;
-            height: 240px;
+            width: 386px !important;
+            height: 386px;
         }
 
-        img {
-            width: 120px;
+        .agree-content/deep/ .action img {
+            width: 224px;
+            height: 224px;
+        }
+
+        .agree-content/deep/ .agree-container {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        .agree-content/deep/ .agree-actions {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
         }
     }
 
-
-    @media (min-width: 960.5px) and (max-width: 1200px) {
-        .agree-content/deep/ .app-content {
-            width: 100%;
-            margin: 0 auto;
-        }
-
+    /* Extra large devices (large desktops, 1200px and up) */
+    @media (min-width: 1200px) {
         .agree-content/deep/ .action {
-            width: 150px !important;
-            height: 150px;
+            width: 386px !important;
+            height: 386px;
         }
 
-        img {
-            width: 90px;
+        .agree-content/deep/ .action img {
+            width: 224px;
+            height: 224px;
+        }
+
+        .agree-content/deep/ .agree-container {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        .agree-content/deep/ .agree-actions {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
         }
     }
-
 </style>
