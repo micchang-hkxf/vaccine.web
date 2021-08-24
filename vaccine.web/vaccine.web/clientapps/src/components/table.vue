@@ -83,7 +83,16 @@
         padding: 0px !important;*/
         flex-wrap: nowrap !important;
     }
-
+    .v-data-table__wrapper td {
+        max-width: 150px !important;
+        overflow: hidden;
+        text-overflow: ellipsis !important;
+        white-space: pre !important;
+    }
+    .v-data-table__wrapper td before {
+        content: '&nbsp;';
+        visibility: hidden;
+    }
     .v-pagination__navigation, .v-pagination__item {
         box-shadow: none !important;
     }
