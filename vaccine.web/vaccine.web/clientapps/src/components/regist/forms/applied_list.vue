@@ -73,10 +73,17 @@
                     </template>
                 </div>
             </v-card>
-            <div class="null-list" v-if="applieds.length === 0">
+            <div class="null-list" v-if="isLogin && applieds.length === 0">
                 <div class="null-content">
                     <img src="/regist/null_list.svg" />
                     <div>尚無相關紀錄</div>
+                </div>
+            </div>
+            <div class="pls-login" v-if="!isLogin">
+                <div class="login-content">
+                    <img src="/regist/lock.svg" />
+                    <div class="msg">請登入您的身份以查詢接種資料</div>
+                    <v-btn class="click-login" @click="toLogin">點我登入</v-btn>
                 </div>
             </div>
         </div>
@@ -94,16 +101,21 @@
             },
             applieds: [],
             filterKeyword: '',
+            isShow: false,
             now: new Date()
         }),
         computed: {
-            ...mapGetters('regist', [ 'getUserInfo']),
+            ...mapGetters('regist', ['getUserInfo']),
+            isLogin: function () {
+                if (!this.getUserInfo) return false;
+                return true;
+            }
         },
         props: {
 
         },
         created: function () {
-
+            this.isShow = true;
         },
         methods: {
             ...mapActions('regist', ['loadAppliedList', 'setActivityApply']),
@@ -155,6 +167,9 @@
                 this.setActivityApply(session).then(() => {
                     this.$router.push({ path: 'applied', params: session });
                 });
+            },
+            toLogin: function () {
+                this.$bus.$emit('login_switch_show');
             }
         },
         components: {
@@ -314,6 +329,46 @@
         text-align: left;
         font: normal normal normal 12px/20px Noto Sans T Chinese;
         letter-spacing: 0px;
+    }
+
+    .applied-list/deep/ .pls-login {
+        text-align: center;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #43496980;
+        min-height: calc(100vh - 256px);
+        width: 100%;
+    }
+
+    .applied-list/deep/ .login-content {
+        position: relative;
+        top: 56px;
+    }
+
+    .applied-list/deep/ .login-content img {
+        width: 96px;
+        height: 96px;
+    }
+
+    .applied-list/deep/ .login-content .msg {
+        position: relative;
+        margin: 0 auto;
+        width: 136px;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #43496980;
+        opacity: 1;
+    }
+
+    .applied-list/deep/ .click-login {
+        margin-top: 32px;
+        background: #736DB9 0% 0% no-repeat padding-box !important;
+        border-radius: 4px;
+        text-align: center;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #FFFFFF;
+        opacity: 1;
     }
 
     /* Extra small devices (portrait phones, less than 576px) */
