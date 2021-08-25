@@ -57,10 +57,11 @@ export default {
 
             state.districts = dists;
         },
-        loadVillages: function ({ state, rootGetters }, params) {
+        loadVillages: function ({ state, commit, rootGetters }, params) {
             
             var zones = rootGetters['user/getZones'];
-            var villages = [];
+            var medicals = rootGetters['user/getMedicals'];
+            var villages = [],md=[];
             zones.forEach((zone) => {
                 zone.data.forEach((dist) => {
                     if (dist.distId === params.id) {
@@ -73,7 +74,18 @@ export default {
                     }
                 });
             });
+            medicals.forEach((medical) => {
+                if (medical.distName === params.name) {
+                    md.push({
+                        id: medical.id,
+                        uName: medical.uName
+                    });
+                }
+            });
+            commit('setDistMedicals', md);
             state.villages = villages;
+
+          
         },
         loadMedicals: function ({ state, commit, rootGetters }) {
             var medicals = rootGetters['user/getMedicals'];
@@ -107,8 +119,7 @@ export default {
             });
             commit('setInstitutions', datas);
         },
-   
-
+      
         loadRegistForm: function ({ state, rootGetters }, params) {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity`;
@@ -635,6 +646,7 @@ export default {
         ], 
         vaccines: [],
         districts: [],
+        medicals:[],
         villages: [],
         institutions: [],
         registrationHeaders: [
@@ -678,6 +690,9 @@ export default {
         getShowBrand: state => {
             return state.showBrand;
         },
+        getDisMedicals: state => {
+            return state.medicals;
+        },
     },
     mutations: {
         setBrandData: function (state, d ) {
@@ -697,7 +712,10 @@ export default {
         },
         setInstitutions: function (state, institutions) {
             state.institutions = institutions;
-        }
+        },
+        setDistMedicals: function(state, m) {
+            state.medicals = m
+        },
     },
     modules: {
         user: userStore

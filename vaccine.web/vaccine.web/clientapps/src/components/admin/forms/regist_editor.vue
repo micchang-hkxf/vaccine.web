@@ -114,10 +114,10 @@
                     </v-col>
                 </v-row>
                 <v-row>
-                    <v-col cols="3">
+                    <v-col cols="6">
                         <div> <span class="regist-title">醫療院所</span><span class="red--text">*</span></div>
                         <v-select v-model="model.regist_institution"
-                                  :items="getMedicals"
+                                  :items="getDisMedicals"
                                   item-text="uName"
                                   item-value="id"
                                   placeholder="請選擇醫療院所"
@@ -140,7 +140,7 @@
                 </v-row>
                 <v-divider></v-divider>
                 <v-row>
-                    <v-col cols="3">
+                    <v-col cols="5">
                         <div style="margin-top:15px;"> <span class="regist-title">設站日期</span><span class="red--text">*</span></div>
                         <v-menu ref="menu"
                                 v-model="menu"
@@ -247,7 +247,7 @@
                 </v-row>-->
 
                 <v-row>
-                    <v-col cols="6">
+                    <v-col cols="5">
                         <div> <span class="regist-title">事先報名開始時間</span><span class="red--text">*</span></div>
                         <v-menu ref="apply"
                                 v-model="apply"
@@ -335,7 +335,7 @@
                 </v-row>
                 <v-divider></v-divider>
                 <v-row>
-                    <v-col cols="6">
+                    <v-col cols="5">
             
                         <div style="margin-top:15px;"><span class="regist-title">報名名額上限設定</span></div>
                         <v-text-field v-model="model.regist_quota"
@@ -349,7 +349,7 @@
 
                 </v-row>
                 <v-row>
-                    <v-col cols="6">
+                    <v-col cols="5">
                         <div style="margin-top:15px;"><span class="regist-title">報名者最低年齡限制</span></div>
                         <v-text-field v-model="model.regist_age_limit"
                                       placeholder="請輸入年齡下限(預設無限制)"
@@ -515,7 +515,7 @@
             //},
         },
         computed: {
-            ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders', 'getShowBrand']),
+            ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders', 'getShowBrand','getDisMedicals']),
             ...mapGetters('user', ['getMedicals']),
             defaultItem: function () {
                 return this.default;
@@ -594,12 +594,10 @@
                 //this.$refs.dialogPanel.open();
             },
             setMedicalInfo: function (event) {
-
-                this.$store.state.registration.institutions.forEach((d) => {
+                this.$store.getters["user/getMedicals"].forEach((d) => {
                     if (d.id === event.id) {
-
                         this.regist_institution_code = d.id;
-                        this.regist_institution_name = d.from;
+                        this.regist_institution_name = d.cityName+'/'+d.distName;
                     }
                 });
             },

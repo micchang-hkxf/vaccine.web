@@ -88,10 +88,9 @@
         height: 100vh !important;
 
     }
-    .v-list-item {
-        padding: 0px 0px 0px 0px !important;
-
-    }
+    .menu-list > .v-list-item {
+            padding: 0px 0px 0px 0px !important;
+        }
     .v-list-item__title {
         padding: 0px 10px !important;
         font-size: 20px !important;
@@ -101,7 +100,7 @@
     }
     .v-list {
         padding: 0px 0px !important;
-        width: 384px !important;
+        
     }
     .v-list-item__content {
         height: 56px !important;
