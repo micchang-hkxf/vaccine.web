@@ -64,7 +64,7 @@
                     <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
                 </div>
             </div>-->
-                    <div class="apply-field display type">
+                    <div class="apply-field display type" v-if="vaccines.length > 0 || session.brandName !== ''">
                         <div class="apply-field-label">接種疫苗</div>
                         <div class="apply-field-container">
                             <template v-if="vaccines.length > 0">
@@ -323,6 +323,9 @@
                         comp.getBeforeApply(data)
                             .then(function (result) {
                                 if (result.datas.length > 0) {
+                                    comp.checkJobId = result.datas[0]['checkJobId'];
+                                    comp.vaccines = result.datas[0]['vaccines'];
+
                                     // 未符合接種資格
                                     if (!result.datas[0]['canApply']) {
                                         comp.$bus.$emit('alertNoConform_show', true);
@@ -348,9 +351,6 @@
                                         comp.$bus.$emit('alert_show', true);
                                         return;
                                     }
-
-                                    comp.checkJobId = result.datas[0]['checkJobId'];
-                                    comp.vaccines = result.datas[0]['vaccines'];
                                 }
                             })
                             .catch(ex => {
