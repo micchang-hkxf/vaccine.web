@@ -84,7 +84,7 @@
         flex-wrap: nowrap !important;
     }
     .v-data-table__wrapper td {
-        max-width: 150px !important;
+        max-width: 160px !important;
         overflow: hidden;
         text-overflow: ellipsis !important;
         white-space: pre !important;

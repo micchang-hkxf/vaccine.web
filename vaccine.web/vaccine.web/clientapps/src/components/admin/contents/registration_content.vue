@@ -1653,9 +1653,9 @@
                     });
             },
             downloadAgreeFile: function (item) {
+            
                 var comp = this;
                 comp.alertMessage = '';
-                console.log(item);
                 comp.getAgreeFile({ id: item.id, name: item.name, activityId: this.activityId })
                     .then(function (result) {
                         switch (result.state) {

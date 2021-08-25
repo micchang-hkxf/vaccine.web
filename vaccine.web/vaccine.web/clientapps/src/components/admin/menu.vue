@@ -32,10 +32,12 @@
         mounted: function () {
             var k = window.location.hash.substr(1),
                 n = (k.substring(1));
- 
+            if (n == "") {
+                n = "registration";
+            }
             var selection = document.querySelector(".v-list-item__content." + n);
-       
-            if (selection) {
+        
+            if (selection!=null) {
                 selection.style.setProperty('background-color', '#FFFFFF0F', 'important');
             }
              
@@ -52,9 +54,15 @@
                     //window.open(menu.target, menu.text);
                     return;
                 }
+  
                 window.location.hash = "";
                 this.currentContent = menu;
+                if (this.$route.name == menu.key) {
+                    return;
+                }
                 this.$router.push({ name: menu.key });
+                
+   
             
             },
             menuItemActive: function (menu) {
