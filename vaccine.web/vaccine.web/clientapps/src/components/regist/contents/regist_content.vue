@@ -117,14 +117,14 @@
         }
     }
 </script>
-<style>
+<style scoped>
     body {
         background: #FFFFFF !important;
     }
 
-    .app-content {
-        width: 100%;
-        max-width: 800px;
+    /deep/.app-content {
+        /*width: 100%;
+        max-width: 800px;*/
         margin: 0 auto;
     }
 
@@ -235,6 +235,7 @@
         .regist-content .action {
             width: 384px !important;
             height: 383px !important;
+            margin-left: 15px;
         }
 
         .regist-content .action img {
