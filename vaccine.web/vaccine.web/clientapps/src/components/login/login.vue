@@ -3,21 +3,20 @@
         <v-main>
             <v-form lazy-validation ref="loginForm">
                 <div class="logo"></div>
-                <div class="title">里辦疫苗接種便民系統</div>
+                <div class="title">里辦疫苗接種便民服務</div>
+                <div class="sub-title">-管理後台-</div>
                 <div class="content">
                     <div>
-                        <v-label>帳號</v-label>
-                        <v-text-field id="uid" placeholder="請輸入帳號" v-model="uid" :rules="[rules.required]" ref="uid" solo @keyup.enter="sendLoginForm" autocomplete="off"></v-text-field>
+                        <v-text-field id="uid" placeholder="帳號" v-model="uid" :rules="[rules.required]" ref="uid" solo @keyup.enter="sendLoginForm" autocomplete="off"></v-text-field>
                     </div>
                     <div>
-                        <v-label>密碼</v-label>
-                        <v-text-field id="upd" placeholder="請輸入密碼" v-model="upd" :rules="[rules.required]" ref="upd" solo @keyup.enter="sendLoginForm"
+                        <v-text-field id="upd" placeholder="密碼" v-model="upd" :rules="[rules.required]" ref="upd" solo @keyup.enter="sendLoginForm"
                                       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                                       :type="show1 ? 'text' : 'password'"
                                       @click:append="show1 = !show1"></v-text-field>
                     </div>
                     <div>
-                        <v-btn block height="48px" @click="sendLoginForm" :ripple="false">登入</v-btn>
+                        <v-btn block height="48px" @click="sendLoginForm" :ripple="false" :class="uid === '' || upd === '' ? 'btn-disabled' : 'btn-login'">登入</v-btn>
                     </div>
                 </div>
                 <div class="forgt">
@@ -871,14 +870,28 @@
 
     .rectangle .title {
         position: relative;
-        top: 48px;
-        margin-left: 96px;
-        width: 290px;
+        top: 40px;
+        left: 96px;
+        width: 292px;
         height: 40px;
-        font: var(--unnamed-font-style-normal) normal bold 28px/36px Futura;
+        font: var(--unnamed-font-style-normal) normal bold 28px/36px Futura !important;
         color: var(--bk);
         text-align: center;
-        letter-spacing: 1.12px;
+        letter-spacing: 1.12px !important;
+        opacity: 1;
+        white-space: nowrap;
+    }
+
+    .rectangle .sub-title {
+        position: relative;
+        top: 35px;
+        left: 172px;
+        width: 140px;
+        height: 40px;
+        font: var(--unnamed-font-style-normal) normal bold 28px/36px Futura !important;
+        color: var(--bk);
+        text-align: center;
+        letter-spacing: 1.12px !important;
         opacity: 1;
         white-space: nowrap;
     }
@@ -919,13 +932,25 @@
     }
 
     .rectangle .v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
-        background: var(--v-primary-base) 0% 0% no-repeat padding-box !important;
-        border-radius: 8px;
+        background: var(--v-primary-base) 0% 0% no-repeat padding-box;
         font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-noto-sans-t-chinese);
         letter-spacing: var(--unnamed-character-spacing-0);
         color: var(--w);
         text-align: center;
         opacity: 1;
+    }
+
+    .rectangle .btn-disabled, .rectangle .btn-login {
+        border-radius: 8px;
+    }
+
+    .rectangle .btn-disabled {
+        cursor: not-allowed;
+        pointer-events: none;
+        background: var(--bk_4) 0% 0% no-repeat padding-box !important;
+        border-radius: 8px !important;
+        opacity: 1 !important;
+        box-shadow: none !important;
     }
 
     .rectangle .forgt {
@@ -1054,6 +1079,19 @@
         color: var(--bk_4);
     }
 
+    .v-dialog.dialog .v-card__actions > .v-btn:first-child {
+        margin-left: 40px;
+        width: 96px;
+        font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/23px var(--unnamed-font-family-noto-sans-t-chinese);
+        letter-spacing: var(--unnamed-character-spacing-0);
+        color: var(--bk) !important;
+        text-align: center;
+        background: var(--w) 0% 0% no-repeat padding-box;
+        border: 1px solid #62678133;
+        border-radius: 4px;
+        opacity: 1;
+    }
+
     .dialogForgetSteps .v-stepper__step {
         padding: 0;
     }
@@ -1085,8 +1123,13 @@
         }
 
         .rectangle .title {
-            top: 103px;
-            margin-left: 44px;
+            top: 80px;
+            left: 55px;
+        }
+
+        .rectangle .sub-title {
+            top: 75px;
+            left: 130px;
         }
 
         .rectangle .content {

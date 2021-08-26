@@ -75,6 +75,10 @@
 </script>
 
 <style scoped>
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
+
     .login-switch/deep/ .login-header {
         font-size: 16px !important;
         color: #626781 !important;
