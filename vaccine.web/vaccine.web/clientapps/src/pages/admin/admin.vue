@@ -52,4 +52,8 @@
             border-radius: 20px;
             background: rgba(0,0,0,0.1);
         }
+
+    .content-search-button {
+        margin-left:4px!important;
+    }
 </style>

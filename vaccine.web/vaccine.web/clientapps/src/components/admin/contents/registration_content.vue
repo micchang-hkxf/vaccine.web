@@ -79,7 +79,7 @@
 
                                         <v-text-field v-model="keyWord" placeholder="標題關鍵字" outlined dense clearable></v-text-field>
 
-                                        <v-btn icon color="#626781" :ripple="false"
+                                        <v-btn icon color="#626781" :ripple="false" class="content-search-button"
                                                @click="getRegistForm(1)">
                                             <v-icon>fas fa-search</v-icon>
                                         </v-btn>

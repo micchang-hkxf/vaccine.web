@@ -19,65 +19,69 @@
                         <span>{{  getZonesData(items.item) }}</span>
                     </template>
                     <template v-slot:search-bar>
-                        <v-row>
-                            <v-col class="d-flex  justify-content-end" cols="12" md="6" lg="6" sm="6" xs="6">
-                                <v-select v-model="selectRole"
-                                          :items="getRoleItems"
-                                          item-text="state"
-                                          item-value="id"
-                                          label="全部角色"
-                                          dense
-                                          :menu-props="{ bottom: true, offsetY: true }"
-                                          outlined
-                                          clearable
-                                          style="margin-right: 10px;min-width:150px"
-                                          return-object>
-                                </v-select>
-
-                                <v-select v-model="selectArea"
-                                          :items="getAreaItems"
-                                          item-text="state"
-                                          item-value="id"
-                                          label="有/無管轄區域"
-                                          dense
-                                          :menu-props="{ bottom: true, offsetY: true }"
-                                          outlined
-                                          clearable
-                                          style="margin-right: 10px;min-width:150px"
-                                          class="search-filter"
-                                          return-object>
-                                </v-select>
-                                <v-select v-model="selectPermission"
-                                          :items="permissionStatus"
-                                          item-text="state"
-                                          item-value="st"
-                                          label="權限啟用/停用"
-                                          dense
-                                          :menu-props="{ bottom: true, offsetY: true }"
-                                          outlined
-                                          clearable
-                                          style="margin-right: 10px;min-width:150px"
-                                          class="search-filter"
-                                          return-object>
-                                </v-select>
-                                <v-text-field class="w03"
-                                              label='人員姓名/編號'
+                        <div style="display:flex;justify-content:flex-start;margin-left:15px;margin-top:15px;">
+                            <v-row>
+                                <v-col class="d-flex  justify-content-end" cols="12" md="6" lg="6" sm="6" xs="6">
+                                    <v-select v-model="selectRole"
+                                              :items="getRoleItems"
+                                              item-text="state"
+                                              item-value="id"
+                                              label="全部角色"
                                               dense
-                                              v-model.trim="selectUser"
-                                              outlined>
-                                </v-text-field>
+                                              :menu-props="{ bottom: true, offsetY: true }"
+                                              outlined
+                                              clearable
+                                              style="margin-right: 10px;min-width:150px"
+                                              return-object>
+                                    </v-select>
 
-                                <v-btn color="#626781" icon style="padding-left:2px;top:3px" @click.stop="search(1)">
-                                    <v-icon size="20">fas fa-search</v-icon>
-                                </v-btn>
-                                <v-file-input accept=".csv" style="display:none" ref="importfile">
-                                </v-file-input>
-                            </v-col>
+                                    <v-select v-model="selectArea"
+                                              :items="getAreaItems"
+                                              item-text="state"
+                                              item-value="id"
+                                              label="有/無管轄區域"
+                                              dense
+                                              :menu-props="{ bottom: true, offsetY: true }"
+                                              outlined
+                                              clearable
+                                              style="margin-right: 10px;min-width:150px"
+                                              class="search-filter"
+                                              return-object>
+                                    </v-select>
+                                    <v-select v-model="selectPermission"
+                                              :items="permissionStatus"
+                                              item-text="state"
+                                              item-value="st"
+                                              label="權限啟用/停用"
+                                              dense
+                                              :menu-props="{ bottom: true, offsetY: true }"
+                                              outlined
+                                              clearable
+                                              style="margin-right: 10px;min-width:150px"
+                                              class="search-filter"
+                                              return-object>
+                                    </v-select>
+                                    <v-text-field class="w03"
+                                                  label='人員姓名/編號'
+                                                  dense
+                                                  v-model.trim="selectUser"
+                                                  outlined>
+                                    </v-text-field>
 
-                        </v-row>
+                                    <v-btn color="#626781" icon style="padding-left:2px;top:3px" @click.stop="search(1)" class="content-search-button">
+                                        <v-icon size="20">fas fa-search</v-icon>
+                                    </v-btn>
+                                    <v-file-input accept=".csv" style="display:none" ref="importfile">
+                                    </v-file-input>
+                                </v-col>
+
+                            </v-row>
+
+                        </div>
+    
 
 
-                    </template>
+</template>
 
                     <template v-slot:toolbar-action={}>
                         <!--<v-checkbox :ripple="false" hide-details @click="switchSelect"></v-checkbox>

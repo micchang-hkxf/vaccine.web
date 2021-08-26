@@ -66,7 +66,11 @@
 
 </template>
   
+<style scoped>
 
+    .row, .col {
+    }
+</style>
 <style>
     .table-header-contant {
         white-space: nowrap;
@@ -77,11 +81,6 @@
         letter-spacing: 0px;
         color: #626781 !important;
         opacity: 1;
-    }
-    .row, .col {
-        /*margin: 0px !important;
-        padding: 0px !important;*/
-        flex-wrap: nowrap !important;
     }
     .v-data-table__wrapper td {
         max-width: 160px !important;
