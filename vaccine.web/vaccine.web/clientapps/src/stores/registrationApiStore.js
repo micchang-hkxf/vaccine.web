@@ -7,18 +7,21 @@ export default {
     namespaced: true,
     actions: {
         loadVaccines: function ({ state, commit, rootGetters }, params) {
-          
+           
             var datas = [];
             var vaccines = rootGetters['user/getVaccines'];
             if (vaccines !== null) {
+
                 vaccines.forEach((data) => {
                     datas.push({
                         id: data.groupId,
                         name: data.groupName,
                         requireSubitem: data.requireSubitem
                     });
+       
                 });
                 state.vaccines = datas;
+                
                 commit('setBrandData', { 'vaccines': vaccines, 'params': params });
                 return;
             }
@@ -36,7 +39,7 @@ export default {
                     });
                 });
                 state.vaccines = datas;
-                    
+    
                 commit('user/setVaccines', res.data);
                 commit('setBrandData', { 'vaccines': res.data, 'params': params } );
             });
@@ -82,6 +85,7 @@ export default {
                     });
                 }
             });
+            //console.log('params',params);
             commit('setDistMedicals', md);
             state.villages = villages;
 
@@ -98,7 +102,7 @@ export default {
             axios.get(apiUrl,
                 rootGetters['user/getApiHeader']
             ).then(res => {
-                console.log(res.data);
+                //console.log(res.data);
                 commit('user/setMedicals', res.data);
             });
         },
@@ -463,7 +467,7 @@ export default {
         },
         registForm: function ({ state, rootGetters, dispatch}, data) {
             return new Promise((resolve, reject) => {
-                console.log('new', data);
+                //console.log('new', data);
 
                 var result = { data: [], state: state }
                 
@@ -484,7 +488,7 @@ export default {
                     actAge: typeof data.model.regist_age_limit === 'undefined' ? 0 : parseInt(data.model.regist_age_limit),
                     //remarks: [data.model.remarks],
                 }];
-                console.log("setData", setData);
+                //console.log("setData", setData);
             
                 axios({
                     method: 'post',
@@ -534,7 +538,7 @@ export default {
          
 
             return new Promise((reslove, reject) => {
-                console.log('import', setData);
+                //console.log('import', setData);
                 var result = { data: [], state: state }
                 axios({
                     method: 'post',
@@ -557,17 +561,24 @@ export default {
         },
         updateRegist: function ({ state, rootGetters, dispatch }, data) {
             return new Promise((resolve, reject) => {
-                var result = { data:[] ,state: state };
-                console.log('update',data)
+                var rb=[],result = { data: [], state: state };
+                if (typeof data.model.regist_brand === "string") {
+                    rb = [data.model.regist_brand];
+                } else if (typeof data.model.regist_brand.id === 'undefined') {
+                    rb = [];
+                } else {
+                    rb = [data.model.regist_brand.id];
+                }
+                //console.log('update',data)
                 var setData = {
                     vaccineGroupId: data.model.regist_type.id,
-                    vaccineIds: typeof data.model.regist_brand.id === 'undefined' ? [] : [data.model.regist_brand.id],
+                    vaccineIds: rb,
                     title: data.model.regist_title,
                     implementDate: data.model.regist_station_date.replace(/\//g, '-'),
                     implementStartDate: data.model.regist_station_date.replace(/\//g, '-') + "T" + data.model.regist_station_start_time + ":00",
                     implementEndDate: data.model.regist_station_date.replace(/\//g, '-') + "T" + data.model.regist_station_end_time + ":00",
                     stationAddr: data.model.regist_place,
-                    distId: data.model.regist_district,
+                    distId: (data.model.regist_district.id) ? data.model.regist_district.id:data.model.regist_district,
                     villageId: (typeof data.model.regist_village == "object") ? data.model.regist_village.id : data.model.regist_village,
                     startApplyDate: data.model.regist_apply_start_date.replace(/\//g, '-'),
                     endApplyDate: data.model.regist_apply_end_date.replace(/\//g, '-'),
@@ -577,7 +588,7 @@ export default {
                     //remarks: [data.model.remarks],
                 };
          
-                console.log('setData', setData);
+                //console.log('setData', setData);
                 axios({
                     method: 'put',
                     url: `${state.apiRoot}api/Activity/Detail/` + data.model.regist_id+'?api-version=1.0',
@@ -591,7 +602,7 @@ export default {
                     resolve(result);
                 }).catch((error) => {
                     dispatch('user/notLoginAdmin', error, { root: true });
-                    console.log('erroe', error);
+                    //console.log('erroe', error);
                     result.datas = error;
                     reject(result);
                 });
@@ -603,7 +614,7 @@ export default {
                 data.forEach((d) => {
                     actIdLists+='&actIdList='+d.regist_id;
                 });               
-                console.log('remove', data);
+                //console.log('remove', data);
                 axios({
                     method: 'delete',
                     url: `${state.apiRoot}api/Activity?api-version=1.0` + actIdLists,
