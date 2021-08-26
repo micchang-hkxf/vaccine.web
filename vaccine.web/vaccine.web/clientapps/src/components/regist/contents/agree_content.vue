@@ -95,9 +95,12 @@
         }
     }
 </script>
+
 <style scoped>
     .agree-content/deep/ .app-content {
-        margin-bottom: 78px;
+        /*margin-bottom: 78px;*/
+        width: 65%;
+        margin: 0 auto;
     }
 
     .agree-content/deep/ .action-header {
@@ -121,8 +124,10 @@
         font-size: 16px;
         color: white;
         background-color: #736DB9;
-        width: 152px !important;
-        height: 150px;
+        /*width: 152px !important;
+        height: 150px;*/
+        width: 300px !important;
+        height: 300px;
         border-radius: 10px;
     }
 
@@ -175,24 +180,76 @@
         margin-right: -30% !important;
     }
 
-    /* Extra small devices (portrait phones, less than 576px) */
-    @media (max-width: 575.98px) {
+    @media (min-device-width: 110px) and (max-device-width: 319px) and (-webkit-min-device-pixel-ratio: 2) {
+        .agree-content/deep/ .app-content {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .agree-content/deep/ .action {
+            width: 100px !important;
+            height: 100px;
+        }
+
+        img {
+            width: 60px;
+        }
+
+        .agree-content/deep/ .action-label {
+            margin-top: 0px;
+            font-size: 10px;
+        }
+
     }
 
-    /* Small devices (landscape phones, 576px and up) */
-    @media (min-width: 576px) and (max-width: 767.98px) {
+    @media (min-device-width: 320px) and (max-device-width: 540px) and (-webkit-min-device-pixel-ratio: 2) {
+        .agree-content/deep/ .app-content {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .agree-content/deep/ .action {
+            width: 150px !important;
+            height: 150px;
+        }
+
+        img {
+            width: 80px;
+        }
     }
+
+
+    @media (min-width: 540.5px) and (max-width: 767.98px) {
+        .agree-content/deep/ .app-content {
+            width: 90%;         
+        }
+
+        .agree-content/deep/ .action {
+            width: 200px !important;
+            height: 200px;
+        }
+
+        img {
+            width: 100px;
+        }
+    }
+
 
     /** Medium devices (tablets, 768px and up) */
     @media (min-width: 768px) and (max-width: 991.98px) {
+        .agree-content/deep/ .app-content {
+            width: 90%;
+        }
+
+
         .agree-content/deep/ .action {
-            width: 386px !important;
-            height: 386px;
+            width: 240px !important;
+            height: 240px;
         }
 
         .agree-content/deep/ .action img {
-            width: 224px;
-            height: 224px;
+            width: 150px;
+            height: 150px;
         }
 
         .agree-content/deep/ .agree-container {
@@ -208,6 +265,12 @@
 
     /* Large devices (desktops, 992px and up) */
     @media (min-width: 992px) and (max-width: 1199.98px) {
+
+        .agree-content/deep/ .app-content {
+            width: 90%;
+        }
+
+
         .agree-content/deep/ .action {
             width: 386px !important;
             height: 386px;
@@ -232,8 +295,8 @@
     /* Extra large devices (large desktops, 1200px and up) */
     @media (min-width: 1200px) {
         .agree-content/deep/ .action {
-            width: 386px !important;
-            height: 386px;
+            width: 380px !important;
+            height: 380px;
         }
 
         .agree-content/deep/ .action img {

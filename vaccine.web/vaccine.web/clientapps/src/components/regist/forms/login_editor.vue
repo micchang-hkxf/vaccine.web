@@ -163,6 +163,15 @@
 </script>
 
 <style scoped>
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
+
+    /deep/ .v-dialog {
+        width: 30% !important;
+        box-shadow: none !important;
+    }
+
     .captcha-field .v-input__slot {
         border-style: none;
     }
