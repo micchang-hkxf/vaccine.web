@@ -1225,11 +1225,11 @@
                 this.viewerTitle = '確認新增報名資訊';
                 this.$refs.registNewEditor.create(this.model);
                 this.$refs.registNewEditor.reset();
-                console.log('manualInput')
+                //console.log('manualInput')
             },
             editItem: function (item) {
                 //regist_type=0會有問題,無法設定v-select值??? vue bug??
-
+        
                 var today = new Date();
                 if (item.regist_unpassed > 0 || today > new Date(item.regist_apply_start_date)) {
                     this.alertTitle = '拒絕修改';
@@ -1238,20 +1238,30 @@
                     this.$refs.warringAlert.open();
                     return false;
                 }
-                //
+                
                 //Object.assign(this.model, item);
                 this.saveBtnName = "儲存";
                 this.title = '編輯報名表';
                 this.viewerTitle = '編輯報名資訊確認';
                 this.$refs.registEdit.open(item);
-                console.log('edit', item);
-
+                //console.log('edit', item);
+                
                 //this.loadMedicalsByVillage({ "name": item.regist_village_name });
-
+                this.loadVillages({ id: item.regist_district, name: item.regist_district_name });
+                var vaccines = this.$store.getters['user/getVaccines'];
+                var requireSubitem = false;
+                vaccines.forEach((data) => {
+                    if (data.groupId == item.regist_type) {
+                        requireSubitem = true;
+                        return;
+                    }
+                });
+                this.loadVaccines({ id: item.regist_type, requireSubitem: requireSubitem });
+     
             },
             fileImport: function () {
                 this.$refs.fileViewer.open();
-                console.log('fileImport')
+                //console.log('fileImport')
             },
             formAction: function (result) {
         
@@ -1293,11 +1303,11 @@
                         case 'save':
                             this.$refs.registViewer.open();
 
-                            console.log('save2', result)
+                            //console.log('save2', result)
                             break;
 
                         case 'cancel':
-                            console.log('cancel', result)
+                            //console.log('cancel', result)
                             break;
                     }
                 }
@@ -1307,12 +1317,14 @@
                 Object.assign(this.result, result);
                 switch (result.action) {
                     case 'save':
+                        console.log('edit_preview',result);
+
                         this.$refs.registEditViewer.open();
-                        console.log('save1', result)
+                        //console.log('save1', result)
                         break;
 
                     case 'cancel':
-                        console.log('cancel', result)
+                        //console.log('cancel', result)
                         break;
                 }
             },
@@ -1347,7 +1359,7 @@
                 });
             },
             editSaveRegist: function () {
-                console.log('updateresult', this.result)
+                //console.log('updateresult', this.result)
                 var comp = this;
                 this.updateRegist(comp.result).then(function (ret) {
                     comp.$bus.$emit('type1_hide4');
@@ -1395,7 +1407,7 @@
             },
             removeRightClick: function () {
 
-                console.log('compSelectedItems', this.compSelectedItems);
+                //console.log('compSelectedItems', this.compSelectedItems);
                 this.$bus.$emit(`confirm_show`, false);
                 var comp = this;
                 comp.alertImgSrc = comp.warningIcon;
@@ -1413,7 +1425,7 @@
                     }
                     comp.$refs.registAlert.open();
                 }).catch(function (e) {
-                    console.log('errcode', e.datas.response.status);
+                    //console.log('errcode', e.datas.response.status);
                     if (e.datas.response.status == 405) {
                         comp.alertTitle = '無法刪除';
                         comp.alertText = '無法刪除已有人報名的活動';
@@ -1430,7 +1442,7 @@
                 this.compSelectedItems.splice(0);
                 this.compSelectedItems.push(item);
                 this.$refs.removeAlert.open();
-                console.log('remove', item);
+                //console.log('remove', item);
             },
             removeLeftClick: function () {
                 this.$bus.$emit(`confirm_show`, false);
@@ -1492,7 +1504,7 @@
                 this.$refs.dialogDetail.close();
             },
             detailChangePage: function (pager) {
-                console.log(pager);
+                //console.log(pager);
                 this.getDetailForm(pager.page);
             },
             getDetailForm: function (page) {
@@ -1536,7 +1548,7 @@
                             //取得排程id後, 再call 複檢Api
                             comp.reExecCheck({ id: result.datas })
                                 .then(function (ret) {
-                                    console.log(ret);
+                                    //console.log(ret);
                                     if (ret.datas.memo == "執行成功") {//執行中 ,執行成功 ,執行異常
                                         comp.alertImgSrc = comp.successIcon;
                                         comp.alertTitle = "執行成功";
@@ -1596,7 +1608,7 @@
                             return;
                         }
 
-                        console.log(result);
+                        //console.log(result);
                     })
                     .catch(function () {
                         comp.alertMessage = '網站異常，請稍後再試';
@@ -1621,7 +1633,7 @@
                             return;
                         }
 
-                        console.log(result);
+                        //console.log(result);
                     })
                     .catch(function () {
                         comp.alertMessage = '網站異常，請稍後再試';
@@ -1646,7 +1658,7 @@
                             return;
                         }
 
-                        console.log(result);
+                        //console.log(result);
                     })
                     .catch(function () {
                         comp.alertMessage = '網站異常，請稍後再試';
@@ -1672,7 +1684,7 @@
                             return;
                         }
 
-                        console.log(result);
+                        //console.log(result);
                     })
                     .catch(function () {
                         comp.alertMessage = '網站異常，請稍後再試';
@@ -1702,7 +1714,6 @@
                 comp.doubleCheck({ activityId: comp.activityId, applyNo: comp.applyNo, bd: comp.artificialBirthday, result: comp.artificialResult })
                     .then(function (result) {
                         console.log(result);
-
                         comp.alertTitle = '人工複檢完成';
                         comp.alertText = '';
                         comp.alertImgSrc = comp.successIcon;
@@ -1724,7 +1735,7 @@
             },
             saveFile() {
 
-                console.log(this.finalData);
+                //console.log(this.finalData);
                 if (this.finalData.length > 0) {
 
                     var comp = this;
