@@ -147,7 +147,6 @@
     }
 </script>
 <style scoped>
-
     .v-btn--contained {
         box-shadow: none !important;
     }
