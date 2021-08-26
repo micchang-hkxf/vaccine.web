@@ -173,6 +173,13 @@
 
 </style>
 <style scoped>
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
+    /deep/ .v-dialog {
+        width: 30% !important;
+        box-shadow: none !important;
+    }
 
     .login-switch/deep/ .login-header {
         font-size: 16px !important;

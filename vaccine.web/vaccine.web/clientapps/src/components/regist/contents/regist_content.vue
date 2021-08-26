@@ -1,5 +1,5 @@
 ﻿<template>
-    <app-layout :app-bar="appBar" class="regist-content">
+    <app-layout :app-bar="appBar" class="regist-content" :class="getContentClass">
         <template v-slot:regist-title>
             我要報名
         </template>
@@ -58,6 +58,12 @@
             isRecords: function () {
                 return this.tab == 'applied';
             },
+            getContentClass: function () {
+                return {
+                    'regist-context': this.tab == 'regist',
+                    'applied-context': this.tab == 'applied',
+                };
+            }
         },
         props: [],
         created: function () {
@@ -122,11 +128,28 @@
         background: #FFFFFF !important;
     }
 
-    /deep/.app-content {
-        /*width: 100%;
-        max-width: 800px;*/
-        margin: 0 auto;
+    .regist-context /deep/ .v-main__wrap {
+        display: flex;
+        justify-content: center;
+        width: 100vw;
     }
+
+
+    .applied-context /deep/ .v-main__wrap {
+        display: flex;
+        justify-content: center;
+        width: 100vw;
+    }
+
+    
+    /deep/ .app-content {
+        /*width: 100%;
+        max-width: 800px;
+        margin: 0 auto;*/
+    }
+
+
+
 
     .regist-content .action img {
         width: 80px;
@@ -162,6 +185,8 @@
     }
 
     .regist-content .action-container {
+        /*width: 50% !important;
+        margin: 0 auto;*/
     }
 
     /* Extra small devices (portrait phones, less than 576px) */

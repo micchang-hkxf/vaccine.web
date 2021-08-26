@@ -178,12 +178,28 @@
 </script>
 <style scoped>
 
-    .applied-list/deep/ .action-btn-container {
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
+
+
+
+    .applied-context /deep/.app-content {
+        margin: 0px !important;
+    }
+
+    .applied-context .applied-list/deep/ .action-container {
+        /*display: flex;
+        flex-wrap: wrap;
+        width: 800px;*/
+    }
+
+    .applied-context .applied-list/deep/ .action-btn-container {
         padding: 16px !important;
     }
 
-    .applied-list/deep/ {
-        background-color: #F4F4F4 !important;
+    .applied-context .applied-list/deep/ {
+        /*background-color: #F4F4F4 !important;*/
     }
 
     .applied-list/deep/ .action-info-data {
@@ -257,13 +273,13 @@
         display: none !important;
     }
 
-    .applied-list/deep/ .action-container {
+    /*.applied-list/deep/ .action-container {
         padding-left: 16px;
         padding-right: 16px;
         padding-top: 16px;
         padding-bottom: 16px;
         margin-bottom: 78px;
-    }
+    }*/
 
     .applied-list/deep/ .action-info-detail {
         padding-top: 16px !important;
@@ -398,7 +414,7 @@
         }
     }
 
-    /* Large devices (desktops, 992px and up) */
+    /* Large devices (desktops, 992px and up) 
     @media (min-width: 992px) and (max-width: 1199.98px) {
         .applied-list/deep/ .action-container {
             display: flex;
@@ -416,8 +432,9 @@
             padding-right: 0;
         }
     }
+*/
 
-    /* Extra large devices (large desktops, 1200px and up) */
+    /* Extra large devices (large desktops, 1200px and up) 
     @media (min-width: 1200px) {
         .applied-list/deep/ .action-container {
             display: flex;
@@ -434,5 +451,6 @@
             padding-left: 0;
             padding-right: 0;
         }
-    }
+    }*/
+
 </style>
