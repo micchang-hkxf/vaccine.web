@@ -319,5 +319,8 @@
     .layoutmenu .v-list-item__title{
         color: black !important;
     }
+    .v-main__wrap >.v-toolbar {
+        background: #FFFFFF80 0% 0% no-repeat padding-box !important;
+    }
 
 </style>

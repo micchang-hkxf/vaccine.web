@@ -32,10 +32,12 @@
         mounted: function () {
             var k = window.location.hash.substr(1),
                 n = (k.substring(1));
- 
+            if (n == "") {
+                n = "registration";
+            }
             var selection = document.querySelector(".v-list-item__content." + n);
-       
-            if (selection) {
+        
+            if (selection!=null) {
                 selection.style.setProperty('background-color', '#FFFFFF0F', 'important');
             }
              
@@ -52,9 +54,16 @@
                     //window.open(menu.target, menu.text);
                     return;
                 }
+  
                 window.location.hash = "";
                 this.currentContent = menu;
+                if (this.$route.name == menu.key) {
+                    return;
+                }
                 this.$router.push({ name: menu.key });
+                
+   
+            
             },
             menuItemActive: function (menu) {
                 return {
@@ -79,10 +88,9 @@
         height: 100vh !important;
 
     }
-    .v-list-item {
-        padding: 0px 0px 0px 0px !important;
-
-    }
+    .menu-list > .v-list-item {
+            padding: 0px 0px 0px 0px !important;
+        }
     .v-list-item__title {
         padding: 0px 10px !important;
         font-size: 20px !important;
@@ -92,7 +100,7 @@
     }
     .v-list {
         padding: 0px 0px !important;
-        width: 384px !important;
+        
     }
     .v-list-item__content {
         height: 56px !important;

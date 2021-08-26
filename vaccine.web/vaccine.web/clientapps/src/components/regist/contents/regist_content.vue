@@ -22,7 +22,7 @@
                         </div>
                     </v-tab-item>
                     <v-tab-item key="1" value="applied" eager class="applied-container">
-                        <applied-list ref="applieds" v-show="isLogin"></applied-list>
+                        <applied-list ref="applieds"></applied-list>
                     </v-tab-item>
                 </v-tabs-items>
                 <login-switch ref="switch" :login-done="toLogin" :login-cancel="loginCancel"></login-switch>
@@ -72,6 +72,10 @@
                     comp.$set(comp, 'tab', comp.$route.query.mode);
                 })
             this.loacVaccineGroups();
+
+            comp.$bus.$on('login_switch_show', function () {
+                comp.$refs.switch.create();
+            });
         },
         watch: {
             tab: function (newValue) {

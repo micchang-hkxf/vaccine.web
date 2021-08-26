@@ -5,7 +5,7 @@ import { Promise } from "core-js";
 export default {
     namespaced: true,
     actions: {
-        loadRegistData: function ({ state, rootGetters }, params) {
+        loadRegistData: function ({ state, rootGetters, dispatch }, params) {
             return new Promise((resolve, reject) => {
 
                 var results = { datas: [], state: '', totalCount: 0 };
@@ -20,7 +20,7 @@ export default {
                         'x-token': rootGetters['user/getToken']
                     }
                 }).then(res => {
-           
+
                     var datas = [];
                     res.data.forEach((data) => {
                         datas.push({
@@ -29,7 +29,7 @@ export default {
                             identity: data.uId,
                             vaccination: data.activityName,
                             way: data.applyChannelText,
-                            result: (data.eligible) ?"合格":"不合格",
+                            result: (data.eligible) ? "合格" : "不合格",
                             number: data.applyNo,
                         });
                     });
@@ -38,18 +38,19 @@ export default {
                     console.log(datas);
                     results.totalCount = datas.length;
                     resolve(results);
-                }).catch(ex => {
-                    results.datas = ex;
+                }).catch((error) => {
+                    results.datas = error;
+                    dispatch('user/notLoginAdmin', error, { root: true });
                     reject(results);
                 });
 
             });
         },
-       
+
     },
     state: {
         ...siteConfig,
-       
+
         desserts: [
             {
                 date: '2021/04/01 09:30',
@@ -58,7 +59,7 @@ export default {
                 vaccination: '110年4月份新冠疫苗施打預先報名',
                 way: '事先里辦',
                 result: '合格',
-                number: '0045',              
+                number: '0045',
             },
             {
                 date: '2021/07/11 12:30',
@@ -69,8 +70,8 @@ export default {
                 result: '-',
                 number: '0012',
             },
-        
-          
+
+
         ],
         vaccines: [
             { id: 'influenza', name: '肺鏈流感' },
@@ -86,7 +87,7 @@ export default {
             { id: 'xikang', name: '西康里' }
         ],
         institutions: [{ id: 'wang', name: '王慶森診所' }, { id: 'wang2', name: '王慶森2診所' }, { id: 'wang3', name: '王慶森3診所' }],
-       
+
     },
     getters: {
         getHeaders: state => {

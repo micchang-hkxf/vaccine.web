@@ -103,7 +103,7 @@ export default {
             });
         },
 
-        modifyPassword({ state, rootGetters }, setdata) {
+        modifyPassword({ state, rootGetters, dispatch }, setdata) {
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
                 console.log(state);
@@ -118,9 +118,10 @@ export default {
                 }).then(res => {
                     results.datas = res;
                     resolve(results);
-                }).catch(ex => {
+                }).catch((error) => {
                     results.state = 'error';
-                    results.datas = ex;
+                    results.datas = error;
+                    dispatch('user/notLoginAdmin', error, { root: true });
                     reject(results);
                 });
 
@@ -128,7 +129,7 @@ export default {
             });
 
         },
-        changeUser({ state, rootGetters }, data) {
+        changeUser({ state, rootGetters, dispatch }, data) {
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
                 console.log(state);
@@ -170,9 +171,10 @@ export default {
                 }).then(res => {
                     results.datas = res;
                     resolve(results);
-                }).catch(ex => {
+                }).catch((error) => {
                     results.state = 'error';
-                    results.datas = ex;
+                    results.datas = error;
+                    dispatch('user/notLoginAdmin', error, { root: true });
                     reject(results);
                 });
 
@@ -180,7 +182,7 @@ export default {
             });
 
         },
-        removeUser({ state, rootGetters }, delKey) {
+        removeUser({ state, rootGetters, dispatch }, delKey) {
             console.log(state);
             return new Promise(function (resolve, reject) {
                 var results = { datas: [], state: '' };
@@ -194,9 +196,10 @@ export default {
                 }).then(res => {
                     results.datas = res;
                     resolve(results);
-                }).catch(ex => {
+                }).catch((error) => {
                     results.state = 'error';
-                    results.datas = ex;
+                    results.datas = error;
+                    dispatch('user/notLoginAdmin', error, { root: true });
                     reject(results);
                 });
 

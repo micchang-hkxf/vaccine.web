@@ -57,10 +57,11 @@ export default {
 
             state.districts = dists;
         },
-        loadVillages: function ({ state, rootGetters }, params) {
+        loadVillages: function ({ state, commit, rootGetters }, params) {
             
             var zones = rootGetters['user/getZones'];
-            var villages = [];
+            var medicals = rootGetters['user/getMedicals'];
+            var villages = [],md=[];
             zones.forEach((zone) => {
                 zone.data.forEach((dist) => {
                     if (dist.distId === params.id) {
@@ -73,7 +74,18 @@ export default {
                     }
                 });
             });
+            medicals.forEach((medical) => {
+                if (medical.distName === params.name) {
+                    md.push({
+                        id: medical.id,
+                        uName: medical.uName
+                    });
+                }
+            });
+            commit('setDistMedicals', md);
             state.villages = villages;
+
+          
         },
         loadMedicals: function ({ state, commit, rootGetters }) {
             var medicals = rootGetters['user/getMedicals'];
@@ -107,8 +119,7 @@ export default {
             });
             commit('setInstitutions', datas);
         },
-   
-
+      
         loadRegistForm: function ({ state, rootGetters }, params) {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity`;
@@ -177,7 +188,7 @@ export default {
                 });
             });
         },
-        loadDetailForm: function ({ state, rootGetters }, params) {
+        loadDetailForm: function ({ state, rootGetters, dispatch }, params) {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Detail/` + params.id;
                 var results = { datas: [], state: '', totalCount: 0 };
@@ -224,14 +235,15 @@ export default {
 
                     results.datas = datas;
                     resolve(results);
-                }).catch(ex => {
-                    results.datas = ex;
+                }).catch((error) => {
+                    dispatch('user/notLoginAdmin', error, { root: true });
+                    results.datas = error;
                     reject(results);
                 });
             });
         },
         
-        getCompleteFile: function ({ state, rootGetters }, params) {
+        getCompleteFile: function ({ state, rootGetters, dispatch }, params) {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement?activityId=` + params.id;
                 var results = { datas: [], state: '' };
@@ -260,13 +272,14 @@ export default {
                     }
 
                     resolve(results);
-                })).catch(ex => {
-                    results.datas = ex;
+                })).catch((error) => {
+                    results.datas = error;
+                    dispatch('user/notLoginAdmin', error, { root: true });
                     reject(results);
                 });
             });
         },
-        getSignUpFile: function ({ state, rootGetters }, params) {
+        getSignUpFile: function ({ state, rootGetters, dispatch }, params) {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Export/ApplyList?activityId=` + params.id;
                 var results = { datas: [], state: '' };
@@ -295,13 +308,14 @@ export default {
                     }
 
                     resolve(results);
-                })).catch(ex => {
-                    results.datas = ex;
+                })).catch((error) => {
+                    dispatch('user/notLoginAdmin', error, { root: true });
+                    results.datas = error;
                     reject(results);
                 });
             });
         },
-        getVaccinationFile: function ({ state, rootGetters }, params) {
+        getVaccinationFile: function ({ state, rootGetters, dispatch }, params) {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Export/VaccinationList?activityId=` + params.id;
                 var results = { datas: [], state: '' };
@@ -330,13 +344,14 @@ export default {
                     }
 
                     resolve(results);
-                })).catch(ex => {
-                    results.datas = ex;
+                })).catch((error) => {
+                    dispatch('user/notLoginAdmin', error, { root: true });
+                    results.datas = error;
                     reject(results);
                 });
             });
         },
-        getAgreeFile: function ({ state, rootGetters }, params) {
+        getAgreeFile: function ({ state, rootGetters, dispatch }, params) {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement/` + params.id +'?ActivityId='+params.activityId;
                 var results = { datas: [], state: '' };
@@ -365,13 +380,14 @@ export default {
                     }
 
                     resolve(results);
-                })).catch(ex => {
-                    results.datas = ex;
+                })).catch((error) => {
+                    dispatch('user/notLoginAdmin', error, { root: true });
+                    results.datas = error;
                     reject(results);
                 });
             });
         },
-        execCheck: function ({ state, rootGetters }, data) {
+        execCheck: function ({ state, rootGetters, dispatch }, data) {
             return new Promise(function (resolve, reject) {
                 var apiUrl = `${state.apiRoot}api/Activity/StartCheck`;
                 var results = { id: data.id, state: state, cnt: 0 };
@@ -385,13 +401,14 @@ export default {
                 }).then(res => {
                     results.datas = res.data;
                     resolve(results);
-                }).catch(ex => {
-                    results.datas = ex;
+                }).catch((error) => {
+                    dispatch('user/notLoginAdmin', error, { root: true });
+                    results.datas = error;
                     reject(results);
                 });
             });
         },
-        reExecCheck: function ({ state, rootGetters }, data) {
+    reExecCheck: function ({ state, rootGetters, dispatch }, data) {
             return new Promise(function (resolve, reject) {
                 var apiUrl = `${state.apiRoot}api/Activity/ReCheck`;
                 var results = { id: data.id, state: state, cnt: 0 };
@@ -405,13 +422,14 @@ export default {
                 }).then(res => {
                     results.datas = res.data;
                     resolve(results);
-                }).catch(ex => {
-                    results.datas = ex;
+                }).catch((error) => {
+                    dispatch('user/notLoginAdmin', error, { root: true });
+                    results.datas = error;
                     reject(results);
                 });
             });
         },
-        doubleCheck: function ({ state, rootGetters }, data) {
+        doubleCheck: function ({ state, rootGetters, dispatch }, data) {
             return new Promise(function (resolve, reject) {
                 var ckret = (data.result.id == "pass") ? true : false;
                
@@ -435,15 +453,15 @@ export default {
                 }).then(res => {
                     result.datas = res.data;
                     resolve(result);
-                    }).catch(ex => {
-                        resolve(result);
-                    result.datas = ex;
+                }).catch((error) => {
+                    dispatch('user/notLoginAdmin', error, { root: true });
+                    result.datas = error;
                     reject(result);
                 });
 
             });
         },
-        registForm: function ({ state, rootGetters}, data) {
+        registForm: function ({ state, rootGetters, dispatch}, data) {
             return new Promise((resolve, reject) => {
                 console.log('new', data);
 
@@ -479,8 +497,9 @@ export default {
                 }).then(res => {
                     result.datas = res.data;
                     resolve(result);
-                }).catch(ex => {
-                    result.datas = ex;
+                }).catch((error) => {
+                    dispatch('user/notLoginAdmin', error, { root: true });
+                    result.datas = error;
                     reject(result);
                 });
 
@@ -488,7 +507,7 @@ export default {
          
 
         },
-        importRegistForm: function ({ state, rootGetters }, importData) {
+        importRegistForm: function ({ state, rootGetters, dispatch }, importData) {
             var setData = [];
             importData.forEach((d) => {
           
@@ -528,14 +547,15 @@ export default {
                 }).then(res => {
                     result.datas = res.data;
                     reslove(result);
-                }).catch(ex => {
-                    result.datas = ex;
+                }).catch((error)=> {
+                    dispatch('user/notLoginAdmin', error, { root: true });
+                    result.datas = error;
                     reject(result);
                 });
 
             })
         },
-        updateRegist: function ({ state, rootGetters }, data) {
+        updateRegist: function ({ state, rootGetters, dispatch }, data) {
             return new Promise((resolve, reject) => {
                 var result = { data:[] ,state: state };
                 console.log('update',data)
@@ -569,14 +589,15 @@ export default {
                 }).then(res => {
                     result.datas = res.status;
                     resolve(result);
-                }).catch(ex => {
-                    console.log('ex', ex);
-                    result.datas = ex;
+                }).catch((error) => {
+                    dispatch('user/notLoginAdmin', error, { root: true });
+                    console.log('erroe', error);
+                    result.datas = error;
                     reject(result);
                 });
             })
         },
-        removeRegist: function ({ state, rootGetters }, data) {
+        removeRegist: function ({ state, rootGetters, dispatch }, data) {
             return new Promise((resolve, reject) => {
                 var result = { state: state }, actIdLists="";
                 data.forEach((d) => {
@@ -593,8 +614,9 @@ export default {
                 }).then(res => {
                     result.datas = res.data;
                     resolve(result);
-                }).catch(ex => {
-                    result.datas = ex;
+                }).catch((error) => {
+                    dispatch('user/notLoginAdmin', error, { root: true });
+                    result.datas = error;
                     reject(result);
                 });
             })
@@ -624,6 +646,7 @@ export default {
         ], 
         vaccines: [],
         districts: [],
+        medicals:[],
         villages: [],
         institutions: [],
         registrationHeaders: [
@@ -667,6 +690,9 @@ export default {
         getShowBrand: state => {
             return state.showBrand;
         },
+        getDisMedicals: state => {
+            return state.medicals;
+        },
     },
     mutations: {
         setBrandData: function (state, d ) {
@@ -686,7 +712,10 @@ export default {
         },
         setInstitutions: function (state, institutions) {
             state.institutions = institutions;
-        }
+        },
+        setDistMedicals: function(state, m) {
+            state.medicals = m
+        },
     },
     modules: {
         user: userStore
