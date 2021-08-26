@@ -536,13 +536,13 @@
             },
             open: function (model) {
                 this.mode = 'edit';
-
+                console.log('open',model);
                 this.loadVaccines({ id: model.regist_type });
                 this.loadVillages({ id: model.regist_district });
 
                 this.$set(this, "regist_institution_code", model.regist_institution_code);
-                this.$set(this, "regist_institution_name", model.regist_district_name + "/" + model.regist_village_name);
-
+                this.$set(this, "regist_institution_name", model.regist_district_name);
+           
                 this.$set(this, "regist_station_start_time", model.regist_station_start_time);
                 this.$set(this, "regist_station_end_time", model.regist_station_end_time);
 

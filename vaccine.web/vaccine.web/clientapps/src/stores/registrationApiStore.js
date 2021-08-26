@@ -61,7 +61,7 @@ export default {
             state.districts = dists;
         },
         loadVillages: function ({ state, commit, rootGetters }, params) {
-            
+
             var zones = rootGetters['user/getZones'];
             var medicals = rootGetters['user/getMedicals'];
             var villages = [],md=[];
