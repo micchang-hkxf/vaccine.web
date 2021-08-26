@@ -1,12 +1,13 @@
 ﻿<template>
-    <v-dialog v-model="isShow" :width="width">
+    <v-dialog v-model="isShow" :width="width" scrollable>
         <v-card>
-            <v-toolbar color="primary" class="dialog-toolbar">
+            <v-card-title color="primary" class="dialog-toolbar">
                 <slot name="toolbar" :close="close"></slot>
-            </v-toolbar>
-            <div class="dialog-content">
+            </v-card-title>
+
+            <v-card-text class="dialog-content">
                 <slot name="content" :close="close"></slot>
-            </div>
+            </v-card-text>
             <v-card-actions v-if="hasSlot('action')">
                 <slot name="action" :close="close"></slot>
             </v-card-actions>

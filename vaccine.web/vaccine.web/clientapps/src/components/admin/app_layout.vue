@@ -1,116 +1,117 @@
 ﻿<template>
     <!-- App.vue -->
     <v-app>
-        <v-navigation-drawer app clipped v-model="showNavi" hide-overlay fixed stateless>
-            <div class="app-navigation" v-if="$slots['navigation']">
-                <slot name="navigation" />
-            </div>
-        </v-navigation-drawer>
-        <v-app-bar app
-                   color="#736DB9"
-                   dark
-                   height="65px"
-                   :fixed="toolbar.fixed"
-                   :clipped-left="toolbar.clippedLeft">
+        <!--<v-navigation-drawer app clipped v-model="showNavi"  fixed stateless>-->
+            <v-navigation-drawer app v-model="showNavi" hide-overlay clipped fixed stateless >
+                <div class="app-navigation" v-if="$slots['navigation']">
+                    <slot name="navigation" />
+                </div>
+            </v-navigation-drawer>
+            <v-app-bar app
+                       color="#736DB9"
+                       dark
+                       height="65px"
+                       :fixed="toolbar.fixed"
+                       :clipped-left="toolbar.clippedLeft">
 
-            <v-app-bar-nav-icon class="d-md-none" @click.stop="toggleDrawer"></v-app-bar-nav-icon>
+                <v-app-bar-nav-icon class="d-md-none" @click.stop="toggleDrawer"></v-app-bar-nav-icon>
 
-            <v-toolbar-title class="system-title">疫苗管理系統</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-menu offset-y>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs"
-                           v-on="on"
-                           class="usertitle"
-                           icon>
-                        <v-icon>mdi-account-outline</v-icon>
-                        {{(user)?user.uName:''}}
-                        <v-icon>mdi-chevron-right</v-icon>
-                    </v-btn>
-                </template>
+                <v-toolbar-title class="system-title">疫苗管理系統</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn v-bind="attrs"
+                               v-on="on"
+                               class="usertitle"
+                               icon>
+                            <v-icon>mdi-account-outline</v-icon>
+                            {{(user)?user.uName:''}}
+                            <v-icon>mdi-chevron-right</v-icon>
+                        </v-btn>
+                    </template>
 
-                <v-list class="layoutmenu">
-                    <v-list-item v-for="(item, index) in menulist"
-                                 :key="index"
-                                 @click="handleClick(index)">
-                        <v-list-item-icon>
-                            <v-icon v-text="item.icon"></v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-title>{{ item.title }}</v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
+                    <v-list class="layoutmenu">
+                        <v-list-item v-for="(item, index) in menulist"
+                                     :key="index"
+                                     @click="handleClick(index)">
+                            <v-list-item-icon>
+                                <v-icon v-text="item.icon"></v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
 
-            <v-card :tile="true">
+                <v-card :tile="true">
 
-            </v-card>
-
-        </v-app-bar>
-        <v-main class="app-content" v-if="$slots['app-content']">
-            <v-toolbar elevation="0" height="72px">
-                <v-toolbar-title>
-                    <slot name="content-title" v-if="$slots['content-title']"></slot>
-                </v-toolbar-title>
-            </v-toolbar>
-            <div class="app-content-container" v-if="$slots['app-content']">
-                <v-card class="app-content-card" rounded="0px">
-                    <slot name="app-content" />
                 </v-card>
-            </div>
-        </v-main>
 
-        <v-footer app v-if="$slots['app-footer']">
-            <div class="app-footer" v-if="$slots['app-footer']">
-                <slot name="app-footer" />
-            </div>
-        </v-footer>
-        <modify ref="passwordEditor" ref-key="pwd" width="40%" :title="title" :action="formAction"></modify>
-        <profile ref="profileViewer" ref-key="pf" width="40%" :title="title2"></profile>
-        <com-dialog ref="modifyViewer" ref-key="pwd" width="60%">
-            <template v-slot:toolbar>
-                {{modifyTitle}}
-                <v-spacer></v-spacer>
-            </template>
-            <template v-slot:content>
-                點選「確定」後新密碼立即生效。
-                <v-divider></v-divider>
-                {{result}}
-            </template>
-            <template v-slot:action>
-                <v-spacer></v-spacer>
-                <v-btn outlined :ripple="false" @click="backToEdit"><span style="color:#626781;">修改</span></v-btn>
-                <v-btn @click="save" color="primary" :ripple="false">確定</v-btn>
-            </template>
-        </com-dialog>
+            </v-app-bar>
+            <v-main class="app-content" v-if="$slots['app-content']">
+                <v-toolbar elevation="0" height="72px">
+                    <v-toolbar-title>
+                        <slot name="content-title" v-if="$slots['content-title']"></slot>
+                    </v-toolbar-title>
+                </v-toolbar>
+                <div class="app-content-container" v-if="$slots['app-content']">
+                    <v-card class="app-content-card" rounded="0px">
+                        <slot name="app-content" />
+                    </v-card>
+                </div>
+            </v-main>
 
-        <com-confirm ref="changeAlert" ref-key="confirm" :right-click="alertRightClick">
-            <template v-slot:confirm-image>
-                <v-img v-bind:src="alertImgSrc"></v-img>
-            </template>
-            <template v-slot:confirm-title>
-                {{alertTitle}}
-            </template>
-            <template v-slot:confirm-text>
-                {{alertText}}
-            </template>
-            <template v-slot:confirm-right-btn-text>
-                確認
-            </template>
-        </com-confirm>
-        <com-confirm ref="changeErrorAlert" ref-key="confirm" :right-click="alertRightClick" right-color="#626781">
-            <template v-slot:confirm-image>
-                <v-img v-bind:src="errorImgSrc"></v-img>
-            </template>
-            <template v-slot:confirm-title>
-                {{errorTitle}}
-            </template>
-            <template v-slot:confirm-text>
-                {{errorText}}
-            </template>
-            <template v-slot:confirm-right-btn-text>
-                確認
-            </template>
-        </com-confirm>
+            <v-footer app v-if="$slots['app-footer']">
+                <div class="app-footer" v-if="$slots['app-footer']">
+                    <slot name="app-footer" />
+                </div>
+            </v-footer>
+            <modify ref="passwordEditor" ref-key="pwd" width="40%" :title="title" :action="formAction"></modify>
+            <profile ref="profileViewer" ref-key="pf" width="40%" :title="title2"></profile>
+            <com-dialog ref="modifyViewer" ref-key="pwd" width="60%">
+                <template v-slot:toolbar>
+                    {{modifyTitle}}
+                    <v-spacer></v-spacer>
+                </template>
+                <template v-slot:content>
+                    點選「確定」後新密碼立即生效。
+                    <v-divider></v-divider>
+                    {{result}}
+                </template>
+                <template v-slot:action>
+                    <v-spacer></v-spacer>
+                    <v-btn outlined :ripple="false" @click="backToEdit"><span style="color:#626781;">修改</span></v-btn>
+                    <v-btn @click="save" color="primary" :ripple="false">確定</v-btn>
+                </template>
+            </com-dialog>
+
+            <com-confirm ref="changeAlert" ref-key="confirm" :right-click="alertRightClick">
+                <template v-slot:confirm-image>
+                    <v-img v-bind:src="alertImgSrc"></v-img>
+                </template>
+                <template v-slot:confirm-title>
+                    {{alertTitle}}
+                </template>
+                <template v-slot:confirm-text>
+                    {{alertText}}
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    確認
+                </template>
+            </com-confirm>
+            <com-confirm ref="changeErrorAlert" ref-key="confirm" :right-click="alertRightClick" right-color="#626781">
+                <template v-slot:confirm-image>
+                    <v-img v-bind:src="errorImgSrc"></v-img>
+                </template>
+                <template v-slot:confirm-title>
+                    {{errorTitle}}
+                </template>
+                <template v-slot:confirm-text>
+                    {{errorText}}
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    確認
+                </template>
+            </com-confirm>
 
 
     </v-app>

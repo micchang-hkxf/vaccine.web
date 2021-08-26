@@ -643,21 +643,18 @@
                                                     <span :style="detailAbnormalCnt > 0 ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
                                                 </v-btn>
                                                 <v-btn color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false" :disabled="lessCheckTime">
-                                                    <v-icon left color='white' size="15">
-                                                        mdi-arrow-down
-                                                    </v-icon>
+                                                    <v-img src="/admin/download_icon.svg" width="24px" height="24px">
+                                                    </v-img>
                                                     <span style="color:white">下載完整接種同意書</span>
                                                 </v-btn>
-                                                <v-btn color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">
-                                                    <v-icon left color='white' size="15">
-                                                        mdi-arrow-down
-                                                    </v-icon>
+                                                <v-btn color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">                                  
+                                                    <v-img src="/admin/download_icon.svg" width="24px" height="24px">
+                                                    </v-img>
                                                     <span style="color:white">下載報名清冊</span>
                                                 </v-btn>
                                                 <v-btn color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false" :disabled="lessCheckTime">
-                                                    <v-icon left color='white' size="15">
-                                                        mdi-arrow-down
-                                                    </v-icon>
+                                                    <v-img src="/admin/download_icon.svg" width="24px" height="24px">
+                                                    </v-img>
                                                     <span style="color:white">下載接種清冊</span>
                                                 </v-btn>
                                             </div>
@@ -677,9 +674,8 @@
                                 <template v-slot:item.modify="{item}">
                                     <template>
                                         <v-btn color="#736DB9" @click.stop="downloadAgreeFile(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.status == -2 ? 'hidden' : ''">
-                                            <v-icon left color='white' size="15">
-                                                mdi-arrow-down
-                                            </v-icon>
+                                            <v-img src="/admin/download_icon.svg" width="24px" height="24px">
+                                            </v-img>
                                             <span style="color:white">下載同意書</span>
                                         </v-btn>
                                         <v-btn color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.status != -2 ? 'hidden' : ''" class="btn-warning">
@@ -967,30 +963,30 @@
         border: thin solid rgba(98,103, 129,0.2) !important;
     }
 
-    .v-dialog {
+    .v-dialog .v-card__text.dialog-content {
         overflow-x: auto !important;
         overflow-y: auto !important;
     }
 
-        /*-------滾動條整體樣式----*/
-        .v-dialog::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
+    /*-------滾動條整體樣式----*/
+    .v-dialog .v-card__text.dialog-content::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
 
-        /*滾動條裡面小方塊樣式*/
-        .v-dialog::-webkit-scrollbar-thumb {
-            border-radius: 100px;
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            background: #736DB9;
-        }
+    /*滾動條裡面小方塊樣式*/
+    .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-thumb {
+        border-radius: 100px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        background: #736DB9;
+    }
 
-        /*滾動條裡面軌道樣式*/
-        .v-dialog::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            border-radius: 20px;
-            background: rgba(0,0,0,0.1);
-        }
+    /*滾動條裡面軌道樣式*/
+    .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        border-radius: 20px;
+        background: rgba(0,0,0,0.1);
+    }
 
     /* Extra small devices (portrait phones, less than 576px) */
     @media (max-width: 575.98px) {
