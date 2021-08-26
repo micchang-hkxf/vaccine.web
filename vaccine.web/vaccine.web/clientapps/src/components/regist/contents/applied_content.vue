@@ -272,6 +272,7 @@
         width: 32px !important;
     }
 
+
     .applied-content/deep/ .active-step .v-stepper__step__step {
         background-color: #736DB9 !important;
         color: white !important;
