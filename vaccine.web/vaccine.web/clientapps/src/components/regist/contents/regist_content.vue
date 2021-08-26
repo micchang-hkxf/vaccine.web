@@ -77,8 +77,8 @@
             tab: function (newValue) {
                 if (newValue != 'applied') return;
                 if (!this.getUserInfo) {
-                    //this.$refs.switch.create();
-                    this.$refs.switch.toLocalLoginParam({ name: 'regist', params: { mode: 'applied' } });
+                    this.$refs.switch.create();
+                    //this.$refs.switch.toLocalLoginParam({ name: 'regist', params: { mode: 'applied' } });
                     return;
                 }
                 this.$refs.applieds.reload();
@@ -102,7 +102,7 @@
                 
             },
             loginCancel: function () {
-                this.tab = 'regist';
+                //this.tab = 'regist';
             },
             loginUser: function () {
 

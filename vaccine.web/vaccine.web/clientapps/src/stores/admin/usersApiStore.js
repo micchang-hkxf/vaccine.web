@@ -92,7 +92,7 @@ export default {
                         resolve(result);
 
                     })
-                        .catch((error) => {                            
+                    .catch((error) => {                            
                             dispatch('user/notLoginAdmin', error, { root: true });
                             console.log({ error });
                         })
