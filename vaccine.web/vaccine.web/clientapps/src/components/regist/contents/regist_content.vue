@@ -135,20 +135,21 @@
     }
 
 
-    .applied-context /deep/ .v-main__wrap {
+    .applied-context/deep/ .v-main__wrap {
         display: flex;
         justify-content: center;
         width: 100vw;
     }
 
-    
-    /deep/ .app-content {
-        /*width: 100%;
-        max-width: 800px;
-        margin: 0 auto;*/
+    .applied-context/deep/ .app-content {
+        width: 100%
     }
 
 
+    .applied-context/deep/ .v-tabs.v-tabs--grow.theme--light {
+        width: 48% !important;
+        margin: 0 auto;
+    }
 
 
     .regist-content .action img {

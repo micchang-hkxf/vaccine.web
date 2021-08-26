@@ -148,8 +148,9 @@
     }*/
 
     .row {
-        display: flex;
-        justify-content: space-between;
+        /*display: flex;
+        justify-content: space-between;*/
+        width:50%;
         flex-wrap: wrap !important;
         flex: none !important;
         margin-right: 0px !important;

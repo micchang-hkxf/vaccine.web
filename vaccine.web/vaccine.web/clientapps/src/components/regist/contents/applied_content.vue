@@ -147,6 +147,11 @@
     }
 </script>
 <style scoped>
+
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
+
     .applied-content/deep/.descript-header,
     .applied-content/deep/.descript-content {
         font-size:12px!important;
@@ -166,21 +171,26 @@
     }
 
     .applied-content/deep/ .applied-container {
-        padding-top: 24px !important;
+        /*padding-top: 24px !important;
         padding-left: 24px !important;
-        padding-right: 24px !important;
+        padding-right: 24px !important;*/
+        padding-top: 30px !important;
         margin-bottom: 78px;
+        display:grid;
+        justify-content:center;
     }
 
     .applied-content/deep/ .applied-actions {
         padding-top: 48px !important;
-        padding-left: 24px !important;
-        padding-right: 24px !important;
+        /*padding-left: 24px !important;
+        padding-right: 24px !important;*/
         padding-bottom: 24px !important;
+        display:flex;
+        justify-content:center;
     }
 
     .applied-content/deep/ .applied-actions .v-btn {
-        width: 100% !important;
+        width: 20% !important;
         background-color: #F0524B!important;
         color:white!important;
     }
