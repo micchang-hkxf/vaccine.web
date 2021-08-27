@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="action-container">
-            <v-row>
+            <v-row v-if="sessions.length !== 0">
                 <v-col v-for="(session,index) in sessions"
                        :key="`session_${index}`" cols="6">
                     <v-card class="action d-flex flex-row" elevation="0">

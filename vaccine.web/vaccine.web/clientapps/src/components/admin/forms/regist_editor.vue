@@ -151,20 +151,26 @@
                                 min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-text-field v-model="model.regist_station_date"
-                                              append-icon="mdi-calendar"
                                               :rules="[rules.required]"
                                               readonly
                                               v-bind="attrs"
                                               placeholder="請選擇日期"
                                               v-on="on"
                                               outlined
-                                              dense></v-text-field>
+                                              dense>
+                                    <template v-slot:append>
+                                        <v-img src="/images/date_picker_icon.svg"></v-img>
+                                    </template>
+                                </v-text-field>
                             </template>
                             <v-date-picker v-model="model.regist_station_date"
                                            @change="dateClicked"
                                            :day-format="dayFormat"
                                            no-title
                                            scrollable>
+                                <template v-slot:append>
+                                    <v-img src="/images/date_picker_icon.svg"></v-img>
+                                </template>
                                 <v-spacer></v-spacer>
                                 <v-btn text
                                        :ripple="false"
@@ -259,13 +265,16 @@
                             <template v-slot:activator="{ on, attrs }">
                                 <v-text-field v-model="model.regist_apply_start_date"
                                               placeholder="請輸入事先報名開始時間"
-                                              append-icon="mdi-calendar"
                                               :rules="[rules.required]"
                                               readonly
                                               v-bind="attrs"
                                               v-on="on"
                                               outlined
-                                              dense></v-text-field>
+                                              dense>
+                                    <template v-slot:append>
+                                        <v-img src="/images/date_picker_icon.svg"></v-img>
+                                    </template>
+                                </v-text-field>
                             </template>
                             <v-date-picker v-model="model.regist_apply_start_date"
                                            no-title
@@ -298,13 +307,16 @@
                             <template v-slot:activator="{ on, attrs }">
                                 <v-text-field v-model="model.regist_apply_end_date"
                                               placeholder="請輸入事先報名截止時間"
-                                              append-icon="mdi-calendar"
                                               :rules="[rules.required]"
                                               readonly
                                               v-bind="attrs"
                                               v-on="on"
                                               outlined
-                                              dense></v-text-field>
+                                              dense>
+                                    <template v-slot:append>
+                                        <v-img src="/images/date_picker_icon.svg"></v-img>
+                                    </template>
+                                </v-text-field>
                             </template>
                             <v-date-picker v-model="model.regist_apply_end_date"
                                            no-title

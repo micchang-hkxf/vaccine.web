@@ -44,7 +44,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="clientapps\public\images\" />
     <Folder Include="clientapps\public\login\" />
     <Folder Include="clientapps\public\NewFolder\" />
     <Folder Include="clientapps\src\stores\regist\dynamic\" />

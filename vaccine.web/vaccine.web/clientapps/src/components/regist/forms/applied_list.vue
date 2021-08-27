@@ -8,7 +8,7 @@
             </v-text-field>
         </div>
         <div class="action-container"> 
-            <v-row>
+            <v-row v-if="isLogin && applieds.length !== 0">
                 <v-col v-for="(applied , idx) in applieds" :key="`applied_${idx}`" cols="6">
 
                     <v-card class="action d-flex flex-row" elevation="0">
