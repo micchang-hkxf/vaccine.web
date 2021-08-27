@@ -22,7 +22,7 @@
                         <template v-slot:search-bar>
                             <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
                                 <v-row>
-                                    <v-col class="d-flex justify-content-end" cols="9">
+                                    <v-col class="d-flex justify-content-end" cols="11">
                                         <v-select v-model="selectVaccine"
                                                   :items="getVaccines"
                                                   item-text="name"
@@ -77,7 +77,7 @@
                                                   return-object>
                                         </v-select>
 
-                                        <v-text-field v-model="keyWord" placeholder="標題關鍵字" outlined dense clearable></v-text-field>
+                                        <v-text-field v-model="keyWord" placeholder="標題關鍵字" outlined dense clearable autocomplete="off"></v-text-field>
 
                                         <v-btn icon color="#626781" :ripple="false" class="content-search-button"
                                                @click="getRegistForm(1)">
