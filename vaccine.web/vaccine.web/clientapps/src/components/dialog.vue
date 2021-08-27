@@ -1,6 +1,6 @@
 ﻿<template>
     <v-dialog v-model="isShow" :width="width" scrollable>
-        <v-card>
+        <v-card :class="refClass">
             <v-card-title color="primary" class="dialog-toolbar">
                 <slot name="toolbar" :close="close"></slot>
             </v-card-title>
@@ -41,9 +41,13 @@
             isShow: false
         }),
         computed: {
-
+            refClass: function () {
+                var result = {};
+                result[this.refKey] = true;
+                return result;
+            }
         },
-        props: ["refKey","width"],
+        props: ["refKey", "width"],
         created: function () {
             var comp = this;
             this.$bus.$on(`${comp.refKey}_show`, function (isShow) {

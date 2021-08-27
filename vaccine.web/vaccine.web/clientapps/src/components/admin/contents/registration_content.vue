@@ -988,6 +988,48 @@
         background: rgba(0,0,0,0.1);
     }
 
+    thead tr th {
+        border-top: 1px solid #D8D8DA !important;
+    }
+
+    .app-content > .v-main__wrap > .v-sheet > .v-toolbar__content > .v-toolbar__title {
+        font: normal normal normal 20px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781 !important;
+        opacity: 1;
+    }
+
+    .v-toolbar__content > .v-btn--disabled {
+        border-radius: 4px !important;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        background-color: #6267811A !important;
+    }
+
+    .v-toolbar__content > .v-size--default > .v-btn__content {
+        color: white !important;
+    }
+
+    .v-main {
+        width: 100% !important;
+    }
+
+    .dialogDetail .dialog-content {
+        padding: 10px 0 !important;
+    }
+
+    .dialogDetail .dialog-content > div {
+        margin: 0 20px;
+    }
+
+    .dialogDetail .dialog-content > hr {
+        margin-top: 10px;
+        border: 0;
+        height: 24px;
+        background: #6267811A 0% 0% no-repeat padding-box;
+        opacity: 1;
+    }
+
     /* Extra small devices (portrait phones, less than 576px) */
     @media (max-width: 575.98px) {
         .v-data-table > div {
@@ -1025,29 +1067,6 @@
     /* Extra large devices (large desktops, 1200px and up) */
     @media (min-width: 1200px) {
     }
-    thead tr th {
-        border-top: 1px solid #D8D8DA !important;
-    }
-    .app-content > .v-main__wrap > .v-sheet >.v-toolbar__content>.v-toolbar__title {
-        font: normal normal normal 20px/24px Noto Sans T Chinese;
-        letter-spacing: 0px;
-        color: #626781 !important;
-        opacity: 1;
-    }
-    .v-toolbar__content > .v-btn--disabled {
-        border-radius: 4px !important;
-        font: normal normal normal 16px/24px Noto Sans T Chinese;
-        letter-spacing: 0px;
-        background-color: #6267811A !important;
-    }
-    .v-toolbar__content > .v-size--default > .v-btn__content {
-        color: white !important;
-    }
-    .v-main {
-        width: 100% !important;
-    }
-
-
 </style>
 
 <script>
