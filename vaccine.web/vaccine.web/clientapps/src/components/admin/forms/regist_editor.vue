@@ -566,9 +566,9 @@
                         this.model[nn] = "";
                     }
                 }
-//              this.$refs.form.resetValidation();
                 this.regist_institution_code = '';
                 this.regist_institution_name = '';
+                this.$refs.form.resetValidation();
             },
 
             save: function () {
