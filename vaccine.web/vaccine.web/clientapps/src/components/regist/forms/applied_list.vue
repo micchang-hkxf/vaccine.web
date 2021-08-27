@@ -166,7 +166,8 @@
                     applyNo: applied.applyNo,
                     messageCode: applied.messageCode,
                     actName: applied.actName,
-                    cancelTime: applied.cancelTime
+                    cancelTime: applied.cancelTime,
+                    vaccines: applied.vaccines
                 };
                 
                 this.setActivityApply(session).then(() => {
