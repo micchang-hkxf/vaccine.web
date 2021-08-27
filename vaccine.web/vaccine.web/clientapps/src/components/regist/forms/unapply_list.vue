@@ -8,7 +8,7 @@
                 <v-text-field placeholder="請輸入行政區、村里或場次標題" v-model="filterKeyword" hide-details dense height="48px" @change="search" @input="search">
                     <template v-slot:append>
                         <div class="d-flex align-center text-controll">
-                            <img src="/regist/common_search-24px.svg" />
+                            <img src="/regist/search.svg" />
                         </div>
                     </template>
                 </v-text-field>
@@ -273,13 +273,21 @@
             height: 150px;
         }
 
-            .unapply-list/deep/ .action-bar .v-text-field .transparent {
-                border-color: rgba(54,66,80,0.2) !important;
-            }
+        .unapply-list/deep/ .action-bar .v-text-field .transparent {
+            border-color: rgba(54,66,80,0.2) !important;
+        }
 
-            .unapply-list/deep/ .action-bar .v-text-field__details {
-                display: none !important;
-            }
+        .unapply-list/deep/ .action-bar .v-text-field__details {
+            display: none !important;
+        }
+
+        .unapply-list/deep/ .action-bar .v-text-field > .v-input__control > .v-input__slot:before {
+            border-color: #4349691A;
+        }
+
+        .unapply-list/deep/ .action-bar .action-bar-filter img {
+            opacity: 0.4;
+        }
 
         .unapply-list/deep/ .action-container {
             padding-left: 16px;
@@ -298,7 +306,7 @@
         padding-top: 16px!important;
     }
     */
-        .unapply-list/deep/ .v-text-field__details {
+                .unapply-list/deep/ .v-text-field__details {
             display: none;
         }
 
