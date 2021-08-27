@@ -169,6 +169,10 @@
         opacity: 1;
     }
 
+    .regist-content .action:hover {
+        background-color: #736DB980;
+    }
+
     .regist-content .action-sub-title {
         position: relative;
         top: 22px;
