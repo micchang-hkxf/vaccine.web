@@ -1,7 +1,7 @@
 ﻿<template>
     <div class="applied-list">
         <div class="action-bar">
-            <v-text-field placeholder="查詢行政區、村里或場次標題" v-model="filterKeyword" hide-details dense height="48px" outlined @change="search"  @input="search" autocomplete="off">
+            <v-text-field placeholder="請輸入行政區、村里或場次標題" v-model="filterKeyword" hide-details dense height="48px" outlined @change="search"  @input="search" autocomplete="off">
                 <template v-slot:append>
                     <img src="/regist/search.svg" />
                 </template>
@@ -166,7 +166,8 @@
                     applyNo: applied.applyNo,
                     messageCode: applied.messageCode,
                     actName: applied.actName,
-                    cancelTime: applied.cancelTime
+                    cancelTime: applied.cancelTime,
+                    vaccines: applied.vaccines
                 };
                 
                 this.setActivityApply(session).then(() => {
@@ -285,6 +286,16 @@
 
     .applied-list/deep/ .action-bar .v-text-field__details {
         display: none !important;
+    }
+
+    .applied-list/deep/ .action-bar .v-text-field--outlined fieldset {
+        border: 1px solid #4349691A;
+        border-radius: 4px;
+        opacity: 1;
+    }
+
+    .applied-list/deep/ .action-bar img {
+        opacity: 0.4;
     }
 
     /*.applied-list/deep/ .action-container {

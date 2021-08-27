@@ -31,6 +31,28 @@
             <div class="activity-detail-title">序號</div>
             <div class="activity-detail-descript">{{session.applyNo}}</div>
         </template>
+
+        <div class="activity-detail-title">接種疫苗</div>
+        <template v-if="session.vaccines.length > 0">
+            <div class="activity-detail-descript" v-for="(vaccine , idx) in session.vaccines" :key="`vaccine_${idx}`">
+                <div class="apply-field-type-icon d-flex justify-start align-center">
+                    <img src="/regist/select_vaccine.svg" />
+                </div>
+                <div class="apply-field-type-text d-flex justify-start align-center">
+                    {{vaccine.itemName}}
+                </div>
+            </div>
+        </template>
+        <template v-else>
+            <div class="activity-detail-descript">
+                <div class="apply-field-type-icon d-flex justify-start align-center">
+                    <img src="/regist/select_vaccine.svg" />
+                </div>
+                <div class="apply-field-type-text d-flex justify-start align-center">
+                    {{session.brandName}}
+                </div>
+            </div>
+        </template>
     </div>
 </template>
 
@@ -78,6 +100,7 @@
     .apply-viewer/deep/ .activity-detail-descript {
         font-size: 16px !important;
         color: #434969 !important;
+        display: flex;
     }
     .apply-viewer/deep/ .activity-detail-descript .disabled {
         font-size: 16px !important;

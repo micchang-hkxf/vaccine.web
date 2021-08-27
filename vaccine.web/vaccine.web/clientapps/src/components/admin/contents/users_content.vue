@@ -647,7 +647,8 @@
                 this.$set(this, "mbNo2", '');
                 this.$set(this, "email", '');
                 this.$set(this, "unitName", '');
-      
+
+                this.$refs.form.resetValidation();
 
                 this.$bus.$emit('userform_show', true);
                 this.$set(this, "isReadOnly", false);
@@ -657,8 +658,6 @@
                 //this.setArea = { id: 1, state: "松山區" };
                 this.$set(this, "setRole", { id: 1, state: "轄區管理員" });
                 this.$set(this, "setArea", { id: "2001", state: "松山區" });
-                
-
             },
             importItem() {
                 this.$refs.importfile.$refs.input.click();

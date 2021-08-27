@@ -65,7 +65,7 @@
 
 
 <style scoped>
-    .v-dialog {
+    /deep/.v-dialog {
         box-shadow: none !important;
         border-radius: 8px !important;
         overflow-y: hidden !important;
@@ -179,7 +179,7 @@
         data: () => ({
             isShow: false,
             setLeftColor: "rgba(50,65,80,0.2)",
-            setRightColor: "#2EB6C7",
+            setRightColor: "#626781",
             setLeftOutlined: true,
             setRightOutlined: false,
 

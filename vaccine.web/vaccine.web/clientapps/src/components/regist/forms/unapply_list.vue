@@ -8,7 +8,7 @@
                 <v-text-field placeholder="請輸入行政區、村里或場次標題" v-model="filterKeyword" hide-details dense height="48px" @change="search" @input="search">
                     <template v-slot:append>
                         <div class="d-flex align-center text-controll">
-                            <img src="/regist/common_search-24px.svg" />
+                            <img src="/regist/search.svg" />
                         </div>
                     </template>
                 </v-text-field>
@@ -273,13 +273,21 @@
             height: 150px;
         }
 
-            .unapply-list/deep/ .action-bar .v-text-field .transparent {
-                border-color: rgba(54,66,80,0.2) !important;
-            }
+        .unapply-list/deep/ .action-bar .v-text-field .transparent {
+            border-color: rgba(54,66,80,0.2) !important;
+        }
 
-            .unapply-list/deep/ .action-bar .v-text-field__details {
-                display: none !important;
-            }
+        .unapply-list/deep/ .action-bar .v-text-field__details {
+            display: none !important;
+        }
+
+        .unapply-list/deep/ .action-bar .v-text-field > .v-input__control > .v-input__slot:before {
+            border-color: #4349691A;
+        }
+
+        .unapply-list/deep/ .action-bar .action-bar-filter img {
+            opacity: 0.4;
+        }
 
         .unapply-list/deep/ .action-container {
             padding-left: 16px;
@@ -298,7 +306,7 @@
         padding-top: 16px!important;
     }
     */
-        .unapply-list/deep/ .v-text-field__details {
+                .unapply-list/deep/ .v-text-field__details {
             display: none;
         }
 
@@ -333,7 +341,7 @@
         }
 
 
-    @media (min-device-width: 100px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+    @media (min-device-width: 100px) and (max-device-width:350px) and (-webkit-min-device-pixel-ratio: 2) {
         .unapply-list/deep/ .action-container {
             padding-left: 16px;
             padding-right: 16px;
@@ -349,37 +357,12 @@
         }
 
         .unapply-list .action-bar {
-            /*padding: 16px !important;
-            background-color: #FFFFFF;*/
-            width: 95%;
-            /*margin: 0 auto;*/
-            /*height: 150px;*/
-        }
 
-        .col-6 {
-            flex: 0 0 100%;
-            max-width: 100%;
-        }
-    }
-
-    /* Small devices (landscape phones, 576px and up) */
-    @media (min-width: 480.5px) and (max-width: 767.98px) {
-        .unapply-list/deep/ .action-container {
-            padding-left: 16px;
-            padding-right: 16px;
-            padding-top: 16px;
-            padding-bottom: 16px;
-            margin-bottom: 78px;
-            display: block;
-            justify-content: center;
-            background-color: #f4f4f4;
-            /*#f4f4f4;*/
-            margin: 0 auto;
-            height: 100vh;
             width: 100%;
+
         }
 
-        .unapply-list .action-bar {
+        .row {
             width: 100%;
         }
 
@@ -389,28 +372,98 @@
         }
     }
 
-    @media (min-width: 770px) and (max-width: 960px) {
-        .unapply-list/deep/ .action-container {
-            padding-left: 16px;
-            padding-right: 16px;
-            padding-top: 16px;
-            padding-bottom: 16px;
-            margin-bottom: 78px;
-            display: block;
-            justify-content: center;
-            background-color: #f4f4f4;
-            margin: 0 auto;
-            height: 100vh;
-            width: 100%;
+
+        @media (min-device-width: 350.1px) and (max-device-width: 480px) {
+            .unapply-list/deep/ .action-container {
+                padding-left: 16px;
+                padding-right: 16px;
+                padding-top: 16px;
+                padding-bottom: 16px;
+                margin-bottom: 78px;
+                display: block;
+                justify-content: center;
+                background-color: #f4f4f4;
+                margin: 0 auto;
+                height: 100vh;
+                width: 100%;
+            }
+
+            .unapply-list .action-bar {
+                width: 95%;
+            }
+
+            .row {
+                width: 100%;
+            }
+
+            .col-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+
+            .unapply-list .action {
+                height: 240px;
+            }
         }
 
-        .unapply-list .action-bar {
-            width: 98%;
+        /* Small devices (landscape phones, 576px and up) */
+        @media (min-width: 480.5px) and (max-width: 767.98px) {
+            .unapply-list/deep/ .action-container {
+                padding-left: 16px;
+                padding-right: 16px;
+                padding-top: 16px;
+                padding-bottom: 16px;
+                margin-bottom: 78px;
+                display: block;
+                justify-content: center;
+                background-color: #f4f4f4;
+                /*#f4f4f4;*/
+                margin: 0 auto;
+                height: 100vh;
+                width: 100%;
+            }
+
+            .unapply-list .action-bar {
+                width: 100%;
+            }
+
+            .row {
+                width: 100%;
+            }
+
+            .col-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
         }
 
-        .col-6 {
-            flex: 0 0 100%;
-            max-width: 50%;
+        @media (min-width: 770px) and (max-width: 960px) {
+            .unapply-list/deep/ .action-container {
+                padding-left: 16px;
+                padding-right: 16px;
+                padding-top: 16px;
+                padding-bottom: 16px;
+                margin-bottom: 78px;
+                display: block;
+                justify-content: center;
+                background-color: #f4f4f4;
+                margin: 0 auto;
+                height: 100vh;
+                width: 100%;
+            }
+
+            .unapply-list .action-bar {
+                width: 98%;
+            }
+
+            .row {
+                width: 100%;
+            }
+
+            .col-6 {
+                flex: 0 0 100%;
+                max-width: 50%;
+            }
         }
-    }
 </style>

@@ -16,7 +16,8 @@
 
                 <v-app-bar-nav-icon class="d-md-none" @click.stop="toggleDrawer"></v-app-bar-nav-icon>
 
-                <v-toolbar-title class="system-title">疫苗管理系統</v-toolbar-title>
+                <img src="../../../public/login/logo.svg"  style="margin-right: 5px;"/>
+                <v-toolbar-title class="system-title">里辦疫苗接種便民資訊系統</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-menu offset-y>
                     <template v-slot:activator="{ on, attrs }">
@@ -26,7 +27,7 @@
                                icon>
                             <v-icon>mdi-account-outline</v-icon>
                             {{(user)?user.uName:''}}
-                            <v-icon>mdi-chevron-right</v-icon>
+                            <v-icon>mdi-chevron-down</v-icon>
                         </v-btn>
                     </template>
 
@@ -324,5 +325,35 @@
         background: #FFFFFF80 0% 0% no-repeat padding-box !important;
     }
 
+    .usertitle {
+        margin-right: 28px;
+    }
 
+    .usertitle i {
+        margin: 0 4px;
+    }
+
+    .usertitle .mdi-account-outline::before {
+        content: url('/admin/account.svg') !important;
+    }
+
+    .usertitle .mdi-chevron-down::before {
+        content: url('/admin/down.svg') !important;
+    }
+
+    .layoutmenu .mdi-account-outline::before {
+        content: url('/admin/account-icon.svg') !important;
+    }
+
+    .layoutmenu .mdi-lock-outline::before {
+        content: url('/admin/modify-icon.svg') !important;
+    }
+
+    .layoutmenu .mdi-logout::before {
+        content: url('/admin/logout-icon.svg') !important;
+    }
+
+    .layoutmenu .v-application--is-ltr .v-list-item__action:first-child, .v-application--is-ltr .v-list-item__icon:first-child {
+        margin-right: 0 !important;
+    }
 </style>
