@@ -46,7 +46,7 @@
                 </v-form>
             </v-card-text>
             <v-card-actions class="login-actions d-flex justify-space-between">
-                <v-btn class="cancel-action" color="#626781" width="130px" @click.stop="isShow=false">取消</v-btn>
+                <v-btn class="cancel-action" color="#626781" width="130px" @click.stop="close">取消</v-btn>
                 <v-btn class="next-action" color="#736DB9" width="130px" @click="login">下一步</v-btn>
             </v-card-actions>
         </v-card>
@@ -135,6 +135,8 @@
             },
             close: function () {
                 this.isShow = false;
+                this.$refs.loginForm.reset();
+                this.$refs.loginForm.resetValidation();
             },
             checkUid: function () {
                 var re = /^[A-Z]{1}[1-2]{1}[0-9]{8}$/;

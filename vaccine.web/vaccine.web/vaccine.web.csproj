@@ -5,12 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="clientapps\public\NewFolder\**" />
     <Compile Remove="clientapps\src\assets\**" />
     <Compile Remove="clientapps\src\sass\**" />
+    <Content Remove="clientapps\public\NewFolder\**" />
     <Content Remove="clientapps\src\assets\**" />
     <Content Remove="clientapps\src\sass\**" />
+    <EmbeddedResource Remove="clientapps\public\NewFolder\**" />
     <EmbeddedResource Remove="clientapps\src\assets\**" />
     <EmbeddedResource Remove="clientapps\src\sass\**" />
+    <None Remove="clientapps\public\NewFolder\**" />
     <None Remove="clientapps\src\assets\**" />
     <None Remove="clientapps\src\sass\**" />
   </ItemGroup>
@@ -46,7 +50,6 @@
   <ItemGroup>
     <Folder Include="clientapps\public\images\" />
     <Folder Include="clientapps\public\login\" />
-    <Folder Include="clientapps\public\NewFolder\" />
     <Folder Include="clientapps\src\stores\regist\dynamic\" />
   </ItemGroup>
 
