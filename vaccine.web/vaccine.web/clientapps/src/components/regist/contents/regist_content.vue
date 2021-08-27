@@ -123,7 +123,7 @@
         }
     }
 </script>
-<style scoped>
+<style scoped>   
     body {
         background: #FFFFFF !important;
     }
@@ -167,6 +167,7 @@
         letter-spacing: 0px;
         color: #FFFFFF;
         opacity: 1;
+        margin-left: 15px;
     }
 
     .regist-content .action-sub-title {
@@ -191,11 +192,13 @@
     }
 
     /* Extra small devices (portrait phones, less than 576px) */
-    @media (max-width: 575.98px) {
+    @media (min-width: 100px) and (max-width: 350px) {
+       
     }
 
     /* Small devices (landscape phones, 576px and up) */
     @media (min-width: 576px) and (max-width: 767.98px) {
+    
     }
 
     /** Medium devices (tablets, 768px and up) */
@@ -211,6 +214,7 @@
         .regist-content .action {
             width: 384px !important;
             height: 383px !important;
+            margin-left: 15px;
         }
 
         .regist-content .action img {
@@ -236,6 +240,7 @@
         .regist-content .action {
             width: 384px !important;
             height: 383px !important;
+            margin-left: 15px;
         }
 
         .regist-content .action img {

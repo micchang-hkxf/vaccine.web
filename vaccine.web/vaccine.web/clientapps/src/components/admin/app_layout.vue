@@ -16,7 +16,8 @@
 
                 <v-app-bar-nav-icon class="d-md-none" @click.stop="toggleDrawer"></v-app-bar-nav-icon>
 
-                <v-toolbar-title class="system-title">疫苗管理系統</v-toolbar-title>
+                <img src="../../../public/login/logo.svg"  style="margin-right: 5px;"/>
+                <v-toolbar-title class="system-title">里辦疫苗接種便民資訊系統</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-menu offset-y>
                     <template v-slot:activator="{ on, attrs }">

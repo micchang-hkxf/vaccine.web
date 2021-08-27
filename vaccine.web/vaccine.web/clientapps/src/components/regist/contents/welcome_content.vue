@@ -78,6 +78,10 @@
         color: #FFFFFF;
         opacity: 1;
     }
+
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
 </style>
 
 <script>
