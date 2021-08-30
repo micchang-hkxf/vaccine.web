@@ -66,7 +66,7 @@ export default {
                             brandId.push(v.itemId);
                             brandName.push(v.itemName);
                         });
-
+                        
                         datas.push({
                             sessionName: data.activityTitle,
                             sessionId: data.activityId,
@@ -86,6 +86,8 @@ export default {
                             groupName: data.vaccineGroupName,
                             signUp: (new Date(data.startApplyDate).getTime() <= new Date().getTime()) && (new Date().getTime() <= new Date(data.endApplyDate).getTime()),
                             actAge: data.actAge,
+                            vaccineGroupId: data.vaccineGroupId,
+                            vaccineGroupName: data.vaccineGroupName
                         });
                     });
 
