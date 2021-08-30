@@ -1,7 +1,12 @@
 ﻿<template>
     <app-layout :app-bar="appBar" class="regist-content" :class="getContentClass">
         <template v-slot:regist-title>
-            我要報名
+            <template v-if="tab === 'regist'">
+                我要報名
+            </template>
+            <template v-else-if="tab === 'applied'">
+                查詢紀錄
+            </template>
         </template>
         <template v-slot:regist-content>
             <v-tabs color="black" slider-color="#736DB9" grow v-model="tab">
@@ -123,7 +128,7 @@
         }
     }
 </script>
-<style scoped>
+<style scoped>   
     body {
         background: #FFFFFF !important;
     }
@@ -167,6 +172,7 @@
         letter-spacing: 0px;
         color: #FFFFFF;
         opacity: 1;
+        margin-left: 15px;
     }
 
     .regist-content .action:hover {
@@ -195,11 +201,13 @@
     }
 
     /* Extra small devices (portrait phones, less than 576px) */
-    @media (max-width: 575.98px) {
+    @media (min-width: 100px) and (max-width: 350px) {
+       
     }
 
     /* Small devices (landscape phones, 576px and up) */
     @media (min-width: 576px) and (max-width: 767.98px) {
+    
     }
 
     /** Medium devices (tablets, 768px and up) */
@@ -215,6 +223,7 @@
         .regist-content .action {
             width: 384px !important;
             height: 383px !important;
+            margin-left: 15px;
         }
 
         .regist-content .action img {
@@ -240,6 +249,7 @@
         .regist-content .action {
             width: 384px !important;
             height: 383px !important;
+            margin-left: 15px;
         }
 
         .regist-content .action img {

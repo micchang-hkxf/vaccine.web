@@ -19,11 +19,11 @@
             </div>
         </div>
         <div class="action-container">
-            <v-row>
+            <v-row v-if="sessions.length !== 0">
                 <v-col v-for="(session,index) in sessions"
                        :key="`session_${index}`" cols="6">
                     <v-card class="action d-flex flex-row" elevation="0">
-                        <div class="action-info d-flex flex-column justify-center">
+                        <div class="action-info d-flex flex-column justify-center" @click="toSession(session)">
                             <div class="action-info-header d-flex flex-column">
                                 <div class="action-info-subject">
                                     {{session.sessionName}}
@@ -341,7 +341,7 @@
         }
 
 
-    @media (min-device-width: 100px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+    @media (min-device-width: 100px) and (max-device-width:350px) and (-webkit-min-device-pixel-ratio: 2) {
         .unapply-list/deep/ .action-container {
             padding-left: 16px;
             padding-right: 16px;
@@ -357,37 +357,12 @@
         }
 
         .unapply-list .action-bar {
-            /*padding: 16px !important;
-            background-color: #FFFFFF;*/
-            width: 95%;
-            /*margin: 0 auto;*/
-            /*height: 150px;*/
-        }
 
-        .col-6 {
-            flex: 0 0 100%;
-            max-width: 100%;
-        }
-    }
-
-    /* Small devices (landscape phones, 576px and up) */
-    @media (min-width: 480.5px) and (max-width: 767.98px) {
-        .unapply-list/deep/ .action-container {
-            padding-left: 16px;
-            padding-right: 16px;
-            padding-top: 16px;
-            padding-bottom: 16px;
-            margin-bottom: 78px;
-            display: block;
-            justify-content: center;
-            background-color: #f4f4f4;
-            /*#f4f4f4;*/
-            margin: 0 auto;
-            height: 100vh;
             width: 100%;
+
         }
 
-        .unapply-list .action-bar {
+        .row {
             width: 100%;
         }
 
@@ -397,28 +372,98 @@
         }
     }
 
-    @media (min-width: 770px) and (max-width: 960px) {
-        .unapply-list/deep/ .action-container {
-            padding-left: 16px;
-            padding-right: 16px;
-            padding-top: 16px;
-            padding-bottom: 16px;
-            margin-bottom: 78px;
-            display: block;
-            justify-content: center;
-            background-color: #f4f4f4;
-            margin: 0 auto;
-            height: 100vh;
-            width: 100%;
+
+        @media (min-device-width: 350.1px) and (max-device-width: 480px) {
+            .unapply-list/deep/ .action-container {
+                padding-left: 16px;
+                padding-right: 16px;
+                padding-top: 16px;
+                padding-bottom: 16px;
+                margin-bottom: 78px;
+                display: block;
+                justify-content: center;
+                background-color: #f4f4f4;
+                margin: 0 auto;
+                height: 100vh;
+                width: 100%;
+            }
+
+            .unapply-list .action-bar {
+                width: 95%;
+            }
+
+            .row {
+                width: 100%;
+            }
+
+            .col-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+
+            .unapply-list .action {
+                height: 240px;
+            }
         }
 
-        .unapply-list .action-bar {
-            width: 98%;
+        /* Small devices (landscape phones, 576px and up) */
+        @media (min-width: 480.5px) and (max-width: 767.98px) {
+            .unapply-list/deep/ .action-container {
+                padding-left: 16px;
+                padding-right: 16px;
+                padding-top: 16px;
+                padding-bottom: 16px;
+                margin-bottom: 78px;
+                display: block;
+                justify-content: center;
+                background-color: #f4f4f4;
+                /*#f4f4f4;*/
+                margin: 0 auto;
+                height: 100vh;
+                width: 100%;
+            }
+
+            .unapply-list .action-bar {
+                width: 100%;
+            }
+
+            .row {
+                width: 100%;
+            }
+
+            .col-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
         }
 
-        .col-6 {
-            flex: 0 0 100%;
-            max-width: 50%;
+        @media (min-width: 770px) and (max-width: 960px) {
+            .unapply-list/deep/ .action-container {
+                padding-left: 16px;
+                padding-right: 16px;
+                padding-top: 16px;
+                padding-bottom: 16px;
+                margin-bottom: 78px;
+                display: block;
+                justify-content: center;
+                background-color: #f4f4f4;
+                margin: 0 auto;
+                height: 100vh;
+                width: 100%;
+            }
+
+            .unapply-list .action-bar {
+                width: 98%;
+            }
+
+            .row {
+                width: 100%;
+            }
+
+            .col-6 {
+                flex: 0 0 100%;
+                max-width: 50%;
+            }
         }
-    }
 </style>

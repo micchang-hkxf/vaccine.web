@@ -177,8 +177,10 @@
         box-shadow: none !important;
     }
     /deep/ .v-dialog {
-        width: 30% !important;
+        width: 350px !important;
+        /*width: 30% !important;*/
         box-shadow: none !important;
+        border-radius: 8px !important;
     }
 
     .login-switch/deep/ .login-header {

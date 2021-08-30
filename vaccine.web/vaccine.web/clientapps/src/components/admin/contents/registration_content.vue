@@ -1618,6 +1618,7 @@
                     comp.alertTitle = comp.downloadErrorMessage;
                     comp.alertText = '';
                     comp.alertImgSrc = comp.warningIcon;
+
                     comp.$refs.registAlert.open();
                     return false;
                 }

@@ -172,7 +172,7 @@
                         <v-label><span class="star">帳號</span></v-label>
                         <v-text-field dense outlined class="w02" placeholder="請輸入帳號" v-model="acc" v-bind:readonly="isReadOnly" :rules="[v => !!v || '必填']"></v-text-field>
                         <!--<v-label><span class="star">email</span></v-label>
-                <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>-->
+    <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>-->
                         <v-label><span class="star">手機</span></v-label>
                         <v-text-field dense outlined class="w02" placeholder="請輸入手機號碼" type="number" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
                         <v-label><span class="star">再次確認手機</span></v-label>
@@ -197,8 +197,22 @@
                                   return-object>
                         </v-select>
                         <v-label><span class="star">管理區域</span></v-label>
-                        <v-select v-model="setArea"
+                        <v-select v-model="setArea" v-if="setRole.id==1"
                                   :items="getAllAreaItems"
+                                  item-text="state"
+                                  item-value="id"
+                                  dense
+                                  :menu-props="{ bottom: true, offsetY: true }"
+                                  outlined
+                                  clearable
+                                  required
+                                  :rules="rules.select2"
+                                  style="margin-right: 10px;min-width:150px"
+                                  class="search-filter w01"
+                                  return-object>
+                        </v-select>
+                        <v-select v-model="setArea" v-if="setRole.id==0"
+                                  :items="[{id:null , state:'無'},{id:'200' , state:'管理全區'}]"
                                   item-text="state"
                                   item-value="id"
                                   dense
@@ -523,7 +537,7 @@
                 item.editMode = true;
              
                 item.isEnable = (item.isEnable.toString() == 'true') ? 'false' : 'true';
-                item.zones = ["200", (item.zones[0].data[0]) ? item.zones[0].data[0].distId:""];//todo
+                item.zones = [(item.zones[0].data[0]) ? item.zones[0].data[0].distId:""];//todo
                 comp.alertImgSrc = comp.warningIcon;
                 comp.changeUser(item).then(function (result) {
                   
@@ -695,8 +709,7 @@
                     //zones: [this.setArea.id], 
                     lastAccessTime: "2021-05-20 08:26:43",
                     pdExpTime: "2021-05-20 08:26:43",
-                    zones: ["200", this.setArea.id.toString()],
-
+                    zones: [this.setArea.id.toString()],
                     isEnable: this.setEnable.toString(),
                     stopit: false,
                     editMode: this.isReadOnly,

@@ -151,7 +151,6 @@
                                 min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-text-field v-model="model.regist_station_date"
-                                              append-icon="mdi-calendar"
                                               :rules="[rules.required]"
                                               readonly
                                               v-bind="attrs"
@@ -160,7 +159,7 @@
                                               outlined
                                               dense>
                                     <template v-slot:append>
-                                        <img  width="24"  height="24" src="/images/Component171–2.svg" alt="">
+                                        <v-img src="/images/date_picker_icon.svg"></v-img>
                                     </template>
                                 </v-text-field>
                             </template>
@@ -169,6 +168,9 @@
                                            :day-format="dayFormat"
                                            no-title
                                            scrollable>
+                                <template v-slot:append>
+                                    <v-img src="/images/date_picker_icon.svg"></v-img>
+                                </template>
                                 <v-spacer></v-spacer>
                                 <v-btn text
                                        :ripple="false"
@@ -263,7 +265,6 @@
                             <template v-slot:activator="{ on, attrs }">
                                 <v-text-field v-model="model.regist_apply_start_date"
                                               placeholder="請輸入事先報名開始時間"
-                                              append-icon="mdi-calendar"
                                               :rules="[rules.required]"
                                               readonly
                                               v-bind="attrs"
@@ -271,7 +272,7 @@
                                               outlined
                                               dense>
                                     <template v-slot:append>
-                                        <img width="24" height="24" src="/images/Component171–2.svg" alt="">
+                                        <v-img src="/images/date_picker_icon.svg"></v-img>
                                     </template>
                                 </v-text-field>
                             </template>
@@ -306,7 +307,6 @@
                             <template v-slot:activator="{ on, attrs }">
                                 <v-text-field v-model="model.regist_apply_end_date"
                                               placeholder="請輸入事先報名截止時間"
-                                              append-icon="mdi-calendar"
                                               :rules="[rules.required]"
                                               readonly
                                               v-bind="attrs"
@@ -314,7 +314,7 @@
                                               outlined
                                               dense>
                                     <template v-slot:append>
-                                        <img width="24" height="24" src="/images/Component171–2.svg" alt="">
+                                        <v-img src="/images/date_picker_icon.svg"></v-img>
                                     </template>
                                 </v-text-field>
                             </template>

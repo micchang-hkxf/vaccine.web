@@ -2,13 +2,9 @@
 
     <div class="timepicker-container">
         <div class="timepicker-wrap">
-            <!--<svg class="timepicker-icon timepicker-icon__clock" viewBox="0 0 32 32">
-                <path class="path1" d="M20.586 23.414l-6.586-6.586v-8.828h4v7.172l5.414 5.414zM16 0c-8.837 0-16 7.163-16 16s7.163 16 16 16 16-7.163 16-16-7.163-16-16-16zM16 28c-6.627 0-12-5.373-12-12s5.373-12 12-12c6.627 0 12 5.373 12 12s-5.373 12-12 12z"></path>
-            </svg>-->
-
-            <input type="text" class="time" ref="timeInput" :value="value"
+            <img src="/images/time_picker_icon.svg" class="timepicker-icon timepicker-icon__clock" />
+            <input type="text" class="time" ref="timeInput" :value="value" 
                    @focus="open">
-            <img width="24" height="24" src="/images/Component172–7.svg" class="tpk_input_img" alt="">
         </div>
         <div class="timepicker" tabindex="0"
              :class="{'is-open': isOpen}"
@@ -264,14 +260,5 @@
         text-align: center;
         font-size: 90%;
     }
-    }
-
-
-    .tpk_input_img {
-        position: absolute;
-        bottom: 9px;
-        right: 5px;
-        width: 24px;
-        height: 24px;
     }
 </style>

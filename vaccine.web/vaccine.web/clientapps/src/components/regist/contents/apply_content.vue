@@ -59,11 +59,11 @@
                         </div>
                     </div>
                     <!--<div class="apply-field">
-                <div class="apply-field-label">戶籍</div>
-                <div class="apply-field-container">
-                    <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
-                </div>
-            </div>-->
+            <div class="apply-field-label">戶籍</div>
+            <div class="apply-field-container">
+                <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
+            </div>
+        </div>-->
                     <div class="apply-field display type" v-if="vaccines.length > 0 || session.brandName !== ''">
                         <div class="apply-field-label">接種疫苗</div>
                         <div class="apply-field-container">
@@ -92,7 +92,7 @@
                     <v-divider></v-divider>
 
                     <div class="apply-field display descript">
-                        <div class="apply-field-label">活動申明</div>
+                        <div class="apply-field-label">活動聲明</div>
                         <div class="apply-field-container descript-area">
                             為避免重複接種，報名後請勿再自行前往院所接種或跨里報名，接種當日，將再次檢核接種資格，屆時依現場判讀可接種之疫苗別為準。
                         </div>
@@ -101,18 +101,23 @@
                     <div class="apply-field display">
                         <v-checkbox :rules="[rules.required]">
                             <template v-slot:label>
-                                我同意以上申明
+                                我同意以上聲明
                                 <span class="red--text">*</span>
                             </template>
                         </v-checkbox>
                     </div>
                 </v-form>
+                <div class="apply-actions" v-if="isNeedLogin">
+                  
+                            <v-btn color="#626781" :to="{ name:'regist' }">取消</v-btn>                      
+                            <v-btn color="#736DB9" :to="{ name:'agree', params: session }" class="btn-agree">上一步</v-btn>
+                            <v-btn color="#736DB9" @click.stop="sendApply()">確定報名</v-btn>
+                       
+                       
+                  
+                </div>
             </div>
-            <div class="apply-actions d-flex justify-space-between" v-if="isNeedLogin">
-                <v-btn color="#626781" :to="{ name:'regist' }">取消</v-btn>
-                <v-btn color="#736DB9" :to="{ name:'agree', params: session }">上一步</v-btn>
-                <v-btn color="#736DB9" @click.stop="sendApply()">確定報名</v-btn>
-            </div>
+            
 
             <apply-done ref="done"></apply-done>
 
@@ -392,6 +397,9 @@
     }
 </script>
 <style scoped>
+    .v-btn--contained {
+        box-shadow:none !important;
+    }
 
     .apply-content/deep/ .v-btn {
         min-width: 100px !important;
@@ -505,15 +513,29 @@
 
     .apply-content/deep/ .apply-container {
         padding-top: 24px !important;
-        padding-left: 24px !important;
-        padding-right: 24px !important;
+        /*padding-left: 24px !important;
+        padding-right: 24px !important;*/
+        display:grid;
+        justify-content:center;
     }
+
+
+   
 
     .apply-content/deep/ .apply-actions {
-        padding: 24px !important;
+        padding-top: 24px;
+        padding-bottom: 24px;
+        display: flex;
+        justify-content: space-between;
     }
 
-    .apply-content/deep/ .action {
+        .apply-content/deep/ .apply-actions .btn-agree {
+            /*left: 330px*/
+            margin-left: 600px;
+        }
+
+
+    .btn-agree .apply-content/deep/ .action {
         font-size: 16px;
         color: white;
         background-color: #736DB9;
@@ -623,4 +645,96 @@
         color: #626781;
         margin: 10px 0;
     }
+
+
+    @media (min-width: 100px) and (max-width: 350px) {
+
+        .apply-content/deep/ .apply-container {
+            padding-top: 24px !important;
+            display: grid;
+            justify-content: center;
+            margin: 10px;
+        }
+
+
+        .apply-content/deep/ .apply-actions .btn-agree {
+            margin-left: 0px;
+        }
+    }
+
+    @media (min-width: 100px) and (max-width: 350px) {
+
+        .apply-content/deep/ .apply-container {
+            padding-top: 24px !important;
+            display: grid;
+            justify-content: center;
+            margin: 5px;
+        }
+
+        .apply-content/deep/ .apply-actions .btn-agree {
+            margin-left: 0px;
+        }
+    }
+
+
+    @media (min-width: 351px) and (max-width: 500px) {
+
+        .apply-content/deep/ .apply-container {
+            padding-top: 24px !important;
+            display: grid;
+            justify-content: center;
+            margin:10px;
+        }
+
+        .apply-content/deep/ .apply-actions .btn-agree {
+            margin-left: 60px;
+        }
+
+    }
+
+     @media (min-width: 500px) and (max-width: 600px) {
+
+        .apply-content/deep/ .apply-container {
+            padding-top: 24px !important;
+            display: grid;
+            justify-content: center;
+            margin:10px;
+        }
+
+        .apply-content/deep/ .apply-actions .btn-agree {
+            margin-left: 120px;
+        }
+
+    }
+
+
+    @media (min-width: 600px) and (max-width: 750px) {
+
+        .apply-content/deep/ .apply-container {
+            padding-top: 24px !important;
+            display: grid;
+            justify-content: center;
+            margin: 10px;
+        }
+
+        .apply-content/deep/ .apply-actions .btn-agree {
+            margin-left: 280px;
+        }
+    }
+
+
+    @media (min-width: 750.5px) and (max-width: 900px) {
+
+        .apply-content/deep/ .apply-container {
+            padding-top: 24px !important;
+            display: grid;
+            justify-content: center;
+            margin: 10px;
+        }
+
+        .apply-content/deep/ .apply-actions .btn-agree {
+            margin-left: 400px;
+        }
+    }
+
 </style>

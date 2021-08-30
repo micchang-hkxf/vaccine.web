@@ -77,6 +77,13 @@
 </script>
 
 <style scoped>
+    /deep/ .v-dialog {
+        width: 350px !important;
+        /*width: 30% !important;*/
+        box-shadow: none !important;
+        border-radius: 8px !important;
+    }
+
 
     .done-dialog/deep/ .full-width {
         width: 100% !important;
@@ -173,7 +180,7 @@
     .done-dialog/deep/ .done-actions {
         display: block !important;
         padding: 0 20px;
-        margin-bottom: 20px; 
+        /*margin-bottom: 20px;*/ 
     }
 
     .done-dialog/deep/ .done-actions .descript {
