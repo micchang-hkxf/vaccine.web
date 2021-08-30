@@ -158,7 +158,11 @@
                                               placeholder="請選擇日期"
                                               v-on="on"
                                               outlined
-                                              dense></v-text-field>
+                                              dense>
+                                    <template v-slot:append>
+                                        <img  width="24"  height="24" src="/images/Component171–2.svg" alt="">
+                                    </template>
+                                </v-text-field>
                             </template>
                             <v-date-picker v-model="model.regist_station_date"
                                            @change="dateClicked"
@@ -265,7 +269,11 @@
                                               v-bind="attrs"
                                               v-on="on"
                                               outlined
-                                              dense></v-text-field>
+                                              dense>
+                                    <template v-slot:append>
+                                        <img width="24" height="24" src="/images/Component171–2.svg" alt="">
+                                    </template>
+                                </v-text-field>
                             </template>
                             <v-date-picker v-model="model.regist_apply_start_date"
                                            no-title
@@ -304,7 +312,11 @@
                                               v-bind="attrs"
                                               v-on="on"
                                               outlined
-                                              dense></v-text-field>
+                                              dense>
+                                    <template v-slot:append>
+                                        <img width="24" height="24" src="/images/Component171–2.svg" alt="">
+                                    </template>
+                                </v-text-field>
                             </template>
                             <v-date-picker v-model="model.regist_apply_end_date"
                                            no-title
