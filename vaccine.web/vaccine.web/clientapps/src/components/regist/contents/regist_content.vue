@@ -1,7 +1,12 @@
 ﻿<template>
     <app-layout :app-bar="appBar" class="regist-content" :class="getContentClass">
         <template v-slot:regist-title>
-            我要報名
+            <template v-if="tab === 'regist'">
+                我要報名
+            </template>
+            <template v-else-if="tab === 'applied'">
+                查詢紀錄
+            </template>
         </template>
         <template v-slot:regist-content>
             <v-tabs color="black" slider-color="#736DB9" grow v-model="tab">

@@ -12,7 +12,7 @@
                 <v-col v-for="(applied , idx) in applieds" :key="`applied_${idx}`" cols="6">
 
                     <v-card class="action d-flex flex-row" elevation="0">
-                        <div class="action-info d-flex flex-column justify-center">
+                        <div class="action-info d-flex flex-column justify-center" @click="toSession(applied)">
                             <div class="action-info-header d-flex flex-column">
                                 <div class="action-info-subject">
                                     {{applied.activityName}}

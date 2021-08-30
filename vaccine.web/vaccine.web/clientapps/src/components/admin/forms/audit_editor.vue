@@ -22,7 +22,7 @@
                                       :items="year"
                                       item-text="state"
                                       item-value="state"
-                                      placeholder="yyy"
+                                      placeholder="年（yyy）"
                                       :menu-props="{ bottom: true, offsetY: true }"
                                       outlined
                                       dense
