@@ -55,15 +55,15 @@
                     <div class="apply-field">
                         <div class="apply-field-label">手機（簡訊通知）</div>
                         <div class="apply-field-container">
-                            <v-text-field class="apply-field-text" placeholder="請輸入手機號碼" v-model="mbNo"></v-text-field>
+                            <v-text-field class="apply-field-text" maxlength="10" placeholder="請輸入手機號碼" v-model="mbNo"></v-text-field>
                         </div>
                     </div>
                     <!--<div class="apply-field">
-            <div class="apply-field-label">戶籍</div>
-            <div class="apply-field-container">
-                <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
-            </div>
-        </div>-->
+                <div class="apply-field-label">戶籍</div>
+                <div class="apply-field-container">
+                    <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
+                </div>
+            </div>-->
                     <div class="apply-field display type" v-if="vaccines.length > 0 || session.brandName !== ''">
                         <div class="apply-field-label">接種疫苗</div>
                         <div class="apply-field-container">
@@ -108,16 +108,16 @@
                     </div>
                 </v-form>
                 <div class="apply-actions" v-if="isNeedLogin">
-                  
-                            <v-btn color="#626781" :to="{ name:'regist' }">取消</v-btn>                      
-                            <v-btn color="#736DB9" :to="{ name:'agree', params: session }" class="btn-agree">上一步</v-btn>
-                            <v-btn color="#736DB9" @click.stop="sendApply()">確定報名</v-btn>
-                       
-                       
-                  
+
+                    <v-btn color="#626781" :to="{ name:'regist' }">取消</v-btn>
+                    <v-btn color="#736DB9" :to="{ name:'agree', params: session }" class="btn-agree">上一步</v-btn>
+                    <v-btn color="#736DB9" @click.stop="sendApply()">確定報名</v-btn>
+
+
+
                 </div>
             </div>
-            
+
 
             <apply-done ref="done"></apply-done>
 
@@ -199,6 +199,18 @@
                 </template>
             </com-confirm>
 
+            <com-confirm ref="alertTimeout" ref-key="alertTimeout" :right-click="alertTimeoutClick">
+                <template v-slot:confirm-image>
+                    <v-img src="/alert_warning.svg"></v-img>
+                </template>
+                <template v-slot:confirm-text>
+                    <div class="sub-title">無法識別</div>
+                    <div class="sub-content">已超過登入時間效期，請重新登入。</div>
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    了解
+                </template>
+            </com-confirm>
         </template>
     </app-layout>
 </template>
@@ -324,7 +336,6 @@
 
                     //setTimeout(() => {
                     this.$nextTick(() => {
-
                         comp.getBeforeApply(data)
                             .then(function (result) {
                                 if (result.datas.length > 0) {
@@ -359,6 +370,10 @@
                                 }
                             })
                             .catch(ex => {
+                                if (ex.response.data.status == 406) {
+                                    comp.$bus.$emit('alertTimeout_show', true);
+                                    return;
+                                }
                                 console.log(ex);
                                 // 無法識別
                                 comp.$bus.$emit('alertUnknow_show', true);
@@ -380,6 +395,11 @@
             },
             alertNoConformClick: function () {
                 this.$bus.$emit('alertNoConform_show', false);
+                this.$router.push({ name: 'regist' });
+            },
+            alertTimeoutClick: function () {
+                this.$bus.$emit('alertTimeout_show', false);
+                sessionStorage.removeItem('userInfo');
                 this.$router.push({ name: 'regist' });
             },
             alertUnknowClick: function () {
