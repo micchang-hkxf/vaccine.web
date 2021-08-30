@@ -296,7 +296,7 @@
                 </template>
             </com-confirm>
 
-            <com-dialog ref="formSaveConfirmPanel" ref-key="formSaveConfirm" width="40%">
+            <com-dialog ref="formSaveConfirmPanel" ref-key="formSaveConfirm" width="40%" >
                 <template v-slot:toolbar>
                     {{ fromSaveConfirmTitle }}
                 </template>
@@ -307,24 +307,26 @@
                     <hr noshade size="1">
 
                     <div class="showname">姓名</div>
-                    {{ uName }}
+                    <span class="p">{{ uName }}</span>
                     <div class="showname">帳號</div>
-                    {{ acc }}
+                    <span class="p">{{ acc }}</span>
                     <div class="showname">手機</div>
-                    {{ mbNo }}
+                    <span class="p">{{ mbNo }}</span>
 
                     <div class="showname">服務單位</div>
-                    {{ unitName }}
+
+                    <span class="p">{{ unitName }}</span>
                     <br>
                     <br>
                     <hr noshade size="1">
 
                     <div class="showname">角色設定</div>
-                    {{ setRoleState }}
+
+                    <span class="p">{{ setRoleState }}</span>
                     <div class="showname">管理區域 </div>
-                    {{ setAreaState }}
+                    <span class="p">{{ setAreaState }}</span>
                     <div class="showname">啟用狀態 </div>
-                    {{ setEnableState }}
+                    <span class="p">{{ setEnableState }}</span>
                     <br>
                     <br>
                     <hr noshade size="1">
@@ -388,6 +390,7 @@
     .users-list .showname {
         color: #62678166 !important;
         padding-top: 15px !important;
+        font-size: 16px !important;
     }
     /*.users-list .v-btn:not(.v-btn--round).v-size--default {
         min-width: 200px !important;
@@ -397,7 +400,9 @@
     }*/
      .userlist .alertTitle{
         font-size:8px;
-
+    }
+    .p {
+        font-size: 16px !important;
     }
 
 
@@ -504,6 +509,8 @@
         },
         created() {
             this.getAreaList();
+            var r = this.$store.getters["user/getReGetInfo"];
+            this.setRole=r.userType;
         },
         methods: {
             ...mapActions('users', ['searchUser', 'changeUser', 'removeUser', 'getAreaList']),
@@ -648,7 +655,7 @@
                 this.$set(this, "email", '');
                 this.$set(this, "unitName", '');
 
-                this.$refs.form.resetValidation();
+                //this.$refs.form.resetValidation();
 
                 this.$bus.$emit('userform_show', true);
                 this.$set(this, "isReadOnly", false);

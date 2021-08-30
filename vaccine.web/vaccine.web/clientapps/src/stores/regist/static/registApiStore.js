@@ -158,6 +158,10 @@ export default {
                         sessionId: null, //生日登入 sessionId
                         captcha: null, //生日登入 captcha
                     };
+                    if (!!userInfo.uName) state.lockUserInfo.lockName = true;
+                    if (!!userInfo.identify) state.lockUserInfo.identify = true;
+                    if (!!userInfo.birthday) state.lockUserInfo.birthday = true;
+                    commit('saveLockUserInfo', state.lockUserInfo);
                     commit('saveUserInfo', { ...userInfo, ...tokenInfo });
                     resolve(userInfo);
                 }).catch(() => {
@@ -200,7 +204,7 @@ export default {
                 });
             });
         },
-        getBeforeApply: function ({ state }, params) {
+        getBeforeApply: function ({ state , commit }, params) {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Apply/Web/${params.activityId}/Check`;
                 var results = { datas: [], state: '' };
@@ -219,8 +223,14 @@ export default {
                     bd: params.bd,
                     sourceType: sourceType,
                     token: params.token
-                }).then(res => {
+                }).then(res => {                    
                     results.datas[0] = res.data;
+                    if (!!res.data.uName) {
+                        state.lockUserInfo.lockName = true;
+                        var userInfo = state.userInfo;
+                        userInfo.uName = res.data.uName;
+                        commit('saveUserInfo', userInfo);                        
+                    }
                     resolve(results);
                 }).catch(ex => {
                     results.state = 'error';
@@ -257,9 +267,18 @@ export default {
         ...siteConfig,
         vaccineGroups: [],
         vaccineBrands: [],
-        userInfo: null
+        userInfo: null,
+        lockUserInfo: {
+            lockName: false,
+            lockIdentify: false,
+            lockBirthday: false,
+            lockMobile:false,
+        }
     },
     getters: {
+        getLockUserInfo: (state) => {
+            return state.lockUserInfo;
+        },
         getVaccineGroups: (state) => state.vaccineGroups,
         getVaccineBrands: (state) => state.vaccineBrands,
         getUserInfo: (state) => {
@@ -277,6 +296,9 @@ export default {
         saveVaccineBrands: (state, brands) => {
             state.vaccineBrands.splice(0);
             brands.forEach(f => state.vaccineBrands.push(f));
+        },
+        saveLockUserInfo: (state, lock) => {
+            state.lockUserInfo = lock;
         },
         saveUserInfo: (state, userInfo) => {
             state.userInfo = userInfo;
