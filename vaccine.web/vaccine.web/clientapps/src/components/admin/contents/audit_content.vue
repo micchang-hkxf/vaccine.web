@@ -1,5 +1,5 @@
 ﻿<template>
-    <app-layout>
+    <app-layout class="audit-list">
         <template v-slot:navigation>
             <app-menu></app-menu>
         </template>
@@ -164,8 +164,8 @@
     }
 
 
-    .v-list-item__title {
-        color: lightgray;
+    .audit-list .v-list-item__title {
+        color: #000 !important;
         font-size: 14px;
     }
 
