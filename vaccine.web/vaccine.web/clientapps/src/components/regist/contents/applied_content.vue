@@ -158,7 +158,7 @@
     }
 
     .applied-content/deep/ .descript-content {
-        padding: 16px 0;
+        padding-top: 16px;
     }
 
     .applied-content/deep/ .descript-header {
@@ -174,7 +174,7 @@
         padding-left: 24px !important;
         padding-right: 24px !important;*/
         padding-top: 30px !important;
-        margin-bottom: 78px;
+        /*margin-bottom: 78px;*/
         display:grid;
         justify-content:center;
     }
@@ -183,7 +183,7 @@
         padding-top: 48px !important;
         /*padding-left: 24px !important;
         padding-right: 24px !important;*/
-        padding-bottom: 24px !important;
+        padding-bottom: 41px !important;
         display:flex;
         justify-content:center;
     }
