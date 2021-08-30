@@ -190,69 +190,71 @@
                                     </v-btn>
                                 </template>
                                 <template v-slot:content>
+                                    <div class="prevDesc">
                                     點選「確定」後本報名表將立即生效，請再次確認內容無誤。
-                                    <v-divider></v-divider>
-                                    <div v-if="result.model !=null">
+                                    </div>
+                                    <div class="divider"><v-divider></v-divider></div>
+                                    <div class="prevContent" v-if="result.model !=null">
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>接種類型</v-list-item-title>
+                                                <v-list-item-title><div class="showname">接種類型</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_type_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
                                             <v-list-item-content>
-                                                <v-list-item-title>疫苗廠牌</v-list-item-title>
+                                                <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>場次標題</v-list-item-title>
+                                                <v-list-item-title><div class="showname">場次標題</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_title}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>設站行政區</v-list-item-title>
+                                                <v-list-item-title><div class="showname">設站行政區</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_district_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>設站村里</v-list-item-title>
+                                                <v-list-item-title><div class="showname">設站村里</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_village_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>設站地點</v-list-item-title>
+                                                <v-list-item-title><div class="showname">設站地點</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_place}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>醫療院所</v-list-item-title>
+                                                <v-list-item-title><div class="showname">醫療院所</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_institution_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>機構代碼</v-list-item-title>
+                                                <v-list-item-title><div class="showname">機構代碼</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_institution_code}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>機構所在行政區</v-list-item-title>
+                                                <v-list-item-title><div class="showname">機構所在行政區</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_instution_district_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
 
-                                        <v-divider></v-divider>
+                                        <div class="divider"><v-divider></v-divider></div>
 
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>設站時間</v-list-item-title>
+                                                <v-list-item-title><div class="showname">設站時間</div></v-list-item-title>
                                                 <v-list-item-subtitle>
                                                     {{result.model.regist_station_date}} ,
                                                     {{result.model.regist_station_start_time}}-{{result.model.regist_station_end_time}}
@@ -261,13 +263,13 @@
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>事先開放報名開始時間</v-list-item-title>
+                                                <v-list-item-title><div class="showname">事先開放報名開始時間</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_apply_start_date}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>事先開放報名結束時間</v-list-item-title>
+                                                <v-list-item-title><div class="showname">事先開放報名結束時間</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_apply_end_date}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -277,16 +279,16 @@
                                                     <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
                                                 </v-list-item-content>
                                             </v-list-item>-->
-                                        <v-divider></v-divider>
+                                        <div class="divider"><v-divider></v-divider></div>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>報名名額上限</v-list-item-title>
+                                                <v-list-item-title><div class="showname">報名名額上限</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_quota}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>報名者最低年齡限制</v-list-item-title>
+                                                <v-list-item-title><div class="showname">報名者最低年齡限制</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_age_limit}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -297,7 +299,7 @@
                                             </v-list-item-content>
                                         </v-list-item>-->
 
-                                        <v-divider></v-divider>
+                                        <div class="divider"><v-divider></v-divider></div>
                                     </div>
 
                                 </template>
@@ -321,69 +323,71 @@
                                     </v-btn>
                                 </template>
                                 <template v-slot:content>
+                                    <div class="prevDesc">
                                     點選「確定」後本報名表將立即生效，請再次確認內容無誤。
-                                    <v-divider></v-divider>
-                                    <div v-if="result.model !=null">
+                                    </div>
+                                    <div class="divider"><v-divider></v-divider></div>
+                                    <div class="prevContent" v-if="result.model !=null">
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>接種類型</v-list-item-title>
+                                                <v-list-item-title><div class="showname">接種類型</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_type_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
                                             <v-list-item-content>
-                                                <v-list-item-title>疫苗廠牌</v-list-item-title>
+                                                <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>場次標題</v-list-item-title>
+                                                <v-list-item-title><div class="showname">場次標題</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_title}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>設站行政區</v-list-item-title>
+                                                <v-list-item-title><div class="showname">設站行政區</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_district_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>設站村里</v-list-item-title>
+                                                <v-list-item-title><div class="showname">設站村里</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_village_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>設站地點</v-list-item-title>
+                                                <v-list-item-title><div class="showname">設站地點</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_place}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>醫療院所</v-list-item-title>
+                                                <v-list-item-title><div class="showname">醫療院所</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_institution_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>機構代碼</v-list-item-title>
+                                                <v-list-item-title><div class="showname">機構代碼</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_institution_code}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>機構所在行政區</v-list-item-title>
+                                                <v-list-item-title><div class="showname">機構所在行政區</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_instution_district_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
 
-                                        <v-divider></v-divider>
+                                        <div class="divider"><v-divider></v-divider></div>
 
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>設站時間</v-list-item-title>
+                                                <v-list-item-title><div class="showname">設站時間</div></v-list-item-title>
                                                 <v-list-item-subtitle>
                                                     {{result.model.regist_station_date}} ,
                                                     {{result.model.regist_station_start_time}}-{{result.model.regist_station_end_time}}
@@ -392,13 +396,13 @@
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>事先開放報名時間</v-list-item-title>
+                                                <v-list-item-title><div class="showname">事先開放報名時間</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_apply_start_date}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>事先開放報名結束時間</v-list-item-title>
+                                                <v-list-item-title><div class="showname">事先開放報名結束時間</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_apply_end_date}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -407,20 +411,20 @@
                                                     <v-list-item-title>接種資格複審時間</v-list-item-title>
                                                     <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
 
-                                                </v-list-item-content>
+                                                </v-list-item-content><div class="showname">
                                             </v-list-item>-->
 
-                                        <v-divider></v-divider>
+                                        <div class="divider"><v-divider></v-divider></div>
 
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>報名名額上限</v-list-item-title>
+                                                <v-list-item-title><div class="showname">報名名額上限</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_quota}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item two-line>
                                             <v-list-item-content>
-                                                <v-list-item-title>報名者最低年齡限制</v-list-item-title>
+                                                <v-list-item-title><div class="showname">報名者最低年齡限制</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_age_limit}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -431,7 +435,7 @@
                                             </v-list-item-content>
                                         </v-list-item>-->
 
-                                        <v-divider></v-divider>
+                                        <div class="divider"><v-divider></v-divider></div>
                                     </div>
                                 </template>
                                 <template v-slot:action>
@@ -789,7 +793,9 @@
         box-shadow: none !important;
     }
 
-
+    .v-list-item__title {
+        padding: 0px 0px !important;
+    }
     registration-list .v-list-item__title {
         color: lightgray;
         font-size: 14px;
@@ -1048,7 +1054,10 @@
             display: inline-block;
         }
     }
-
+    .showname {
+        color: #62678166 !important;
+        font-size:16px
+    }
     /* Small devices (landscape phones, 576px and up) */
     @media (min-width: 576px) and (max-width: 767.98px) {
         .detail-action {
@@ -1066,6 +1075,16 @@
 
     /* Extra large devices (large desktops, 1200px and up) */
     @media (min-width: 1200px) {
+    }
+    .prevDesc {
+        padding: 20px 0px 0px 17px !important;
+    }
+    .divider {
+        padding: 20px 10px 10px 14px !important;
+    }
+    .prevContent .v-list-item__subtitle {
+        font-size: 16px;
+        color: #626781 !important;
     }
 </style>
 
