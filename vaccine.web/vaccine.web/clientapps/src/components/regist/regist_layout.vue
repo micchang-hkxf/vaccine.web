@@ -12,11 +12,19 @@
                     <div>
                         <div>里辦疫苗接種便民服務 </div>
                         <div>-網路報名系統-</div>
+
+
                     </div>
                 </div>
-                <div class="action-title d-flex flex-row justify-center">
-                    <slot name="regist-title"></slot>
-                </div>
+                <!--<div class="action-title d-flex flex-row justify-center">v-show="user!=null"-->
+                <!--<div style="display:flex;justify-content:center;">-->
+                    <div class="action-title" >
+                        <img src="../../../public/login/home.svg" @click.stop="goWelcome" />
+                        <slot name="regist-title"></slot>
+                        <img src="../../../public/login/logout_logo.svg" @click.stop="logout" />
+                    </div>
+                <!--</div>-->
+
             </div>
         </template>
         <template v-slot:app-content>
@@ -34,7 +42,8 @@
                 elevation: 0,
                 height: '144px',
                 fixed:true
-            }
+            },
+            user:null
         }),
         computed: {
         },
@@ -42,10 +51,17 @@
 
         },
         created: function () {
-
+            this.user = sessionStorage.getItem('userInfo');          
         },
         methods: {
-
+            goWelcome: function () {
+                this.$router.push('welcome');               
+            },
+            logout: function () {
+                sessionStorage.removeItem('userInfo');
+                sessionStorage.removeItem('activityApply');
+                this.$router.push('welcome');
+            }
         },
         components: {
             appLayout
