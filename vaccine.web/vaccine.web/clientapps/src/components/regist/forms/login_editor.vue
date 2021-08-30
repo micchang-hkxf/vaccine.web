@@ -139,7 +139,7 @@
                 this.$refs.loginForm.resetValidation();
             },
             checkUid: function () {
-                var re = /^[A-Z]{1}[1-2]{1}[0-9]{8}$/;
+                var re = /^[A-Za-z]{1}[1-2]{1}[0-9]{8}$/;
                 if (!re.test(this.uid)) {
                     return '身份證字號格式不正確！';
                 }
