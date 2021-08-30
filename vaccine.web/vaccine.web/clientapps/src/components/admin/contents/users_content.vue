@@ -94,7 +94,7 @@
                         <v-menu bottom right offset-y>
                             <template v-slot:activator="{ on }">
                                 <v-btn v-on="on" color="#626781" @click.stop="">
-                                    <v-icon left color='white' size="15">fas fa-plus</v-icon>
+                                    <img src="/admin/Component177–2.svg">
                                     <span style="color:white">新增人員</span>
                                 </v-btn>
                             </template>
@@ -405,8 +405,9 @@
         font-size: 16px !important;
     }
 
-
-
+    .fa-search:before {
+        content: url('/admin/common_search-24px.svg') !important;
+    }
 </style>
 
 

@@ -18,7 +18,7 @@
                                 <v-col cols="4">
                                     <v-text-field v-model="keyWord" placeholder="身分證後四碼" outlined dense clearable></v-text-field>
                                 </v-col>
-                                <v-btn icon color="#626781" style="top:5px;" :ripple="false"
+                                <v-btn icon color="#626781" style="top:13px;" :ripple="false"
                                        @click="getRegistData(1)">
                                     <v-icon>fas fa-search</v-icon>
                                 </v-btn>
@@ -70,6 +70,10 @@
     .theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
         color: rgba(0, 0, 0, 0.6);
         background: rgba(98, 103, 129, 0.06);
+    }
+
+    .fa-search:before {
+        content: url('/admin/common_search-24px.svg') !important;
     }
 </style>
 
