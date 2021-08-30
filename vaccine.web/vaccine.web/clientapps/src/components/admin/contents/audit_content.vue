@@ -36,7 +36,7 @@
                                 <v-col cols="5">
                                     <v-text-field v-model="keyWord" placeholder="使用者/所屬單位/檔名關鍵字" outlined dense clearable></v-text-field>
                                 </v-col>
-                                <v-btn icon color="#626781" style="top:5px;" :ripple="false"
+                                <v-btn icon color="#626781" style="top:13px;" :ripple="false"
                                        @click="getAudit(1)">
                                     <v-icon>fas fa-search</v-icon>
                                 </v-btn>
@@ -51,7 +51,7 @@
                         <v-spacer></v-spacer>
                         <template>
                             <v-btn  color="#626781" :ripple="false" @click.stop="addFile">
-                                <v-icon left color='white' size="15">fas fa-plus</v-icon>
+                                <img src="/addregist.svg">
                                 <span style="color:white">新增案件抽查表</span>
                             </v-btn>
                         </template>
@@ -63,9 +63,7 @@
         <span style="color:white">下載</span>
     </v-btn>-->
                             <v-btn  color="#736DB9" @click.stop="downloadFile(item)" :ripple="false">
-                                <v-icon left color='white' size="15">
-                                    mdi-arrow-down
-                                </v-icon>
+                                <img src="/download.svg">
                                 <span style="color:white">下載</span>
                             </v-btn>
                         </template>
@@ -194,6 +192,10 @@
 
     .confirm-content label {
         color: #62678166;
+    }
+
+    .fa-search:before {
+        content: url('/admin/common_search-24px.svg') !important;
     }
 </style>
 
