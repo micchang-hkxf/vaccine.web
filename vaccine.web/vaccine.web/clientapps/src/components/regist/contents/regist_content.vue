@@ -10,8 +10,8 @@
         </template>
         <template v-slot:regist-content>
             <v-tabs color="black" slider-color="#736DB9" grow v-model="tab">
-                <v-tab key="0" href="#regist">我要報名</v-tab>
-                <v-tab key="1" href="#applied">查詢紀錄</v-tab>
+                <v-tab key="0" href="#regist" @click="updateHash('#regist')">我要報名</v-tab>
+                <v-tab key="1" href="#applied" @click="updateHash('#applied')">查詢紀錄</v-tab>
             </v-tabs>
             <div class="action-container">
                 <v-tabs-items v-model="tab">
@@ -73,15 +73,19 @@
         props: [],
         created: function () {
             var comp = this;
+            if (comp.$route.hash !== '')
+                comp.$route.params.mode = comp.$route.hash.replace('#', '');
+            
             if (comp.$route.params.mode)
                 this.$nextTick(() => {
-                        comp.$set(comp, 'tab', comp.$route.params.mode);
+                    comp.$set(comp, 'tab', comp.$route.params.mode);
                 })
 
             if (comp.$route.query.mode)
                 this.$nextTick(() => {
                     comp.$set(comp, 'tab', comp.$route.query.mode);
                 })
+
             this.loacVaccineGroups();
 
             comp.$bus.$on('login_switch_show', function () {
@@ -121,6 +125,9 @@
             },
             loginUser: function () {
 
+            },
+            updateHash: function (hash) {
+                this.$router.push({ hash: hash });
             }
         },
         components: {
