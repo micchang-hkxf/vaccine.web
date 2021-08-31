@@ -301,9 +301,9 @@
                     {{ fromSaveConfirmTitle }}
                 </template>
                 <template v-slot:content>
-                    </br>
+                    <br>
                     {{  fromSaveConfirmMessage }}
-                    </br></br>
+                    <br><br>
                     <v-divider></v-divider>
 
                     <div class="showname">姓名</div>
@@ -316,7 +316,7 @@
                     <div class="showname">服務單位</div>
 
                     <span class="p">{{ unitName }}</span>
-                    </br></br>
+                    <br><br>
                     <v-divider></v-divider>
                     <div class="showname">角色設定</div>
 
@@ -325,9 +325,9 @@
                     <span class="p">{{ setAreaState }}</span>
                     <div class="showname">啟用狀態 </div>
                     <span class="p">{{ setEnableState }}</span>
-                    </br></br>
+                    <br><br>
                     <v-divider></v-divider>
-                    </br>
+                    <br>
                 </template>
                 <template v-slot:action="{close}">
                     <v-spacer></v-spacer>
