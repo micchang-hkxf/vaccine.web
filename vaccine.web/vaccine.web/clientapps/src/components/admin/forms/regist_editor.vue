@@ -150,7 +150,7 @@
                                 offset-y
                                 min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="stationDate"
+                                <v-text-field v-model="model.regist_station_date"
                                               :rules="[rules.required]"
                                               readonly
                                               v-bind="attrs"
@@ -163,7 +163,7 @@
                                     </template>
                                 </v-text-field>
                             </template>
-                            <v-date-picker v-model="stationDate"
+                            <v-date-picker v-model="model.regist_station_date"
                                            @change="dateClicked"
                                            :day-format="dayFormat"
                                            no-title
@@ -194,7 +194,10 @@
                         <div>  <span class="regist-title">設站時段設定</span><span class="red--text">*</span></div>
                         <com-timepicker v-model="regist_station_start_time"></com-timepicker>
                         <com-timepicker v-model="regist_station_end_time"></com-timepicker>
+                        <br>
+                        <font color="red">結束時間不能早於起始時間</font>
                     </v-col>
+        
                 </v-row>
                 <!--<v-row>
                     <v-col cols="3">
@@ -253,7 +256,7 @@
                 </v-row>-->
 
                 <v-row>
-                    <v-col cols="5">
+                    <v-col cols="7">
                         <div> <span class="regist-title">事先報名開始時間</span><span class="red--text">*</span></div>
                         <v-menu ref="apply"
                                 v-model="apply"
@@ -278,7 +281,7 @@
                             </template>
                             <v-date-picker v-model="model.regist_apply_start_date"
                                            no-title
-                                           @change="dateClicked"
+                                           @change="dateClicked2"
                                            :day-format="dayFormat"
                                            scrollable>
                                 <v-spacer></v-spacer>
@@ -296,57 +299,64 @@
                                 </v-btn>
                             </v-date-picker>
                         </v-menu>
-                        <div>事先報名結束時間：{{registEndDate}}</div>
-                        <div>報名者接種資格複檢時間：{{reCheckDate}}</div>
-                        <!--<div><span class="regist-title">事先報名結束時間</span><span class="red--text">*</span></div>
-    <v-menu ref="apply2"
-            v-model="apply2"
-            :close-on-content-click="false"
-            :return-value.sync="date"
-            transition="scale-transition"
-            offset-y
-            min-width="auto">
-        <template v-slot:activator="{ on, attrs }">
-            <v-text-field v-model="model.regist_apply_end_date"
-                          placeholder="請輸入事先報名截止時間"
-                          :rules="[rules.required]"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                          outlined
-                          dense>
-                <template v-slot:append>
-                    <v-img src="/images/date_picker_icon.svg"></v-img>
-                </template>
-            </v-text-field>
-        </template>
-        <v-date-picker v-model="model.regist_apply_end_date"
-                       no-title
-                       @change="dateClicked"
-                       :day-format="dayFormat"
-                       scrollable>
-            <v-spacer></v-spacer>
-            <v-btn text
-                   :ripple="false"
-                   color="primary"
-                   @click="menu = false">
-                Cancel
-            </v-btn>
-            <v-btn text
-                   :ripple="false"
-                   color="primary"
-                   @click="$refs.apply2.save(model.regist_apply_end_date)">
-                OK
-            </v-btn>
-
-
-        </v-date-picker>
-    </v-menu>-->
-                        <!--<div style="margin-bottom:15px;"><span class="regist-title">報名者接種資格複檢時間：{{model.regist_review_date}}</span> </div>-->
-
+                        <font color="red">事先報名開始時間必須早於設站日期前3天</font>
+                        <v-text-field v-model="model.regist_apply_end_date" v-show="false"></v-text-field>
                     </v-col>
+                    <v-col cols="12">
+                            <div>
+                                <span class="regist-title">事先報名結束時間:</span><span class="inputDesc">{{beforeRuleDesc}}</span>
+                            </div>
+                            <div>  
+                                <span class="regist-title">報名者接種資格複檢時間:</span><span class="inputDesc">{{beforeRuleDesc2}}</span>
+                            </div>
+                            <!--<v-menu ref="apply2"
+                v-model="apply2"
+                :close-on-content-click="false"
+                :return-value.sync="date"
+                transition="scale-transition"
+                offset-y
+                min-width="auto">
+            <template v-slot:activator="{ on, attrs }">
+                <v-text-field v-model="model.regist_apply_end_date"
+                              placeholder="請輸入事先報名截止時間"
+                              :rules="[rules.required]"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                              outlined
+                              dense>
+                    <template v-slot:append>
+                        <v-img src="/images/date_picker_icon.svg"></v-img>
+                    </template>
+                </v-text-field>
+            </template>
+            <v-date-picker v-model="model.regist_apply_end_date"
+                           no-title
+                           @change="dateClicked"
+                           :day-format="dayFormat"
+                           scrollable>
+                <v-spacer></v-spacer>
+                <v-btn text
+                       :ripple="false"
+                       color="primary"
+                       @click="menu = false">
+                    Cancel
+                </v-btn>
+                <v-btn text
+                       :ripple="false"
+                       color="primary"
+                       @click="$refs.apply2.save(model.regist_apply_end_date)">
+                    OK
+                </v-btn>
 
-                </v-row>
+
+            </v-date-picker>
+        </v-menu>-->
+                            <!--<div style="margin-bottom:15px;"><span class="regist-title">報名者接種資格複檢時間：{{model.regist_review_date}}</span> </div>-->
+
+                        </v-col>
+
+</v-row>
                 <v-divider></v-divider>
                 <v-row>
                     <v-col cols="5">
@@ -477,8 +487,12 @@
         width: 1.5em !important;
         height: 1.5em !important;
     }
-
-
+    .inputDesc{
+        color:#9E9E9E;
+    }
+    .v-dialog > .v-card > .v-card__title {
+        padding: 16px 24px 10px 35px !important;
+    }
 </style>
 
 
@@ -518,22 +532,13 @@
             regist_institution_name: "",
             rules: {
                 required: v => !!v || '必填',
-                checkRegistStart : v=> new Date(v) >= new Date(this.model.regist_apply_start_date).setDate(-3) || '報名日期須早於設站日期前三天'
             },
             regist_station_start_time:"00:00",
             regist_station_end_time: "23:59",
-            stationDate: '',
-            reCheckDate: '',
-            registEndDate:'',
+            beforeRuleDesc: "預設設站日期前3天結束報名",
+            beforeRuleDesc2:"預設設站日期前2天",
         }),
         watch: {
-            stationDate: function (val) {
-                this.model.regist_station_date = val;
-                if (!val) return;
-                new Date().setDate(new Date(val).getDate() -2)
-                this.reCheckDate = this.$moment(new Date().setDate(new Date(val).getDate() - 2)).format('YYYY/MM/DD') ;
-                this.registEndDate = this.$moment(new Date().setDate(new Date(val).getDate() - 3)).format('YYYY/MM/DD,23:59') ;
-            },
             //'getInstitutions': function () {
             //    this.regist_institution_code = "";
             //    this.regist_institution_name = "";
@@ -593,7 +598,9 @@
                 }
                 this.regist_institution_code = '';
                 this.regist_institution_name = '';
-                //this.$refs.form.resetValidation();
+                this.$refs.form.resetValidation();
+                // scroll to top
+                setTimeout(() => this.$refs.form.$el.scrollIntoView(), 0);
             },
 
             save: function () {
@@ -635,9 +642,31 @@
                         x.parentNode.style = '';
                     }
                 });
+                var d = new Date(val);
+                d.setDate(d.getDate() - 4);//before 3 day
+
+                var mm = d.getMonth() + 1;
+                var dd = d.getDate();
+
+                this.model.regist_apply_end_date = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
+                d.setDate(d.getDate() + 2); //before 2 day
+                this.beforeRuleDesc = this.model.regist_apply_end_date + " 23:59"
+                mm = d.getMonth() + 1;
+                dd = d.getDate();
+                this.beforeRuleDesc2 = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
+
+            },
+            dateClicked2(val) {
+                var allDates = document.querySelectorAll(".v-date-picker-table .v-btn .v-btn__content");
+                allDates.forEach((x) => {
+                    if (parseInt(val.split('-')[2]) == x.innerHTML.replace("日", "")) {
+                        x.parentNode.style = "background-color: #d4ffd6 !important";
+                    } else {
+                        x.parentNode.style = '';
+                    }
+                });
 
             }
-    
 
         },
         components: {
