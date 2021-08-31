@@ -181,6 +181,11 @@
                 Object.assign(this.model, model);
 
                 this.$refs.auditEditor.open();
+
+                this.$refs.auditEditorForm.reset();
+                this.$refs.auditEditorForm.resetValidation();
+                // scroll to top
+                setTimeout(() => this.$refs.auditEditorForm.$el.scrollIntoView(), 0);
             },
             save: function () {
                 var isvaild = this.$refs.auditEditorForm.validate();
@@ -196,11 +201,7 @@
                 this.$refs.auditEditor.close();
             },
             cancel: function () {
-                var comp = this;
-                comp.close();
-                setTimeout(function () {
-                    comp.$refs.auditEditorForm.reset();
-                }, 0);
+                this.close();
             },
             closeDialog: function () {
                 this.$refs.auditEditor.open();

@@ -599,6 +599,8 @@
                 this.regist_institution_code = '';
                 this.regist_institution_name = '';
                 this.$refs.form.resetValidation();
+                // scroll to top
+                setTimeout(() => this.$refs.form.$el.scrollIntoView(), 0);
             },
 
             save: function () {

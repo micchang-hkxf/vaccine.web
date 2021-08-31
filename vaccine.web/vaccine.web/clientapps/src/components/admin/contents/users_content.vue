@@ -539,6 +539,9 @@
        
                 this.fromSaveConfirmTitle = "確認人員更新資訊";
                 this.fromSaveConfirmMessage = " 請確認內容無誤後點選「確定」完成更新";
+
+                // scroll to top
+                setTimeout(() => this.$refs.form.$el.scrollIntoView(), 0);
             },
             stopItem(item) {
                 var comp = this;
@@ -656,8 +659,6 @@
                 this.$set(this, "email", '');
                 this.$set(this, "unitName", '');
 
-                //this.$refs.form.resetValidation();
-
                 this.$bus.$emit('userform_show', true);
                 this.$set(this, "isReadOnly", false);
                 this.fromSaveConfirmTitle = "確認人員新增資訊";
@@ -666,6 +667,10 @@
                 //this.setArea = { id: 1, state: "松山區" };
                 this.$set(this, "setRole", { id: 1, state: "轄區管理員" });
                 this.$set(this, "setArea", { id: "2001", state: "松山區" });
+
+                this.$refs.form.resetValidation();
+                // scroll to top
+                setTimeout(() => this.$refs.form.$el.scrollIntoView(), 0);
             },
             importItem() {
                 this.$refs.importfile.$refs.input.click();
