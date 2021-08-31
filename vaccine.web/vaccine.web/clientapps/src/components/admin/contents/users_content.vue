@@ -191,6 +191,7 @@
                                   outlined
                                   clearable
                                   required
+                                  @input="areaChange"
                                   :rules="rules.select"
                                   style="margin-right: 10px;min-width:150px"
                                   class="search-filter w01"
@@ -225,7 +226,7 @@
                                   class="search-filter w01"
                                   return-object>
                         </v-select>
-                        <v-checkbox v-model="setEnable" label="啟用"></v-checkbox>
+                        <v-checkbox v-model="setEnable" label="啟用" v-show="formTitle!='新增人員'"></v-checkbox>
                         <v-text-field type="hidden" v-model="editID"></v-text-field>
                     </v-form>
                 </template>
@@ -301,9 +302,9 @@
                     {{ fromSaveConfirmTitle }}
                 </template>
                 <template v-slot:content>
-                    </br>
+                    <br>
                     {{  fromSaveConfirmMessage }}
-                    </br></br>
+                    <br><br>
                     <v-divider></v-divider>
 
                     <div class="showname">姓名</div>
@@ -316,7 +317,7 @@
                     <div class="showname">服務單位</div>
 
                     <span class="p">{{ unitName }}</span>
-                    </br></br>
+                    <br><br>
                     <v-divider></v-divider>
                     <div class="showname">角色設定</div>
 
@@ -325,9 +326,9 @@
                     <span class="p">{{ setAreaState }}</span>
                     <div class="showname">啟用狀態 </div>
                     <span class="p">{{ setEnableState }}</span>
-                    </br></br>
+                    <br><br>
                     <v-divider></v-divider>
-                    </br>
+                    <br>
                 </template>
                 <template v-slot:action="{close}">
                     <v-spacer></v-spacer>
@@ -454,8 +455,8 @@
             setArea: null,
             setEnable: null,
             setRoleState: "",
-            setAreaState: "",
-            setEnableState: "",
+            setAreaState: "無",
+            setEnableState: "停用",
             itle: "",
             fromSaveConfirmMessage: "",
             fromSaveConfirmTitle: "",
@@ -511,7 +512,8 @@
         created() {
             this.getAreaList();
             var r = this.$store.getters["user/getReGetInfo"];
-            this.setRole=r.userType;
+            this.setRole = r.userType;
+            this.$set(this, "setEnable", 'true');
         },
         methods: {
             ...mapActions('users', ['searchUser', 'changeUser', 'removeUser', 'getAreaList']),
@@ -529,8 +531,12 @@
                
                 var r = this.$store.getters["users/getRoleListById"](item.userType).state;
                 //var a = this.$store.getters["users/getAreaListById"](item.zones[0].cityId).state
-                this.$set(this, "setRole", { id: item.userType ,state:r});
-                this.$set(this, "setArea", { id: item.zones[0].data[0].distId, state: item.zones[0].data[0].distName });
+                this.$set(this, "setRole", { id: item.userType, state: r });
+                if (item.userType == 0) {
+                    this.$set(this, "setArea", { id: '200', state: '管理全區' });
+                } else {
+                    this.$set(this, "setArea", { id: item.zones[0].data[0].distId, state: item.zones[0].data[0].distName });
+                }
                 this.$set(this, "setEnable", item.isEnable.toString() == 'true');
         
                // this.setRole = { id: item.userType  };
@@ -700,6 +706,7 @@
                 this.$bus.$emit('formSaveConfirm_show', true);
                 this.setRoleState = this.setRole.state;
                 this.setAreaState = this.setArea.state;
+  
                 this.setEnableState = this.setEnable.toString()=="true" ? "啟用" : "停用";
             },
             saveform() {
@@ -717,8 +724,8 @@
                     //zones: [this.setArea.id], 
                     lastAccessTime: "2021-05-20 08:26:43",
                     pdExpTime: "2021-05-20 08:26:43",
-                    zones: [this.setArea.id.toString()],
-                    isEnable: this.setEnable.toString(),
+                    zones: [(this.setArea.id)?this.setArea.id.toString():""],
+                    isEnable: (this.setEnable)?this.setEnable.toString():"false",
                     stopit: false,
                     editMode: this.isReadOnly,
                 };
@@ -784,7 +791,11 @@
                 this.inpage = pager.page;
                 this.search(pager.page);
             },
-          
+            areaChange: function (v) {
+                if (v.id == 0) {
+                    this.$set(this, "setArea", { id: '200', state: '管理全區' });
+                }
+            }
         },
         components: {
             appLayout, appMenu, comTable, comDialog, comConfirm, comLoading
