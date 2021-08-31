@@ -301,10 +301,10 @@
                     {{ fromSaveConfirmTitle }}
                 </template>
                 <template v-slot:content>
+                    </br>
                     {{  fromSaveConfirmMessage }}
-                    <br>
-                    <br>
-                    <hr noshade size="1">
+                    </br></br>
+                    <v-divider></v-divider>
 
                     <div class="showname">姓名</div>
                     <span class="p">{{ uName }}</span>
@@ -316,10 +316,8 @@
                     <div class="showname">服務單位</div>
 
                     <span class="p">{{ unitName }}</span>
-                    <br>
-                    <br>
-                    <hr noshade size="1">
-
+                    </br></br>
+                    <v-divider></v-divider>
                     <div class="showname">角色設定</div>
 
                     <span class="p">{{ setRoleState }}</span>
@@ -327,10 +325,9 @@
                     <span class="p">{{ setAreaState }}</span>
                     <div class="showname">啟用狀態 </div>
                     <span class="p">{{ setEnableState }}</span>
-                    <br>
-                    <br>
-                    <hr noshade size="1">
-                    <br>
+                    </br></br>
+                    <v-divider></v-divider>
+                    </br>
                 </template>
                 <template v-slot:action="{close}">
                     <v-spacer></v-spacer>
@@ -407,6 +404,9 @@
 
     .fa-search:before {
         content: url('/admin/common_search-24px.svg') !important;
+    }
+    .v-dialog > .v-card > .v-card__title dialog-toolbar {
+        padding: 10px 24px 10px 27px !important;
     }
 </style>
 
