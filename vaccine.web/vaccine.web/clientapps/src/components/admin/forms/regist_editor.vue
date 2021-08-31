@@ -490,7 +490,9 @@
     .inputDesc{
         color:#9E9E9E;
     }
-
+    .v-dialog > .v-card > .v-card__title {
+        padding: 16px 24px 10px 35px !important;
+    }
 </style>
 
 
