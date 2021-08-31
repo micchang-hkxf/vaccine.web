@@ -150,7 +150,7 @@
                                 offset-y
                                 min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="model.regist_station_date"
+                                <v-text-field v-model="stationDate"
                                               :rules="[rules.required]"
                                               readonly
                                               v-bind="attrs"
@@ -163,7 +163,7 @@
                                     </template>
                                 </v-text-field>
                             </template>
-                            <v-date-picker v-model="model.regist_station_date"
+                            <v-date-picker v-model="stationDate"
                                            @change="dateClicked"
                                            :day-format="dayFormat"
                                            no-title
@@ -296,50 +296,52 @@
                                 </v-btn>
                             </v-date-picker>
                         </v-menu>
-                        <div><span class="regist-title">事先報名結束時間</span><span class="red--text">*</span></div>
-                        <v-menu ref="apply2"
-                                v-model="apply2"
-                                :close-on-content-click="false"
-                                :return-value.sync="date"
-                                transition="scale-transition"
-                                offset-y
-                                min-width="auto">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="model.regist_apply_end_date"
-                                              placeholder="請輸入事先報名截止時間"
-                                              :rules="[rules.required]"
-                                              readonly
-                                              v-bind="attrs"
-                                              v-on="on"
-                                              outlined
-                                              dense>
-                                    <template v-slot:append>
-                                        <v-img src="/images/date_picker_icon.svg"></v-img>
-                                    </template>
-                                </v-text-field>
-                            </template>
-                            <v-date-picker v-model="model.regist_apply_end_date"
-                                           no-title
-                                           @change="dateClicked"
-                                           :day-format="dayFormat"
-                                           scrollable>
-                                <v-spacer></v-spacer>
-                                <v-btn text
-                                       :ripple="false"
-                                       color="primary"
-                                       @click="menu = false">
-                                    Cancel
-                                </v-btn>
-                                <v-btn text
-                                       :ripple="false"
-                                       color="primary"
-                                       @click="$refs.apply2.save(model.regist_apply_end_date)">
-                                    OK
-                                </v-btn>
+                        <div>事先報名結束時間：{{registEndDate}}</div>
+                        <div>報名者接種資格複檢時間：{{reCheckDate}}</div>
+                        <!--<div><span class="regist-title">事先報名結束時間</span><span class="red--text">*</span></div>
+    <v-menu ref="apply2"
+            v-model="apply2"
+            :close-on-content-click="false"
+            :return-value.sync="date"
+            transition="scale-transition"
+            offset-y
+            min-width="auto">
+        <template v-slot:activator="{ on, attrs }">
+            <v-text-field v-model="model.regist_apply_end_date"
+                          placeholder="請輸入事先報名截止時間"
+                          :rules="[rules.required]"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                          outlined
+                          dense>
+                <template v-slot:append>
+                    <v-img src="/images/date_picker_icon.svg"></v-img>
+                </template>
+            </v-text-field>
+        </template>
+        <v-date-picker v-model="model.regist_apply_end_date"
+                       no-title
+                       @change="dateClicked"
+                       :day-format="dayFormat"
+                       scrollable>
+            <v-spacer></v-spacer>
+            <v-btn text
+                   :ripple="false"
+                   color="primary"
+                   @click="menu = false">
+                Cancel
+            </v-btn>
+            <v-btn text
+                   :ripple="false"
+                   color="primary"
+                   @click="$refs.apply2.save(model.regist_apply_end_date)">
+                OK
+            </v-btn>
 
 
-                            </v-date-picker>
-                        </v-menu>
+        </v-date-picker>
+    </v-menu>-->
                         <!--<div style="margin-bottom:15px;"><span class="regist-title">報名者接種資格複檢時間：{{model.regist_review_date}}</span> </div>-->
 
                     </v-col>
@@ -516,11 +518,22 @@
             regist_institution_name: "",
             rules: {
                 required: v => !!v || '必填',
+                checkRegistStart : v=> new Date(v) >= new Date(this.model.regist_apply_start_date).setDate(-3) || '報名日期須早於設站日期前三天'
             },
             regist_station_start_time:"00:00",
             regist_station_end_time: "23:59",
+            stationDate: '',
+            reCheckDate: '',
+            registEndDate:'',
         }),
         watch: {
+            stationDate: function (val) {
+                this.model.regist_station_date = val;
+                if (!val) return;
+                new Date().setDate(new Date(val).getDate() -2)
+                this.reCheckDate = this.$moment(new Date().setDate(new Date(val).getDate() - 2)).format('YYYY/MM/DD') ;
+                this.registEndDate = this.$moment(new Date().setDate(new Date(val).getDate() - 3)).format('YYYY/MM/DD,23:59') ;
+            },
             //'getInstitutions': function () {
             //    this.regist_institution_code = "";
             //    this.regist_institution_name = "";
@@ -580,7 +593,7 @@
                 }
                 this.regist_institution_code = '';
                 this.regist_institution_name = '';
-                this.$refs.form.resetValidation();
+                //this.$refs.form.resetValidation();
             },
 
             save: function () {
