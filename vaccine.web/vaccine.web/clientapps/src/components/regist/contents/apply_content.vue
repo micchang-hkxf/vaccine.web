@@ -14,6 +14,7 @@
         </v-stepper>
     </div>-->
             <div class="apply-container" v-if="session!=null">
+                {{getLockUserInfo}}
                 <v-form lazy-validation ref="applyForm" autocomplete="off">
                     <div class="activity-name">{{session.sessionName}}</div>
                     <div class="activity-name-descript">{{session.zoneName}}-{{session.villageName}}│{{session.groupName}}</div>
@@ -21,29 +22,29 @@
                     <div class="apply-field">
                         <div class="apply-field-label">姓名<span class="red--text">*</span></div>
                         <div class="apply-field-container">
-                            <v-text-field class="apply-field-text" placeholder="請輸入您的姓名" v-model="uName" :rules="[rules.required]"></v-text-field>
+                            <v-text-field class="apply-field-text" placeholder="請輸入您的姓名" v-model="uName" :rules="[rules.required]" :readonly="getLockUserInfo.lockName"></v-text-field>
                         </div>
                     </div>
                     <div class="apply-field">
                         <div class="apply-field-label">身份證字號<span class="red--text">*</span></div>
                         <div class="apply-field-container">
-                            <v-text-field class="apply-field-text" placeholder="請輸入您的身分證字號" v-model="uId" :rules="[rules.required]"></v-text-field>
+                            <v-text-field class="apply-field-text" placeholder="請輸入您的身分證字號" v-model="uId" :rules="[rules.required]" :readonly="getLockUserInfo.lockIdentify"></v-text-field>
                         </div>
                     </div>
                     <div class="apply-field">
                         <div class="apply-field-label">生日<span class="red--text">*</span></div>
                         <div class="apply-field-container d-flex justify-space-between">
-                            <v-select :items="years" placeholder="yyyy" v-model="year" :rules="[rules.required]">
+                            <v-select :items="years" placeholder="yyyy" v-model="year" :rules="[rules.required]" :readonly="getLockUserInfo.lockBirthday">
 
                             </v-select>
-                            <v-select :items="months" placeholder="mm" v-model="month" :rules="[rules.required]">
+                            <v-select :items="months" placeholder="mm" v-model="month" :rules="[rules.required]" :readonly="getLockUserInfo.lockBirthday">
                                 <template v-slot:prepend>
                                     <div class="splid-date d-flex justify-center">
                                         /
                                     </div>
                                 </template>
                             </v-select>
-                            <v-select :items="days" placeholder="dd" v-model="day" :rules="[rules.required]">
+                            <v-select :items="days" placeholder="dd" v-model="day" :rules="[rules.required]" :readonly="getLockUserInfo.lockBirthday">
                                 <template v-slot:prepend>
                                     <div class="splid-date d-flex justify-center">
                                         /
@@ -59,11 +60,11 @@
                         </div>
                     </div>
                     <!--<div class="apply-field">
-                <div class="apply-field-label">戶籍</div>
-                <div class="apply-field-container">
-                    <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
-                </div>
-            </div>-->
+            <div class="apply-field-label">戶籍</div>
+            <div class="apply-field-container">
+                <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
+            </div>
+        </div>-->
                     <div class="apply-field display type" v-if="vaccines.length > 0 || session.brandName !== ''">
                         <div class="apply-field-label">接種疫苗</div>
                         <div class="apply-field-container">
@@ -249,7 +250,7 @@
             vaccines: []
         }),
         computed: {
-            ...mapGetters('regist', ['getUserInfo']),
+            ...mapGetters('regist', ['getUserInfo', 'getLockUserInfo']),
         },
         props: {
 

@@ -79,7 +79,7 @@
 
                                         <v-text-field v-model="keyWord" placeholder="標題關鍵字" outlined dense clearable autocomplete="off"></v-text-field>
 
-                                        <v-btn icon color="#626781" :ripple="false" class="content-search-button"
+                                        <v-btn icon color="#626781" style="top:3px;" :ripple="false" class="content-search-button"
                                                @click="getRegistForm(1)">
                                             <v-icon>fas fa-search</v-icon>
                                         </v-btn>
@@ -631,7 +631,7 @@
                                     <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
                                         <div class="detail-search-block">
                                             <v-text-field v-model="detailKeyWord" placeholder="請輸入報名者姓名或身分證" outlined dense clearable class="detail-search-input"></v-text-field>
-                                            <v-btn icon color="#626781" style="top:5px;" :ripple="false"
+                                            <v-btn icon color="#626781" style="top:3px;" :ripple="false"
                                                    @click="getDetailForm(1)">
                                                 <v-icon>fas fa-search</v-icon>
                                             </v-btn>
@@ -1087,8 +1087,13 @@
         color: #626781 !important;
     }
     .v-card__actions {
-        padding: 0px 42px 20px 0px !important;
+        padding: 0px 32px 20px 0px !important;
     }
+
+    .fa-search:before {
+        content: url('/admin/common_search-24px.svg') !important;
+    }
+
 </style>
 
 <script>

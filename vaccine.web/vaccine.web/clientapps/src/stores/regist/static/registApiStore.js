@@ -119,7 +119,7 @@ export default {
                 reslove(getters.getUserInfo);
             });
         },
-        checkUserInfo: function ({ dispatch }, userInfo) {
+        checkUserInfo: function ({ state , commit , dispatch }, userInfo) {
             return new Promise((reslove) => {
                 var results = {
                     uName: '', //使用者名稱
@@ -131,6 +131,10 @@ export default {
                     token: null, //台北通 token
                     type: 'identify'
                 };
+                if (!!userInfo.uName) state.lockUserInfo.lockName = true;
+                if (!!userInfo.identify) state.lockUserInfo.lockIdentify = true;
+                if (!!userInfo.birthday) state.lockUserInfo.lockBirthday = true;
+                commit('saveLockUserInfo', state.lockUserInfo);
                 dispatch('setUserInfo', results).then((user) => {
                     reslove(user);
                 });
@@ -159,8 +163,8 @@ export default {
                         captcha: null, //生日登入 captcha
                     };
                     if (!!userInfo.uName) state.lockUserInfo.lockName = true;
-                    if (!!userInfo.identify) state.lockUserInfo.identify = true;
-                    if (!!userInfo.birthday) state.lockUserInfo.birthday = true;
+                    if (!!userInfo.identify) state.lockUserInfo.lockIdentify = true;
+                    if (!!userInfo.birthday) state.lockUserInfo.lockBirthday = true;
                     commit('saveLockUserInfo', state.lockUserInfo);
                     commit('saveUserInfo', { ...userInfo, ...tokenInfo });
                     resolve(userInfo);

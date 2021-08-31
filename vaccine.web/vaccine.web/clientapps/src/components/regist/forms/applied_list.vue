@@ -368,6 +368,7 @@
         /*width: 30% !important;*/
         /*height: 200px !important;*/
         height: 168px;
+        /*height: 100%;*/
         padding: 16px;
         border-radius: 8px !important;
         width: 95%;
