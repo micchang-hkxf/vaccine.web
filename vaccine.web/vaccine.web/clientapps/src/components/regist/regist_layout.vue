@@ -15,16 +15,14 @@
 
 
                     </div>
-                </div>
-                <!--<div class="action-title d-flex flex-row justify-center">v-show="user!=null"-->
-                <!--<div style="display:flex;justify-content:center;">-->
-                    <div class="action-title" >
+                </div>                  
+                    <div class="action-title" style="display:flex;justify-content:center; margin-left: 400px;margin-right: 400px;">
                         <img src="../../../public/login/home.svg" @click.stop="goWelcome" />
+                        <v-spacer></v-spacer>
                         <slot name="regist-title"></slot>
-                        <img src="../../../public/login/logout_logo.svg" @click.stop="logout" />
+                        <v-spacer></v-spacer>
+                        <img src="../../../public/login/logout_logo.svg" @click.stop="logout" v-show="user!=null" />
                     </div>
-                <!--</div>-->
-
             </div>
         </template>
         <template v-slot:app-content>
@@ -55,12 +53,14 @@
         },
         methods: {
             goWelcome: function () {
-                this.$router.push('welcome');               
+                //this.$router.push('welcome');               
+                this.$router.push({ name: 'welcome' });
             },
             logout: function () {
                 sessionStorage.removeItem('userInfo');
                 sessionStorage.removeItem('activityApply');
-                this.$router.push('welcome');
+                //this.$router.push('welcome');
+                this.$router.push({ name: 'welcome' });
             }
         },
         components: {

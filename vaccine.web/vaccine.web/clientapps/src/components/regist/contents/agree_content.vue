@@ -295,7 +295,7 @@
     /* Extra large devices (large desktops, 1200px and up) */
     @media (min-width: 1200px) {
         .agree-content/deep/ .action {
-            width: 380px !important;
+            /*width: 380px !important;*/
             height: 380px;
         }
 

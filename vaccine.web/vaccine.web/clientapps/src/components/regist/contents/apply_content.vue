@@ -14,7 +14,7 @@
         </v-stepper>
     </div>-->
             <div class="apply-container" v-if="session!=null">
-                {{getLockUserInfo}}
+                <!--{{getLockUserInfo}}-->
                 <v-form lazy-validation ref="applyForm" autocomplete="off">
                     <div class="activity-name">{{session.sessionName}}</div>
                     <div class="activity-name-descript">{{session.zoneName}}-{{session.villageName}}│{{session.groupName}}</div>
