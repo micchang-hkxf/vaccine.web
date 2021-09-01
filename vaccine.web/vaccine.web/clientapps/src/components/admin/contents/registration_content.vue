@@ -31,7 +31,6 @@
                                                   :menu-props="{ bottom: true, offsetY: true }"
                                                   outlined
                                                   dense
-                                                  clearable
                                                   style="margin-right: 10px; width: 230px;"
                                                   class="search-filter"
                                                   return-object>
@@ -132,7 +131,7 @@
 
 
 
-                            <com-dialog ref="fileViewer" ref-key="two" key="file-upload-dialog" width="40%"> 
+                            <com-dialog ref="fileViewer" ref-key="two" key="file-upload-dialog" width="40%">
                                 <template v-slot:toolbar>
                                     建立報名表-檔案匯入
                                     <v-spacer></v-spacer>
@@ -191,7 +190,7 @@
                                 </template>
                                 <template v-slot:content>
                                     <div class="prevDesc">
-                                    點選「確定」後本報名表將立即生效，請再次確認內容無誤。
+                                        點選「確定」後本報名表將立即生效，請再次確認內容無誤。
                                     </div>
                                     <div class="divider"><v-divider></v-divider></div>
                                     <div class="prevContent" v-if="result.model !=null">
@@ -324,7 +323,7 @@
                                 </template>
                                 <template v-slot:content>
                                     <div class="prevDesc">
-                                    點選「確定」後本報名表將立即生效，請再次確認內容無誤。
+                                        點選「確定」後本報名表將立即生效，請再次確認內容無誤。
                                     </div>
                                     <div class="divider"><v-divider></v-divider></div>
                                     <div class="prevContent" v-if="result.model !=null">
@@ -499,7 +498,7 @@
                                     確認
                                 </template>
                             </com-confirm>
-                            <com-confirm ref="warringAlert" ref-key="warringAlert" :right-click="closeRightClick"  key="warring-alert-confirm">
+                            <com-confirm ref="warringAlert" ref-key="warringAlert" :right-click="closeRightClick" key="warring-alert-confirm">
                                 <template v-slot:confirm-image>
                                     <v-img src="/alert_warning.svg"></v-img>
                                 </template>
@@ -651,7 +650,7 @@
                                                     </v-img>
                                                     <span style="color:white">下載完整接種同意書</span>
                                                 </v-btn>
-                                                <v-btn color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">                                  
+                                                <v-btn color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">
                                                     <v-img src="/admin/download_icon.svg" width="24px" height="24px">
                                                     </v-img>
                                                     <span style="color:white">下載報名清冊</span>
@@ -756,9 +755,10 @@
 
 <style>
     span.table-content-field.regist-village-name {
-        width: 200px!important;
-        min-width:200px!important;
+        width: 200px !important;
+        min-width: 200px !important;
     }
+
     .file-upload-dialog {
         min-width: 300px;
     }
@@ -796,6 +796,7 @@
     .v-list-item__title {
         padding: 0px 0px !important;
     }
+
     registration-list .v-list-item__title {
         color: lightgray;
         font-size: 14px;
@@ -902,9 +903,9 @@
         display: inline-flex;
     }
 
-    .registration-list .detail-action .v-btn {
-        margin: 3px 5px;
-    }
+        .registration-list .detail-action .v-btn {
+            margin: 3px 5px;
+        }
 
     .registration-list .detail-result-abnormal {
         /*font: normal normal normal 16px/24px Noto Sans T Chinese;*/
@@ -974,25 +975,25 @@
         overflow-y: auto !important;
     }
 
-    /*-------滾動條整體樣式----*/
-    .v-dialog .v-card__text.dialog-content::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
+        /*-------滾動條整體樣式----*/
+        .v-dialog .v-card__text.dialog-content::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
 
-    /*滾動條裡面小方塊樣式*/
-    .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-thumb {
-        border-radius: 100px;
-        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        background: #736DB9;
-    }
+        /*滾動條裡面小方塊樣式*/
+        .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-thumb {
+            border-radius: 100px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            background: #736DB9;
+        }
 
-    /*滾動條裡面軌道樣式*/
-    .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-track {
-        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        border-radius: 20px;
-        background: rgba(0,0,0,0.1);
-    }
+        /*滾動條裡面軌道樣式*/
+        .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            background: rgba(0,0,0,0.1);
+        }
 
     thead tr th {
         border-top: 1px solid #D8D8DA !important;
@@ -1024,17 +1025,17 @@
         padding: 10px 0 !important;
     }
 
-    .dialogDetail .dialog-content > div {
-        margin: 0 20px;
-    }
+        .dialogDetail .dialog-content > div {
+            margin: 0 20px;
+        }
 
-    .dialogDetail .dialog-content > hr {
-        margin-top: 10px;
-        border: 0;
-        height: 24px;
-        background: #6267811A 0% 0% no-repeat padding-box;
-        opacity: 1;
-    }
+        .dialogDetail .dialog-content > hr {
+            margin-top: 10px;
+            border: 0;
+            height: 24px;
+            background: #6267811A 0% 0% no-repeat padding-box;
+            opacity: 1;
+        }
 
     /* Extra small devices (portrait phones, less than 576px) */
     @media (max-width: 575.98px) {
@@ -1054,9 +1055,10 @@
             display: inline-block;
         }
     }
+
     .showname {
         color: #62678166 !important;
-        font-size:16px
+        font-size: 16px
     }
     /* Small devices (landscape phones, 576px and up) */
     @media (min-width: 576px) and (max-width: 767.98px) {
@@ -1076,16 +1078,20 @@
     /* Extra large devices (large desktops, 1200px and up) */
     @media (min-width: 1200px) {
     }
+
     .prevDesc {
         padding: 20px 0px 0px 17px !important;
     }
+
     .divider {
         padding: 20px 10px 10px 14px !important;
     }
+
     .prevContent .v-list-item__subtitle {
         font-size: 16px;
         color: #626781 !important;
     }
+
     .v-card__actions {
         padding: 0px 32px 20px 0px !important;
     }
@@ -1093,7 +1099,6 @@
     .fa-search:before {
         content: url('/admin/common_search-24px.svg') !important;
     }
-
 </style>
 
 <script>
@@ -1108,7 +1113,7 @@
     import XLSX from 'xlsx'
     export default {
         // router,
-        data: () => ({          
+        data: () => ({
             totalCount: 0,
             itemsPerPage: 5,
             totalVisible: 4,
@@ -1170,7 +1175,7 @@
             artificialResult: '',
             isReChecked: false,
             regist_beforeDay: 3,//報名截止時間要於施打時間早3天以上
-            downloadErrorMessage:'複檢結果至少要有一筆成功才能下載',
+            downloadErrorMessage: '複檢結果至少要有一筆成功才能下載',
             artificialOptions: [
                 { state: '複檢合格', id: 'pass' },
                 { state: '複檢不合格', id: 'nopass' },
@@ -1210,7 +1215,7 @@
             },
         }),
         computed: {
-            ...mapGetters('registration', ['getHeaders', 'getVaccines', 'getDistricts', 'getVillages', 'getInstitutions', 'getRegistrationHeaders','getDisMedicals']),
+            ...mapGetters('registration', ['getHeaders', 'getVaccines', 'getDistricts', 'getVillages', 'getInstitutions', 'getRegistrationHeaders', 'getDisMedicals']),
         },
         props: {
 
@@ -1235,20 +1240,20 @@
                     pageSize: this.itemsPerPage,
                     page: page,
                 };
-              
+
                 this.loadRegistForm(params).then((r) => {
                     this.totalCount = r.totalCount;
-                    this.items.splice(0);                 
+                    this.items.splice(0);
                     r.datas.forEach((x) => this.items.push(x));
                     this.$refs.table.gofrontPage(page);
                 }).catch((e) => {
                     console.log(e);
 
-                    });
-              
+                });
+
             },
             changePage: function (pager) {
-                console.log('c',pager);
+                console.log('c', pager);
                 ///{ page: 2, pageSize: 20}
                 this.getRegistForm(pager.page);
             },
@@ -1271,23 +1276,26 @@
             },
             editItem: function (item) {
                 //regist_type=0會有問題,無法設定v-select值??? vue bug??
-        
+
                 var today = new Date();
+                var overStatus = 0;
                 if (item.regist_unpassed > 0 || today > new Date(item.regist_apply_start_date)) {
-                    this.alertTitle = '拒絕修改';
-                    this.alertText = '已經開始報名，無法再修改資料';
-                    this.alertImgSrc = this.alertIcon;
-                    this.$refs.warringAlert.open();
-                    return false;
+                    //this.alertTitle = '拒絕修改';
+                    //this.alertText = '已經開始報名，無法再修改資料';
+                    //this.alertImgSrc = this.alertIcon;
+                    //this.$refs.warringAlert.open();
+                    //return false;
+                    overStatus = 1;
+
                 }
-                console.log("edit",item);
+                console.log("edit", item);
                 //Object.assign(this.model, item);
                 this.saveBtnName = "儲存";
                 this.title = '編輯報名表';
                 this.viewerTitle = '編輯報名資訊確認';
-                this.$refs.registEdit.open(item);
+                this.$refs.registEdit.open(item, overStatus);
                 //console.log('edit', item);
-                
+
                 //this.loadMedicalsByVillage({ "name": item.regist_village_name });
                 this.loadVillages({ id: item.regist_district, name: item.regist_district_name });
                 var vaccines = this.$store.getters['user/getVaccines'];
@@ -1299,7 +1307,7 @@
                     }
                 });
                 this.loadVaccines({ id: item.regist_type, requireSubitem: requireSubitem });
-     
+
             },
             fileImport: function () {
                 this.$refs.fileViewer.open();
@@ -1316,11 +1324,11 @@
                     errMsg = "(事先開放報名開始時間)必須早於(事先開放報名結束時間)";
                 }
 
-                //if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) <
-                //    Date.parse(result.model.regist_apply_end_date) + this.regist_beforeDay*60*60*24*1000) {
-                //    errMsg = "(開放報名結束時間)必須早於(開始施打時間)至少" + this.regist_beforeDay+"天";
-                //}
-              
+                if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) <
+                    Date.parse(result.model.regist_apply_end_date) + this.regist_beforeDay * 60 * 60 * 24 * 1000) {
+                    errMsg = "(開放報名結束時間)必須早於(開始施打時間)至少" + this.regist_beforeDay + "天";
+                }
+
                 if (errMsg != "") {
                     this.alertTitle = '設定錯誤';
                     this.alertText = errMsg;
@@ -1328,7 +1336,7 @@
                     this.$refs.warringAlert.open();
                 } else {
                     //mappping
-              
+
                     result.model.regist_type_name = result.model.regist_type.name;
                     result.model.regist_brand_name = result.model.regist_brand.name;
                     result.model.regist_village_name = result.model.regist_village.name;
@@ -1336,7 +1344,6 @@
                     result.model.regist_institution_code = result.model.regist_institution.id;
                     result.model.regist_instution_district_name = result.model.regist_district.name;
                     result.model.regist_district_name = result.model.regist_district.name;
-                    result.model.regist_apply_end_date = this.$moment(new Date().setDate(new Date(result.model.regist_station_date).getDate() - 3)).format('YYYY-MM-DDTHH:mm');
 
                     Object.assign(this.result, result);
 
@@ -1355,9 +1362,9 @@
                 }
             },
             editFormAction: function (result) {
-             
+
                 console.log('edit_preview', result);
-          
+
                 Object.assign(this.result, result);
                 switch (result.action) {
                     case 'save':
@@ -1375,7 +1382,6 @@
                         result.model.regist_institution_name = result.model.regist_institution.uName;
                         result.model.regist_institution_code = result.model.regist_institution.id;
                         result.model.regist_district_name = result.model.regist_district.name;
-                        result.model.regist_apply_end_date = this.$moment(new Date().setDate(new Date(result.model.regist_station_date).getDate() - 3)).format('YYYY-MM-DDTHH:mm');
 
                         this.$refs.registEditViewer.open();
                         //console.log('save1', result)
@@ -1476,7 +1482,7 @@
                         comp.alertImgSrc = comp.successIcon;
                         comp.getRegistForm(1);
                         comp.$refs.table.clearAll();
-                      
+
                     } else {
                         this.alertImgSrc = comp.alertIcon;
                         comp.alertTitle = '刪除失敗';
@@ -1516,7 +1522,7 @@
                     this.alertImgSrc = this.warningIcon;
                     this.$refs.registAlert.open();
                 }
-               
+
             },
             dowloadRegistItem: function (item) {
                 //console.log('Regist', item);
@@ -1677,7 +1683,7 @@
             downloadSignUpFile: function () {
                 var comp = this;
                 comp.alertMessage = '';
-                comp.getSignUpFile({ id: comp.detailId})
+                comp.getSignUpFile({ id: comp.detailId })
                     .then(function (result) {
                         switch (result.state) {
                             case 'not found':
@@ -1725,7 +1731,7 @@
                     });
             },
             downloadAgreeFile: function (item) {
-            
+
                 var comp = this;
                 comp.alertMessage = '';
                 comp.getAgreeFile({ id: item.id, name: item.name, activityId: this.activityId })
@@ -1880,11 +1886,11 @@
 
                             //行政區域
                             zz = fv(data[j][3], z, 'distName');
-                 
+
                             if (zz) {
                                 comp.finalData[k][3] = zz['distId'];
                                 zzz = fv(data[j][4].trim(), zz['data'], 'villageName');
-                 
+
                                 villageName = data[j][4].trim();
                                 if (zzz) {
                                     comp.finalData[k][4] = zzz['villageId'];
