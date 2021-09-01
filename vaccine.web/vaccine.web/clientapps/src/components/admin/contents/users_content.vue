@@ -19,7 +19,7 @@
                         <span>{{  getZonesData(items.item) }}</span>
                     </template>
                     <template v-slot:search-bar>
-                        <div style="display:flex;justify-content:flex-start;margin-left:15px;margin-top:15px;">
+                        <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
                             <v-row>
                                 <v-col class="d-flex  justify-content-end" cols="12" md="6" lg="6" sm="6" xs="6">
                                     <v-select v-model="selectRole"
@@ -349,7 +349,7 @@
         background: #FFFFFF 0% 0% no-repeat padding-box !important;
        
         opacity: 1 !important;
-        margin: 24px !important;
+        /*margin: 24px !important;*/
     }
     .users-list .app-content {
         background: #F2F3F7 !important;
@@ -372,9 +372,9 @@
     .users-list .v-list-item__title{
         color:black;
     }
-    .users-list .d-flex {
-        padding: 20px 00px 0px 0px !important;
-    }
+    /*.users-list .d-flex {
+        padding: 20px 0px 0px 0px !important;
+    }*/
     .users-list .dialog-content {
         padding-bottom: 0px !important;
     }

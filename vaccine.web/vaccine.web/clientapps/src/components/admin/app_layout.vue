@@ -296,11 +296,11 @@
 <style>
     .app-content-card {
         margin: 20px !important;
-        padding: 20px !important;
+        /*padding: 20px !important;*/
     }
 
     .app-content-container {
-        height: calc(100% - 72px);
+        /*height: calc(100% - 72px);*/
     }
     .v-application--wrap {
         min-width: calc(100% + 15px) !important;

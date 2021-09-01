@@ -52,7 +52,7 @@
                         <template>
                             <v-btn  color="#626781" :ripple="false" @click.stop="addFile">
                                 <img src="/addregist.svg">
-                                <span style="color:white">新增案件抽查表</span>
+                                <span class="add-btn-text">新增案件抽查表</span>
                             </v-btn>
                         </template>
                     </template>
@@ -64,7 +64,7 @@
     </v-btn>-->
                             <v-btn  color="#736DB9" @click.stop="downloadFile(item)" :ripple="false">
                                 <img src="/download.svg">
-                                <span style="color:white">下載</span>
+                                <span class="download-btn-text">下載</span>
                             </v-btn>
                         </template>
                     </template>
@@ -196,6 +196,12 @@
 
     .fa-search:before {
         content: url('/admin/common_search-24px.svg') !important;
+    }
+
+    .audit-list .add-btn-text,
+    .audit-list .download-btn-text {
+        color: white;
+        padding-left: 5px;
     }
 </style>
 

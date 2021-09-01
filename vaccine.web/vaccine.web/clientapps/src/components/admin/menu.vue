@@ -107,7 +107,7 @@
         padding: 0px 0px 0px 20px !important;
     }
     .v-main {
-        padding: 30px 0px 0px 249px !important;
+        padding: 65px 0px 0px 249px !important;
     }
 
 

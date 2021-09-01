@@ -10,10 +10,10 @@
         <template v-slot:app-content>
             <com-loading ref-key="type1"></com-loading>
             <div id="app">
-                <v-card style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
+                <v-card>
                     <com-table ref="table" ref-key="table" :headers="getHeaders" :items="items" :itemKey="itemKey" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               :change-page="changePage" :row-click="handleRowClick" style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
+                               :change-page="changePage" :row-click="handleRowClick" style="margin-left: 15px;padding-top: 15px;margin-right: 30px;">
 
                         <template v-slot:item.regist_quota="{item}">
                             <!--<div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>-->
