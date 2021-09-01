@@ -94,9 +94,12 @@
     }
     .v-pagination__navigation, .v-pagination__item {
         box-shadow: none !important;
+        opacity: .4;
     }
     .theme--light.v-pagination .v-pagination__item--active {
+        font-weight: bold;
         color: #626781 !important;
+        opacity: 1;
     }
     .v-input--selection-controls__ripple {
         border-radius: 50%;
