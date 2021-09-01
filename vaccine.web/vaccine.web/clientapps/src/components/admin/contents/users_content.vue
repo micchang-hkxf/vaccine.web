@@ -406,6 +406,14 @@
     .v-dialog > .v-card > .v-card__title dialog-toolbar {
         padding: 10px 24px 10px 27px !important;
     }
+    .w02 input[type='number'] {
+        -moz-appearance: textfield;
+    }
+
+    .w02 input::-webkit-outer-spin-button,
+    .w02 input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
 </style>
 
 
