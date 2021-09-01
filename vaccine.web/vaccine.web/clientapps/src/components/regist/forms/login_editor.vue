@@ -209,30 +209,31 @@
     .login-editor/deep/ {
     }
 
-        .login-editor/deep/ .v-overlay__scrim {
-        }
+    .login-editor/deep/ .v-overlay__scrim {
+    }
 
+    .login-editor/deep/ .login-header {
+        font-size: 16px !important;
+        color: #626781 !important;
+    }
 
-        .login-editor/deep/ .login-header {
-            font-size: 16px !important;
-            color: #626781 !important;
-        }
+    .login-editor/deep/ .login-container {
+    }
 
-        .login-editor/deep/ .login-container {
-        }
+    .login-editor/deep/ .login-container .login-field-label {
+        color: #434969 !important;
+        font-size: 16px !important;
+    }
 
-            .login-editor/deep/ .login-container .login-field-label {
-                color: #434969 !important;
-                font-size: 16px !important;
-            }
+    .login-editor/deep/ .login-container .login-field-container {
+    }
 
-            .login-editor/deep/ .login-container .login-field-container {
-            }
+    .login-editor/deep/ .login-actions {
+        margin: 0 14px;
+        padding-bottom: 24px;
+    }
 
-        .login-editor/deep/ .login-actions {
-        }
-
-            .login-editor/deep/ .login-actions .v-btn {
-                width: 60px !important;
-            }
+    .login-editor/deep/ .login-actions .v-btn {
+        width: 60px !important;
+    }
 </style>
