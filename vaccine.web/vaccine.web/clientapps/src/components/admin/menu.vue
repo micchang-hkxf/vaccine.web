@@ -86,11 +86,14 @@
     .menu-list {
         background: #626781 !important;
         height: 100vh !important;
-
+        width: 180px !important;
+    }
+    .v-navigation-drawer {
+        width: 180px !important;
     }
     .menu-list > .v-list-item {
-            padding: 0px 0px 0px 0px !important;
-        }
+        padding: 0px 0px 0px 0px !important;
+    }
     .v-list-item__title {
         padding: 0px 10px !important;
         font-size: 20px !important;
@@ -107,7 +110,7 @@
         padding: 0px 0px 0px 20px !important;
     }
     .v-main {
-        padding: 65px 0px 0px 249px !important;
+        padding: 65px 0px 0px 170px !important;
     }
 
 
