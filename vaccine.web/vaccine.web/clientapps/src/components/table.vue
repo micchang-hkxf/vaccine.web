@@ -118,6 +118,9 @@
     .fa-check-square:before, .fa-minus-square:before {
         color: #736DB9;
     }
+    .v-data-table .v-data-table__wrapper table {
+        border-bottom: 2px solid #E0E0E0 !important;
+    }
 
 
 
