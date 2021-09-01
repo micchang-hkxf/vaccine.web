@@ -11,7 +11,7 @@
             <div id="app" class="table-list">
                 <com-table ref="userTable" ref-key="table" :headers="headers" :items="items" :total-count="totalCount" disabled-prop="disabled"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                           :change-page="changePage" style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
+                           :change-page="changePage" style="margin-left: 8px;padding-top: 28px;margin-right: 10px;">
                     <template v-slot:item.isEnable="items">
                         <div>{{   items.item.isEnable.toString()=='true' ? "啟用" : "停用" }}</div>
                     </template>
@@ -21,7 +21,7 @@
                     <template v-slot:search-bar>
                         <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
                             <v-row>
-                                <v-col class="d-flex  justify-content-end" cols="12" md="6" lg="6" sm="6" xs="6">
+                           
                                     <v-select v-model="selectRole"
                                               :items="getRoleItems"
                                               item-text="state"
@@ -31,7 +31,8 @@
                                               :menu-props="{ bottom: true, offsetY: true }"
                                               outlined
                                               clearable
-                                              style="margin-right: 10px;min-width:150px"
+                    
+                                              class="search-filter fs"
                                               return-object>
                                     </v-select>
 
@@ -45,7 +46,7 @@
                                               outlined
                                               clearable
                                               style="margin-right: 10px;min-width:150px"
-                                              class="search-filter"
+                                              class="search-filter fs"
                                               return-object>
                                     </v-select>
                                     <v-select v-model="selectPermission"
@@ -58,7 +59,7 @@
                                               outlined
                                               clearable
                                               style="margin-right: 10px;min-width:150px"
-                                              class="search-filter"
+                                              class="search-filter fs"
                                               return-object>
                                     </v-select>
                                     <v-text-field class="w03"
@@ -73,7 +74,7 @@
                                     </v-btn>
                                     <v-file-input accept=".csv" style="display:none" ref="importfile">
                                     </v-file-input>
-                                </v-col>
+                                
 
                             </v-row>
 
