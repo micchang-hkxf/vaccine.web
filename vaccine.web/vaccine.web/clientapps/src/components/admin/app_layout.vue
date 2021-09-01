@@ -364,4 +364,12 @@
     .v-card__actions {
         padding: 20px 32px !important;
     }
+
+    .v-btn__content span {
+        margin: 0 8px;
+    }
+
+    .v-list-item .v-list-item__title {
+        margin: 0 8px;
+    }
 </style>
