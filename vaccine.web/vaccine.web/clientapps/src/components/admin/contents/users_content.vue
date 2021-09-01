@@ -106,9 +106,9 @@
                                 </v-list-item>
                                 <v-list-item @click.stop="newItem()">
                                     <v-list-item-action-text>
-                                        <v-btn icon dense>
-                                            <v-icon small>far fa-edit</v-icon>
-                                        </v-btn>手動輸入
+                                        <v-btn icon dense :ripple="false">
+                                            <img src="/pen.svg">
+                                        </v-btn> <span class="modify-btn-text">手動輸入</span>
                                     </v-list-item-action-text>
                                 </v-list-item>
                                 <!--<v-list-item @click.stop="importItem(item)">

@@ -94,7 +94,7 @@
     .menu-list > .v-list-item {
         padding: 0px 0px 0px 0px !important;
     }
-    .v-list-item__title {
+    .app-navigation .v-list-item__title {
         padding: 0px 10px !important;
         font-size: 20px !important;
         text-align: left !important;
@@ -105,7 +105,7 @@
         padding: 0px 0px !important;
         
     }
-    .v-list-item__content {
+    .app-navigation .v-list-item__content {
         height: 56px !important;
         padding: 0px 0px 0px 20px !important;
     }

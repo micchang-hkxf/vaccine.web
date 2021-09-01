@@ -20,9 +20,9 @@
                             <div><span :class="item.regist_unpassed >= item.regist_quota ? 'color-red' : ''">{{item.regist_unpassed}}</span>/<span style="color:#626781">{{item.regist_quota}}</span></div>
                         </template>
                         <template v-slot:search-bar>
-                            <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
+                            <div style="display:inline;margin-left:10px;margin-top:10px;">
                                 <v-row>
-                                    <v-col class="d-flex justify-content-end" cols="11">
+                     
                                         <v-select v-model="selectVaccine"
                                                   :items="getVaccines"
                                                   item-text="name"
@@ -32,7 +32,7 @@
                                                   outlined
                                                   dense
                                                   style="margin-right: 10px; width: 230px;"
-                                                  class="search-filter"
+                                                  class="search-filter fs"
                                                   return-object>
                                         </v-select>
                                         <v-select v-model="selectDistrict"
@@ -45,7 +45,7 @@
                                                   dense
                                                   clearable
                                                   style="margin-right: 10px; width: 210px;"
-                                                  class="search-filter"
+                                                  class="search-filter fs"
                                                   return-object
                                                   @change="loadVillages">
                                         </v-select>
@@ -59,7 +59,7 @@
                                                   dense
                                                   clearable
                                                   style="margin-right: 10px; width: 210px;"
-                                                  class="search-filter"
+                                                  class="search-filter fs"
                                                   return-object>
                                         </v-select>
                                         <v-select v-model="selectInstitution"
@@ -72,17 +72,17 @@
                                                   dense
                                                   clearable
                                                   style="margin-right: 10px; width: 240px;"
-                                                  class="search-filter"
+                                                  class="search-filter fs"
                                                   return-object>
                                         </v-select>
 
-                                        <v-text-field v-model="keyWord" placeholder="標題關鍵字" outlined dense clearable autocomplete="off"></v-text-field>
+                                        <v-text-field v-model="keyWord" class="fs" placeholder="標題關鍵字" outlined dense clearable autocomplete="off"></v-text-field>
 
                                         <v-btn icon color="#626781" style="top:3px;" :ripple="false" class="content-search-button"
                                                @click="getRegistForm(1)">
                                             <v-icon>fas fa-search</v-icon>
                                         </v-btn>
-                                    </v-col>
+                                 
                                 </v-row>
                             </div>
 
@@ -1095,6 +1095,11 @@
     .fa-search:before {
         content: url('/admin/common_search-24px.svg') !important;
     }
+    .fs {
+        padding: 0px 0px 0px 20px !important;
+        width: 120px !important;
+    }
+
 </style>
 
 <script>
