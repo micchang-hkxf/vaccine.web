@@ -186,7 +186,7 @@
                         <v-label><span class="star">再次確認手機</span></v-label>
                         <v-text-field dense outlined class="w02" placeholder="再次輸入手機號碼" type="number" v-model="mbNo2" :rules="[rules.mbNo.regex, checkMbNo]"></v-text-field>
                         <v-label><span class="star">服務單位</span></v-label>
-                        <v-text-field dense outlined class="w01" placeholder="請輸入單位名稱" v-model="unitName" :rules="[v => !!v || '必填']"></v-text-field>
+                        <v-text-field dense outlined class="w02" placeholder="請輸入單位名稱" v-model="unitName" :rules="[v => !!v || '必填']"></v-text-field>
                         <hr noshade size="1">
                         <div style="height:20px"></div>
                         <v-label><span class="star">角色設定</span></v-label>
@@ -232,7 +232,8 @@
                                   return-object>
                         </v-select>
                         <v-checkbox v-model="setEnable" label="啟用" v-show="formTitle!='新增人員'"></v-checkbox>
-                        <v-text-field type="hidden" v-model="editID"></v-text-field>
+                        <!--<v-text-field type="hidden" v-model="editID"></v-text-field>-->
+                        <hr noshade size="1">
                     </v-form>
                 </template>
                 <template v-slot:action="{close}">
