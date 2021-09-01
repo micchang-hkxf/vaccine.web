@@ -3,7 +3,7 @@
     <div class="timepicker-container">
         <div class="timepicker-wrap">
             <img src="/images/time_picker_icon.svg" class="timepicker-icon timepicker-icon__clock" />
-            <input type="text" class="time" ref="timeInput" :value="value" 
+            <input type="text" class="time" ref="timeInput" :value="value"
                    @focus="open">
         </div>
         <div class="timepicker" tabindex="0"
@@ -13,10 +13,10 @@
                 設定時間
                 <span class=" d-flex justify-end">
                     <v-icon style="color:white;font-size:20px;" @click.stop="close(true)">close</v-icon>
-                    <v-icon style="color:lawngreen;font-size:20px;" @click.stop="close(false)">done</v-icon>
+                    <v-icon style="color:lawngreen;font-size:20px;" @click.stop="close(false)" :disabled="readonly">done</v-icon>
                 </span>
             </div>
-           
+
             <div class="timepicker__time">
                 <div class="flex-wrap">
                     <time-unit :value="time[0]" index="0"></time-unit>
@@ -44,7 +44,7 @@
 
     export default {
         name: 'Timepicker',
-        props: ['value'],
+        props: ['value', 'readonly'],
         mixins: [KeyboardEvents, CommonActions],
         components: {
             ActiveBackground,
@@ -58,9 +58,10 @@
             };
         },
         created() {
+
             this.time = this.value.replace(':', '').split('');
             this.$on('close', this.close);
-    
+
         },
         computed: {
             filteredDigits() {
@@ -68,7 +69,7 @@
             },
             activeIndex: {
                 get: function () { return store.activeIndex; },
-                set: function (val ) { store.activeIndex = val; }
+                set: function (val) { store.activeIndex = val; }
             },
             myOpen: {
                 get: function () { return store.isOpen; },
@@ -96,8 +97,8 @@
                 this.myOpen = this.isOpen = true;
                 this.myTimes = this.time;
                 this.activeIndex = 0;
-               
-         
+
+
             },
             close(cancel) {
                 let isCancelled = cancel || false;
@@ -172,11 +173,10 @@
     }
 
     .timepicker {
-
         position: absolute;
         background: #FBFBFF;
         width: 100vw;
-        height: 100vh;        
+        height: 100vh;
         box-shadow: 0 3px 10px rgba(0,0,0,.3);
         border-radius: $border-radius;
         overflow: hidden;
