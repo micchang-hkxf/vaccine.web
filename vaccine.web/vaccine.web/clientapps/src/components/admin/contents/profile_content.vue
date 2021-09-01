@@ -74,7 +74,7 @@
                 this.$set(this, "mbNo", data.mbNo);
                 this.$set(this, "unit", data.unit);
                 this.$set(this, "perm", data.userTypeDesc);
-                this.$set(this, "passModifyTime", data.lastAccessTime);
+                this.$set(this, "passModifyTime", this.$moment(data.lastAccessTime).format('YYYY/MM/DD HH:mm'));
                 this.$set(this, "zones", data.zones[0].cityName);//todo
             },
            

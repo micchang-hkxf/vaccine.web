@@ -33,6 +33,9 @@
         border-radius: 8px 8px 0px 0px;
         opacity: 1;
     }
+    .v-dialog > .v-card > .v-card__title {
+        padding: 11px 23px;
+    }
 </style>
 
 <script>
