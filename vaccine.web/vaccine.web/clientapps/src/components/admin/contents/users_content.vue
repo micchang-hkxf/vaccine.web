@@ -78,17 +78,17 @@
                             </v-row>
 
                         </div>
-    
 
 
-</template>
+
+                    </template>
 
                     <template v-slot:toolbar-action={}>
                         <!--<v-checkbox :ripple="false" hide-details @click="switchSelect"></v-checkbox>
-                <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
-                    <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
-                </v-btn>
-                -->
+        <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
+            <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
+        </v-btn>
+        -->
                         <v-spacer></v-spacer>
 
                         <v-menu bottom right offset-y>
@@ -112,15 +112,23 @@
                                     </v-list-item-action-text>
                                 </v-list-item>
                                 <!--<v-list-item @click.stop="importItem(item)">
-                                    <v-list-item-action-text>
-                                        <v-btn icon dense>
-                                            <v-icon small>far fa-trash-alt</v-icon>
-                                        </v-btn>檔案匯入
-                                    </v-list-item-action-text>
-                                </v-list-item>-->
+                    <v-list-item-action-text>
+                        <v-btn icon dense>
+                            <v-icon small>far fa-trash-alt</v-icon>
+                        </v-btn>檔案匯入
+                    </v-list-item-action-text>
+                </v-list-item>-->
 
                             </v-list>
                         </v-menu>
+                    </template>
+
+                    <template v-slot:item.pdExpTime="{item}">
+                        {{$moment(item.pdExpTime).format('YYYY/MM/DD HH:mm')}}
+                    </template>
+
+                    <template v-slot:item.lastAccessTime="{item}">
+                        {{$moment(item.lastAccessTime).format('YYYY/MM/DD HH:mm')}}
                     </template>
 
                     <template v-slot:item.modify="{item}">
@@ -176,7 +184,7 @@
                         <v-label><span class="star">手機</span></v-label>
                         <v-text-field dense outlined class="w02" placeholder="請輸入手機號碼" type="number" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
                         <v-label><span class="star">再次確認手機</span></v-label>
-                        <v-text-field dense outlined class="w02" placeholder="再次輸入手機號碼" type="number" v-model="mbNo2" :rules="[rules.mbNo.regex]"></v-text-field>
+                        <v-text-field dense outlined class="w02" placeholder="再次輸入手機號碼" type="number" v-model="mbNo2" :rules="[rules.mbNo.regex, checkMbNo]"></v-text-field>
                         <v-label><span class="star">服務單位</span></v-label>
                         <v-text-field dense outlined class="w01" placeholder="請輸入單位名稱" v-model="unitName" :rules="[v => !!v || '必填']"></v-text-field>
                         <hr noshade size="1">
@@ -698,12 +706,6 @@
                     //this.$set(this, "alertTitle", '儲存成功');
                     console.log("儲存成功");
                     //this.$refs.dialogPanel.close();
-                } else if (this.mbNo != this.mbNo2) {
-                    this.$bus.$emit("alert_show", true);
-                    this.alertImgSrc = this.warningIcon;
-                    this.$set(this, "alertTitle", '兩次輸入號碼不一致');
-                    //this.$set(this, "alertMessage", '兩次輸入號碼不一致');
-                    return;
                 } else {
                     //this.$bus.$emit("alert_show", true);
                     //this.$set(this, "alertTitle", '儲存失敗');
@@ -805,6 +807,12 @@
                 if (v.id == 0) {
                     this.$set(this, "setArea", { id: '200', state: '管理全區' });
                 }
+            },
+            checkMbNo: function () {
+                if (this.mbNo !== this.mbNo2) {
+                    return '兩次輸入號碼不一致';
+                }
+                return true;
             }
         },
         components: {
