@@ -113,7 +113,7 @@
     </com-dialog>
 
 </template>
-<style>
+<style scoped>
     .v-btn--outlined {
         border: thin solid rgba(98 ,103, 129 ,0.2) !important;
     }
@@ -124,7 +124,7 @@
         color: #626781;
         text-align: left;
         opacity: 1;
-        margin-bottom: 10px;
+        margin: 10px 0;
     }
 
     .audit-description {
@@ -133,6 +133,10 @@
         color: #62678166;
         text-align: left;
         opacity: 1;
+    }
+
+    .v-card__text {
+        padding: 16px 0;
     }
 </style>
 
