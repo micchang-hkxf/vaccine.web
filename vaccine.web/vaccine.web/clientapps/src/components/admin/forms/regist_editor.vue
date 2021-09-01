@@ -454,13 +454,13 @@
     }
 
 
-    .edit-form {
-        /*height: 650px;
+    /*.edit-form {
+        height: 650px;
         overflow: scroll;
-        overflow-x: hidden;*/
+        overflow-x: hidden;
         padding-left: 10px;
         padding-right: 15px;
-    }
+    }*/
 
         /*-------滾動條整體樣式----*/
         .edit-form::-webkit-scrollbar {
@@ -509,10 +509,6 @@
 
     .inputDesc {
         color: #9E9E9E;
-    }
-
-    .v-dialog > .v-card > .v-card__title {
-        padding: 16px 24px 10px 35px !important;
     }
 </style>
 
