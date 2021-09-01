@@ -356,4 +356,12 @@
     .layoutmenu .v-application--is-ltr .v-list-item__action:first-child, .v-application--is-ltr .v-list-item__icon:first-child {
         margin-right: 0 !important;
     }
+
+    .v-form HR {
+        border-top: 1px solid #DDDFE2;
+    }
+
+    .v-card__actions {
+        padding: 20px 32px !important;
+    }
 </style>
