@@ -1316,10 +1316,10 @@
                     errMsg = "(事先開放報名開始時間)必須早於(事先開放報名結束時間)";
                 }
 
-                if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) <
-                    Date.parse(result.model.regist_apply_end_date) + this.regist_beforeDay*60*60*24*1000) {
-                    errMsg = "(開放報名結束時間)必須早於(開始施打時間)至少" + this.regist_beforeDay+"天";
-                }
+                //if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) <
+                //    Date.parse(result.model.regist_apply_end_date) + this.regist_beforeDay*60*60*24*1000) {
+                //    errMsg = "(開放報名結束時間)必須早於(開始施打時間)至少" + this.regist_beforeDay+"天";
+                //}
               
                 if (errMsg != "") {
                     this.alertTitle = '設定錯誤';
@@ -1336,6 +1336,7 @@
                     result.model.regist_institution_code = result.model.regist_institution.id;
                     result.model.regist_instution_district_name = result.model.regist_district.name;
                     result.model.regist_district_name = result.model.regist_district.name;
+                    result.model.regist_apply_end_date = this.$moment(new Date().setDate(new Date(result.model.regist_station_date).getDate() - 3)).format('YYYY-MM-DDTHH:mm');
 
                     Object.assign(this.result, result);
 
@@ -1374,6 +1375,7 @@
                         result.model.regist_institution_name = result.model.regist_institution.uName;
                         result.model.regist_institution_code = result.model.regist_institution.id;
                         result.model.regist_district_name = result.model.regist_district.name;
+                        result.model.regist_apply_end_date = this.$moment(new Date().setDate(new Date(result.model.regist_station_date).getDate() - 3)).format('YYYY-MM-DDTHH:mm');
 
                         this.$refs.registEditViewer.open();
                         //console.log('save1', result)
