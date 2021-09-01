@@ -99,7 +99,7 @@
                                 <template v-slot:activator="{ on }">
                                     <v-btn v-on="on" color="#626781" @click.stop="" :ripple="false">
                                         <img src="/addregist.svg">
-                                        <span class="add-btn-text">新增報名表</span>
+                                        <span style="color:white">新增報名表</span>
                                     </v-btn>
 
                                 </template>
@@ -852,11 +852,6 @@
         color: #736DB9;
         text-align: left;
         opacity: 1;
-    }
-
-    .registration-list .add-btn-text {
-        color: white;
-        padding-left: 5px;
     }
 
     .registration-list .detail-title span {
