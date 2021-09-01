@@ -189,7 +189,6 @@
                                   dense
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   outlined
-                                  clearable
                                   required
                                   @input="areaChange"
                                   :rules="rules.select"
@@ -205,7 +204,6 @@
                                   dense
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   outlined
-                                  clearable
                                   required
                                   :rules="rules.select2"
                                   style="margin-right: 10px;min-width:150px"
@@ -219,7 +217,6 @@
                                   dense
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   outlined
-                                  clearable
                                   required
                                   :rules="rules.select2"
                                   style="margin-right: 10px;min-width:150px"
