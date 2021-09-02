@@ -13,76 +13,83 @@
                 <v-card>
                     <com-table ref="table" ref-key="table" :headers="getHeaders" :items="items" :itemKey="itemKey" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               :change-page="changePage" :row-click="handleRowClick" style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
+                               :change-page="changePage" :row-click="handleRowClick">
 
                         <template v-slot:item.regist_quota="{item}">
                             <!--<div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>-->
                             <div><span :class="item.regist_unpassed >= item.regist_quota ? 'color-red' : ''">{{item.regist_unpassed}}</span>/<span style="color:#626781">{{item.regist_quota}}</span></div>
                         </template>
                         <template v-slot:search-bar>
-                            <div style="display:inline;margin-left:10px;margin-top:10px;">
+                            <div>
                                 <v-row>
-                     
-                                        <v-select v-model="selectVaccine"
-                                                  :items="getVaccines"
-                                                  item-text="name"
-                                                  item-value="id"
-                                                  placeholder="所有疫苗類型"
-                                                  :menu-props="{ bottom: true, offsetY: true }"
-                                                  outlined
-                                                  dense
-                                                  style="margin-right: 10px; width: 230px;"
-                                                  class="search-filter fs"
-                                                  return-object>
-                                        </v-select>
-                                        <v-select v-model="selectDistrict"
-                                                  :items="getDistricts"
-                                                  item-text="name"
-                                                  item-value="id"
-                                                  placeholder="全部行政區"
-                                                  :menu-props="{ bottom: true, offsetY: true }"
-                                                  outlined
-                                                  dense
-                                                  clearable
-                                                  style="margin-right: 10px; width: 210px;"
-                                                  class="search-filter fs"
-                                                  return-object
-                                                  @change="loadVillages">
-                                        </v-select>
-                                        <v-select v-model="selectVillage"
-                                                  :items="getVillages"
-                                                  item-text="name"
-                                                  item-value="id"
-                                                  placeholder="全部村里"
-                                                  :menu-props="{ bottom: true, offsetY: true }"
-                                                  outlined
-                                                  dense
-                                                  clearable
-                                                  style="margin-right: 10px; width: 210px;"
-                                                  class="search-filter fs"
-                                                  return-object>
-                                        </v-select>
-                                        <v-select v-model="selectInstitution"
-                                                  :items="getDisMedicals"
-                                                  item-text="uName"
-                                                  item-value="id"
-                                                  placeholder="全部醫療院所"
-                                                  :menu-props="{ bottom: true, offsetY: true }"
-                                                  outlined
-                                                  dense
-                                                  clearable
-                                                  style="margin-right: 10px; width: 240px;"
-                                                  class="search-filter fs"
-                                                  return-object>
-                                        </v-select>
+                                    <v-select v-model="selectVaccine"
+                                                :items="getVaccines"
+                                                item-text="name"
+                                                item-value="id"
+                                                placeholder="所有疫苗類型"
+                                                :menu-props="{ bottom: true, offsetY: true }"
+                                                outlined
+                                                dense
+                                                clearable
+                                                style="max-width: 200px;"
+                                                class="search-filter fs"
+                                                return-object>
+                                    </v-select>
+                                    <v-select v-model="selectDistrict"
+                                                :items="getDistricts"
+                                                item-text="name"
+                                                item-value="id"
+                                                placeholder="全部行政區"
+                                                :menu-props="{ bottom: true, offsetY: true }"
+                                                outlined
+                                                dense
+                                                clearable
+                                                style="max-width: 200px;"
+                                                class="search-filter fs"
+                                                return-object
+                                                @change="loadVillages">
+                                    </v-select>
+                                    <v-select v-model="selectVillage"
+                                                :items="getVillages"
+                                                item-text="name"
+                                                item-value="id"
+                                                placeholder="全部村里"
+                                                :menu-props="{ bottom: true, offsetY: true }"
+                                                outlined
+                                                dense
+                                                clearable
+                                                style="max-width: 200px;"
+                                                class="search-filter fs"
+                                                return-object>
+                                    </v-select>
+                                    <v-select v-model="selectInstitution"
+                                                :items="getDisMedicals"
+                                                item-text="uName"
+                                                item-value="id"
+                                                placeholder="全部醫療院所"
+                                                :menu-props="{ bottom: true, offsetY: true }"
+                                                outlined
+                                                dense
+                                                clearable
+                                                style="max-width: 200px;"
+                                                class="search-filter fs"
+                                                return-object>
+                                    </v-select>
 
-                                        <v-text-field v-model="keyWord" class="fs" placeholder="標題關鍵字" outlined dense clearable autocomplete="off"></v-text-field>
-
-                                        <v-btn icon color="#626781" style="top:3px;" :ripple="false" class="content-search-button"
-                                               @click="getRegistForm(1)">
-                                            <v-icon>fas fa-search</v-icon>
-                                        </v-btn>
-                                 
+                                    <v-text-field v-model="keyWord"
+                                                  class="fs"
+                                                  placeholder="標題關鍵字"
+                                                  outlined
+                                                  dense
+                                                  clearable
+                                                  style="max-width:200px"
+                                                  autocomplete="off">
+                                    </v-text-field>
+                                    
+                                    <v-btn icon style="top:3px;" :ripple="false" class="content-search-button"
+                                            @click="getRegistForm(1)">
+                                        <v-icon>fas fa-search</v-icon>
+                                    </v-btn>
                                 </v-row>
                             </div>
 

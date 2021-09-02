@@ -10,33 +10,35 @@
             <v-card>
                 <com-table ref="auditTable" ref-key="table" :headers="headers" :items="items" :total-count="totalCount"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                           :change-page="changePage"
-                           style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
+                           :change-page="changePage">
                     <template v-slot:item.quota>
                         <div>45/<span style="color:dimgrey">60</span></div>
                     </template>
                     <template v-slot:search-bar>
-                        <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
+                        <div>
                             <v-row>
-                                <v-col cols="5">
-                                    <v-select v-model="selectType"
-                                              :items="getTypes"
-                                              item-text="name"
-                                              item-value="name"
-                                              placeholder="全部報表類型"
-                                              :menu-props="{ bottom: true, offsetY: true }"
+                                <v-select v-model="selectType"
+                                            :items="getTypes"
+                                            item-text="name"
+                                            item-value="name"
+                                            placeholder="全部報表類型"
+                                            :menu-props="{ bottom: true, offsetY: true }"
+                                            outlined
+                                            dense
+                                            clearable
+                                            style="max-width:260px"
+                                            class="search-filter fs"
+                                            return-object>
+                                </v-select>
+                                <v-text-field v-model="keyWord"
+                                              class="fs"
+                                              placeholder="使用者/所屬單位/檔名關鍵字"
                                               outlined
                                               dense
                                               clearable
-                                              style="margin-right: 10px;"
-                                              class="search-filter"
-                                              return-object>
-                                    </v-select>
-                                </v-col>
-                                <v-col cols="5">
-                                    <v-text-field v-model="keyWord" placeholder="使用者/所屬單位/檔名關鍵字" outlined dense clearable></v-text-field>
-                                </v-col>
-                                <v-btn icon color="#626781" style="top:13px;" :ripple="false"
+                                              style="max-width:260px">
+                                </v-text-field>
+                                <v-btn icon style="top:3px;" :ripple="false"
                                        @click="getAudit(1)">
                                     <v-icon>fas fa-search</v-icon>
                                 </v-btn>
