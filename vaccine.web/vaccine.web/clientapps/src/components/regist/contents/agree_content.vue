@@ -129,10 +129,19 @@
         width: 300px !important;
         height: 300px;
         border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .agree-content/deep/ .action:hover {
+        background-color: #736DB980;
     }
 
     .agree-content/deep/ .action.tp-pass {
         background-color: #77CCDB;
+    }
+
+    .agree-content/deep/ .action.tp-pass:hover {
+        background-color: #77CCDB80;
     }
 
     .agree-content/deep/ .action-content {
