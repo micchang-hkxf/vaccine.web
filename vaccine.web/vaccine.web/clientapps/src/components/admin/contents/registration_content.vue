@@ -469,7 +469,7 @@
                             </com-confirm>
 
 
-                            <com-confirm ref="removeAlert" ref-key="confirm" :right-click="removeRightClick" :left-click="removeLeftClick" key="remove-alert-confirm">
+                            <com-confirm ref="removeAlert" ref-key="confirm" leftOutlined="on" leftColor="#FFFFFF" rightColor="#ff0000" :right-click="removeRightClick" :left-click="removeLeftClick" key="remove-alert-confirm">
                                 <template v-slot:confirm-image>
                                     <v-img src="/alert_remove.svg"></v-img>
                                 </template>

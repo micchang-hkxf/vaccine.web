@@ -38,7 +38,7 @@
                             <v-col cols="6" class="confirm-btns">
                                 <v-btn class="confirm-left-btn"
                                        :color="setLeftColor"
-                                       :ripple="false"
+                                       :ripple="false"     
                                        :outlined="setLeftOutlined"
                                        @click="leftBtnAction">
                                     <span class="confirm-left-btns-text"><slot name="confirm-left-btn-text"></slot></span>
@@ -89,7 +89,7 @@
 
     .confirm-image {
         width: 100%;
-        padding-top:14px;
+        padding-top:10px;
     }
 
     .confirm-text-container {
@@ -110,6 +110,7 @@
     .confirm-text {
         display: flex;
         justify-content: center;
+        color: #626781 !important;
         font: normal normal normal 16px Noto Sans T Chinese;
         text-align: center;
         opacity: 1;
