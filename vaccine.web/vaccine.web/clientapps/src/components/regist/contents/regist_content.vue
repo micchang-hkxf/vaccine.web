@@ -207,9 +207,12 @@
         margin: 0 auto;*/
     }
 
+    .regist-container .action {
+        cursor: pointer;
+    }
+
     /* Extra small devices (portrait phones, less than 576px) */
     @media (min-width: 100px) and (max-width: 350px) {
-       
     }
 
     /* Small devices (landscape phones, 576px and up) */

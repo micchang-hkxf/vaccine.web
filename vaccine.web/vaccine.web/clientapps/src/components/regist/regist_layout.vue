@@ -73,16 +73,22 @@
         padding-right:8px!important;
     }
     .action-title {
-        position: relative;
-        top: 8px;
         text-align: center;
         font: normal normal bold 16px/24px Noto Sans T Chinese;
+        height: 50px;
+        line-height: 50px;
         letter-spacing: 0px;
         color: #FFFFFF;
-        opacity: 1
+        opacity: 1;
+    }
+    .action-title > img {
+        position: relative;
+        top: 10px;
+        cursor: pointer;
     }
     .logo-title {
         max-width: 200%;
+        height: 64px;
     }
     .app-bar {
         width: calc(100vw - 32px) !important;
