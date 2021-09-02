@@ -159,8 +159,7 @@
                                                    style="display:none"
                                                    accept=".xlsx,xls"
                                                    @change="onFileChanged">
-                                            <v-spacer></v-spacer>
-
+                                            <v-spacer class="spacer"></v-spacer>
                                             <v-btn color="secondary">
                                                 <v-img src="/download.svg"></v-img>
                                                 <span><a href="ActivityExample.xlsx" class="file-btn-text">下載報名表格式範本</a></span>
@@ -810,11 +809,13 @@
     .registration-list .file-text {
         color: #626781;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
+        padding: 10px 0px 0px 0px;
     }
 
     .registration-list .file-text-warn {
         color: #F0524B;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
+        padding: 10px 0px 10px 0px;
     }
 
 
