@@ -53,7 +53,7 @@
                                         <span class="full">名額已滿</span>
                                     </div>
                                     <div class="action-info-data text-right" v-else>
-                                        {{session.totalCount}} / <span class="disabled">{{session.maxLimit}}</span>
+                                        <span style="font: normal normal normal 12px/20px Noto Sans T Chinese;"> {{session.totalCount}}</span>  / <span class="disabled">{{session.maxLimit}}</span>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-row justify-space-between" v-if="session.actAge !== null">
@@ -238,7 +238,7 @@
         }
 
         .unapply-list/deep/ .action {
-            height: 168px;
+            height: 198px;
             /*height: 100%;*/
             padding: 16px;
             border-radius: 8px !important;
@@ -300,7 +300,8 @@
             justify-content: center;
             background-color: #f4f4f4;
             margin: 0 auto;
-            height: 100vh;
+            height: 100%;
+            /*height: 100vh;*/
         }
         /*
     .unapply-list/deep/ .action-info-detail {

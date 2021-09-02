@@ -756,9 +756,10 @@
 
 <style>
     span.table-content-field.regist-village-name {
-        width: 200px!important;
-        min-width:200px!important;
+        width: 200px !important;
+        min-width: 200px !important;
     }
+
     .file-upload-dialog {
         min-width: 300px;
     }
@@ -796,6 +797,7 @@
     .v-list-item__title {
         padding: 0px 0px !important;
     }
+
     registration-list .v-list-item__title {
         color: lightgray;
         font-size: 14px;
@@ -902,9 +904,9 @@
         display: inline-flex;
     }
 
-    .registration-list .detail-action .v-btn {
-        margin: 3px 5px;
-    }
+        .registration-list .detail-action .v-btn {
+            margin: 3px 5px;
+        }
 
     .registration-list .detail-result-abnormal {
         /*font: normal normal normal 16px/24px Noto Sans T Chinese;*/
@@ -974,25 +976,25 @@
         overflow-y: auto !important;
     }
 
-    /*-------滾動條整體樣式----*/
-    .v-dialog .v-card__text.dialog-content::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
+        /*-------滾動條整體樣式----*/
+        .v-dialog .v-card__text.dialog-content::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
 
-    /*滾動條裡面小方塊樣式*/
-    .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-thumb {
-        border-radius: 100px;
-        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        background: #736DB9;
-    }
+        /*滾動條裡面小方塊樣式*/
+        .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-thumb {
+            border-radius: 100px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            background: #736DB9;
+        }
 
-    /*滾動條裡面軌道樣式*/
-    .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-track {
-        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        border-radius: 20px;
-        background: rgba(0,0,0,0.1);
-    }
+        /*滾動條裡面軌道樣式*/
+        .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            background: rgba(0,0,0,0.1);
+        }
 
     thead tr th {
         border-top: 1px solid #D8D8DA !important;
@@ -1024,17 +1026,17 @@
         padding: 10px 0 !important;
     }
 
-    .dialogDetail .dialog-content > div {
-        margin: 0 20px;
-    }
+        .dialogDetail .dialog-content > div {
+            margin: 0 20px;
+        }
 
-    .dialogDetail .dialog-content > hr {
-        margin-top: 10px;
-        border: 0;
-        height: 24px;
-        background: #6267811A 0% 0% no-repeat padding-box;
-        opacity: 1;
-    }
+        .dialogDetail .dialog-content > hr {
+            margin-top: 10px;
+            border: 0;
+            height: 24px;
+            background: #6267811A 0% 0% no-repeat padding-box;
+            opacity: 1;
+        }
 
     /* Extra small devices (portrait phones, less than 576px) */
     @media (max-width: 575.98px) {
@@ -1054,9 +1056,10 @@
             display: inline-block;
         }
     }
+
     .showname {
         color: #62678166 !important;
-        font-size:16px
+        font-size: 16px
     }
     /* Small devices (landscape phones, 576px and up) */
     @media (min-width: 576px) and (max-width: 767.98px) {
@@ -1076,16 +1079,20 @@
     /* Extra large devices (large desktops, 1200px and up) */
     @media (min-width: 1200px) {
     }
+
     .prevDesc {
         padding: 20px 0px 0px 17px !important;
     }
+
     .divider {
         padding: 20px 10px 10px 14px !important;
     }
+
     .prevContent .v-list-item__subtitle {
         font-size: 16px;
         color: #626781 !important;
     }
+
     .v-card__actions {
         padding: 0px 42px 20px 0px !important;
     }

@@ -5,12 +5,11 @@
                   :item-key="itemKey"
                   :page.sync="page"
                   :items-per-page="itemsPerPage"
-                  :single-select="singleSelect"
                   :show-select="showSelect"
                   :item-class="rowClass"
+                  :single-select="singleSelect"
                   class="elevation-0"
                   hide-default-footer>
-
 
         <template v-for="(header,index) in computedHeaders" v-slot:[header.headerTemplateName]>
             <span class="table-header-contant" :key="`table-header-${index}`">
@@ -34,8 +33,8 @@
 
         </template>
         <!--<template v-slot:item.checked="{ item }">
-            <v-checkbox v-model="item.checked" :ripple="false"></v-checkbox>
-        </template>-->
+        <v-checkbox v-model="item.checked" :ripple="false"></v-checkbox>
+    </template>-->
         <template v-slot:top>
 
             <template>

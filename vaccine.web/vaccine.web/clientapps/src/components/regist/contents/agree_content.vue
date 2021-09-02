@@ -252,7 +252,7 @@
             height: 150px;
         }
 
-        .agree-content/deep/ .agree-container {
+        /*.agree-content/deep/ .agree-container {
             padding-left: 0 !important;
             padding-right: 0 !important;
         }
@@ -260,7 +260,7 @@
         .agree-content/deep/ .agree-actions {
             padding-left: 0 !important;
             padding-right: 0 !important;
-        }
+        }*/
     }
 
     /* Large devices (desktops, 992px and up) */
@@ -281,7 +281,7 @@
             height: 224px;
         }
 
-        .agree-content/deep/ .agree-container {
+        /*.agree-content/deep/ .agree-container {
             padding-left: 0 !important;
             padding-right: 0 !important;
         }
@@ -289,13 +289,19 @@
         .agree-content/deep/ .agree-actions {
             padding-left: 0 !important;
             padding-right: 0 !important;
-        }
+        }*/
     }
 
     /* Extra large devices (large desktops, 1200px and up) */
     @media (min-width: 1200px) {
+        .agree-content/deep/ .app-content {
+            /* margin-bottom: 78px; */
+            width: 85%;
+            margin: 0 auto;
+        }
+
         .agree-content/deep/ .action {
-            /*width: 380px !important;*/
+            width: 380px !important;
             height: 380px;
         }
 
@@ -304,7 +310,7 @@
             height: 224px;
         }
 
-        .agree-content/deep/ .agree-container {
+        /*.agree-content/deep/ .agree-container {
             padding-left: 0 !important;
             padding-right: 0 !important;
         }
@@ -312,6 +318,9 @@
         .agree-content/deep/ .agree-actions {
             padding-left: 0 !important;
             padding-right: 0 !important;
-        }
+        }*/
     }
+
+
+   
 </style>
