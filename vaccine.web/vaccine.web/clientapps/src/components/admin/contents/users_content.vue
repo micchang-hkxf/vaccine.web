@@ -199,6 +199,7 @@
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   outlined
                                   required
+                                  placeholder="請選擇角色"
                                   @input="areaChange"
                                   :rules="rules.select"
                                   style="margin-right: 10px;min-width:150px"
@@ -206,11 +207,12 @@
                                   return-object>
                         </v-select>
                         <v-label><span class="star">管理區域</span></v-label>
-                        <v-select v-model="setArea" v-if="setRole.id==1"
+                        <v-select v-model="setArea" v-if="setRole.id==1 || setRole.id==null"
                                   :items="getAllAreaItems"
                                   item-text="state"
                                   item-value="id"
                                   dense
+                                  placeholder="請選擇行政區"
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   outlined
                                   required
@@ -224,6 +226,7 @@
                                   item-text="state"
                                   item-value="id"
                                   dense
+                                  placeholder="請選擇行政區"
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   outlined
                                   required
@@ -511,8 +514,10 @@
                     required: v => !!v || '欄位必填.',
                     regex: v => /^09\d{8}$/.test(v) || '請輸入正確的手機號碼(十位半形數字)'
                 },
-                select: [(v) => !!v || "請選擇角色"],
+                select: [(v) => (!!v && v.id>=0) || "請選擇角色"],
                 select2: [(v) => !!v || "請選擇區域"],
+                
+           
             }
         }),
         computed: {
@@ -686,8 +691,9 @@
                 this.fromSaveConfirmMessage = " 請確認內容無誤後點選「確定」完成新增";
                 //this.setRole = { id: 2 ,state:"轄區管理員"};
                 //this.setArea = { id: 1, state: "松山區" };
-                this.$set(this, "setRole", { id: 1, state: "轄區管理員" });
-                this.$set(this, "setArea", { id: "2001", state: "松山區" });
+                //this.$set(this, "setRole", { id: 1, state: "轄區管理員" });
+                //this.$set(this, "setArea", { id: "2001", state: "松山區" });
+                this.$set(this, "setRole", {});
 
                 this.$refs.form.resetValidation();
                 // scroll to top
