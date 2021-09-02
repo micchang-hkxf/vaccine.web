@@ -456,7 +456,9 @@
         color: #626781;
     }
 
-
+    .edit-form .v-menu__content {
+        min-width:120px !important;
+    }
     /*.edit-form {
         height: 650px;
         overflow: scroll;
@@ -464,12 +466,11 @@
         padding-left: 10px;
         padding-right: 15px;
     }*/
-
-        /*-------滾動條整體樣式----*/
-        .edit-form::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
+    /*-------滾動條整體樣式----*/
+    .edit-form::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
 
         /*滾動條裡面小方塊樣式*/
         .edit-form::-webkit-scrollbar-thumb {
@@ -489,7 +490,12 @@
     .v-date-picker-table .v-btn--rounded:hover {
         background-color: #d4ffd6 !important
     }
-
+    .edit-form .v-menu__content, .edit-form .v-input__control {
+        min-width: 140px !important;
+    }
+    .edit-form .v-input__control {
+        min-width: 150px !important;
+    }
     .timepicker {
         z-index: 999;
     }
