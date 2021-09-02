@@ -1095,6 +1095,10 @@
         color: #626781 !important;
     }
 
+    .v-card__actions {
+        padding: 0px 42px 20px 0px !important;
+    }
+
     .fa-search:before {
         content: url('/admin/common_search-24px.svg') !important;
     }

@@ -365,10 +365,8 @@
 
     .applied-list/deep/ .action {
         /*background-color: #FFF;*/
-        /*width: 30% !important;*/
-        /*height: 200px !important;*/
-        height: 168px;
-        /*height: 100%;*/
+        /*width: 30% !important;*/      
+        height: 198px;      
         padding: 16px;
         border-radius: 8px !important;
         width: 95%;

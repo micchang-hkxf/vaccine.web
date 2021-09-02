@@ -40,20 +40,22 @@
                                        :color="setLeftColor"
                                        :ripple="false"     
                                        :outlined="setLeftOutlined"
+                                     
                                        @click="leftBtnAction">
                                     <span class="confirm-left-btns-text"><slot name="confirm-left-btn-text"></slot></span>
                                 </v-btn>
                             </v-col>
                             <v-col cols="6" class="confirm-btns">
+                             
                                 <v-btn class="confirm-right-btn"
-                                       :color="setRightColor"
                                        :ripple="false"
+                                       :color="setRightColor"
                                        :outlined="setRightOutlined"
                                        @click="rightBtnAction">
                                     <span class="confirm-right-btns-text"><slot name="confirm-right-btn-text"></slot></span>
-
-                    </v-btn>
-                </v-col>
+                                    <!---->   <!--{{rightColor}}///{{setRightColor}}-->
+                                </v-btn>
+                            </v-col>
             </v-row>
         </div>
     </template>
@@ -70,10 +72,11 @@
         border-radius: 8px !important;
         overflow-y: hidden !important;
         overflow-x: hidden;
-    }
-
-    .v-btn--contained {
-        box-shadow:none !important;    
+    } 
+        
+        
+        .v-btn-contained {
+        box-shadow: none !important;
     }
 
 
@@ -98,7 +101,8 @@
         white-space: pre-wrap !important;
     }
 
-    .confirm-title {
+
+    .confirm-title{
         display: flex;
         justify-content: center;
         font: normal normal normal 20px Noto Sans T Chinese;
@@ -152,14 +156,13 @@
     }
 
 
-    .confirm-center-btn {
+   .confirm-center-btn {
         width: 230px;
         margin-bottom: 20px;
     }
 
     .confirm-left-btn {
-        width: 88px;
-        /*color: rgba(50,65,80,0.2) !important;*/
+        width: 88px;    
         margin-bottom: 20px;
         margin-right: 20px;
     }
@@ -174,8 +177,7 @@
 </style>
 
 <script>
-    export default {
-    
+    export default {    
         props: ['refKey', 'rightClick', 'leftClick', 'leftColor', 'rightColor', 'leftOutlined', 'rightOutlined'],
         data: () => ({
             isShow: false,
@@ -186,12 +188,21 @@
 
         }),
         computed: {
+            //getRightBtnColor: function () {
+            //    if (this.rightColor != '') {
+            //        return { 'color': this.rightColor + '!important;'};
+            //    } else {
+            //        return { 'color': '#626781;' };
+            //    }
+               
+            //}
         },      
         created: function () {
             var comp = this;
-       
+         
+            //this.setRightBtnColor(this.rightColor);
             comp.$set(comp, "setLeftColor", (comp.leftColor) ? comp.leftColor : comp.setLeftColor);
-            comp.$set(comp, "setRightColor", (comp.rightColor) ? comp.rightColor : comp.setRightColor);
+            comp.$set(comp, "setRightColor", (comp.rightColor) ? comp.rightColor : comp.setRightColor);            
 
             comp.$set(comp, "setLeftOutlined", comp.leftOutlined == "on");
             comp.$set(comp, "setRightOutlined", comp.rightOutlined == "on");
@@ -205,7 +216,7 @@
         },
         methods: {
             open: function(){
-                this.isShow = true;
+                this.isShow = true;               
             },
             rightBtnAction: function () {
                 this.rightClick();
@@ -219,6 +230,7 @@
             hasSlot: function (templateName) {
                 return this.$slots[templateName] != null || this.$scopedSlots[templateName] != null;
             },
+           
         },
         //components: {
         //}

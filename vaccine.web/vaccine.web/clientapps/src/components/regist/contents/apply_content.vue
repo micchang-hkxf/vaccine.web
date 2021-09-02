@@ -14,7 +14,7 @@
         </v-stepper>
     </div>-->
             <div class="apply-container" v-if="session!=null">
-                {{getLockUserInfo}}
+                <!--{{getLockUserInfo}}-->
                 <v-form lazy-validation ref="applyForm" autocomplete="off">
                     <div class="activity-name">{{session.sessionName}}</div>
                     <div class="activity-name-descript">{{session.zoneName}}-{{session.villageName}}│{{session.groupName}}</div>
@@ -651,9 +651,9 @@
         margin: 8px 0;
     }
 
-    .apply-content/deep/ .v-dialog .v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
+    /*.apply-content/deep/ .v-dialog .v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
         background: #626781 0% 0% no-repeat padding-box !important;
-    }
+    }*/
 
     .apply-content/deep/ .v-dialog .confirm-left-btns-text {
         color: #FFF;

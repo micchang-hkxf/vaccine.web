@@ -13,19 +13,54 @@
                         <div>里辦疫苗接種便民服務 </div>
                         <div>-網路報名系統-</div>
 
-
                     </div>
                 </div>
-                <!--<div class="action-title d-flex flex-row justify-center">v-show="user!=null"-->
-                <!--<div style="display:flex;justify-content:center;">-->
-                    <div class="action-title" >
-                        <img src="../../../public/login/home.svg" @click.stop="goWelcome" />
-                        <slot name="regist-title"></slot>
-                        <img src="../../../public/login/logout_logo.svg" @click.stop="logout" />
-                    </div>
-                <!--</div>-->
-
+                <div class="action-title" style="display:flex;justify-content:center; margin-left: 400px;margin-right: 400px;">
+                    <img src="../../../public/login/home.svg" @click.stop="goWelcome" />
+                    <v-spacer></v-spacer>
+                    <slot name="regist-title"></slot>
+                    <v-spacer></v-spacer>
+                    <img src="../../../public/login/logout_logo.svg" @click.stop="confirmLogOut" v-show="user!=null" />
+                </div>
             </div>
+
+            <com-confirm ref="logoutAlert" ref-key="confirm" :left-click="logoutLeftClick" :right-click="logoutRightClick" right-color="#736DB9" left-color="#626781" key="logout-alert-confirm">
+                <template v-slot:confirm-image>
+                    <v-img src="/alert_warning.svg"></v-img>
+                </template>
+
+                <template v-slot:confirm-text>
+                    <span> 確定登出？</span>
+                </template>
+                <template v-slot:confirm-left-btn-text>
+                    取消
+                </template>
+                <template v-slot:confirm-right-btn-text>
+                    確定
+                </template>
+
+            </com-confirm>
+
+            <com-confirm ref="logoutAutoAlert" ref-key="confirm" :right-click="logoutAutoRightClick" right-color="#626781" key="logoutAuto-alert-confirm">
+                <template v-slot:confirm-image>
+                    <v-img src="/alert_warning.svg"></v-img>
+                </template>
+                <template v-slot:confirm-title>
+                    <span> 自動登出</span>
+                </template>
+                <template v-slot:confirm-text>
+                    <span> 由於系統閒置過久已將您登出</span>
+                </template>
+                            
+                <template v-slot:confirm-right-btn-text>
+                    返回首頁
+                </template>
+
+            </com-confirm>
+
+
+
+
         </template>
         <template v-slot:app-content>
             <slot name="regist-content"></slot>
@@ -35,6 +70,7 @@
 
 <script>
     import appLayout from 'components/app_layout'
+    import comConfirm from 'components/confirm'
     export default {
         // router,
         data: () => ({
@@ -54,17 +90,27 @@
             this.user = sessionStorage.getItem('userInfo');          
         },
         methods: {
-            goWelcome: function () {
-                this.$router.push('welcome');               
+            goWelcome: function () {                          
+                this.$router.push({ name: 'welcome' });
             },
-            logout: function () {
+            confirmLogOut: function () {              
+                this.$refs.logoutAlert.open();
+            },
+            logoutLeftClick: function () {
+                this.$refs.logoutAlert.close();
+            },
+            logoutRightClick: function () {
                 sessionStorage.removeItem('userInfo');
-                sessionStorage.removeItem('activityApply');
-                this.$router.push('welcome');
+                sessionStorage.removeItem('activityApply');              
+                this.$router.push({ name: 'welcome' });
+            },
+            logoutAutoRightClick: function () {
+                this.$router.push({ name: 'welcome' });
             }
         },
         components: {
-            appLayout
+            appLayout,
+            comConfirm
         }
     }
 </script>
