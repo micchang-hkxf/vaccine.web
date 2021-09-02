@@ -39,7 +39,9 @@
         <template v-slot:top>
 
             <template>
-                <slot name="search-bar" v-if="hasSlot('search-bar')"></slot>
+                <div class="search-bar">
+                    <slot name="search-bar" v-if="hasSlot('search-bar')"></slot>
+                </div>
             </template>
 
             <v-toolbar flat color="white" v-if="hasSlot('toolbar-action')">
@@ -129,15 +131,30 @@
         /*height: 650px;
         overflow: scroll;
         overflow-x: hidden;*/
-        padding-left: 10px;
-        padding-right: 15px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .v-toolbar__content {
+        padding: 4px 10px !important;
+    }
+
+    .v-data-table {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    .v-data-table .search-bar {
+        position: relative;
+        top: 20px;
+        padding: 0 12px 10px 3px;
     }
 
     /*-------滾動條整體樣式----*/
-        .v-data-table__wrapper::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
+    .v-data-table__wrapper::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
 
     /*滾動條裡面小方塊樣式*/
         .v-data-table__wrapper::-webkit-scrollbar-thumb {

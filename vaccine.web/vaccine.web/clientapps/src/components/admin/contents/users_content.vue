@@ -8,30 +8,30 @@
         </template>
         <template v-slot:app-content>
             <com-loading ref-key="type1"></com-loading>
-            <div id="app" class="table-list">
-                <com-table ref="userTable" ref-key="table" :headers="headers" :items="items" :total-count="totalCount" disabled-prop="disabled"
-                           :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                           :change-page="changePage" style="margin-left: 0px;padding-top: 10px;margin-right: 10px;">
-                    <template v-slot:item.isEnable="items">
-                        <div>{{   items.item.isEnable.toString()=='true' ? "啟用" : "停用" }}</div>
-                    </template>
-                    <template v-slot:item.area="items">
-                        <span>{{  getZonesData(items.item) }}</span>
-                    </template>
-                    <template v-slot:search-bar>
-                        <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
-                            <v-row>
-                           
+            <div id="app">
+                <v-card>
+                    <com-table ref="userTable" ref-key="table" :headers="headers" :items="items" :total-count="totalCount" disabled-prop="disabled"
+                               :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
+                               :change-page="changePage">
+                        <template v-slot:item.isEnable="items">
+                            <div>{{   items.item.isEnable.toString()=='true' ? "啟用" : "停用" }}</div>
+                        </template>
+                        <template v-slot:item.area="items">
+                            <span>{{  getZonesData(items.item) }}</span>
+                        </template>
+                        <template v-slot:search-bar>
+                            <div>
+                                <v-row>
                                     <v-select v-model="selectRole"
                                               :items="getRoleItems"
                                               item-text="state"
                                               item-value="id"
-                                              label="全部角色"
+                                              placeholder="全部角色"
                                               dense
                                               :menu-props="{ bottom: true, offsetY: true }"
                                               outlined
                                               clearable
-                    
+                                              style="max-width:200px"
                                               class="search-filter fs"
                                               return-object>
                                     </v-select>
@@ -40,12 +40,12 @@
                                               :items="getAreaItems"
                                               item-text="state"
                                               item-value="id"
-                                              label="有/無管轄區域"
+                                              placeholder="有/無管轄區域"
                                               dense
                                               :menu-props="{ bottom: true, offsetY: true }"
                                               outlined
                                               clearable
-                                              style="margin-right: 10px;min-width:150px"
+                                              style="max-width:200px"
                                               class="search-filter fs"
                                               return-object>
                                     </v-select>
@@ -53,121 +53,126 @@
                                               :items="permissionStatus"
                                               item-text="state"
                                               item-value="st"
-                                              label="權限啟用/停用"
+                                              placeholder="權限啟用/停用"
                                               dense
                                               :menu-props="{ bottom: true, offsetY: true }"
                                               outlined
                                               clearable
-                                              style="margin-right: 10px;min-width:150px"
+                                              style="max-width:200px"
                                               class="search-filter fs"
                                               return-object>
                                     </v-select>
-                                    <v-text-field class="w03"
-                                                  label='人員姓名/編號'
+                                    <v-text-field class="fs"
+                                                  placeholder='人員姓名/編號'
                                                   dense
                                                   v-model.trim="selectUser"
-                                                  outlined>
+                                                  outlined
+                                                  clearable
+                                                  style="max-width:200px"
+                                                  autocomplete="off">
                                     </v-text-field>
 
-                                    <v-btn color="#626781" icon style="padding-left:2px;top:3px" @click.stop="search(1)" class="content-search-button">
+                                    <v-btn icon style="top:3px;" @click.stop="search(1)" class="content-search-button">
                                         <v-icon size="20">fas fa-search</v-icon>
                                     </v-btn>
                                     <v-file-input accept=".csv" style="display:none" ref="importfile">
                                     </v-file-input>
-                                
 
-                            </v-row>
+                                </v-row>
 
-                        </div>
-
+                            </div>
 
 
-                    </template>
 
-                    <template v-slot:toolbar-action={}>
-                        <!--<v-checkbox :ripple="false" hide-details @click="switchSelect"></v-checkbox>
-        <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
-            <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
-        </v-btn>
-        -->
-                        <v-spacer></v-spacer>
+                        </template>
 
-                        <v-menu bottom right offset-y>
-                            <template v-slot:activator="{ on }">
-                                <v-btn v-on="on" color="#626781" @click.stop="">
-                                    <img src="/admin/Component177–2.svg">
-                                    <span style="color:white">新增人員</span>
-                                </v-btn>
-                            </template>
-                            <v-list>
-                                <v-list-item>
-                                    <v-list-item-action-text>
-                                        選擇新增方式:
-                                    </v-list-item-action-text>
-                                </v-list-item>
-                                <v-list-item @click.stop="newItem()">
-                                    <v-list-item-action-text>
-                                        <v-btn icon dense :ripple="false">
-                                            <img src="/pen.svg">
-                                        </v-btn> <span class="modify-btn-text">手動輸入</span>
-                                    </v-list-item-action-text>
-                                </v-list-item>
-                                <!--<v-list-item @click.stop="importItem(item)">
-                    <v-list-item-action-text>
-                        <v-btn icon dense>
-                            <v-icon small>far fa-trash-alt</v-icon>
-                        </v-btn>檔案匯入
-                    </v-list-item-action-text>
-                </v-list-item>-->
+                        lb
 
-                            </v-list>
-                        </v-menu>
-                    </template>
+                        <template v-slot:toolbar-action={}>
+                            <!--<v-checkbox :ripple="false" hide-details @click="switchSelect"></v-checkbox>
+            <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
+                <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
+            </v-btn>
+            -->
+                            <v-spacer></v-spacer>
 
-                    <template v-slot:item.pdExpTime="{item}">
-                        {{$moment(item.pdExpTime).format('YYYY/MM/DD HH:mm')}}
-                    </template>
+                            <v-menu bottom right offset-y>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn v-on="on" color="#626781" @click.stop="">
+                                        <img src="/admin/Component177–2.svg">
+                                        <span style="color:white">新增人員</span>
+                                    </v-btn>
+                                </template>
+                                <v-list>
+                                    <v-list-item>
+                                        <v-list-item-action-text>
+                                            選擇新增方式:
+                                        </v-list-item-action-text>
+                                    </v-list-item>
+                                    <v-list-item @click.stop="newItem()">
+                                        <v-list-item-action-text>
+                                            <v-btn icon dense :ripple="false">
+                                                <img src="/pen.svg">
+                                            </v-btn> <span class="modify-btn-text">手動輸入</span>
+                                        </v-list-item-action-text>
+                                    </v-list-item>
+                                    <!--<v-list-item @click.stop="importItem(item)">
+                        <v-list-item-action-text>
+                            <v-btn icon dense>
+                                <v-icon small>far fa-trash-alt</v-icon>
+                            </v-btn>檔案匯入
+                        </v-list-item-action-text>
+                    </v-list-item>-->
 
-                    <template v-slot:item.lastAccessTime="{item}">
-                        {{$moment(item.lastAccessTime).format('YYYY/MM/DD HH:mm')}}
-                    </template>
+                                </v-list>
+                            </v-menu>
+                        </template>
 
-                    <template v-slot:item.modify="{item}">
+                        <template v-slot:item.pdExpTime="{item}">
+                            {{$moment(item.pdExpTime).format('YYYY/MM/DD HH:mm')}}
+                        </template>
 
-                        <v-menu bottom right offset-y>
-                            <template v-slot:activator="{ on }">
-                                <v-btn dark icon v-on="on" @click.stop="showOptMenu(item)">
-                                    <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
-                                </v-btn>
-                            </template>
-                            <v-list>
-                                <v-list-item @click.stop="editItem(item)">
-                                    <v-list-item-action-text>
-                                        <v-btn icon dense>
-                                            <v-icon small>far fa-edit</v-icon>
-                                        </v-btn>編輯
-                                    </v-list-item-action-text>
-                                </v-list-item>
-                                <v-list-item @click.stop="stopItem(item)">
-                                    <v-list-item-action-text>
-                                        <v-btn icon dense>
-                                            <v-icon small>far fa-eye-slash</v-icon>
-                                        </v-btn>{{ changeStatus }}
-                                    </v-list-item-action-text>
-                                </v-list-item>
-                                <v-list-item @click.stop="removeItemConfirm(item)">
-                                    <v-list-item-action-text>
-                                        <v-btn icon dense>
-                                            <v-icon small>far fa-trash-alt</v-icon>
-                                        </v-btn>刪除
-                                    </v-list-item-action-text>
-                                </v-list-item>
+                        <template v-slot:item.lastAccessTime="{item}">
+                            {{$moment(item.lastAccessTime).format('YYYY/MM/DD HH:mm')}}
+                        </template>
 
-                            </v-list>
-                        </v-menu>
+                        <template v-slot:item.modify="{item}">
 
-                    </template>
-                </com-table>
+                            <v-menu bottom right offset-y>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn dark icon v-on="on" @click.stop="showOptMenu(item)">
+                                        <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
+                                    </v-btn>
+                                </template>
+                                <v-list>
+                                    <v-list-item @click.stop="editItem(item)">
+                                        <v-list-item-action-text>
+                                            <v-btn icon dense>
+                                                <v-icon small>far fa-edit</v-icon>
+                                            </v-btn>編輯
+                                        </v-list-item-action-text>
+                                    </v-list-item>
+                                    <v-list-item @click.stop="stopItem(item)">
+                                        <v-list-item-action-text>
+                                            <v-btn icon dense>
+                                                <v-icon small>far fa-eye-slash</v-icon>
+                                            </v-btn>{{ changeStatus }}
+                                        </v-list-item-action-text>
+                                    </v-list-item>
+                                    <v-list-item @click.stop="removeItemConfirm(item)">
+                                        <v-list-item-action-text>
+                                            <v-btn icon dense>
+                                                <v-icon small>far fa-trash-alt</v-icon>
+                                            </v-btn>刪除
+                                        </v-list-item-action-text>
+                                    </v-list-item>
+
+                                </v-list>
+                            </v-menu>
+
+                        </template>
+                    </com-table>
+                </v-card>
             </div>
 
             <com-dialog ref="dialogPanel" ref-key="userform" width="40%">
@@ -198,7 +203,6 @@
                                   dense
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   outlined
-                                  attach
                                   required
                                   placeholder="請選擇角色"
                                   @input="areaChange"
@@ -217,7 +221,6 @@
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   outlined
                                   required
-                                  attach
                                   :rules="rules.select2"
                                   style="margin-right: 10px;min-width:150px"
                                   class="search-filter w01"
@@ -232,7 +235,6 @@
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   outlined
                                   required
-                                  attach
                                   :rules="rules.select2"
                                   style="margin-right: 10px;min-width:150px"
                                   class="search-filter w01"
@@ -360,13 +362,6 @@
 
 
 <style>
-    .users-list .table-list {
-        background: var(--w) 0% 0% no-repeat padding-box !important;
-        background: #FFFFFF 0% 0% no-repeat padding-box !important;
-       
-        opacity: 1 !important;
-        /*margin: 24px !important;*/
-    }
     .users-list .app-content {
         background: #F2F3F7 !important;
     }
