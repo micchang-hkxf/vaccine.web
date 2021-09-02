@@ -22,6 +22,7 @@
                                   :rules="[rules.required]"
                                   outlined
                                   dense
+                                  attach
                                   class="search-filter"
                                   append-icon="mdi-chevron-down"
                                   return-object
@@ -42,6 +43,7 @@
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   :rules="[rules.required]"
                                   outlined
+                                  attach
                                   dense
                                   class="search-filter"
                                   append-icon="mdi-chevron-down"
@@ -82,6 +84,7 @@
                                       :menu-props="{ bottom: true, offsetY: true }"
                                       :rules="[rules.required]"
                                       outlined
+                                      attach
                                       dense
                                       class="search-filter zone-selector"
                                       append-icon="mdi-chevron-down"
@@ -97,6 +100,7 @@
                                       :menu-props="{ bottom: true, offsetY: true }"
                                       :rules="[rules.required]"
                                       outlined
+                                      attach
                                       dense
                                       class="search-filter zone-selector"
                                       append-icon="mdi-chevron-down"
@@ -131,6 +135,7 @@
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   :rules="[rules.required]"
                                   outlined
+                                  attach
                                   dense
                                   class="search-filter"
                                   append-icon="mdi-chevron-down"
@@ -204,8 +209,6 @@
                         <div>  <span class="regist-title">設站時段設定</span><span class="red--text">*</span></div>
                         <com-timepicker :readonly="overStatus==1" v-model="regist_station_start_time"></com-timepicker>
                         <com-timepicker :readonly="overStatus==1" v-model="regist_station_end_time"></com-timepicker>
-                        <br>
-                        <font color="red">結束時間不能早於起始時間</font>
                     </v-col>
 
                 </v-row>

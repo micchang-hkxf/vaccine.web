@@ -198,6 +198,7 @@
                                   dense
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   outlined
+                                  attach
                                   required
                                   placeholder="請選擇角色"
                                   @input="areaChange"
@@ -216,6 +217,7 @@
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   outlined
                                   required
+                                  attach
                                   :rules="rules.select2"
                                   style="margin-right: 10px;min-width:150px"
                                   class="search-filter w01"
@@ -230,6 +232,7 @@
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   outlined
                                   required
+                                  attach
                                   :rules="rules.select2"
                                   style="margin-right: 10px;min-width:150px"
                                   class="search-filter w01"
