@@ -22,6 +22,7 @@
                                   :rules="[rules.required]"
                                   outlined
                                   dense
+                                  attach
                                   class="search-filter"
                                   append-icon="mdi-chevron-down"
                                   return-object
@@ -42,6 +43,7 @@
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   :rules="[rules.required]"
                                   outlined
+                                  attach
                                   dense
                                   class="search-filter"
                                   append-icon="mdi-chevron-down"
@@ -82,6 +84,7 @@
                                       :menu-props="{ bottom: true, offsetY: true }"
                                       :rules="[rules.required]"
                                       outlined
+                                      attach
                                       dense
                                       class="search-filter zone-selector"
                                       append-icon="mdi-chevron-down"
@@ -97,6 +100,7 @@
                                       :menu-props="{ bottom: true, offsetY: true }"
                                       :rules="[rules.required]"
                                       outlined
+                                      attach
                                       dense
                                       class="search-filter zone-selector"
                                       append-icon="mdi-chevron-down"
@@ -131,6 +135,7 @@
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   :rules="[rules.required]"
                                   outlined
+                                  attach
                                   dense
                                   class="search-filter"
                                   append-icon="mdi-chevron-down"
@@ -204,8 +209,6 @@
                         <div>  <span class="regist-title">設站時段設定</span><span class="red--text">*</span></div>
                         <com-timepicker :readonly="overStatus==1" v-model="regist_station_start_time"></com-timepicker>
                         <com-timepicker :readonly="overStatus==1" v-model="regist_station_end_time"></com-timepicker>
-                        <br>
-                        <font color="red">結束時間不能早於起始時間</font>
                     </v-col>
 
                 </v-row>
@@ -453,7 +456,9 @@
         color: #626781;
     }
 
-
+    .edit-form .v-menu__content {
+        min-width:120px !important;
+    }
     /*.edit-form {
         height: 650px;
         overflow: scroll;
@@ -461,12 +466,11 @@
         padding-left: 10px;
         padding-right: 15px;
     }*/
-
-        /*-------滾動條整體樣式----*/
-        .edit-form::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
+    /*-------滾動條整體樣式----*/
+    .edit-form::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
 
         /*滾動條裡面小方塊樣式*/
         .edit-form::-webkit-scrollbar-thumb {
@@ -486,7 +490,12 @@
     .v-date-picker-table .v-btn--rounded:hover {
         background-color: #d4ffd6 !important
     }
-
+    .edit-form .v-menu__content, .edit-form .v-input__control {
+        min-width: 140px !important;
+    }
+    .edit-form .v-input__control {
+        min-width: 150px !important;
+    }
     .timepicker {
         z-index: 999;
     }
