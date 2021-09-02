@@ -11,7 +11,7 @@
                 <com-table ref="auditTable" ref-key="table" :headers="headers" :items="items" :total-count="totalCount"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
                            :change-page="changePage"
-                           style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
+                           style="margin-left: 9px;padding-top: 1px;margin-right: 10px;">
                     <template v-slot:item.quota>
                         <div>45/<span style="color:dimgrey">60</span></div>
                     </template>

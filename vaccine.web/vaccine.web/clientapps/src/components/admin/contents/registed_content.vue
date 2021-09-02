@@ -11,7 +11,7 @@
                 <com-table ref="registedTable" ref-key="table" :headers="headers" :items="items" :total-count="totalCount"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
                            :change-page="changePage"
-                           style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
+                           style="margin-left: 10px;padding-top: 2px;margin-right: 10px;">
                     <template v-slot:search-bar>
                         <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
                             <v-row>

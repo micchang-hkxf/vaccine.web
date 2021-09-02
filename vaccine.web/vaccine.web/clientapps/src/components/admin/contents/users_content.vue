@@ -11,7 +11,7 @@
             <div id="app" class="table-list">
                 <com-table ref="userTable" ref-key="table" :headers="headers" :items="items" :total-count="totalCount" disabled-prop="disabled"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                           :change-page="changePage" style="margin-left: 8px;padding-top: 28px;margin-right: 10px;">
+                           :change-page="changePage" style="margin-left: 0px;padding-top: 10px;margin-right: 10px;">
                     <template v-slot:item.isEnable="items">
                         <div>{{   items.item.isEnable.toString()=='true' ? "啟用" : "停用" }}</div>
                     </template>
