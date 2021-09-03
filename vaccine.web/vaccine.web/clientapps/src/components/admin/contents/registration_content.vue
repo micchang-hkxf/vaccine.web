@@ -1106,7 +1106,9 @@
         padding: 0px 0px 0px 20px !important;
         width: 120px !important;
     }
-
+    .prevContent .v-list-item .v-list-item__title {
+        margin: 0 0px !important;
+    }
 </style>
 
 <script>
