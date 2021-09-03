@@ -211,7 +211,16 @@
         methods: {
             ...mapActions('users', ['modifyPassword']),
             ...mapActions('user', ['getUserInfoData','userLogout']),
-
+            toggleDrawer() {
+                this.drawer = !this.drawer;
+                var m = document.querySelector(".v-main__wrap");
+                if (!this.drawer) {
+                    m.style = "position:absolute;left:0px;height:100px; "
+                } else {
+                    m.removeAttribute('position');
+                    m.style = "position:relative;"
+                }
+            },
             handleClick(index) {
                 this.menulist[index].click.call(this)
             },
