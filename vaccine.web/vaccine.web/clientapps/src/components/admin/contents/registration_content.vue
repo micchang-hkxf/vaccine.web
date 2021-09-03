@@ -1116,6 +1116,9 @@
     .regUserDetail .search-bar {
         padding-right: 0px !important;
     }
+    .registration-list .v-card__actions {
+        padding-right: 32px !important;
+    }
 </style>
 
 <script>
