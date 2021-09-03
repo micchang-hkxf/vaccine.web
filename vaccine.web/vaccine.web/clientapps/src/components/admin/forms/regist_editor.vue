@@ -648,6 +648,8 @@
                 this.overStatus = 0;
                 this.model = Object.assign(this.defaultItem, model);
                 this.registerCountNow = 0;
+                this.registEndDate = "";
+                this.reCheckDate = "";
                 this.$refs.dialogPanel.open();
             },
             reset: function () {
