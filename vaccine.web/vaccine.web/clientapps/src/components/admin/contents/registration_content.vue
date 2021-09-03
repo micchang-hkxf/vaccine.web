@@ -627,7 +627,7 @@
                             </div>
                             <hr />
                             <!---->
-                            <com-table ref-key="detailTable" :headers="getRegistrationHeaders" :items="detailItems" :total-count="detailTotalCount"
+                            <com-table class="regUserDetail" ref-key="detailTable" :headers="getRegistrationHeaders" :items="detailItems" :total-count="detailTotalCount"
                                        :items-per-page="detailItemsPerPage" :total-visible="detailTotalVisible" :show-select="false"
                                        :change-page="detailChangePage" disabled-prop="disabled"
                                        style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
@@ -1108,6 +1108,13 @@
     }
     .prevContent .v-list-item .v-list-item__title {
         margin: 0 0px !important;
+    }
+    .regUserDetail .detail-action {
+        justify-content: flex-end !important;
+        width: 100% !important;
+    }
+    .regUserDetail .search-bar {
+        padding-right: 0px !important;
     }
 </style>
 
