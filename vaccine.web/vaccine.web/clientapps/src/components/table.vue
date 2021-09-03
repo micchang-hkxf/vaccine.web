@@ -83,12 +83,12 @@
         color: #626781 !important;
         opacity: 1;
     }
-    .v-data-table__wrapper td {
+    /*.v-data-table__wrapper td {
         max-width: 160px !important;
         overflow: hidden;
         text-overflow: ellipsis !important;
         white-space: pre !important;
-    }
+    }*/
     .v-data-table__wrapper td before {
         content: '&nbsp;';
         visibility: hidden;
