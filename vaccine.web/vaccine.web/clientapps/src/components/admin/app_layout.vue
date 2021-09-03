@@ -381,4 +381,7 @@
     .v-list-item .v-list-item__title {
         margin: 0 8px;
     }
+    .v-main__wrap .v-toolbar__title {
+        padding-left: 10px;
+    }
 </style>
