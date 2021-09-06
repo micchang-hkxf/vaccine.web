@@ -175,7 +175,7 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn @click="toLoginPage" :ripple="false" outlined color="rgba(50,65,80,0.2)">
-                                    取消
+                                    <span style="color:#626781;">取消</span>
                                 </v-btn>
                                 <v-btn @click="checkForgetUid(next)" :ripple="false">下一步</v-btn>
                             </v-card-actions>
@@ -206,7 +206,7 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn @click="toLoginPage" :ripple="false" outlined color="rgba(50,65,80,0.2)">
-                                    取消
+                                    <span style="color:#626781;">取消</span>
                                 </v-btn>
                                 <v-btn @click="checkForgetVerificationCode(next)" :ripple="false">下一步</v-btn>
                             </v-card-actions>
@@ -248,7 +248,7 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn @click="toLoginPage" :ripple="false" outlined color="rgba(50,65,80,0.2)">
-                                    取消
+                                    <span style="color:#626781;">取消</span>
                                 </v-btn>
                                 <v-btn @click="checkForgetResetPw(next)" :ripple="false">送出</v-btn>
                             </v-card-actions>
