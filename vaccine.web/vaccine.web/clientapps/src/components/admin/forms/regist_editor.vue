@@ -478,18 +478,18 @@
     }
 
         /*滾動條裡面小方塊樣式*/
-        .edit-form::-webkit-scrollbar-thumb {
-            border-radius: 100px;
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            background: #736DB9;
-        }
+    .edit-form::-webkit-scrollbar-thumb {
+        border-radius: 100px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        background: rgba(98,103,129,0.2);
+    }
 
         /*滾動條裡面軌道樣式*/
-        .edit-form::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            border-radius: 20px;
-            background: rgba(0,0,0,0.1);
-        }
+    .edit-form::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        border-radius: 20px;
+        background: rgba(98,103,129,0.1);
+    }
 </style>
 <style>
     .v-date-picker-table .v-btn--rounded:hover {
