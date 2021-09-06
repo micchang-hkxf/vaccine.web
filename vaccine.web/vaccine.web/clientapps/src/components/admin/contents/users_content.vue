@@ -86,8 +86,6 @@
 
                         </template>
 
-                        lb
-
                         <template v-slot:toolbar-action={}>
                             <!--<v-checkbox :ripple="false" hide-details @click="switchSelect"></v-checkbox>
             <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
@@ -176,82 +174,122 @@
             </div>
 
             <com-dialog ref="dialogPanel" ref-key="userform" width="40%">
-                <template v-slot:toolbar>
+                <template v-slot:toolbar="{close}">
                     {{ formTitle }}
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click.stop="close" :ripple="false">
+                        <v-icon color="white">fas fa-times</v-icon>
+                    </v-btn>
                 </template>
                 <template v-slot:content>
                     <v-form v-model="valid" ref="form">
-                        <v-label><span class="star">姓名</span></v-label>
-                        <v-text-field dense outlined placeholder="請輸入姓名" v-model.trim="uName" :rules="[v => !!v || '必填']"></v-text-field>
-                        <v-label><span class="star">帳號</span></v-label>
-                        <v-text-field dense outlined class="w02" placeholder="請輸入帳號" v-model="acc" v-bind:readonly="isReadOnly" :rules="[v => !!v || '必填']"></v-text-field>
-                        <!--<v-label><span class="star">email</span></v-label>
-    <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>-->
-                        <v-label><span class="star">手機</span></v-label>
-                        <v-text-field dense outlined class="w02" placeholder="請輸入手機號碼" type="number" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
-                        <v-label><span class="star">再次確認手機</span></v-label>
-                        <v-text-field dense outlined class="w02" placeholder="再次輸入手機號碼" type="number" v-model="mbNo2" :rules="[rules.mbNo.regex, checkMbNo]"></v-text-field>
-                        <v-label><span class="star">服務單位</span></v-label>
-                        <v-text-field dense outlined class="w02" placeholder="請輸入單位名稱" v-model="unitName" :rules="[v => !!v || '必填']"></v-text-field>
-                        <hr noshade size="1">
-                        <div style="height:20px"></div>
-                        <v-label><span class="star">角色設定</span></v-label>
-                        <v-select v-model="setRole"
-                                  :items="getRoleItems"
-                                  item-text="state"
-                                  item-value="id"
-                                  dense
-                                  :menu-props="{ bottom: true, offsetY: true }"
-                                  outlined
-                                  required
-                                  placeholder="請選擇角色"
-                                  @input="areaChange"
-                                  :rules="rules.select"
-                                  style="margin-right: 10px;min-width:150px"
-                                  class="search-filter w01"
-                                  return-object>
-                        </v-select>
-                        <v-label><span class="star">管理區域</span></v-label>
-                        <v-select v-model="setArea" v-if="setRole.id==1 || setRole.id==null"
-                                  :items="getAllAreaItems"
-                                  item-text="state"
-                                  item-value="id"
-                                  dense
-                                  placeholder="請選擇行政區"
-                                  :menu-props="{ bottom: true, offsetY: true }"
-                                  outlined
-                                  required
-                                  :rules="rules.select2"
-                                  style="margin-right: 10px;min-width:150px"
-                                  class="search-filter w01"
-                                  return-object>
-                        </v-select>
-                        <v-select v-model="setArea" v-if="setRole.id==0"
-                                  :items="[{id:null , state:'無'},{id:'200' , state:'管理全區'}]"
-                                  item-text="state"
-                                  item-value="id"
-                                  dense
-                                  placeholder="請選擇行政區"
-                                  :menu-props="{ bottom: true, offsetY: true }"
-                                  outlined
-                                  required
-                                  :rules="rules.select2"
-                                  style="margin-right: 10px;min-width:150px"
-                                  class="search-filter w01"
-                                  return-object>
-                        </v-select>
-                        <v-checkbox v-model="setEnable" label="啟用" v-show="formTitle!='新增人員'"></v-checkbox>
-                        <!--<v-text-field type="hidden" v-model="editID"></v-text-field>-->
-                        <hr noshade size="1">
+                        <v-row>
+                            <v-col cols="12">
+                                <v-label><span class="star">姓名</span></v-label>
+                                <v-text-field dense outlined placeholder="請輸入姓名" v-model.trim="uName" :rules="[v => !!v || '必填']"></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-label><span class="star">帳號</span></v-label>
+                                <v-text-field dense outlined class="w02" placeholder="請輸入帳號" v-model="acc" v-bind:readonly="isReadOnly" :rules="[v => !!v || '必填']"></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <!--<v-row>
+        <v-col cols="12">
+            <v-label><span class="star">email</span></v-label>
+            <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>
+        </v-col>
+    </v-row>-->
+                        <v-row>
+                            <v-col cols="12">
+                                <v-label><span class="star">手機</span></v-label>
+                                <v-text-field dense outlined class="w02" placeholder="請輸入手機號碼" type="number" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-label><span class="star">再次確認手機</span></v-label>
+                                <v-text-field dense outlined class="w02" placeholder="再次輸入手機號碼" type="number" v-model="mbNo2" :rules="[rules.mbNo.regex, checkMbNo]"></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-label><span class="star">服務單位</span></v-label>
+                                <v-text-field dense outlined class="w02" placeholder="請輸入單位名稱" v-model="unitName" :rules="[v => !!v || '必填']"></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-divider></v-divider>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-label><span class="star">角色設定</span></v-label>
+                                <v-select v-model="setRole"
+                                          :items="getRoleItems"
+                                          item-text="state"
+                                          item-value="id"
+                                          dense
+                                          :menu-props="{ bottom: true, offsetY: true }"
+                                          outlined
+                                          required
+                                          placeholder="請選擇角色"
+                                          @input="areaChange"
+                                          :rules="rules.select"
+                                          style="margin-right: 10px;min-width:150px"
+                                          class="search-filter w01"
+                                          return-object>
+                                </v-select>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-label><span class="star">管理區域</span></v-label>
+                                <v-select v-model="setArea" v-if="setRole.id==1 || setRole.id==null"
+                                          :items="getAllAreaItems"
+                                          item-text="state"
+                                          item-value="id"
+                                          dense
+                                          placeholder="請選擇行政區"
+                                          :menu-props="{ bottom: true, offsetY: true }"
+                                          outlined
+                                          required
+                                          :rules="rules.select2"
+                                          style="margin-right: 10px;min-width:150px"
+                                          class="search-filter w01"
+                                          return-object>
+                                </v-select>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-select v-model="setArea" v-if="setRole.id==0"
+                                          :items="[{id:null , state:'無'},{id:'200' , state:'管理全區'}]"
+                                          item-text="state"
+                                          item-value="id"
+                                          dense
+                                          placeholder="請選擇行政區"
+                                          :menu-props="{ bottom: true, offsetY: true }"
+                                          outlined
+                                          required
+                                          :rules="rules.select2"
+                                          style="margin-right: 10px;min-width:150px"
+                                          class="search-filter w01"
+                                          return-object>
+                                </v-select>
+                            </v-col>
+                        </v-row>
+                        <v-row v-if="formTitle!='新增人員'">
+                            <v-col cols="12">
+                                <v-checkbox v-model="setEnable" label="啟用"></v-checkbox>
+                                <!--<v-text-field type="hidden" v-model="editID"></v-text-field>-->
+                            </v-col>
+                        </v-row>
+                        <v-divider></v-divider>
                     </v-form>
                 </template>
                 <template v-slot:action="{close}">
                     <v-spacer></v-spacer>
-                    <v-spacer></v-spacer>
-                    <v-spacer></v-spacer>
-                    <v-spacer></v-spacer>
-                    <v-btn @click="close" outlined>取消</v-btn>
-                    <v-btn @click="createConfirm" color="primary" style="margin-left:20px">儲存</v-btn>
+                    <v-btn @click="close" outlined :ripple="false"><span style="color:#626781;">取消</span></v-btn>
+                    <v-btn @click="createConfirm" color="primary" :ripple="false"><span>儲存</span></v-btn>
                 </template>
             </com-dialog>
             <com-confirm ref="alert" ref-key="alert" :right-click="alertClick" :right-color="alertrightcolor" right-outlined="">
@@ -424,6 +462,19 @@
     .w02 input::-webkit-outer-spin-button,
     .w02 input::-webkit-inner-spin-button {
         -webkit-appearance: none;
+    }
+
+    .userform .col {
+        padding: 10px 12px 0 12px;
+    }
+
+    .userform .v-card__actions {
+        padding: 24px 30px !important;
+    }
+
+    .userform .v-input--checkbox {
+        margin: 0;
+        padding: 0;
     }
 </style>
 
