@@ -305,6 +305,11 @@ export default {
             state.lockUserInfo = lock;
         },
         saveUserInfo: (state, userInfo) => {
+            if (userInfo == null) {
+                state.userInfo = null;
+                sessionStorage.removeItem("userInfo");
+                return;
+            }
             state.userInfo = userInfo;
             sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
         },

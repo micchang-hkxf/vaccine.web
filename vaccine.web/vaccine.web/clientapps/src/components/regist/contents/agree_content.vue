@@ -61,9 +61,7 @@
             this.isShow = false;
             this.session = this.$store.getters['regist/user/getActivityApply'];
             if (moment(this.session.registStart) <= moment(this.now) && moment(this.now) <= moment(this.session.registEnd)) {
-                if (this.session.totalCount < this.session.maxLimit) {
-                    this.isShow = true;
-                }
+                this.isShow = true;
             }
             window.scrollTo(0, 0);
         },
