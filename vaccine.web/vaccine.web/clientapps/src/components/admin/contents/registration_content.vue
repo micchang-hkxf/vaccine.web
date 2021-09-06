@@ -138,7 +138,7 @@
 
 
 
-                            <com-dialog ref="fileViewer" ref-key="two" key="file-upload-dialog" width="40%">
+                            <com-dialog ref="fileViewer" ref-key="fileViewer"  key="file-upload-dialog" width="512">
                                 <template v-slot:toolbar>
                                     建立報名表-檔案匯入
                                     <v-spacer></v-spacer>
@@ -157,17 +157,19 @@
                                         </div>
 
                                         <div class="file-btn-container">
-                                            <v-btn color="secondary" @click="onUploadClick">
+                                            <v-btn color="secondary" class="acBtn" @click="onUploadClick">
                                                 <img src="/upload.svg">
                                                 <span class="file-btn-text">上傳報名表檔案</span>
                                             </v-btn>
                                             <input ref="excelUploader"
                                                    type="file"
                                                    style="display:none"
+                                                   
                                                    accept=".xlsx,xls"
                                                    @change="onFileChanged">
-                                            <v-spacer class="spacer"></v-spacer>
-                                            <v-btn color="secondary">
+                                            
+
+                                            <v-btn color="secondary" class="acBtn">
                                                 <v-img src="/download.svg"></v-img>
                                                 <span><a href="ActivityExample.xlsx" class="file-btn-text">下載報名表格式範本</a></span>
                                             </v-btn>
@@ -827,11 +829,14 @@
 
 
     .registration-list .file-btn-container {
-        display: inline-flex;
+        display: inline;
         justify-content: space-between;
         margin-top: 5px;
         margin-bottom: 10px;
         width: 100%;
+    }
+    .acBtn {
+        margin: 0px 10px 10px 0px !important;
     }
 
     .registration-list .file-btn-text {
@@ -1119,9 +1124,11 @@
     .registration-list .v-card__actions {
         padding-right: 32px !important;
     }
-    .detail-action {
-        padding-bottom:9px;
+    .fileViewer {
+        max-width: 512px !important;
+        flex: none !important;
     }
+ 
 </style>
 
 <script>
