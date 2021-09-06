@@ -65,7 +65,7 @@
                             </div>
                         </div>
                         <div class="action-button d-flex justify-center align-center">
-                            <v-btn color="#736DB9" height="100%" width="100%" @click="toSession(session)" v-if="session.signUp">
+                            <v-btn color="#736DB9" height="100%" width="100%" @click="toSession(session)" v-if="session.signUp && session.totalCount < session.maxLimit">
                                 報名
                             </v-btn>
                             <v-btn color="#626781" height="100%" width="100%" @click="toSession(session)" v-else>
