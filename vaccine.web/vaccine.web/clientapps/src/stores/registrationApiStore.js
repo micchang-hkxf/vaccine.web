@@ -412,7 +412,7 @@ export default {
                 });
             });
         },
-    reExecCheck: function ({ state, rootGetters, dispatch }, data) {
+        reExecCheck: function ({ state, rootGetters, dispatch }, data) {
             return new Promise(function (resolve, reject) {
                 var apiUrl = `${state.apiRoot}api/Activity/ReCheck`;
                 var results = { id: data.id, state: state, cnt: 0 };
@@ -646,9 +646,10 @@ export default {
             { text: '院所行政區', value: 'regist_instution_district_name', align: 'center',sortable: false, flex: 6 },
             { text: '設站時間', value: 'regist_station_date', align: 'center',sortable: false, flex: 6 },
             //{ text: '設站地點', value: 'place', sortable: false, flex: 6 },
-            { text: '報名時間', value: 'regist_apply_start_date', align: 'center',sortable: false, flex: 6 },
+            { text: '報名時間', value: 'regist_apply_start_date', align: 'center', sortable: false, flex: 6 },
+            { text: '年齡限制', value: 'regist_age_limit', align: 'center', sortable: false, flex: 6 },
             { text: '名額', value: 'regist_quota', align: 'center',sortable: false, flex: 6 },
-            { text: '複檢合格數', value: 'regist_qualified', align: 'center',sortable: false, flex: 6 },
+            { text: '複檢合格', value: 'regist_qualified', align: 'center',sortable: false, flex: 6 },
             { text: '', value: 'modify', align: 'center',sortable: false },
         ],
         brands: [

@@ -11,7 +11,7 @@
                             <img src="/regist/search.svg" />
                         </div>
                     </template>
-                </v-text-field>
+                </v-text-field>    
             </div>
             <div class="action-bar-bottons d-flex justify-space-between">
                 <v-btn class="clear-action" @click="clear">清除條件</v-btn>
@@ -300,7 +300,7 @@
             justify-content: center;
             background-color: #f4f4f4;
             margin: 0 auto;
-            height: 100%;
+            max-height: 100%;
             /*height: 100vh;*/
         }
         /*
@@ -354,7 +354,7 @@
             justify-content: center;
             background-color: #f4f4f4;
             margin: 0 auto;
-            height: 100vh;
+            max-height: 100%;
             width: 100%;
         }
 
@@ -385,7 +385,7 @@
             background-color: #f4f4f4;
             /*#f4f4f4;*/
             margin: 0 auto;
-            height: 100vh;
+            max-height: 100%;
             width: 100%;
         }
 
@@ -415,7 +415,7 @@
             justify-content: center;
             background-color: #f4f4f4;
             margin: 0 auto;
-            height: 100vh;
+            max-height: 100%;
             width: 100%;
         }
 
@@ -449,7 +449,7 @@
             justify-content: center;
             background-color: #f4f4f4;
             margin: 0 auto;
-            height: 100vh;
+            max-height: 100%;
             width: 100%;
         }
 
@@ -482,7 +482,7 @@
             justify-content: center;
             background-color: #f4f4f4;
             margin: 0 auto;
-            height: 100vh;
+            max-height: 100%;
             width: 100%;
         }
 
