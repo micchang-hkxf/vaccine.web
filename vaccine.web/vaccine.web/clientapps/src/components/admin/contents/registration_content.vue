@@ -1122,9 +1122,6 @@
     .detail-action {
         padding-bottom:9px;
     }
-    .registration-list .v-data-table .search-bar {
-        top: 9px;
-    }
 </style>
 
 <script>
