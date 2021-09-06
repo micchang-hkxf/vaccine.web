@@ -617,8 +617,9 @@
                         </template>
                         <template v-slot:content>
                             <div class="detail-title">{{detailTitle}}<span :class="detailCntQuota < detailTotalQuota ? 'hidden' : ''">名額已滿</span></div>
-                            <div class="detail-sub-title">{{detailDistrict}}－{{detailVillage}}｜{{detailType}}</div>
+                            <div class="detail-sub-title">{{detailDistrict}}－{{detailVillage}}｜{{detailType}}｜{{detailBrandName}}</div>
                             <div class="detail-title-desc">
+                                <p>
                                 <div>設站時間：{{detailStationTime}}</div>
                                 <div>報名開放時間：{{detailRegistrationTime}}</div>
                                 <div>承辦醫院：{{detailInstitution}}（{{detailInstutionDistrict}}）</div>
@@ -626,11 +627,10 @@
                                 <div>年齡限制：{{detailAgeLimit}}歲以上</div>
                             </div>
                             <hr />
-                            <!---->
                             <com-table class="regUserDetail" ref-key="detailTable" :headers="getRegistrationHeaders" :items="detailItems" :total-count="detailTotalCount"
                                        :items-per-page="detailItemsPerPage" :total-visible="detailTotalVisible" :show-select="false"
                                        :change-page="detailChangePage" disabled-prop="disabled"
-                                       style="margin-left: 15px;padding-top: 15px;margin-right: 15px;">
+                                       style="margin-left: 15px;padding-top: 0px;margin-right: 15px;">
 
                                 <template v-slot:search-bar>
                                     <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
@@ -1119,6 +1119,12 @@
     .registration-list .v-card__actions {
         padding-right: 32px !important;
     }
+    .detail-action {
+        padding-bottom:9px;
+    }
+    .registration-list .v-data-table .search-bar {
+        top: 9px;
+    }
 </style>
 
 <script>
@@ -1165,6 +1171,7 @@
             detailDistrict: '',
             detailVillage: '',
             detailType: '',
+            detailBrandName:'',
             detailInstitution: '',
             detailInstutionDistrict: '',
             detailStationTime: '',
@@ -1562,6 +1569,7 @@
                 this.detailId = item.regist_id;//item.id;
                 this.detailTitle = item.regist_title;//item.title;
                 this.detailType = item.regist_type_name; //item.type;
+                this.detailBrandName = item.regist_brand_name;
                 this.detailDistrict = item.regist_district_name; //item.district;
                 this.detailVillage = item.regist_village_name; //item.village;
                 this.detailInstitution = item.regist_institution_name;//item.institution;
