@@ -129,7 +129,7 @@
                 <template v-slot:action>
                     <v-spacer></v-spacer>
                     <v-btn outlined :ripple="false" @click="backToEdit"><span style="color:#626781;">修改</span></v-btn>
-                    <v-btn @click="save" color="primary" :ripple="false">確定</v-btn>
+                    <v-btn @click="save" color="primary" :ripple="false"><span>確定</span></v-btn>
                 </template>
             </com-dialog>
         </template>
@@ -180,7 +180,7 @@
         color: #626781;
         text-align: left;
         opacity: 1;
-        margin-bottom: 10px;
+        margin: 24px 0;
     }
 
     .confirm-content {
@@ -189,7 +189,7 @@
         color: #626781;
         text-align: left;
         opacity: 1;
-        margin: 10px 0;
+        margin: 0 0 24px 0;
     }
 
     .confirm-content label {
@@ -198,6 +198,18 @@
 
     .fa-search:before {
         content: url('/admin/common_search-24px.svg') !important;
+    }
+
+    .auditViewer .v-card__text {
+        padding: 0 32px 0 24px !important;
+    }
+
+    .auditViewer .col {
+        padding: 24px 12px 0 12px;
+    }
+
+    .auditViewer .v-card__actions {
+        padding: 24px 32px !important;
     }
 </style>
 
