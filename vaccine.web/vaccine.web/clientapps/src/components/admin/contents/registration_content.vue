@@ -1426,10 +1426,20 @@
                         if (result.model.regist_type.requireSubitem === false) {
                             result.model.regist_brand_name = "";
                         }
-                        result.model.regist_village_name = result.model.regist_village.name;
-                        result.model.regist_institution_name = result.model.regist_institution.uName;
-                        result.model.regist_institution_code = result.model.regist_institution.id;
-                        result.model.regist_district_name = result.model.regist_district.name;
+                    
+                        if (result.model.regist_village.name) {
+                            result.model.regist_village_name = result.model.regist_village.name;
+                        }
+                        if (result.model.regist_institution.uName) {
+                            result.model.regist_institution_name = result.model.regist_institution.uName;
+                        }
+                        if (result.model.regist_institution.id) {
+                            result.model.regist_institution_code = result.model.regist_institution.id;
+                        }
+                        if (result.model.regist_district.name) {
+                            result.model.regist_district_name = result.model.regist_district.name;
+                        }
+                        
 
                         this.$refs.registEditViewer.open();
                         //console.log('save1', result)
