@@ -79,7 +79,7 @@
             ...mapGetters('regist', ['getUserInfo', 'getApiRoot']),
             birth: function () {
                 if (!this.year || !this.month || !this.day) return;
-                return new Date(this.year + 1911, this.month - 1, this.day);
+                return new Date(this.year, this.month - 1, this.day);
             },
             getCaptchaUrl: function () {
                 return `${this.getApiRoot}api/captcha?sessionId=${this.sessionId}`;
@@ -89,7 +89,7 @@
         props: ['loginDone'],
         created: function () {
             var today = new Date();
-            this.year = today.getFullYear() - 1911;
+            this.year = today.getFullYear();
             for (var i = this.year; i > this.year - 201; i--)
                 this.years.push(i);
         },
