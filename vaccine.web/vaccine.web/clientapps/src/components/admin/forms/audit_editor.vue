@@ -113,7 +113,7 @@
     </com-dialog>
 
 </template>
-<style scoped>
+<style>
     .v-btn--outlined {
         border: thin solid rgba(98 ,103, 129 ,0.2) !important;
     }
@@ -124,7 +124,7 @@
         color: #626781;
         text-align: left;
         opacity: 1;
-        margin: 10px 0;
+        margin: 24px 0;
     }
 
     .audit-description {
@@ -135,8 +135,20 @@
         opacity: 1;
     }
 
-    .v-card__text {
-        padding: 16px 0;
+    .auditEditor .v-card__text {
+        padding: 14px 0 24px 0;
+    }
+
+    .auditEditor .col {
+        padding: 10px 12px 0 12px;
+    }
+
+    .auditEditor .v-card__actions {
+        padding: 24px 32px !important;
+    }
+
+    .auditEditor .dialog-content {
+        padding: 0 24px !important;
     }
 </style>
 
