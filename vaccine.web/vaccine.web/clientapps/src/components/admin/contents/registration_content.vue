@@ -451,13 +451,12 @@
                             </com-dialog>
 
 
-                            <com-confirm ref="registAlert" ref-key="confirm" :right-click="alertRightClick" key="regist-alert-confirm">
+                            <com-confirm ref="registAlert" ref-key="confirm" :right-click="alertRightClick" key="regist-alert-confirm" right-color="#736DB9">
                                 <template v-slot:confirm-image>
                                     <v-img v-bind:src="alertImgSrc"></v-img>
                                 </template>
-                                <template v-slot:confirm-title>
-                                    {{alertTitle}}
-
+                                <template v-slot:confirm-title>                                    
+                                    <span style="color:#736DB9;">{{alertTitle}}</span>
                                 </template>
                                 <template v-slot:confirm-text>
                                     {{alertText}}
