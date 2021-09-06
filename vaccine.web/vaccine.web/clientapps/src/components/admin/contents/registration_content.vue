@@ -1619,8 +1619,8 @@
 
                     this.detailItems.splice(0);
                     r.datas.forEach((x) => {
-                        var str = x.identity.substr(1, 5);
-                        var code = x.identity.replace(str, '●●●●●');
+                        var str = x.identity.substr(1, 6);
+                        var code = x.identity.replace(str, '●●●●●●');
                         x.identity = code;
 
                         //if (['不合格', '已取消'].includes(x.result) || x.result.indexOf('不合格') !== -1) {
