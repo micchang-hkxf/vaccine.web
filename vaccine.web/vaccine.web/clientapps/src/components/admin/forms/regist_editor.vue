@@ -1,5 +1,5 @@
 ﻿<template>
-    <com-dialog ref="dialogPanel" ref-key="two" :width="width">
+    <com-dialog ref="dialogPanel" ref-key="dialogPanel" :width="width">
         <template v-slot:toolbar>
             <span class="regist-editor-title">{{title}}</span>
             <v-spacer></v-spacer>
@@ -315,8 +315,12 @@
                                 </v-btn>
                             </v-date-picker>
                         </v-menu>
-                        <div>事先報名結束時間：{{registEndDate}}</div>
-                        <div>報名者接種資格複檢時間：{{reCheckDate}}</div>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12">
+                        <div class="regist-end-date">事先報名結束時間：{{registEndDate}}</div>
+                        <div class="re-check-date">報名者接種資格複檢時間：{{reCheckDate}}</div>
                         <!--<div><span class="regist-title">事先報名結束時間</span><span class="red--text">*</span></div>
                         <v-menu ref="apply2"
                                 v-model="apply2"
@@ -380,7 +384,7 @@
                                       outlined
                                       dense>
                         </v-text-field>
-                        目前報名人數:{{registerCountNow}}
+                        <div class="regist-cnt">目前報名人數:{{registerCountNow}}</div>
                     </v-col>
 
                 </v-row>
@@ -454,6 +458,7 @@
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
         color: #626781;
+        white-space: nowrap;
     }
 
     .edit-form .v-menu__content {
@@ -511,13 +516,33 @@
         color: #9E9E9E !important;
     }
 
-        .timepicker-wrap .timepicker-icon {
-            width: 1.5em !important;
-            height: 1.5em !important;
-        }
+    .timepicker-wrap .timepicker-icon {
+        width: 1.5em !important;
+        height: 1.5em !important;
+    }
 
     .inputDesc {
         color: #9E9E9E;
+    }
+
+    .dialogPanel .v-card__text {
+        padding: 0 24px !important;
+    }
+
+    .dialogPanel .col {
+        padding: 10px 12px 0 12px;
+    }
+
+    .dialogPanel .v-card__actions {
+        padding: 24px 32px !important;
+    }
+
+    .dialogPanel .regist-end-date,
+    .dialogPanel .re-check-date,
+    .dialogPanel .regist-cnt {
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781;
     }
 </style>
 
@@ -664,7 +689,7 @@
                 }
                 this.regist_institution_code = '';
                 this.regist_institution_name = '';
-                //this.$refs.form.resetValidation();
+                this.$refs.form.resetValidation();
                 // scroll to top
                 setTimeout(() => this.$refs.form.$el.scrollIntoView(), 0);
             },
