@@ -1203,6 +1203,7 @@
             warningIcon: '/alert_warning.svg',
             alertIcon: '/alert_warning.svg',
             artificialResult: '',
+            reCheckId:'',
             isReChecked: false,
             regist_beforeDay: 3,//報名截止時間要於施打時間早3天以上
             downloadErrorMessage: '複檢結果至少要有一筆成功才能下載',
@@ -1619,11 +1620,17 @@
                     pageSize: this.detailItemsPerPage,
                     page: page,
                 };
+                var comp = this;
+                this.detailAbnormalCnt = 0;
                 this.loadDetailForm(params).then((r) => {
-                    this.detailTotalCount = r.totalCount;
-                    this.activityId = r.activityId;
-
-                    this.detailItems.splice(0);
+                    comp.detailTotalCount = r.totalCount;
+                    comp.activityId = r.activityId;
+                    comp.reCheckId = r.reCheckId;
+                    if (r.reCheckId != "") {
+                        comp.detailAbnormalCnt = r.unCheckCount;
+                    }
+         
+                    comp.detailItems.splice(0);
                     r.datas.forEach((x) => {
                         var str = x.identity.substr(1, 6);
                         var code = x.identity.replace(str, '●●●●●●');
@@ -1665,7 +1672,7 @@
                                         comp.alertTitle = ret.datas.memo;
                                     }
                                     comp.$refs.registAlert.open();
-                                    comp.detailAbnormalCnt = ret.cnt;
+                                    //comp.detailAbnormalCnt = ret.cnt;
                                     return;
                                 })
                                 .catch(function () {
