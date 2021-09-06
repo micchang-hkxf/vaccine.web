@@ -187,8 +187,8 @@
 
 
                             <!--新增-->
-                            <editor ref="registNewEditor" ref-key="two" width="40%" :title="title" :saveBtnName="saveBtnName" :action="formAction"></editor>
-                            <com-dialog ref="registViewer" ref-key="two" width="40%" key="regist-new-editor">
+                            <editor ref="registNewEditor" ref-key="registNewEditor" width="40%" :title="title" :saveBtnName="saveBtnName" :action="formAction"></editor>
+                            <com-dialog ref="registViewer" ref-key="registViewer" width="40%" key="regist-new-editor">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
                                     <v-spacer></v-spacer>
@@ -314,14 +314,14 @@
 
                                     <v-spacer></v-spacer>
                                     <v-btn outlined :ripple="false" @click="backToEdit"><span style="color:#626781;">修改</span></v-btn>
-                                    <v-btn @click="saveRegist" color="primary" :ripple="false">確定</v-btn>
+                                    <v-btn @click="saveRegist" color="primary" :ripple="false"><span>確定</span></v-btn>
                                 </template>
                             </com-dialog>
 
 
                             <!--編輯-->
-                            <editor ref="registEdit" ref-key="two" width="40%" :title="title" :saveBtnName="saveBtnName" :action="editFormAction"></editor>
-                            <com-dialog ref="registEditViewer" ref-key="two" width="40%" key="regist-new-viewer">
+                            <editor ref="registEdit" ref-key="registEdit" width="40%" :title="title" :saveBtnName="saveBtnName" :action="editFormAction"></editor>
+                            <com-dialog ref="registEditViewer" ref-key="registEditViewer" width="40%" key="regist-new-viewer">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
                                     <v-spacer></v-spacer>
@@ -448,7 +448,7 @@
                                 <template v-slot:action>
                                     <v-spacer></v-spacer>
                                     <v-btn outlined :ripple="false" @click="backToEdit2"><span style="color:#626781;">修改</span></v-btn>
-                                    <v-btn @click="editSaveRegist" color="primary" :ripple="false">確定</v-btn>
+                                    <v-btn @click="editSaveRegist" color="primary" :ripple="false"><span>確定</span></v-btn>
                                 </template>
                             </com-dialog>
 
@@ -993,14 +993,14 @@
         .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-thumb {
             border-radius: 100px;
             -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            background: #736DB9;
+            background: rgba(98,103,129,0.2);
         }
 
         /*滾動條裡面軌道樣式*/
         .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-track {
             -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
             border-radius: 20px;
-            background: rgba(0,0,0,0.1);
+            background: rgba(98,103,129,0.1);
         }
 
     thead tr th {
@@ -1088,13 +1088,13 @@
     }
 
     .prevDesc {
-        padding: 20px 0px 0px 17px !important;
+        padding: 24px 0 !important;
     }
-
+    /*
     .divider {
         padding: 20px 10px 10px 14px !important;
     }
-
+    */
     .prevContent .v-list-item__subtitle {
         font-size: 16px;
         color: #626781 !important;
@@ -1128,7 +1128,24 @@
         max-width: 512px !important;
         flex: none !important;
     }
- 
+
+    .registViewer .v-list-item,
+    .registEditViewer .v-list-item {
+        padding: 0;
+    }
+
+    .registViewer .v-list-item__content,
+    .registEditViewer .v-list-item__content {
+        padding: 12px 0;
+    }
+
+    .registViewer .v-card__actions {
+        padding: 24px 32px !important;
+    }
+
+    .registViewer .v-card__text {
+        padding: 0 24px !important;
+    }
 </style>
 
 <script>
