@@ -26,7 +26,7 @@
  
 
     html {
-        height: 650px;
+        /*height: 650px;*/
         overflow: scroll;
         overflow-x: hidden;
         padding-left: 10px;
