@@ -23,57 +23,57 @@
                             <div>
                                 <v-row>
                                     <v-select v-model="selectVaccine"
-                                                :items="getVaccines"
-                                                item-text="name"
-                                                item-value="id"
-                                                placeholder="所有疫苗類型"
-                                                :menu-props="{ bottom: true, offsetY: true }"
-                                                outlined
-                                                dense
-                                                clearable
-                                                style="max-width: 200px;"
-                                                class="search-filter fs"
-                                                return-object>
+                                              :items="getVaccines"
+                                              item-text="name"
+                                              item-value="id"
+                                              placeholder="所有疫苗類型"
+                                              :menu-props="{ bottom: true, offsetY: true }"
+                                              outlined
+                                              dense
+                                              clearable
+                                              style="max-width: 200px;"
+                                              class="search-filter fs"
+                                              return-object>
                                     </v-select>
                                     <v-select v-model="selectDistrict"
-                                                :items="getDistricts"
-                                                item-text="name"
-                                                item-value="id"
-                                                placeholder="全部行政區"
-                                                :menu-props="{ bottom: true, offsetY: true }"
-                                                outlined
-                                                dense
-                                                clearable
-                                                style="max-width: 200px;"
-                                                class="search-filter fs"
-                                                return-object
-                                                @change="loadVillages">
+                                              :items="getDistricts"
+                                              item-text="name"
+                                              item-value="id"
+                                              placeholder="全部行政區"
+                                              :menu-props="{ bottom: true, offsetY: true }"
+                                              outlined
+                                              dense
+                                              clearable
+                                              style="max-width: 200px;"
+                                              class="search-filter fs"
+                                              return-object
+                                              @change="loadVillages">
                                     </v-select>
                                     <v-select v-model="selectVillage"
-                                                :items="getVillages"
-                                                item-text="name"
-                                                item-value="id"
-                                                placeholder="全部村里"
-                                                :menu-props="{ bottom: true, offsetY: true }"
-                                                outlined
-                                                dense
-                                                clearable
-                                                style="max-width: 200px;"
-                                                class="search-filter fs"
-                                                return-object>
+                                              :items="getVillages"
+                                              item-text="name"
+                                              item-value="id"
+                                              placeholder="全部村里"
+                                              :menu-props="{ bottom: true, offsetY: true }"
+                                              outlined
+                                              dense
+                                              clearable
+                                              style="max-width: 200px;"
+                                              class="search-filter fs"
+                                              return-object>
                                     </v-select>
                                     <v-select v-model="selectInstitution"
-                                                :items="getDisMedicals"
-                                                item-text="uName"
-                                                item-value="id"
-                                                placeholder="全部醫療院所"
-                                                :menu-props="{ bottom: true, offsetY: true }"
-                                                outlined
-                                                dense
-                                                clearable
-                                                style="max-width: 200px;"
-                                                class="search-filter fs"
-                                                return-object>
+                                              :items="getDisMedicals"
+                                              item-text="uName"
+                                              item-value="id"
+                                              placeholder="全部醫療院所"
+                                              :menu-props="{ bottom: true, offsetY: true }"
+                                              outlined
+                                              dense
+                                              clearable
+                                              style="max-width: 200px;"
+                                              class="search-filter fs"
+                                              return-object>
                                     </v-select>
 
                                     <v-text-field v-model="keyWord"
@@ -85,9 +85,9 @@
                                                   style="max-width:200px"
                                                   autocomplete="off">
                                     </v-text-field>
-                                    
+
                                     <v-btn icon style="top:3px;" :ripple="false" class="content-search-button"
-                                            @click="getRegistForm(1)">
+                                           @click="getRegistForm(1)">
                                         <v-icon>fas fa-search</v-icon>
                                     </v-btn>
                                 </v-row>
@@ -279,11 +279,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                                <v-list-item-content>
-                                                    <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                                    <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
-                                                </v-list-item-content>
-                                            </v-list-item>-->
+                            <v-list-item-content>
+                                <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>-->
                                         <div class="divider"><v-divider></v-divider></div>
                                         <v-list-item two-line>
                                             <v-list-item-content>
@@ -298,11 +298,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>備註</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>-->
+                        <v-list-item-content>
+                            <v-list-item-title>備註</v-list-item-title>
+                            <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>-->
 
                                         <div class="divider"><v-divider></v-divider></div>
                                     </div>
@@ -412,12 +412,12 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                                <v-list-item-content>
-                                                    <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                                    <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                            <v-list-item-content>
+                                <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
 
-                                                </v-list-item-content><div class="showname">
-                                            </v-list-item>-->
+                            </v-list-item-content><div class="showname">
+                        </v-list-item>-->
 
                                         <div class="divider"><v-divider></v-divider></div>
 
@@ -434,11 +434,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>備註</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>-->
+                        <v-list-item-content>
+                            <v-list-item-title>備註</v-list-item-title>
+                            <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>-->
 
                                         <div class="divider"><v-divider></v-divider></div>
                                     </div>
@@ -529,6 +529,12 @@
 
                         <template v-slot:item.regist_apply_start_date="{item}">
                             {{item.regist_apply_start_date}} - {{item.regist_apply_end_date}}
+                        </template>
+
+                        <template v-slot:item.regist_age_limit="{item}">
+                          <span v-if="item.regist_age_limit==0"><span tyle="color:#626781">-</span></span>
+                           
+                          <span v-if="item.regist_age_limit!=0">{{item.regist_age_limit}}<span tyle="color:#626781">以上 </span></span>
                         </template>
 
                         <template v-slot:item.modify="{item}">
