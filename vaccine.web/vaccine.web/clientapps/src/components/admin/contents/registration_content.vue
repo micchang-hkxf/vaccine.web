@@ -619,6 +619,7 @@
                             <div class="detail-title">{{detailTitle}}<span :class="detailCntQuota < detailTotalQuota ? 'hidden' : ''">名額已滿</span></div>
                             <div class="detail-sub-title">{{detailDistrict}}－{{detailVillage}}｜{{detailType}}｜{{detailBrandName}}</div>
                             <div class="detail-title-desc">
+                                <p>
                                 <div>設站時間：{{detailStationTime}}</div>
                                 <div>報名開放時間：{{detailRegistrationTime}}</div>
                                 <div>承辦醫院：{{detailInstitution}}（{{detailInstutionDistrict}}）</div>
