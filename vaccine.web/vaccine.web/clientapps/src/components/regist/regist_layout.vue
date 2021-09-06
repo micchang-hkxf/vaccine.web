@@ -71,6 +71,7 @@
 <script>
     import appLayout from 'components/app_layout'
     import comConfirm from 'components/confirm'
+    import { mapActions } from 'vuex'
     export default {
         // router,
         data: () => ({
@@ -90,6 +91,7 @@
             this.user = sessionStorage.getItem('userInfo');          
         },
         methods: {
+            ...mapActions('regist', ['setUserInfo']),
             goWelcome: function () {                          
                 this.$router.push({ name: 'welcome' });
             },
@@ -100,9 +102,10 @@
                 this.$refs.logoutAlert.close();
             },
             logoutRightClick: function () {
-                sessionStorage.removeItem('userInfo');
-                sessionStorage.removeItem('activityApply');              
-                this.$router.push({ name: 'welcome' });
+                this.setUserInfo(null).then(() => {
+                    sessionStorage.removeItem('activityApply');
+                    this.$router.push({ name: 'welcome' });
+                });
             },
             logoutAutoRightClick: function () {
                 this.$router.push({ name: 'welcome' });

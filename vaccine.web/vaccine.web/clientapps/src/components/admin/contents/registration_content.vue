@@ -994,14 +994,14 @@
         .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-thumb {
             border-radius: 100px;
             -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            background: #736DB9;
+            background: rgba(98,103,129,0.2);
         }
 
         /*滾動條裡面軌道樣式*/
         .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-track {
             -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
             border-radius: 20px;
-            background: rgba(0,0,0,0.1);
+            background: rgba(98,103,129,0.1);
         }
 
     thead tr th {
@@ -1408,10 +1408,20 @@
                         if (result.model.regist_type.requireSubitem === false) {
                             result.model.regist_brand_name = "";
                         }
-                        result.model.regist_village_name = result.model.regist_village.name;
-                        result.model.regist_institution_name = result.model.regist_institution.uName;
-                        result.model.regist_institution_code = result.model.regist_institution.id;
-                        result.model.regist_district_name = result.model.regist_district.name;
+                    
+                        if (result.model.regist_village.name) {
+                            result.model.regist_village_name = result.model.regist_village.name;
+                        }
+                        if (result.model.regist_institution.uName) {
+                            result.model.regist_institution_name = result.model.regist_institution.uName;
+                        }
+                        if (result.model.regist_institution.id) {
+                            result.model.regist_institution_code = result.model.regist_institution.id;
+                        }
+                        if (result.model.regist_district.name) {
+                            result.model.regist_district_name = result.model.regist_district.name;
+                        }
+                        
 
                         this.$refs.registEditViewer.open();
                         //console.log('save1', result)
@@ -1615,8 +1625,8 @@
 
                     this.detailItems.splice(0);
                     r.datas.forEach((x) => {
-                        var str = x.identity.substr(1, 5);
-                        var code = x.identity.replace(str, '●●●●●');
+                        var str = x.identity.substr(1, 6);
+                        var code = x.identity.replace(str, '●●●●●●');
                         x.identity = code;
 
                         //if (['不合格', '已取消'].includes(x.result) || x.result.indexOf('不合格') !== -1) {
