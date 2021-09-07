@@ -15,7 +15,7 @@
 
                     </div>
                 </div>
-                <div class="action-title" style="display:flex;justify-content:center; margin-left: 400px;margin-right: 400px;">
+                <div class="action-title" style="display:flex;justify-content:center;">
                     <img src="../../../public/login/home.svg" @click.stop="goWelcome" />
                     <v-spacer></v-spacer>
                     <slot name="regist-title"></slot>
@@ -141,10 +141,13 @@
     }
     .app-bar {
         width: calc(100vw - 32px) !important;
+        display:flex;
+        justify-content:center;
     }
     .regist-header {
         width: calc(100vw - 32px) !important;
         font-size:20px!important;
+        max-width:992px!important;
     }
     .v-tab.v-tab--active {
         text-align: center;
