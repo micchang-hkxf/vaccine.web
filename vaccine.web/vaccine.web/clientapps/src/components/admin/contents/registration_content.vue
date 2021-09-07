@@ -138,7 +138,7 @@
 
 
 
-                            <com-dialog ref="fileViewer" ref-key="two" key="file-upload-dialog" width="40%">
+                            <com-dialog ref="fileViewer" ref-key="fileViewer" key="file-upload-dialog" width="40%">
                                 <template v-slot:toolbar>
                                     建立報名表-檔案匯入
                                     <v-spacer></v-spacer>
@@ -185,8 +185,8 @@
 
 
                             <!--新增-->
-                            <editor ref="registNewEditor" ref-key="two" width="40%" :title="title" :saveBtnName="saveBtnName" :action="formAction"></editor>
-                            <com-dialog ref="registViewer" ref-key="two" width="40%" key="regist-new-editor">
+                            <editor ref="registNewEditor" ref-key="registNewEditor" width="40%" :title="title" :saveBtnName="saveBtnName" :action="formAction"></editor>
+                            <com-dialog ref="registViewer" ref-key="registViewer" width="40%" key="regist-new-editor">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
                                     <v-spacer></v-spacer>
@@ -312,14 +312,14 @@
 
                                     <v-spacer></v-spacer>
                                     <v-btn outlined :ripple="false" @click="backToEdit"><span style="color:#626781;">修改</span></v-btn>
-                                    <v-btn @click="saveRegist" color="primary" :ripple="false">確定</v-btn>
+                                    <v-btn @click="saveRegist" color="primary" :ripple="false"><span>確定</span></v-btn>
                                 </template>
                             </com-dialog>
 
 
                             <!--編輯-->
-                            <editor ref="registEdit" ref-key="two" width="40%" :title="title" :saveBtnName="saveBtnName" :action="editFormAction"></editor>
-                            <com-dialog ref="registEditViewer" ref-key="two" width="40%" key="regist-new-viewer">
+                            <editor ref="registEdit" ref-key="registEdit" width="40%" :title="title" :saveBtnName="saveBtnName" :action="editFormAction"></editor>
+                            <com-dialog ref="registEditViewer" ref-key="registEditViewer" width="40%" key="regist-new-viewer">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
                                     <v-spacer></v-spacer>
@@ -446,7 +446,7 @@
                                 <template v-slot:action>
                                     <v-spacer></v-spacer>
                                     <v-btn outlined :ripple="false" @click="backToEdit2"><span style="color:#626781;">修改</span></v-btn>
-                                    <v-btn @click="editSaveRegist" color="primary" :ripple="false">確定</v-btn>
+                                    <v-btn @click="editSaveRegist" color="primary" :ripple="false"><span>確定</span></v-btn>
                                 </template>
                             </com-dialog>
 
@@ -533,7 +533,7 @@
                         <template v-slot:item.regist_age_limit="{item}">
                           <span v-if="item.regist_age_limit==0"><span tyle="color:#626781">-</span></span>
                            
-                          <span v-if="item.regist_age_limit!=0">{{item.regist_age_limit}}<span tyle="color:#626781">以上 </span></span>
+                          <span v-if="item.regist_age_limit!=0">{{item.regist_age_limit}}<span tyle="color:#626781">歲以上 </span></span>
                         </template>
 
                         <template v-slot:item.modify="{item}">
@@ -1088,12 +1088,13 @@
     }
 
     .prevDesc {
-        padding: 20px 0px 0px 17px !important;
+        padding: 24px 0 !important;
     }
-
+    /*
     .divider {
         padding: 20px 10px 10px 14px !important;
     }
+    */
 
     .prevContent .v-list-item__subtitle {
         font-size: 16px;
@@ -1126,6 +1127,24 @@
     }
     .detail-action {
         padding-bottom:9px;
+    }
+
+    .registViewer .v-list-item,
+    .registEditViewer .v-list-item {
+        padding: 0;
+    }
+
+    .registViewer .v-list-item__content,
+    .registEditViewer .v-list-item__content {
+        padding: 12px 0;
+    }
+
+    .registViewer .v-card__actions {
+        padding: 24px 32px !important;
+    }
+
+    .registViewer .v-card__text {
+        padding: 0 24px !important;
     }
 </style>
 

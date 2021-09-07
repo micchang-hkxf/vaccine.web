@@ -2,7 +2,7 @@
 
     <div class="timepicker-container">
         <div class="timepicker-wrap">
-            <img src="/images/time_picker_icon.svg" class="timepicker-icon timepicker-icon__clock" />
+            <img src="/images/time_picker_icon.svg" class="timepicker-icon timepicker-icon__clock" @click="open" style="cursor:pointer;"/>
             <input type="text" class="time" ref="timeInput" :value="value"
                    @focus="open">
         </div>
