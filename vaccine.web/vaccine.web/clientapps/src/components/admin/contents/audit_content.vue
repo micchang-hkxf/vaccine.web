@@ -137,6 +137,13 @@
 </template>
 
 <style>
+    .dialog-auditEditor .v-card__actions {
+        padding-top: 0px !important;
+        padding-bottom: 24px !important;
+        padding-left: 32px !important;
+        padding-right: 32px !important;
+    }
+
     * {
         font-family: "微軟正黑體", "Roboto", sans-serif, "Arial", "Font Awesome 5 Free", "Material Design Icons", "Material Icons", "sans-serif";
         font-weight: 400;
