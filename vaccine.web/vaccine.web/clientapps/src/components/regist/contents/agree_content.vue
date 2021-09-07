@@ -194,7 +194,7 @@
 
     @media (min-device-width: 110px) and (max-device-width: 319px) and (-webkit-min-device-pixel-ratio: 2) {
         .agree-content/deep/ .app-content {
-            /*width: 100%;*/
+            width: 100%;
             margin: 0 auto;
         }
 
@@ -216,7 +216,7 @@
 
     @media (min-device-width: 320px) and (max-device-width: 540px) and (-webkit-min-device-pixel-ratio: 2) {
         .agree-content/deep/ .app-content {
-            /*width: 100%;*/
+            width: 100%;
             margin: 0 auto;
         }
 
@@ -233,7 +233,7 @@
 
     @media (min-width: 540.5px) and (max-width: 767.98px) {
         .agree-content/deep/ .app-content {
-            /*width: 90%;*/         
+            width: 90%;         
         }
 
         .agree-content/deep/ .action {
@@ -250,7 +250,7 @@
     /** Medium devices (tablets, 768px and up) */
     @media (min-width: 768px) and (max-width: 991.98px) {
         .agree-content/deep/ .app-content {
-            /*width: 90%;*/
+            width: 90%;
         }
 
 
@@ -279,7 +279,7 @@
     @media (min-width: 992px) and (max-width: 1199.98px) {
 
         .agree-content/deep/ .app-content {
-            /*width: 90%;*/
+            width: 86%;
         }
 
 
