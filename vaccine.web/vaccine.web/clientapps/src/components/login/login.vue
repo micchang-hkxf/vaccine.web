@@ -549,7 +549,7 @@
                     .catch(function () {
                         comp.$bus.$emit('loading_hide4');
 
-                        comp.alertMessage = '網站異常，請稍後再試';
+                        comp.alertMessage = '此驗證碼無效或輸入錯誤，請確認後重新嘗試';
                         comp.$bus.$emit('alert_show', true);
                     });
             },
