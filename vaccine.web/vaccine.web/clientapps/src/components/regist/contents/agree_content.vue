@@ -101,7 +101,8 @@
 <style scoped>
     .agree-content/deep/ .app-content {
         /*margin-bottom: 78px;*/
-        width: 65%;
+        width: 66%;
+        /*max-width: 992px !important;*/
         margin: 0 auto;
     }
 
@@ -278,7 +279,7 @@
     @media (min-width: 992px) and (max-width: 1199.98px) {
 
         .agree-content/deep/ .app-content {
-            width: 90%;
+            width: 86%;
         }
 
 
@@ -307,7 +308,7 @@
     @media (min-width: 1200px) {
         .agree-content/deep/ .app-content {
             /* margin-bottom: 78px; */
-            width: 85%;
+            /*width: 85%;*/
             margin: 0 auto;
         }
 

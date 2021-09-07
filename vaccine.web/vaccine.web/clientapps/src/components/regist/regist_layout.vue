@@ -146,8 +146,9 @@
     }
     .regist-header {
         width: calc(100vw - 32px) !important;
-        font-size:20px!important;
-        max-width:992px!important;
+        font-size: 20px !important;
+        /*max-width:992px!important;*/
+        max-width: 800px !important;
     }
     .v-tab.v-tab--active {
         text-align: center;

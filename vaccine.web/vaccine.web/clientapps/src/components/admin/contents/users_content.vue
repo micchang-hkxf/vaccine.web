@@ -401,8 +401,8 @@
                     <v-spacer></v-spacer>
                     <v-spacer></v-spacer>
                     <v-spacer></v-spacer>
-                    <v-btn @click="close" outlined>修改</v-btn>
-                    <v-btn @click="saveform" color="primary" style="margin-left:20px">確定</v-btn>
+                    <v-btn @click="close" outlined><span style="color:#626781;">修改</span></v-btn>
+                    <v-btn @click="saveform" color="primary" style="margin-left:20px"><span>確定</span></v-btn>
                 </template>
             </com-dialog>
         </template>
@@ -452,7 +452,7 @@
     /*.users-list .d-flex {
         padding: 20px 0px 0px 0px !important;
     }*/
-    .users-list .dialog-content {
+    .userform .dialog-content {
         padding-bottom: 0px !important;
     }
     .users-list .v-text-field {

@@ -1,5 +1,5 @@
 ﻿<template>
-    <com-dialog ref="dialogPanel" ref-key="two" :width="width">
+    <com-dialog ref="passwordModify" ref-key="passwordModify" :width="width">
         <template v-slot:toolbar>
             {{title}}
             <v-spacer></v-spacer>
@@ -8,7 +8,7 @@
             </v-btn>
         </template>
         <template v-slot:content>
-            <v-form  ref="form">
+            <v-form ref="form">
                 <v-row>
                     <v-col cols="12">
                         <div><span class="regist-title">舊密碼</span><span class="red--text">*</span></div>
@@ -20,6 +20,10 @@
                                       outlined
                                       dense>
                         </v-text-field>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12">
                         <div><span class="regist-title">新密碼</span><span class="red--text">*</span></div>
                         <v-text-field v-model="newPassword"
                                       placeholder="請輸入8位以上包含半形英文+數字"
@@ -29,7 +33,10 @@
                                       outlined
                                       dense>
                         </v-text-field>
-
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12">
                         <div><span class="regist-title">確認密碼</span><span class="red--text">*</span></div>
                         <v-text-field v-model="newPassword2"
                                       placeholder="請輸入8位以上包含半形英文+數字"
@@ -40,19 +47,14 @@
                                       dense>
                         </v-text-field>
                     </v-col>
-
                 </v-row>
                 <v-divider></v-divider>
-
             </v-form>
-
         </template>
         <template v-slot:action>
-
             <v-spacer></v-spacer>
             <v-btn @click="cancel" outlined :ripple="false"><span style="color:#626781;">取消</span></v-btn>
             <v-btn color="primary" @click="save" :ripple="false"><span>送出</span></v-btn>
-
         </template>
     </com-dialog>
 
@@ -66,8 +68,22 @@
         letter-spacing: 0px;
         color: #626781;
     }
-  
 
+    .passwordModify .v-card__text {
+        padding: 14px 0 24px 0;
+    }
+
+    .passwordModify .col {
+        padding: 10px 12px 0 12px;
+    }
+
+    .passwordModify .v-card__actions {
+        padding: 24px 32px !important;
+    }
+
+    .passwordModify .dialog-content {
+        padding: 0 32px 0 24px !important;
+    }
 </style>
 
 
@@ -115,14 +131,14 @@
                 this.mode = 'edit';
                 Object.assign(this.model, model);
                
-                this.$refs.dialogPanel.open();
+                this.$refs.passwordModify.open();
             },
 
             create: function (model) {
                 this.mode = 'new';
                 Object.assign(this.model, model);
 
-                this.$refs.dialogPanel.open();
+                this.$refs.passwordModify.open();
             },
             save: function () {
                 if (!this.$refs.form.validate()) {
@@ -134,20 +150,20 @@
                 }
                 this.action({ mode: this.mode, action: 'save', model: this.model, pass: this.newPassword});
 
-                this.$refs.dialogPanel.close();                
+                this.$refs.passwordModify.close();                
             },
             show: function () {
-                this.$refs.dialogPanel.open();
+                this.$refs.passwordModify.open();
             },
             close: function () {
-                this.$refs.dialogPanel.close();
+                this.$refs.passwordModify.close();
             },
             cancel: function () {
                 this.action({ mode: this.mode, action: 'cancel', model: this.model });
-                this.$refs.dialogPanel.close();
+                this.$refs.passwordModify.close();
             },
             closeDialog: function () {
-                this.$refs.dialogPanel.open();
+                this.$refs.passwordModify.open();
             },
           
         },
