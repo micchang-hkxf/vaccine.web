@@ -74,14 +74,18 @@
                     <v-spacer></v-spacer>
                 </template>
                 <template v-slot:content>
-                    點選「確定」後新密碼立即生效。
+                    <v-row>
+                        <v-col cols="12">
+                            點選「確定」後新密碼立即生效。
+                        </v-col>
+                    </v-row>
                     <v-divider></v-divider>
                     {{result}}
                 </template>
                 <template v-slot:action>
                     <v-spacer></v-spacer>
                     <v-btn outlined :ripple="false" @click="backToEdit"><span style="color:#626781;">修改</span></v-btn>
-                    <v-btn @click="save" color="primary" :ripple="false">確定</v-btn>
+                    <v-btn @click="save" color="primary" :ripple="false"><span>確定</span></v-btn>
                 </template>
             </com-dialog>
 
