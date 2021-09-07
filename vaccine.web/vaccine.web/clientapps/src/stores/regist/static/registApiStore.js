@@ -16,7 +16,7 @@ export default {
                 });
             });
         },
-        loacVaccineGroups: function ({  commit }) {
+        loacVaccineGroups: function ({ commit }) {
             return new Promise((resolve) => {
                 var results = {
                     datas: [
@@ -35,7 +35,7 @@ export default {
 
                 var medicalOrgIdFilter = 'all';
                 var distIdFilter = 'all';
-                var villageIdFilter ='all';
+                var villageIdFilter = 'all';
                 var vaccineGroupId = null;
                 if (params.groupId === 'influenza') {
                     vaccineGroupId = 0;
@@ -44,7 +44,7 @@ export default {
                 }
                 var keyword = params.keyword === '' ? null : params.keyword;
                 //  TODO: params.brandId 搜尋廠牌目前不支援
-                
+
                 axios.get(apiUrl, {
                     params: {
                         medicalOrgIdFilter: medicalOrgIdFilter, // 醫療院所過濾
@@ -66,7 +66,7 @@ export default {
                             brandId.push(v.itemId);
                             brandName.push(v.itemName);
                         });
-                        
+
                         datas.push({
                             sessionName: data.activityTitle,
                             sessionId: data.activityId,
@@ -119,7 +119,7 @@ export default {
                 reslove(getters.getUserInfo);
             });
         },
-        checkUserInfo: function ({ state , commit , dispatch }, userInfo) {
+        checkUserInfo: function ({ state, commit, dispatch }, userInfo) {
             return new Promise((reslove) => {
                 var results = {
                     uName: '', //使用者名稱
@@ -140,7 +140,7 @@ export default {
                 });
             });
         },
-        loadUserInfo: function ({ state,commit }, token) {
+        loadUserInfo: function ({ state, commit }, token) {
             var tokenInfo = {
                 token: token, //台北通 token
                 type: 'taipei-pass'
@@ -149,7 +149,7 @@ export default {
                 var apiUrl = `${state.apiRoot}api/my`;
                 var apiHeader = {
                     headers: {
-                        'x-token' : token 
+                        'x-token': token
                     }
                 }
                 axios.get(apiUrl, apiHeader).then(res => {
@@ -208,7 +208,7 @@ export default {
                 });
             });
         },
-        getBeforeApply: function ({ state , commit }, params) {
+        getBeforeApply: function ({ state, commit }, params) {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity/Apply/Web/${params.activityId}/Check`;
                 var results = { datas: [], state: '' };
@@ -227,13 +227,13 @@ export default {
                     bd: params.bd,
                     sourceType: sourceType,
                     token: params.token
-                }).then(res => {                    
+                }).then(res => {
                     results.datas[0] = res.data;
                     if (!!res.data.uName) {
                         state.lockUserInfo.lockName = true;
                         var userInfo = state.userInfo;
                         userInfo.uName = res.data.uName;
-                        commit('saveUserInfo', userInfo);                        
+                        commit('saveUserInfo', userInfo);
                     }
                     resolve(results);
                 }).catch(ex => {
@@ -266,6 +266,22 @@ export default {
                 }
             });
         },
+        checkLogTime: function ({ commit }) {
+            return new Promise((resolve) => {
+                if (!sessionStorage.getItem('logTime')) {
+                    resolve();
+                    return;
+                }
+                var logTime = new Date(sessionStorage.getItem('logTime'));
+                if (logTime < new Date()) {
+                    commit('saveUserInfo', null);
+                    window.location.href = "/";
+                    resolve();
+                    return;
+                }
+                resolve();
+            });
+        },
     },
     state: {
         ...siteConfig,
@@ -276,7 +292,7 @@ export default {
             lockName: false,
             lockIdentify: false,
             lockBirthday: false,
-            lockMobile:false,
+            lockMobile: false,
         }
     },
     getters: {
@@ -308,10 +324,15 @@ export default {
             if (userInfo == null) {
                 state.userInfo = null;
                 sessionStorage.removeItem("userInfo");
+                sessionStorage.removeItem('logTime');
                 return;
             }
-            state.userInfo = userInfo;
+            var logTime = new Date();
+            logTime = logTime.setDate(logTime.getDate() + 1);
+            //logTime = logTime.setSeconds(logTime.getSeconds() + 30);
+            sessionStorage.setItem('logTime', Vue.moment(logTime).format('YYYY/MM/DD HH:mm:ss'));
             sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
+            state.userInfo = userInfo;
         },
     },
     modules: {

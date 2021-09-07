@@ -274,7 +274,7 @@
             this.checkBeforeApply();
         },
         methods: {
-            ...mapActions('regist', ['checkApply', 'getBeforeApply']),
+            ...mapActions('regist', ['checkApply', 'getBeforeApply','checkLogTime']),
             sendApply: function () {
                 var comp = this;
                 var isvaild = comp.$refs.applyForm.validate();
@@ -418,6 +418,11 @@
                     groupId = 'covid';
                 this.$router.push({ name: 'unapply', query: { groupId: groupId } });
             },
+        },
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                vm.$store.dispatch("regist/checkLogTime").then(() => {});
+            });
         },
         components: {
             appLayout, applyDone, comLoading, comConfirm
