@@ -22,29 +22,29 @@
                     <div class="apply-field">
                         <div class="apply-field-label">姓名<span class="red--text">*</span></div>
                         <div class="apply-field-container">
-                            <v-text-field class="apply-field-text" placeholder="請輸入您的姓名" v-model="uName" :rules="[rules.required]" :readonly="getLockUserInfo.lockName"></v-text-field>
+                            <v-text-field class="apply-field-text" placeholder="請輸入您的姓名" v-model="uName" :rules="[rules.required]" :disabled="getLockUserInfo.lockName"></v-text-field>
                         </div>
                     </div>
                     <div class="apply-field">
                         <div class="apply-field-label">身份證字號<span class="red--text">*</span></div>
                         <div class="apply-field-container">
-                            <v-text-field class="apply-field-text" placeholder="請輸入您的身分證字號" v-model="uId" :rules="[rules.required]" :readonly="getLockUserInfo.lockIdentify"></v-text-field>
+                            <v-text-field class="apply-field-text" placeholder="請輸入您的身分證字號" v-model="uId" :rules="[rules.required]" :disabled="getLockUserInfo.lockIdentify"></v-text-field>
                         </div>
                     </div>
                     <div class="apply-field">
                         <div class="apply-field-label">生日<span class="red--text">*</span></div>
                         <div class="apply-field-container d-flex justify-space-between">
-                            <v-select :items="years" placeholder="yyyy" v-model="year" :rules="[rules.required]" :readonly="getLockUserInfo.lockBirthday">
+                            <v-select :items="years" placeholder="yyyy" v-model="year" :rules="[rules.required]" :disabled="getLockUserInfo.lockBirthday">
 
                             </v-select>
-                            <v-select :items="months" placeholder="mm" v-model="month" :rules="[rules.required]" :readonly="getLockUserInfo.lockBirthday">
+                            <v-select :items="months" placeholder="mm" v-model="month" :rules="[rules.required]" :disabled="getLockUserInfo.lockBirthday">
                                 <template v-slot:prepend>
                                     <div class="splid-date d-flex justify-center">
                                         /
                                     </div>
                                 </template>
                             </v-select>
-                            <v-select :items="days" placeholder="dd" v-model="day" :rules="[rules.required]" :readonly="getLockUserInfo.lockBirthday">
+                            <v-select :items="days" placeholder="dd" v-model="day" :rules="[rules.required]" :disabled="getLockUserInfo.lockBirthday">
                                 <template v-slot:prepend>
                                     <div class="splid-date d-flex justify-center">
                                         /

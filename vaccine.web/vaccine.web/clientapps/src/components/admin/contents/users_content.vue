@@ -143,25 +143,33 @@
                                     </v-btn>
                                 </template>
                                 <v-list>
-                                    <v-list-item @click.stop="editItem(item)">
+                                    <v-list-item @click.stop="editItem(item)" class="modify-list-item">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
-                                                <v-icon small>far fa-edit</v-icon>
-                                            </v-btn>編輯
+                                                <img src="/admin/menu-edit.svg">
+                                            </v-btn><span class="modify-btn-text">編輯</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="stopItem(item)">
+                                    <v-list-item @click.stop="stopItem(item)" class="modify-list-item">
                                         <v-list-item-action-text>
-                                            <v-btn icon dense>
-                                                <v-icon small>far fa-eye-slash</v-icon>
-                                            </v-btn>{{ changeStatus }}
+
+                                            <template v-if="changeStatus=='啟用'">
+                                                <v-btn icon dense>
+                                                    <img src="/admin/menu-disable.svg">
+                                                </v-btn><span class="modify-btn-text">{{ changeStatus }}</span>
+                                            </template>
+                                            <template v-if="changeStatus=='停用'">
+                                                <v-btn icon dense>
+                                                    <img src="/admin/menu-enable.svg">
+                                                </v-btn><span class="modify-btn-text">{{ changeStatus }}</span>
+                                            </template>
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="removeItemConfirm(item)">
+                                    <v-list-item @click.stop="removeItemConfirm(item)" class="modify-list-item">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
-                                                <v-icon small>far fa-trash-alt</v-icon>
-                                            </v-btn>刪除
+                                                <img src="/admin/menu-delete.svg">
+                                            </v-btn><span class="modify-btn-text">刪除</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
 
@@ -400,6 +408,16 @@
 
 
 <style>
+
+    .users-list .modify-btn-text {
+        color: #626781;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+    }
+
+    .users-list .modify-list-item {
+        min-height: 20px !important;
+    }
+
     .users-list .app-content {
         background: #F2F3F7 !important;
     }
