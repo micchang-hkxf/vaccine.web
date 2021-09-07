@@ -414,15 +414,19 @@
                     </v-col>
 
                 </v-row>-->
-                <v-divider></v-divider>
             </v-form>
             <!--<v-divider></v-divider>-->
         </template>
 
         <template v-slot:action>
-            <v-spacer></v-spacer>
-            <v-btn @click="cancel" outlined :ripple="false"><span style="color:#626781;">取消</span></v-btn>
-            <v-btn color="primary" @click="save" :ripple="false"><span>{{saveBtnName}}</span></v-btn>
+            <div style="width:100%;">
+                <v-divider></v-divider>
+                <div class="d-flex" style="margin-top:16px;">
+                    <v-spacer></v-spacer>
+                    <v-btn @click="cancel" outlined :ripple="false" style="margin-right:16px;"><span style="color:#626781;">取消</span></v-btn>
+                    <v-btn color="primary" @click="save" :ripple="false"><span>{{saveBtnName}}</span></v-btn>
+                </div>
+            </div>
 
         </template>
     </com-dialog>

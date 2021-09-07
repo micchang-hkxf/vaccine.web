@@ -200,7 +200,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-label><span class="star">帳號</span></v-label>
-                                <v-text-field dense outlined class="w02" placeholder="請輸入帳號" v-model="acc" v-bind:readonly="isReadOnly" :rules="[v => !!v || '必填']"></v-text-field>
+                                <v-text-field dense outlined class="w02" placeholder="請輸入帳號" v-model="acc" v-bind:disabled="isReadOnly" :rules="[v => !!v || '必填']"></v-text-field>
                             </v-col>
                         </v-row>
                         <!--<v-row>
@@ -291,15 +291,20 @@
                                 <!--<v-text-field type="hidden" v-model="editID"></v-text-field>-->
                             </v-col>
                         </v-row>
-                        <v-divider></v-divider>
                     </v-form>
                 </template>
                 <template v-slot:action="{close}">
-                    <v-spacer></v-spacer>
-                    <v-btn @click="close" outlined :ripple="false"><span style="color:#626781;">取消</span></v-btn>
-                    <v-btn @click="createConfirm" color="primary" :ripple="false"><span>儲存</span></v-btn>
+                    <div style="width:100%;">
+                        <v-divider></v-divider>
+                        <div class="d-flex" style="margin-top:16px;">
+                            <v-spacer></v-spacer>
+                            <v-btn @click="close" outlined :ripple="false"><span style="color:#626781;margin-right:16px;">取消</span></v-btn>
+                            <v-btn @click="createConfirm" color="primary" :ripple="false"><span>儲存</span></v-btn>
+                        </div>
+                    </div>
                 </template>
             </com-dialog>
+
             <com-confirm ref="alert" ref-key="alert" :right-click="alertClick" :right-color="alertrightcolor" right-outlined="">
                 <template v-slot:confirm-image>
                     <v-img v-bind:src="alertImgSrc"></v-img>
