@@ -6,7 +6,7 @@
         <template v-slot:regist-content>
             <!--<div class="apply-header">
         <v-stepper alt-labels class="elevation-0">
-            <v-stepper-header>
+            <v-stepper-header>readonly
                 <v-stepper-step step="1" class="step-one disable-step"></v-stepper-step>
                 <v-divider></v-divider>
                 <v-stepper-step step="2" class="step-two active-step"> </v-stepper-step>
@@ -60,11 +60,11 @@
                         </div>
                     </div>
                     <!--<div class="apply-field">
-            <div class="apply-field-label">戶籍</div>
-            <div class="apply-field-container">
-                <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
-            </div>
-        </div>-->
+                <div class="apply-field-label">戶籍</div>
+                <div class="apply-field-container">
+                    <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
+                </div>
+            </div>-->
                     <div class="apply-field display type" v-if="vaccines.length > 0 || session.brandName !== ''">
                         <div class="apply-field-label">接種疫苗</div>
                         <div class="apply-field-container">
@@ -544,12 +544,16 @@
         margin-top: 24px !important;
     }
 
+    .apply-content/deep/ .app-content {
+       display:flex;
+       justify-content:center;
+    }
+
+
+
     .apply-content/deep/ .apply-container {
         padding-top: 24px !important;
-        /*padding-left: 24px !important;
-        padding-right: 24px !important;*/
-        display:grid;
-        justify-content:center;
+        max-width:800px;
     }
 
 
@@ -564,7 +568,7 @@
 
         .apply-content/deep/ .apply-actions .btn-agree {
             /*left: 330px*/
-            margin-left: 600px;
+            margin-left: 400px;
         }
 
 
