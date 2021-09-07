@@ -444,6 +444,7 @@
                                     </div>
                                 </template>
                                 <template v-slot:action>
+                                    <v-divider></v-divider>
                                     <v-spacer></v-spacer>
                                     <v-btn outlined :ripple="false" @click="backToEdit2"><span style="color:#626781;">修改</span></v-btn>
                                     <v-btn @click="editSaveRegist" color="primary" :ripple="false"><span>確定</span></v-btn>

@@ -141,6 +141,11 @@
                 }
             },
         },
+        beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+            next(function (vm) {
+                vm.$store.dispatch("regist/checkLogTime").then(function () { });
+            });
+        },
         components: {
             appLayout, applyViewer, comLoading, comConfirm
         }
