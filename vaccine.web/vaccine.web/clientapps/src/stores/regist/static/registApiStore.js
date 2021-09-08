@@ -319,6 +319,7 @@ export default {
         },
         saveLockUserInfo: (state, lock) => {
             state.lockUserInfo = lock;
+            sessionStorage.setItem('lockUserInfo', lock);
         },
         saveUserInfo: (state, userInfo) => {
             if (userInfo == null) {
