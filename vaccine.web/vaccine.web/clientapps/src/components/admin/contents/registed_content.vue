@@ -137,8 +137,7 @@
                     this.totalCount = r.totalCount;
                     this.items.splice(0);                   
                     r.datas.forEach((x) => {
-                        var str = x.identity.substr(1, 5);
-                        var code = x.identity.replace(str, '●●●●●')
+                        var code = x.identity.replace(/x/g, '●');
                         x.identity=code
                         this.items.push(x);
                     })
