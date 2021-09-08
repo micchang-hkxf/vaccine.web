@@ -29,8 +29,10 @@
                                 </v-btn>
                             </v-row>
                         </div>
+                    </template>
 
-
+                    <template v-slot:item.date="{item}">
+                        {{$moment(item.date).format('YYYY/MM/DD HH:mm')}}
                     </template>
 
                 </com-table>
