@@ -598,7 +598,8 @@
                 required: v => !!v || '必填',
                 checkRegistStart: v => new Date(v) >= new Date(this.model.regist_apply_start_date).setDate(-3) || '報名日期須早於設站日期前三天',
                 quotaRule(minNum) {
-                    return v => (v && v >= minNum) || '報名名額上限設定必須大於等於' + minNum;
+  
+                    return v => (v && v >= minNum && v > 0) || '報名名額上限設定必須大於0且大於等於' + minNum;
                 }
             },
             regist_station_start_time: "00:00",
