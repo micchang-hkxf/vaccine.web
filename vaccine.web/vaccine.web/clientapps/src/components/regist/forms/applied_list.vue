@@ -15,10 +15,11 @@
                         <div class="action-info d-flex flex-column justify-center" @click="toSession(applied)">
                             <div class="action-info-header d-flex flex-column">
                                 <div class="action-info-subject">
-                                    {{applied.activityName}}
+                                    {{applied.activityName}}//8888{{groupId}}
                                 </div>
                                 <div class="action-info-sec-subject">
-                                    {{applied.region.distName}}-{{applied.region.villageName}}│{{applied.vaccineGroupName}}
+                                    {{applied.region.distName
+                                    }}-{{applied.region.villageName}}│{{applied.vaccineGroupName}}
                                 </div>
                             </div>
                             <v-divider></v-divider>
@@ -116,9 +117,7 @@
                 return true;
             }
         },
-        props: {
-
-        },
+        props: {},
         created: function () {
             this.isShow = true;
         },

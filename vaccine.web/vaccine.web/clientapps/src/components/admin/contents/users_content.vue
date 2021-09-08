@@ -85,7 +85,7 @@
 
 
                         </template>
-
+                         
                         <template v-slot:toolbar-action={}>
                             <!--<v-checkbox :ripple="false" hide-details @click="switchSelect"></v-checkbox>
             <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
@@ -611,6 +611,7 @@
             ...mapActions('users', ['searchUser', 'changeUser', 'removeUser', 'getAreaList']),
 
             editItem(item) {
+                console.log('edit', item);
                 this.formTitle = "修改人員資料";
                 this.$bus.$emit('userform_show', true);
                 this.$set(this, "uName", item.uName);
@@ -620,14 +621,19 @@
                 this.$set(this, "email", item.email);
                 this.$set(this, "unitName", item.unitName);
                 this.$set(this, "isReadOnly", true);
-               
+
+              
                 var r = this.$store.getters["users/getRoleListById"](item.userType).state;
                 //var a = this.$store.getters["users/getAreaListById"](item.zones[0].cityId).state
+                var zone = item.zones[0].data.filter((x) => x.hasAuth == true);                 
+                var area = zone.map((x) => { return { id: x.distId, state: x.distName } });
+
                 this.$set(this, "setRole", { id: item.userType, state: r });
                 if (item.userType == 0) {
                     this.$set(this, "setArea", { id: '200', state: '管理全區' });
                 } else {
-                    this.$set(this, "setArea", { id: item.zones[0].data[0].distId, state: item.zones[0].data[0].distName });
+                    this.$set(this, "setArea", { id: area[0].id, state: area[0].state });
+                    //this.$set(this, "setArea", { id: item.zones[0].data[0].distId, state: item.zones[0].data[0].distName });
                 }
                 this.$set(this, "setEnable", item.isEnable.toString() == 'true');
         
@@ -733,8 +739,9 @@
                     comp.$bus.$emit('type1_hide4');
                     comp.totalCount = result.totalCount;
                     comp.items = [];
-                  
+                    //console.log('datas', result.datas);
                     result.datas.forEach(f => comp.items.push(f))
+                    //console.log('items', comp.items);
                     comp.$refs.userTable.gofrontPage(page);
                     if (!finddata ) {
                         comp.$bus.$emit('alert_show', true);
@@ -874,8 +881,10 @@
             },
             getZonesData(item) {
                 //暫時只有北市
-                var z = [];
-                item.zones[0].data.forEach(f => z.push(f.distName))
+                var z = [];             
+                //item.zones[0].data.forEach(f => z.push(f.distName))              
+                var authZones = item.zones[0].data.filter((x) => x.hasAuth == true);              
+                    authZones.forEach(f => z.push(f.distName));                              
                 return z.join(",");
             },
             changePage: function (pager) {

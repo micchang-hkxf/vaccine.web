@@ -33,7 +33,7 @@
                                 </div>
                             </div>
                             <div class="action-info-detail d-flex flex-column justify-center">
-                                <div class="d-flex flex-row justify-space-between">
+                                <div  class="d-flex flex-row justify-space-between" v-if="groupId!='influenza'" >
                                     <div class="action-info-title text-left">疫苗廠牌：</div>
                                     <div class="action-info-data text-right">{{session.brandName}}</div>
                                 </div>
