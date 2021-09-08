@@ -160,6 +160,7 @@
                         <v-menu ref="menu"
                                 v-model="menu"
                                 :readonly="overStatus==1"
+                                :disabled="overStatus==1"
                                 :close-on-content-click="false"
                                 :return-value.sync="date"
                                 transition="scale-transition"
