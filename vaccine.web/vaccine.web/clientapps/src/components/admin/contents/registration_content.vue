@@ -13,7 +13,7 @@
                 <v-card>
                     <com-table ref="table" ref-key="table" :headers="getHeaders" :items="items" :itemKey="itemKey" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               :change-page="changePage" :row-click="handleRowClick">
+                               :change-page="changePage" :row-click="handleRowClick" @sort="setSort">
 
                         <template v-slot:item.regist_quota="{item}">
                             <!--<div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>-->
@@ -1223,6 +1223,8 @@
             artificialResult: '',
             reCheckId:'',
             isReChecked: false,
+            orderType :null,
+            isDesc:null,
             regist_beforeDay: 3,//報名截止時間要於施打時間早3天以上
             downloadErrorMessage: '複檢結果至少要有一筆成功才能下載',
             artificialOptions: [
@@ -1985,6 +1987,49 @@
                     reader.readAsBinaryString(this.uploadFile);
 
                 }
+            },
+            setSort(opt) {
+                //有問題未完成
+                console.log('opt',opt);
+
+                if (opt.index.length == 0 || (this.orderType == opt.index[0] && this.isDesc == opt.isDesc[0])) {
+                    return;
+                }
+
+                this.orderType = opt.index[0];
+                this.isDesc = opt.isDesc[0];
+                var ord = 0;
+        
+                if (opt.index[0] == "regist_create_date") {
+                    ord = (opt.isDesc[0]) ? 0 : 2;
+                } else if (opt.index[0] == "regist_station_date") {
+                    ord = (opt.isDesc[0]) ? 1 : 3;
+                }
+
+                var params = {
+                    vaccine: this.selectVaccine,
+                    district: this.selectDistrict,
+                    village: this.selectVillage,
+                    institution: this.selectInstitution,
+                    keyWord: this.keyWord,
+                    pageSize: this.itemsPerPage,
+                    page: 1,
+                    orderType: ord
+                    
+                };
+                
+                var comp = this;
+                this.loadRegistForm(params).then((r) => {
+                    comp.totalCount = r.totalCount;
+                    comp.items.splice(0);
+                    r.datas.forEach((x) => comp.items.push(x));
+                    comp.$refs.table.gofrontPage(params.page);
+                }).catch((e) => {
+                    console.log(e);
+                });
+
+
+                
             }
         },
 

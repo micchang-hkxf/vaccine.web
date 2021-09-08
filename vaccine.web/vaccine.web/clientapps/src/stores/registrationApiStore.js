@@ -133,7 +133,7 @@ export default {
                 var distIdFilter       = (typeof params.district    === 'undefined' || params.district    === '' || params.district.id    === '') ? 'all' : params.district.id;
                 var villageIdFilter    = (typeof params.village     === 'undefined' || params.village     === '' || params.village.id     === '') ? 'all' : params.village.id;
                 var vaccineGroupId     = (typeof params.vaccine     === 'undefined' || params.vaccine     === '' || params.vaccine.id     === '') ?  null : params.vaccine.id;
-                var keyword            =                                                                            params.keyWord        === ''  ?  null : params.keyWord;
+                var keyword = params.keyWord === '' ? null : params.keyWord;
                 
                 axios.get(apiUrl, {
                     params: {
@@ -143,6 +143,7 @@ export default {
                         distIdFilter: distIdFilter,             // 行政區過濾
                         villageIdFilter: villageIdFilter,       // 村里過濾
                         keyword: keyword,                       // 關鍵字
+                        orderType: params.orderType,
                         vaccineGroupId: vaccineGroupId,         // 疫苗種類
                         token: rootGetters['user/getToken']
                     }
@@ -614,7 +615,7 @@ export default {
                 data.forEach((d) => {
                     actIdLists+='&actIdList='+d.regist_id;
                 });               
-                //console.log('remove', data);
+                //console.log('remove', data);F
                 axios({
                     method: 'delete',
                     url: `${state.apiRoot}api/Activity?api-version=1.0` + actIdLists,
@@ -636,7 +637,7 @@ export default {
     state: {
         ...siteConfig,
         headers: [
-            { text: '建立日期', value: 'regist_create_date', align: 'center', sortable: true, flex: 6 },
+            { text: '建立日期', value: 'regist_create_date', align: 'center', sortable: true,flex: 6 },
             { text: '場次標題', value: 'regist_title', align: 'center',sortable: false, flex: 6 },
             { text: '疫苗類型', value: 'regist_type_name', align: 'center',sortable: false, flex: 6 },
             //{ text: '疫苗類型代碼', value: 'type_code', sortable: false, flex: 6,disable:true },
@@ -644,7 +645,7 @@ export default {
             { text: '村里', value: 'regist_village_name', align: 'center',sortable: false, flex: 6 },
             { text: '醫療院所', value: 'regist_institution_name', align: 'center',sortable: false, flex: 6 },
             { text: '院所行政區', value: 'regist_instution_district_name', align: 'center',sortable: false, flex: 6 },
-            { text: '設站時間', value: 'regist_station_date', align: 'center',sortable: false, flex: 6 },
+            { text: '設站時間', value: 'regist_station_date', align: 'center',sortable: true, flex: 6 },
             //{ text: '設站地點', value: 'place', sortable: false, flex: 6 },
             { text: '報名時間', value: 'regist_apply_start_date', align: 'center', sortable: false, flex: 6 },
             { text: '年齡限制', value: 'regist_age_limit', align: 'center', sortable: false, flex: 6 },
@@ -676,6 +677,7 @@ export default {
             { text: '', value: 'modify', sortable: false },
         ],
         showBrand: false,
+        
     },
     getters: {
         getHeaders: state => {

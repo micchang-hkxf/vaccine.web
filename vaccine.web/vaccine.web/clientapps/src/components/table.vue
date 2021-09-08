@@ -9,6 +9,7 @@
                   :item-class="rowClass"
                   :single-select="singleSelect"
                   class="elevation-0"
+                  :custom-sort="customSort"
                   hide-default-footer>
 
         <template v-for="(header,index) in computedHeaders" v-slot:[header.headerTemplateName]>
@@ -229,6 +230,10 @@
            
         },
         methods: {
+            customSort: function (items, index, isDesc) {
+                this.$emit('sort', { items, index, isDesc }); 
+                return items;
+            },
             rowClass: function (item) {
                 if (!this.disabledProp) return "";
                 return item[this.disabledProp] ? "item-disabled" : "" ;
