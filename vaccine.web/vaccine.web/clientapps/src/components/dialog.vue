@@ -1,5 +1,5 @@
 ﻿<template>
-    <v-dialog v-model="isShow" :width="width" scrollable>
+    <v-dialog v-model="isShow" :width="width" scrollable persistent>
         <v-card :class="refClass">
             <v-card-title color="primary" class="dialog-toolbar">
                 <slot name="toolbar" :close="close"></slot>
