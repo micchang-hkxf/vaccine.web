@@ -95,7 +95,7 @@
         data: () => ({
             totalCount: 0,
             itemsPerPage: 5,
-            totalVisible: 4,
+            totalVisible: 10,
             showSelect: false,           
             keyWord: '',
             items: [],

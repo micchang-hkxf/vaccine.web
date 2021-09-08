@@ -125,7 +125,7 @@
             <!--共用 loading -->
             <com-loading ref-key="loading"></com-loading>
             <!---->
-            <com-confirm ref="alert" ref-key="alert" :right-click="alertClick">
+            <com-confirm ref="alert" ref-key="alert" :right-click="alertClick" persistent="false">
                 <template v-slot:confirm-image>
                     <v-img src="/alert_warning.svg"></v-img>
                 </template>
@@ -138,7 +138,7 @@
                 </template>
             </com-confirm>
             <!---->
-            <com-confirm ref="alertRegistered" ref-key="alertRegistered" :left-click="alertRegisteredLeftClick" :right-click="alertRegisteredRightClick" right-color="rgba(240,82,75,1) !important">
+            <com-confirm ref="alertRegistered" ref-key="alertRegistered" :left-click="alertRegisteredLeftClick" :right-click="alertRegisteredRightClick" right-color="rgba(240,82,75,1) !important" persistent="false">
                 <template v-slot:confirm-image>
                     <v-img src="/alert_warning.svg"></v-img>
                 </template>
@@ -155,7 +155,7 @@
                 </template>
             </com-confirm>
             <!---->
-            <com-confirm ref="alertNoConform" ref-key="alertNoConform" :right-click="alertNoConformClick">
+            <com-confirm ref="alertNoConform" ref-key="alertNoConform" :right-click="alertNoConformClick"  persistent="false">
                 <template v-slot:confirm-image>
                     <v-img src="/alert_warning.svg"></v-img>
                 </template>
@@ -167,7 +167,7 @@
                 </template>
             </com-confirm>
             <!---->
-            <com-confirm ref="alertUnknow" ref-key="alertUnknow" :right-click="alertUnknowClick">
+            <com-confirm ref="alertUnknow" ref-key="alertUnknow" :right-click="alertUnknowClick" persistent="false">
                 <template v-slot:confirm-image>
                     <v-img src="/alert_warning.svg"></v-img>
                 </template>
@@ -180,7 +180,7 @@
                 </template>
             </com-confirm>
             <!---->
-            <com-confirm ref="alertApplyNo" ref-key="alertApplyNo" :right-click="alertApplyNoClick">
+            <com-confirm ref="alertApplyNo" ref-key="alertApplyNo" :right-click="alertApplyNoClick" persistent="false">
                 <template v-slot:confirm-image>
                     <v-img src="/alert_success.svg"></v-img>
                 </template>
@@ -200,7 +200,7 @@
                 </template>
             </com-confirm>
 
-            <com-confirm ref="alertTimeout" ref-key="alertTimeout" :right-click="alertTimeoutClick">
+            <com-confirm ref="alertTimeout" ref-key="alertTimeout" :right-click="alertTimeoutClick" persistent="false">
                 <template v-slot:confirm-image>
                     <v-img src="/alert_warning.svg"></v-img>
                 </template>

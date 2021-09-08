@@ -37,7 +37,7 @@
                                     </v-select>
 
                                     <v-select v-model="selectArea"
-                                              :items="getAreaItems"
+                                              :items="zones"
                                               item-text="state"
                                               item-value="id"
                                               placeholder="有/無管轄區域"
@@ -232,7 +232,7 @@
                             <v-col cols="12">
                                 <v-label><span class="star">角色設定</span></v-label>
                                 <v-select v-model="setRole"
-                                          :items="getRoleItems"
+                                          :items="userRoleItems"
                                           item-text="state"
                                           item-value="id"
                                           dense
@@ -248,11 +248,11 @@
                                 </v-select>
                             </v-col>
                         </v-row>
-                        <v-row>
+                        <v-row v-if="setRole.id==1 || setRole.id==null">
                             <v-col cols="12">
-                                <v-label><span class="star">管理區域</span></v-label>
-                                <v-select v-model="setArea" v-if="setRole.id==1 || setRole.id==null"
-                                          :items="getAllAreaItems"
+                                <v-label><span class="star">管理區域</span></v-label>                                
+                                <v-select v-model="setArea"
+                                          :items="zones"
                                           item-text="state"
                                           item-value="id"
                                           dense
@@ -267,9 +267,9 @@
                                 </v-select>
                             </v-col>
                         </v-row>
-                        <v-row>
+                        <v-row v-if="setRole.id==0">
                             <v-col cols="12">
-                                <v-select v-model="setArea" v-if="setRole.id==0"
+                                <v-select v-model="setArea"
                                           :items="[{id:null , state:'無'},{id:'200' , state:'管理全區'}]"
                                           item-text="state"
                                           item-value="id"
@@ -521,7 +521,7 @@
         data: () => ({
             totalCount: 0,
             itemsPerPage: 5,
-            totalVisible: 8,
+            totalVisible: 10,
             inpage:1,
             uName: null,
             acc: null,
@@ -556,7 +556,9 @@
             fromSaveConfirmMessage: "",
             fromSaveConfirmTitle: "",
             changeStatus: null,
-            alertrightcolor:'#736DB9',
+            alertrightcolor: '#736DB9',
+            zones: [],
+            userInfo:null,
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
                 { text: '姓名', value: 'uName', align: 'center', sortable: true, flex: 6, width: '10%' },
@@ -599,6 +601,16 @@
         }),
         computed: {
             ...mapGetters('users', ['getTableItems', 'getAreaItems', 'getAllAreaItems', 'getRoleItems', 'getRoleListById', 'getAreaListById']),
+            ...mapActions('user', ['getReGetInfo']),
+            userAllAreaItems: function () {
+                return this.getAllAreaItems.filter(f => f.hasAuth == true);
+            },
+            userRoleItems: function () {
+                if (this.setRole == 0) {
+                    return this.getRoleItems;
+                }
+                return this.getRoleItems.filter(f=>f.id==1);
+            }
         },
         props: {
 
@@ -609,12 +621,15 @@
         created() {
             this.getAreaList();
             var r = this.$store.getters["user/getReGetInfo"];
-            this.setRole = r.userType;
+            if (r) {
+                this.zones = r.zones[0].data.filter(f => f.hasAuth == true).map(m => { return { id: m.distId, state: m.distName }; });
+                this.setRole = r.userType;
+                this.userInfo = r;
+            }
             this.$set(this, "setEnable", 'true');
         },
         methods: {
             ...mapActions('users', ['searchUser', 'changeUser', 'removeUser', 'getAreaList']),
-
             editItem(item) {
                 this.formTitle = "修改人員資料";
                 this.$bus.$emit('userform_show', true);
@@ -712,10 +727,18 @@
                 
                 if (this.selectRole) {
                     filter.userType = this.selectRole.id;
+                } else  {
+                    if (this.userInfo.userType == 1) {
+                        filter.userType = 1;
+                    }
                 }
                 if (this.selectArea) {
                     //filter.zones = this.selectArea.id;
                     filter.zones = this.selectArea.state;
+                } else {
+                    if (this.userInfo.userType == 1) {
+                        filter.zones = this.zones[0].id;
+                    }
                 }
                 if (this.selectPermission) {
                     filter.isEnable = this.selectPermission.st;

@@ -126,10 +126,10 @@ export default {
             return JSON.parse(state.activityApply);
         },
         getReGetInfo: (state) => {
-            var data = window.sessionStorage.getItem('reGetInfo');
-            if (!state.reGetInfo && data !== null)
-                state.reGetInfo = data;
-            return JSON.parse(state.reGetInfo);
+            var data = window.sessionStorage.getItem('reGetInfo');            
+            if (data !== null)
+                state.reGetInfo = JSON.parse(data) ;
+            return state.reGetInfo;
         },
         removeItem: () => (key) => {
             return window.sessionStorage.removeItem(key);

@@ -14,14 +14,15 @@
     export default {
         // router,
         data: () => ({
-            menus: [
+            menus: [],
+            currentContent: { text: "我的會議", active: true, key: "meetings" },
+            userInfo:null ,
+            all: [
                 { text: "報名表管理", active: false, key: "registration", target: null },
                 { text: "人員管理", active: false, key: "users", target: null },
-                { text: "稽核管理", active: false, key: "audit", target: null},
+                { text: "稽核管理", active: false, key: "audit", target: null },
                 { text: "報名查詢", active: false, key: "registed", target: null },
             ],
-            currentContent: { text: "我的會議", active: true, key: "meetings" },
-
         }),
         computed: {
 
@@ -43,7 +44,14 @@
              
         },
         created: function () {
-            
+            var r = this.$store.getters["user/getReGetInfo"];
+            this.all.forEach(f => {
+                if (f.key == 'audit' && r) {
+                    if (r.userType == 0) this.menus.push(f);
+                    return;
+                }
+                this.menus.push(f)
+            });            
         },
         methods: {
 
