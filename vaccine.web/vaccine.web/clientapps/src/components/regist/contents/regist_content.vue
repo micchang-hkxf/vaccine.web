@@ -27,7 +27,7 @@
                         </div>
                     </v-tab-item>
                     <v-tab-item key="1" value="applied" eager class="applied-container">
-                        <applied-list ref="applieds"></applied-list>
+                        <applied-list ref="applieds" ></applied-list>
                     </v-tab-item>
                 </v-tabs-items>
                 <login-switch ref="switch" :login-done="toLogin" :login-cancel="loginCancel"></login-switch>

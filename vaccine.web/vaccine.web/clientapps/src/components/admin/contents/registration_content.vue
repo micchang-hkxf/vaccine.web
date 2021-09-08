@@ -992,24 +992,25 @@
         overflow-y: auto !important;
     }
 
-        /*-------滾動條整體樣式----*/
+         /*滾動條整體樣式*/
         .v-dialog .v-card__text.dialog-content::-webkit-scrollbar {
             width: 8px;
-            height: 8px;
+            height: 8px;           
         }
 
+    
         /*滾動條裡面小方塊樣式*/
         .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-thumb {
-            border-radius: 100px;
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            background: rgba(98,103,129,0.2);
-        }
+                border-radius: 100px;
+                -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+                background: rgba(98,103,129,0.2);                
+            }
 
         /*滾動條裡面軌道樣式*/
         .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-track {
             -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
             border-radius: 20px;
-            background: rgba(98,103,129,0.1);
+            background: rgba(98,103,129,0.1);            
         }
 
     thead tr th {
@@ -1671,8 +1672,7 @@
          
                     comp.detailItems.splice(0);
                     r.datas.forEach((x) => {
-                        var str = x.identity.substr(1, 6);
-                        var code = x.identity.replace(str, '●●●●●●');
+                        var code = x.identity.replace(/x/g, '●');
                         x.identity = code;
 
                         //if (['不合格', '已取消'].includes(x.result) || x.result.indexOf('不合格') !== -1) {

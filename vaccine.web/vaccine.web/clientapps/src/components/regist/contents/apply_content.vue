@@ -54,9 +54,9 @@
                         </div>
                     </div>
                     <div class="apply-field">
-                        <div class="apply-field-label">手機（簡訊通知）</div>
+                        <div class="apply-field-label">手機或市話（手機可接收接種通知）<span class="red--text">*</span></div>
                         <div class="apply-field-container">
-                            <v-text-field class="apply-field-text" maxlength="10" placeholder="請輸入手機號碼" v-model="mbNo" :rules="[rules.mobile]"></v-text-field>
+                            <v-text-field class="apply-field-text" maxlength="10" placeholder="手機範例0912345678，市話範例0227208889" v-model="mbNo" :rules="[rules.required,rules.mobile]"></v-text-field>
                         </div>
                     </div>
                     <!--<div class="apply-field">
@@ -66,7 +66,7 @@
                 </div>
             </div>-->
                     <div class="apply-field display type" v-if="vaccines.length > 0 || session.brandName !== ''">
-                        <div class="apply-field-label">接種疫苗</div>
+                        <div class="apply-field-label">可接種項目</div>
                         <div class="apply-field-container">
                             <template v-if="vaccines.length > 0">
                                 <div class="apply-field-type d-flex justify-space-between" v-for="(vaccine , idx) in vaccines" :key="`vaccine_${idx}`">
@@ -236,7 +236,7 @@
             days: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
             rules: {
                 required: v => !!v || '必填',
-                mobile:v=>!v || v.match('0[0-9]{8,9}')|| '手機號碼格式錯誤'
+                mobile:v=>!v || v.match('0[0-9]{8,9}')|| '輸入格式錯誤'
             },
             uName: '',
             uId: '',
