@@ -100,22 +100,26 @@
                         </v-col>
                     </v-row>
                 </v-card-text>
-                <v-divider></v-divider>
             </v-form>
 
         </template>
 
         <template v-slot:action>
-            <v-spacer></v-spacer>
-            <v-btn @click="cancel" outlined :ripple="false"><span style="color:#626781;">取消</span></v-btn>
-            <v-btn color="primary" @click="save" :ripple="false"><span>下載報表</span></v-btn>
+            <div style="width:100%;">
+                <v-divider></v-divider>
+                <div class="d-flex" style="margin-top:16px;">
+                    <v-spacer></v-spacer>
+                    <v-btn @click="cancel" outlined :ripple="false"><span style="color:#626781;">取消</span></v-btn>
+                    <v-btn color="primary" @click="save" :ripple="false"><span>下載報表</span></v-btn>
+                </div>
+            </div>
         </template>     
     </com-dialog>
 
 </template>
 <style>
     .v-btn--outlined {
-        border: thin solid rgba(98 ,103, 129 ,0.2) !important;
+        border: thin solid rgba(98,103, 129,0.2) !important;
     }
 
     .description {

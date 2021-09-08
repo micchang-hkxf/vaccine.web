@@ -185,7 +185,7 @@
 
 
                             <!--新增-->
-                            <editor ref="registNewEditor" ref-key="registNewEditor" width="40%" :title="title" :saveBtnName="saveBtnName" :action="formAction"></editor>
+                            <editor ref="registNewEditor" ref-key="registNewEditor" width="40%" :title="title" :saveBtnName="saveBtnName" :action="formAction" key="regist-new-editor-dialog"></editor>
                             <com-dialog ref="registViewer" ref-key="registViewer" width="40%" key="regist-new-editor">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
@@ -318,7 +318,7 @@
 
 
                             <!--編輯-->
-                            <editor ref="registEdit" ref-key="registEdit" width="40%" :title="title" :saveBtnName="saveBtnName" :action="editFormAction"></editor>
+                            <editor ref="registEdit" ref-key="registEdit" width="40%" :title="title" :saveBtnName="saveBtnName" :action="editFormAction" key="regist-editor-dialog"></editor>
                             <com-dialog ref="registEditViewer" ref-key="registEditViewer" width="40%" key="regist-new-viewer">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
@@ -444,6 +444,7 @@
                                     </div>
                                 </template>
                                 <template v-slot:action>
+                                    <v-divider></v-divider>
                                     <v-spacer></v-spacer>
                                     <v-btn outlined :ripple="false" @click="backToEdit2"><span style="color:#626781;">修改</span></v-btn>
                                     <v-btn @click="editSaveRegist" color="primary" :ripple="false"><span>確定</span></v-btn>
@@ -523,11 +524,11 @@
                         </template>
 
                         <template v-slot:item.regist_station_date="{item}">
-                            {{item.regist_station_date}} {{item.regist_station_start_time}} - {{item.regist_station_end_time}}
+                            {{$moment(item.regist_station_date).format('YYYY/MM/DD')}} {{item.regist_station_start_time}} - {{item.regist_station_end_time}}
                         </template>
 
                         <template v-slot:item.regist_apply_start_date="{item}">
-                            {{item.regist_apply_start_date}} - {{item.regist_apply_end_date}}
+                            {{$moment(item.regist_apply_start_date).format('YYYY/MM/DD')}} - {{$moment(item.regist_apply_end_date).format('YYYY/MM/DD')}}
                         </template>
 
                         <template v-slot:item.regist_age_limit="{item}">
@@ -765,6 +766,14 @@
 </template>
 
 <style>
+
+    .dialog-dialogPanel .v-card__actions {
+        padding-top: 0px !important;
+        padding-bottom: 24px !important;
+        padding-left: 32px !important;
+        padding-right: 32px !important;
+    }
+
     span.table-content-field.regist-village-name {
         width: 200px !important;
         min-width: 200px !important;
@@ -1158,6 +1167,8 @@
     import comLoading from 'components/loading'
     import { mapActions, mapGetters } from 'vuex'
     import XLSX from 'xlsx'
+    import moment from "moment";
+
     export default {
         // router,
         data: () => ({
@@ -1608,8 +1619,8 @@
                 this.detailVillage = item.regist_village_name; //item.village;
                 this.detailInstitution = item.regist_institution_name;//item.institution;
                 this.detailInstutionDistrict = item.regist_instution_district_name;   //item.instutionDistrict;
-                this.detailStationTime = item.regist_station_date + ' ' + item.regist_station_start_time + ' - ' + item.regist_station_end_time; //item.stationTime;
-                this.detailRegistrationTime = item.regist_apply_start_date + ' - ' + item.regist_apply_end_date;   //item.registrationTime;
+                this.detailStationTime = moment(item.regist_station_date).format('YYYY/MM/DD') + ' ' + item.regist_station_start_time + ' - ' + item.regist_station_end_time; //item.stationTime;
+                this.detailRegistrationTime = moment(item.regist_apply_start_date).format('YYYY/MM/DD') + ' - ' + moment(item.regist_apply_end_date).format('YYYY/MM/DD');   //item.registrationTime;
                 this.detailCntQuota = item.regist_unpassed;   //item.cntQuota;
                 this.detailTotalQuota = item.regist_quota;    //item.totalQuota;
                 this.detailAgeLimit = item.regist_age_limit;

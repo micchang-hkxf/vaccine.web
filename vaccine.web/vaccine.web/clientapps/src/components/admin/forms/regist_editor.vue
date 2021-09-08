@@ -59,6 +59,7 @@
                                       placeholder="請輸入場次標題 ( 30字內 )"
                                       :rules="[rules.required]"
                                       :readonly="overStatus==1"
+                                      :disabled="overStatus==1"
                                       required
                                       outlined
                                       dense>
@@ -79,6 +80,7 @@
                                       :items="getDistricts"
                                       item-text="name"
                                       :readonly="overStatus==1"
+                                      :disabled="overStatus==1"
                                       item-value="id"
                                       placeholder="請選擇行政區"
                                       :menu-props="{ bottom: true, offsetY: true }"
@@ -115,6 +117,7 @@
                         <div><span class="regist-title">設站地點</span><span class="red--text">*</span></div>
                         <v-text-field v-model="model.regist_place"
                                       :readonly="overStatus==1"
+                                      :disabled="overStatus==1"
                                       placeholder="請輸入設站地點"
                                       :rules="[rules.required]"
                                       required
@@ -157,6 +160,7 @@
                         <v-menu ref="menu"
                                 v-model="menu"
                                 :readonly="overStatus==1"
+                                :disabled="overStatus==1"
                                 :close-on-content-click="false"
                                 :return-value.sync="date"
                                 transition="scale-transition"
@@ -165,10 +169,12 @@
                             <template v-slot:activator="{ on, attrs }">
                                 <v-text-field v-model="stationDate"
                                               :rules="[rules.required]"
-                                              readonly
+                                             
                                               v-bind="attrs"
                                               placeholder="請選擇日期"
                                               v-on="on"
+                                              :readonly="overStatus==1"
+                                              :disabled="overStatus==1"
                                               outlined
                                               dense>
                                     <template v-slot:append>
@@ -207,8 +213,8 @@
                 <v-row>
                     <v-col cols="12">
                         <div>  <span class="regist-title">設站時段設定</span><span class="red--text">*</span></div>
-                        <com-timepicker :readonly="overStatus==1" v-model="regist_station_start_time"></com-timepicker>
-                        <com-timepicker :readonly="overStatus==1" v-model="regist_station_end_time"></com-timepicker>
+                        <com-timepicker :readonly="overStatus==1" :disabled="overStatus==1" v-model="regist_station_start_time"></com-timepicker>
+                        <com-timepicker :readonly="overStatus==1" :disabled="overStatus==1" v-model="regist_station_end_time"></com-timepicker>
                     </v-col>
 
                 </v-row>
@@ -277,13 +283,15 @@
                                 :return-value.sync="date"
                                 transition="scale-transition"
                                 :readonly="overStatus==1"
+                                :disabled="overStatus==1"
                                 offset-y
                                 min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-text-field v-model="model.regist_apply_start_date"
                                               placeholder="請輸入事先報名開始時間"
                                               :rules="[rules.required]"
-                                              readonly
+                                              :readonly="overStatus==1" 
+                                              :disabled="overStatus==1"
                                               v-bind="attrs"
                                               v-on="on"
                                               outlined
@@ -395,6 +403,7 @@
                                       placeholder="請輸入年齡下限(預設無限制)"
                                       required
                                       :readonly="overStatus==1"
+                                      :disabled="overStatus==1"
                                       type="number"
                                       outlined
                                       dense>
@@ -414,15 +423,19 @@
                     </v-col>
 
                 </v-row>-->
-                <v-divider></v-divider>
             </v-form>
             <!--<v-divider></v-divider>-->
         </template>
 
         <template v-slot:action>
-            <v-spacer></v-spacer>
-            <v-btn @click="cancel" outlined :ripple="false"><span style="color:#626781;">取消</span></v-btn>
-            <v-btn color="primary" @click="save" :ripple="false"><span>{{saveBtnName}}</span></v-btn>
+            <div style="width:100%;">
+                <v-divider></v-divider>
+                <div class="d-flex" style="margin-top:16px;">
+                    <v-spacer></v-spacer>
+                    <v-btn @click="cancel" outlined :ripple="false" style="margin-right:16px;"><span style="color:#626781;">取消</span></v-btn>
+                    <v-btn color="primary" @click="save" :ripple="false"><span>{{saveBtnName}}</span></v-btn>
+                </div>
+            </div>
 
         </template>
     </com-dialog>
