@@ -185,7 +185,7 @@
 
 
                             <!--新增-->
-                            <editor ref="registNewEditor" ref-key="registNewEditor" width="40%" :title="title" :saveBtnName="saveBtnName" :action="formAction"></editor>
+                            <editor ref="registNewEditor" ref-key="registNewEditor" width="40%" :title="title" :saveBtnName="saveBtnName" :action="formAction" key="regist-new-editor-dialog"></editor>
                             <com-dialog ref="registViewer" ref-key="registViewer" width="40%" key="regist-new-editor">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
@@ -318,7 +318,7 @@
 
 
                             <!--編輯-->
-                            <editor ref="registEdit" ref-key="registEdit" width="40%" :title="title" :saveBtnName="saveBtnName" :action="editFormAction"></editor>
+                            <editor ref="registEdit" ref-key="registEdit" width="40%" :title="title" :saveBtnName="saveBtnName" :action="editFormAction" key="regist-editor-dialog"></editor>
                             <com-dialog ref="registEditViewer" ref-key="registEditViewer" width="40%" key="regist-new-viewer">
                                 <template v-slot:toolbar>
                                     {{viewerTitle}}
@@ -766,6 +766,14 @@
 </template>
 
 <style>
+
+    .dialog-dialogPanel .v-card__actions {
+        padding-top: 0px !important;
+        padding-bottom: 24px !important;
+        padding-left: 32px !important;
+        padding-right: 32px !important;
+    }
+
     span.table-content-field.regist-village-name {
         width: 200px !important;
         min-width: 200px !important;

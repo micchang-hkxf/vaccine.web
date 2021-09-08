@@ -413,7 +413,12 @@
 
 
 <style>
-
+    .dialog-userform .v-card__actions {
+        padding-top: 0px !important;
+        padding-bottom: 24px !important;
+        padding-left: 32px !important;
+        padding-right: 32px !important;
+    }
     .users-list .modify-btn-text {
         color: #626781;
         font: normal normal normal 16px/24px Noto Sans T Chinese;

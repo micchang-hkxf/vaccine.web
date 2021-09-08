@@ -46,7 +46,7 @@
         computed: {
             refClass: function () {
                 var result = {};
-                result[this.refKey] = true;
+                result[`dialog-${this.refKey}`] = true;
                 return result;
             }
         },
