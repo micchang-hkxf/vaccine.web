@@ -524,11 +524,11 @@
                         </template>
 
                         <template v-slot:item.regist_station_date="{item}">
-                            {{item.regist_station_date}} {{item.regist_station_start_time}} - {{item.regist_station_end_time}}
+                            {{$moment(item.regist_station_date).format('YYYY/MM/DD')}} {{item.regist_station_start_time}} - {{item.regist_station_end_time}}
                         </template>
 
                         <template v-slot:item.regist_apply_start_date="{item}">
-                            {{item.regist_apply_start_date}} - {{item.regist_apply_end_date}}
+                            {{$moment(item.regist_apply_start_date).format('YYYY/MM/DD')}} - {{$moment(item.regist_apply_end_date).format('YYYY/MM/DD')}}
                         </template>
 
                         <template v-slot:item.regist_age_limit="{item}">
@@ -1159,6 +1159,8 @@
     import comLoading from 'components/loading'
     import { mapActions, mapGetters } from 'vuex'
     import XLSX from 'xlsx'
+    import moment from "moment";
+
     export default {
         // router,
         data: () => ({
@@ -1607,8 +1609,8 @@
                 this.detailVillage = item.regist_village_name; //item.village;
                 this.detailInstitution = item.regist_institution_name;//item.institution;
                 this.detailInstutionDistrict = item.regist_instution_district_name;   //item.instutionDistrict;
-                this.detailStationTime = item.regist_station_date + ' ' + item.regist_station_start_time + ' - ' + item.regist_station_end_time; //item.stationTime;
-                this.detailRegistrationTime = item.regist_apply_start_date + ' - ' + item.regist_apply_end_date;   //item.registrationTime;
+                this.detailStationTime = moment(item.regist_station_date).format('YYYY/MM/DD') + ' ' + item.regist_station_start_time + ' - ' + item.regist_station_end_time; //item.stationTime;
+                this.detailRegistrationTime = moment(item.regist_apply_start_date).format('YYYY/MM/DD') + ' - ' + moment(item.regist_apply_end_date).format('YYYY/MM/DD');   //item.registrationTime;
                 this.detailCntQuota = item.regist_unpassed;   //item.cntQuota;
                 this.detailTotalQuota = item.regist_quota;    //item.totalQuota;
                 this.detailAgeLimit = item.regist_age_limit;
