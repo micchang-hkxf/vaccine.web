@@ -1176,6 +1176,7 @@
         data: () => ({
             totalCount: 0,
             itemsPerPage: 5,
+            showPage:1,//目前顯示第幾頁
             totalVisible: 10,
             showSelect: true,
             selectVaccine: '',
@@ -1326,7 +1327,8 @@
 
             },
             changePage: function (pager) {
-                console.log('c', pager);
+                //console.log('c', pager);
+                this.showPage = pager.page;
                 ///{ page: 2, pageSize: 20}
                 this.getRegistForm(pager.page);
             },
@@ -2065,7 +2067,7 @@
                     institution: this.selectInstitution,
                     keyWord: this.keyWord,
                     pageSize: this.itemsPerPage,
-                    page: 1,
+                    page: this.showPage,
                     orderType: ord
                     
                 };
