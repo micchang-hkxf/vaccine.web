@@ -671,7 +671,7 @@
                                                 <v-btn color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false" :disabled="lessCheckTime">
                                                     <v-img src="/admin/download_icon.svg" width="24px" height="24px">
                                                     </v-img>
-                                                    <span style="color:white">下載接種清冊</span>
+                                                    <span style="color:white">下載施打清冊</span>
                                                 </v-btn>
                                             </div>
                                         </div>
