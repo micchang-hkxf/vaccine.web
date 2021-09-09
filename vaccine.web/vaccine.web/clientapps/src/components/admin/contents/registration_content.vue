@@ -658,17 +658,17 @@
                                                 <v-btn @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
                                                     <span :style="detailAbnormalCnt > 0 ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
                                                 </v-btn>
-                                                <v-btn color="#736DB9" @click.stop="downloadCompleteFile" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn color="#736DB9" @click.stop="downloadCompleteFile('')" :ripple="false" :disabled="lessCheckTime">
                                                     <v-img src="/admin/download_icon.svg" width="24px" height="24px">
                                                     </v-img>
                                                     <span style="color:white">下載完整接種同意書</span>
                                                 </v-btn>
-                                                <v-btn color="#736DB9" @click.stop="downloadSignUpFile" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn color="#736DB9" @click.stop="downloadSignUpFile('')" :ripple="false" :disabled="lessCheckTime">
                                                     <v-img src="/admin/download_icon.svg" width="24px" height="24px">
                                                     </v-img>
                                                     <span style="color:white">下載報名清冊</span>
                                                 </v-btn>
-                                                <v-btn color="#736DB9" @click.stop="downloadVaccinationFile" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn color="#736DB9" @click.stop="downloadVaccinationFile('')" :ripple="false" :disabled="lessCheckTime">
                                                     <v-img src="/admin/download_icon.svg" width="24px" height="24px">
                                                     </v-img>
                                                     <span style="color:white">下載施打清冊</span>
@@ -1237,9 +1237,10 @@
             reCheckId:'',
             isReChecked: false,
             orderType :null,
-            isDesc:null,
+            isDesc: null,
+            injectionOkCount:0,
             regist_beforeDay: 3,//報名截止時間要於施打時間早3天以上
-            downloadErrorMessage: '複檢結果至少要有一筆成功才能下載',
+            downloadErrorMessage: '複檢結果至少要有一筆成功且合格才能下載',
             artificialOptions: [
                 { state: '複檢合格', id: 'pass' },
                 { state: '複檢不合格', id: 'nopass' },
@@ -1300,7 +1301,7 @@
         methods: {
             ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadMedicals', 'loadMedicalsByVillage',
                 'loadRegistForm', 'loadDetailForm', 'getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile', 'execCheck', 'reExecCheck',
-                'doubleCheck', 'registForm', 'updateRegist', 'removeRegist', 'importRegistForm']),
+                'doubleCheck', 'registForm', 'updateRegist', 'removeRegist', 'importRegistForm', 'actDetail']),
             getRegistForm: function (page) {
                 var params = {
                     vaccine: this.selectVaccine,
@@ -1596,8 +1597,9 @@
             dowloadAgreeItem: function (item) {
                 //console.log('Agree', item);
                 if (item.regist_isrechecked) {
+                    this.isReChecked = item.regist_isrechecked;
                     this.detailId = item.regist_id;
-                    this.downloadCompleteFile();
+                    this.downloadCompleteFile(item.regist_title);
                 } else {
                     this.alertTitle = this.downloadErrorMessage;
                     this.alertText = '';
@@ -1609,12 +1611,12 @@
             dowloadRegistItem: function (item) {
                 //console.log('Regist', item);
                 this.detailId = item.regist_id;
-                this.downloadSignUpFile();
+                this.downloadSignUpFile(item.regist_title);
             },
             dowloadList: function (item) {
                 //console.log('List', item);
                 this.detailId = item.regist_id;
-                this.downloadVaccinationFile();
+                this.downloadVaccinationFile(item.regist_title);
             },
             handleRowClick: function (item) {
                 console.log('item', item);
@@ -1663,15 +1665,16 @@
                 };
                 var comp = this;
                 this.detailAbnormalCnt = 0;
+         
                 this.loadDetailForm(params).then((r) => {
-
+                    comp.injectionOkCount = 0;
                     comp.detailTotalCount = r.totalCount;
                     comp.activityId = r.activityId;
                     comp.reCheckId = r.reCheckId;
                     if (r.reCheckId != "") {
                         comp.detailAbnormalCnt = r.unCheckCount;
                     }
-         
+            
                     comp.detailItems.splice(0);
                     r.datas.forEach((x) => {
                         var code = x.identity.replace(/x/g, '●');
@@ -1680,11 +1683,22 @@
                         //if (['不合格', '已取消'].includes(x.result) || x.result.indexOf('不合格') !== -1) {
                         //    x['disabled'] = true;
                         //}
-                        if (x.status != 1 && x.status != -2 && x.status != 3) {
-                            x['disabled'] = true;
+
+                        x['disabled'] = true;
+                        if (comp.isReChecked && (x.status == 1 || x.status == 3)) {
+                            x['disabled'] = false;
+                            comp.injectionOkCount++;
                         }
+                        //if (x.status != 1 && x.status != -2 && x.status != 3) {
+                        //    x['disabled'] = true;
+                        //}
 
                         this.detailItems.push(x)
+                    });
+                    comp.actDetail(comp.activityId).then((ret) => {
+                        console.log('ret',ret);
+                    }).catch((e) => {
+                        console.log(e);
                     });
                 }).catch((e) => {
                     console.log(e);
@@ -1735,8 +1749,10 @@
                         comp.$bus.$emit('alert_show', true);
                     });
             },
-            downloadCompleteFile: function () {
+            downloadCompleteFile: function (title) {
                 var comp = this;
+                //this.injectionOkCount>0 <---應該加判斷有資格注射人員數, 但活動管理階段抓不到資料,只有報名列表階段才有這個資料
+
                 comp.alertMessage = '';
                 if (!comp.isReChecked) {
                     comp.alertTitle = comp.downloadErrorMessage;
@@ -1746,8 +1762,10 @@
                     comp.$refs.registAlert.open();
                     return false;
                 }
-
-                comp.getCompleteFile({ id: comp.detailId })
+                if (title == "") {
+                    title = comp.detailTitle;
+                }
+                comp.getCompleteFile({ id: comp.detailId,title:title })
                     .then(function (result) {
                         switch (result.state) {
                             case 'not found':
@@ -1769,10 +1787,13 @@
                         comp.$bus.$emit('alert_show', true);
                     });
             },
-            downloadSignUpFile: function () {
+            downloadSignUpFile: function (title) {
                 var comp = this;
                 comp.alertMessage = '';
-                comp.getSignUpFile({ id: comp.detailId })
+                if (title == "") {
+                    title = comp.detailTitle;
+                }
+                comp.getSignUpFile({ id: comp.detailId, title: title })
                     .then(function (result) {
                         switch (result.state) {
                             case 'not found':
@@ -1794,10 +1815,13 @@
                         comp.$bus.$emit('alert_show', true);
                     });
             },
-            downloadVaccinationFile: function () {
+            downloadVaccinationFile: function (title) {
                 var comp = this;
+                if (title == "") {
+                    title = comp.detailTitle;
+                }
                 comp.alertMessage = '';
-                comp.getVaccinationFile({ id: comp.detailId })
+                comp.getVaccinationFile({ id: comp.detailId, title:title })
                     .then(function (result) {
                         switch (result.state) {
                             case 'not found':
@@ -1820,10 +1844,10 @@
                     });
             },
             downloadAgreeFile: function (item) {
-
+                console.log('bbbb',item);
                 var comp = this;
                 comp.alertMessage = '';
-                comp.getAgreeFile({ id: item.id, name: item.name, activityId: this.activityId })
+                comp.getAgreeFile({ id: item.id, name: item.name, activityId: this.activityId, title: comp.detailTitle})
                     .then(function (result) {
                         switch (result.state) {
                             case 'not found':

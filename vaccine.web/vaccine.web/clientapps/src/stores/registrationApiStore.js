@@ -240,7 +240,7 @@ export default {
                             type: type,
                             //result: data.eligible ? '合格' : '不合格',
                             result: data.logTypeName,
-                            status: data.logType,//-2 複檢異常 ，-1取消，0複檢不合格，1複檢成功, 2複檢不合格（人工複檢），3複檢合格（人工複檢）
+                            status: data.logType,//-2 複檢異常 ，-1取消，0複檢不合格，1複檢成功/合格, 2複檢不合格（人工複檢），3複檢合格（人工複檢）
                             //status: -2,//test only
                             remark:vacc//備註
                      
@@ -271,7 +271,7 @@ export default {
                     method: 'GET'
                 })
                 .then(res => res.blob().then(blob => {
-                    const filename = '完整接種同意書.pdf';
+                    const filename = params.title+'-接種同意書.pdf';
                     if (window.navigator.msSaveOrOpenBlob) {
                         navigator.msSaveBlob(blob, filename); // 兼容IE10
                     } else {
@@ -307,7 +307,7 @@ export default {
                     method: 'GET'
                 })
                 .then(res => res.blob().then(blob => {
-                    const filename = '報名清冊.xlsx';
+                    const filename = params.title+'-報名清冊.xlsx';
                     if (window.navigator.msSaveOrOpenBlob) {
                         navigator.msSaveBlob(blob, filename); // 兼容IE10
                     } else {
@@ -343,7 +343,7 @@ export default {
                     method: 'GET'
                 })
                 .then(res => res.blob().then(blob => {
-                    const filename = '施打清冊.xlsx';
+                    const filename = params.title+'-施打清冊.xlsx';
                     if (window.navigator.msSaveOrOpenBlob) {
                         navigator.msSaveBlob(blob, filename); // 兼容IE10
                     } else {
@@ -379,7 +379,8 @@ export default {
                     method: 'GET'
                 })
                 .then(res => res.blob().then(blob => {
-                    const filename = params.name + '_接種同意書_' + new Date().toISOString().substr(0, 10) + '.pdf';
+                    //const filename = params.name + '_接種同意書_' + new Date().toISOString().substr(0, 10) + '.pdf';
+                    const filename = params.id+'-'+params.title + '-接種同意書.pdf';
                     if (window.navigator.msSaveOrOpenBlob) {
                         navigator.msSaveBlob(blob, filename); // 兼容IE10
                     } else {
@@ -473,6 +474,26 @@ export default {
                     reject(result);
                 });
 
+            });
+        },
+        actDetail: function ({ state, rootGetters, dispatch }, actId) {//取得活動詳細資料
+            return new Promise(function (resolve, reject) {
+                var apiUrl = `${state.apiRoot}api/Activity/ActDetail/`+actId;
+                var results = { datas: [], state: '' };
+                axios.get(apiUrl, {
+                    params: {
+                    },
+                    headers: {
+                        'x-token': rootGetters['user/getToken']
+                    }
+                }).then(res => {
+                    results.datas = res.data;
+                    resolve(results);
+                }).catch((error) => {
+                    dispatch('user/notLoginAdmin', error, { root: true });
+                    results.datas = error;
+                    reject(results);
+                });
             });
         },
         registForm: function ({ state, rootGetters, dispatch}, data) {
