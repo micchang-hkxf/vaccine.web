@@ -513,10 +513,18 @@ export default {
 
         },
         importRegistForm: function ({ state, rootGetters, dispatch }, importData) {
-            var setData = [];
+            var dy,mm,dd,endDay,setData = [];
             importData.forEach((d) => {
-          
-                if (d[2]!="") {
+  
+                if (d[2] != "") {
+
+                    endDay = d[7] - 3;
+                    dy = new Date(d[7]);
+                    dy.setDate(dy.getDate() - 4);//before 3 day
+                    mm = dy.getMonth() + 1;
+                    dd = dy.getDate();
+                    endDay = dy.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
+
                     setData.push({
                         vaccineGroupId: d[0],
                         vaccineIds: [d[1]],
@@ -529,9 +537,9 @@ export default {
                         implementStartDate: d[7] + "T" + d[8] + ":00",
                         implementEndDate: d[7] + "T" + d[9] + ":00",
                         startApplyDate: d[10],
-                        endApplyDate: d[11],
-                        amount: parseInt(d[12]),
-                        actAge: parseInt(d[13]),
+                        endApplyDate: endDay,
+                        amount: (d[11])?parseInt(d[11]):500,
+                        actAge: (d[12])?parseInt(d[12]):0,
                         //remarks: parseInt(d[14]),
                     });
                 }
@@ -585,7 +593,7 @@ export default {
                     endApplyDate: data.model.regist_apply_end_date.replace(/\//g, '-'),
                     amount: parseInt(data.model.regist_quota),
                     medicalIds: [data.model.regist_institution_code],
-                    actAge: typeof data.model.regist_age_limit === 'undefined' ? 0 : parseInt(data.model.regist_age_limit),
+                    actAge: (data.model.regist_age_limit)? parseInt(data.model.regist_age_limit):0,
                     //remarks: [data.model.remarks],
                 };
          
