@@ -442,6 +442,11 @@
 
 </template>
 <style scoped>
+
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
+
     .timepicker-container {
         margin-bottom: 14px !important;
     }

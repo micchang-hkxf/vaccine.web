@@ -134,7 +134,7 @@
                 </template>
                 <template v-slot:action>
                     <v-spacer></v-spacer>
-                    <v-btn outlined :ripple="false" @click="backToEdit"><span style="color:#626781;">修改</span></v-btn>
+                    <v-btn outlined :ripple="false" @click="backToEdit"  style="margin-right:16px;"><span style="color:#626781;">修改</span></v-btn>
                     <v-btn @click="save" color="primary" :ripple="false"><span>確定</span></v-btn>
                 </template>
             </com-dialog>
@@ -143,6 +143,11 @@
 </template>
 
 <style>
+
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
+
     .dialog-auditEditor .v-card__actions {
         padding-top: 0px !important;
         padding-bottom: 24px !important;

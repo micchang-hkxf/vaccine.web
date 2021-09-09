@@ -299,7 +299,7 @@
                         <v-divider></v-divider>
                         <div class="d-flex" style="margin-top:16px;">
                             <v-spacer></v-spacer>
-                            <v-btn @click="close" outlined :ripple="false"><span style="color:#626781;margin-right:16px;">取消</span></v-btn>
+                            <v-btn @click="close" outlined :ripple="false" style="margin-right:16px;"><span style="color:#626781;margin-right:16px;">取消</span></v-btn>
                             <v-btn @click="createConfirm" color="primary" :ripple="false"><span>儲存</span></v-btn>
                         </div>
                     </div>
@@ -397,12 +397,12 @@
                     <v-divider></v-divider>
                     <br>
                 </template>
-                <template v-slot:action="{close}">
+                <template v-slot:action>
                     <v-spacer></v-spacer>
                     <v-spacer></v-spacer>
                     <v-spacer></v-spacer>
                     <v-spacer></v-spacer>
-                    <v-btn @click="close" outlined><span style="color:#626781;">修改</span></v-btn>
+                    <v-btn @click="close" outlined style="margin-right:16px;"><span style="color:#626781;">修改</span></v-btn>
                     <v-btn @click="saveform" color="primary" style="margin-left:20px"><span>確定</span></v-btn>
                 </template>
             </com-dialog>
@@ -414,6 +414,11 @@
 
 
 <style>
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
+
+
     .dialog-userform .v-card__actions {
         padding-top: 0px !important;
         padding-bottom: 24px !important;
@@ -636,7 +641,7 @@
         methods: {
             ...mapActions('users', ['searchUser', 'changeUser', 'removeUser', 'getAreaList']),
             editItem(item) {
-                console.log('edit', item);
+                //console.log('edit', item);
                 this.formTitle = "修改人員資料";
                 this.$bus.$emit('userform_show', true);
                 this.$set(this, "uName", item.uName);
@@ -789,24 +794,25 @@
                 })
             },
             newItem() {
-
+                this.formTitle = "新增人員";
                 this.$set(this, "uName", '');
                 this.$set(this, "acc", '');
                 this.$set(this, "mbNo", '');
                 this.$set(this, "mbNo2", '');
                 this.$set(this, "email", '');
                 this.$set(this, "unitName", '');
-
-                this.$bus.$emit('userform_show', true);
+                this.$set(this, "setRole", {});
+                this.$set(this, "setArea", {});
                 this.$set(this, "isReadOnly", false);
+                this.$bus.$emit('userform_show', true);
+               
                 this.fromSaveConfirmTitle = "確認人員新增資訊";
                 this.fromSaveConfirmMessage = " 請確認內容無誤後點選「確定」完成新增";
                 //this.setRole = { id: 2 ,state:"轄區管理員"};
                 //this.setArea = { id: 1, state: "松山區" };
                 //this.$set(this, "setRole", { id: 1, state: "轄區管理員" });
                 //this.$set(this, "setArea", { id: "2001", state: "松山區" });
-                this.$set(this, "setRole", {});
-
+               
                 this.$refs.form.resetValidation();
                 // scroll to top
                 setTimeout(() => this.$refs.form.$el.scrollIntoView(), 0);
@@ -815,6 +821,9 @@
                 this.$refs.importfile.$refs.input.click();
             },
             close() {
+                this.$bus.$emit('formSaveConfirm_show', false);
+                this.$bus.$emit('userform_show', true);
+
             },
             backClick() {
                 this.$bus.$emit('duplicatAlert_show', false);
@@ -834,7 +843,7 @@
                 }
 
                 this.confirmImgSrc = this.warningIcon;
-   
+                this.$bus.$emit('userform_show', false);
                 this.$bus.$emit('formSaveConfirm_show', true);
                 this.setRoleState = this.setRole.state;
                 this.setAreaState = this.setArea.state;
@@ -935,7 +944,10 @@
                     return '兩次輸入號碼不一致';
                 }
                 return true;
-            }
+            },
+            //modify: function () {
+            //    this.$bus.$emit('userform_show', true);
+            //}
         },
         components: {
             appLayout, appMenu, comTable, comDialog, comConfirm, comLoading
