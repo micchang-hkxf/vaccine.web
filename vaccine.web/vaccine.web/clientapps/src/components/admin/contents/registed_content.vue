@@ -21,7 +21,8 @@
                                               outlined
                                               dense
                                               clearable
-                                              maxlength="4">
+                                              maxlength="4"
+                                              @keyup.enter="getRegistData(1)">
                                 </v-text-field>
                                 <v-btn icon style="top:3px;" :ripple="false"
                                        @click="getRegistData(1)">

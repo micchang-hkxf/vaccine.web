@@ -36,7 +36,8 @@
                                               outlined
                                               dense
                                               clearable
-                                              style="max-width:260px">
+                                              style="max-width:260px"
+                                              @keyup.enter="getAudit(1)">
                                 </v-text-field>
                                 <v-btn icon style="top:3px;" :ripple="false"
                                        @click="getAudit(1)">

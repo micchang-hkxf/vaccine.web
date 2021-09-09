@@ -69,7 +69,8 @@
                                                   outlined
                                                   clearable
                                                   style="max-width:200px"
-                                                  autocomplete="off">
+                                                  autocomplete="off"
+                                                  @keyup.enter="search(1)">
                                     </v-text-field>
 
                                     <v-btn icon style="top:3px;" @click.stop="search(1)" class="content-search-button">
