@@ -161,7 +161,7 @@
             //selected: false,         
             totalCount: 12,
             itemsPerPage: 3,
-            totalVisible: 4,
+            totalVisible: 10,
             showSelect: true,
             itemKey: 'date',
             headers: [               

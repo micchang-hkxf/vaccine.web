@@ -1,5 +1,5 @@
 ﻿<template> 
-        <v-dialog v-model="isShow"  width="264" persistent  >
+        <v-dialog v-model="isShow"  width="264" :persistent="isPersistent"  >
             <v-card>
                 <!--@keydown.enter="isShow = false-->
                 <v-card-title>
@@ -178,16 +178,19 @@
 
 <script>
     export default {    
-        props: ['refKey', 'rightClick', 'leftClick', 'leftColor', 'rightColor', 'leftOutlined', 'rightOutlined'],
+        props: ['refKey', 'rightClick', 'leftClick', 'leftColor', 'rightColor', 'leftOutlined', 'rightOutlined','persistent'],
         data: () => ({
             isShow: false,
             setLeftColor: "rgba(50,65,80,0.2)",
             setRightColor: "#626781",
             setLeftOutlined: true,
-            setRightOutlined: false,
+            setRightOutlined: false,           
 
         }),
         computed: {
+            isPersistent: function () {
+                return this.persistent || true;
+            }
             //getRightBtnColor: function () {
             //    if (this.rightColor != '') {
             //        return { 'color': this.rightColor + '!important;'};

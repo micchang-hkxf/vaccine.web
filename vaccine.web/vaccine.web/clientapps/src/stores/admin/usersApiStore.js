@@ -23,6 +23,7 @@ export default {
                             page: params.page,
                             rows: params.rows,
                             userTypeFilter: params.userType,
+                            distFilter: params.zones ,
                             statusFilter: params.isEnable,
                             keyword: params.uName,
                         },

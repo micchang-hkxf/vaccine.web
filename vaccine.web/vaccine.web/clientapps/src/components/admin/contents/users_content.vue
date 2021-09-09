@@ -37,7 +37,7 @@
                                     </v-select>
 
                                     <v-select v-model="selectArea"
-                                              :items="getAreaItems"
+                                              :items="zones"
                                               item-text="state"
                                               item-value="id"
                                               placeholder="有/無管轄區域"
@@ -85,7 +85,7 @@
 
 
                         </template>
-
+                         
                         <template v-slot:toolbar-action={}>
                             <!--<v-checkbox :ripple="false" hide-details @click="switchSelect"></v-checkbox>
             <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
@@ -232,7 +232,7 @@
                             <v-col cols="12">
                                 <v-label><span class="star">角色設定</span></v-label>
                                 <v-select v-model="setRole"
-                                          :items="getRoleItems"
+                                          :items="userRoleItems"
                                           item-text="state"
                                           item-value="id"
                                           dense
@@ -248,11 +248,11 @@
                                 </v-select>
                             </v-col>
                         </v-row>
-                        <v-row>
+                        <v-row v-if="setRole.id==1 || setRole.id==null">
                             <v-col cols="12">
-                                <v-label><span class="star">管理區域</span></v-label>
-                                <v-select v-model="setArea" v-if="setRole.id==1 || setRole.id==null"
-                                          :items="getAllAreaItems"
+                                <v-label><span class="star">管理區域</span></v-label>                                
+                                <v-select v-model="setArea"
+                                          :items="zones"
                                           item-text="state"
                                           item-value="id"
                                           dense
@@ -267,9 +267,9 @@
                                 </v-select>
                             </v-col>
                         </v-row>
-                        <v-row>
+                        <v-row v-if="setRole.id==0">
                             <v-col cols="12">
-                                <v-select v-model="setArea" v-if="setRole.id==0"
+                                <v-select v-model="setArea"
                                           :items="[{id:null , state:'無'},{id:'200' , state:'管理全區'}]"
                                           item-text="state"
                                           item-value="id"
@@ -525,7 +525,7 @@
         data: () => ({
             totalCount: 0,
             itemsPerPage: 5,
-            totalVisible: 8,
+            totalVisible: 10,
             inpage:1,
             uName: null,
             acc: null,
@@ -560,7 +560,9 @@
             fromSaveConfirmMessage: "",
             fromSaveConfirmTitle: "",
             changeStatus: null,
-            alertrightcolor:'#736DB9',
+            alertrightcolor: '#736DB9',
+            zones: [],
+            userInfo:null,
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
                 { text: '姓名', value: 'uName', align: 'center', sortable: true, flex: 6, width: '10%' },
@@ -603,6 +605,16 @@
         }),
         computed: {
             ...mapGetters('users', ['getTableItems', 'getAreaItems', 'getAllAreaItems', 'getRoleItems', 'getRoleListById', 'getAreaListById']),
+            ...mapActions('user', ['getReGetInfo']),
+            userAllAreaItems: function () {
+                return this.getAllAreaItems.filter(f => f.hasAuth == true);
+            },
+            userRoleItems: function () {
+                if (this.setRole == 0) {
+                    return this.getRoleItems;
+                }
+                return this.getRoleItems.filter(f=>f.id==1);
+            }
         },
         props: {
 
@@ -613,13 +625,17 @@
         created() {
             this.getAreaList();
             var r = this.$store.getters["user/getReGetInfo"];
-            this.setRole = r.userType;
+            if (r) {
+                this.zones = r.zones[0].data.filter(f => f.hasAuth == true).map(m => { return { id: m.distId, state: m.distName }; });
+                this.setRole = r.userType;
+                this.userInfo = r;
+            }
             this.$set(this, "setEnable", 'true');
         },
         methods: {
             ...mapActions('users', ['searchUser', 'changeUser', 'removeUser', 'getAreaList']),
-
             editItem(item) {
+                console.log('edit', item);
                 this.formTitle = "修改人員資料";
                 this.$bus.$emit('userform_show', true);
                 this.$set(this, "uName", item.uName);
@@ -629,14 +645,19 @@
                 this.$set(this, "email", item.email);
                 this.$set(this, "unitName", item.unitName);
                 this.$set(this, "isReadOnly", true);
-               
+
+              
                 var r = this.$store.getters["users/getRoleListById"](item.userType).state;
                 //var a = this.$store.getters["users/getAreaListById"](item.zones[0].cityId).state
+                var zone = item.zones[0].data.filter((x) => x.hasAuth == true);                 
+                var area = zone.map((x) => { return { id: x.distId, state: x.distName } });
+
                 this.$set(this, "setRole", { id: item.userType, state: r });
                 if (item.userType == 0) {
                     this.$set(this, "setArea", { id: '200', state: '管理全區' });
                 } else {
-                    this.$set(this, "setArea", { id: item.zones[0].data[0].distId, state: item.zones[0].data[0].distName });
+                    this.$set(this, "setArea", { id: area[0].id, state: area[0].state });
+                    //this.$set(this, "setArea", { id: item.zones[0].data[0].distId, state: item.zones[0].data[0].distName });
                 }
                 this.$set(this, "setEnable", item.isEnable.toString() == 'true');
         
@@ -716,10 +737,18 @@
                 
                 if (this.selectRole) {
                     filter.userType = this.selectRole.id;
+                } else  {
+                    if (this.userInfo.userType == 1) {
+                        filter.userType = 1;
+                    }
                 }
                 if (this.selectArea) {
                     //filter.zones = this.selectArea.id;
                     filter.zones = this.selectArea.state;
+                } else {
+                    if (this.userInfo.userType == 1) {
+                        filter.zones = this.zones[0].id;
+                    }
                 }
                 if (this.selectPermission) {
                     filter.isEnable = this.selectPermission.st;
@@ -742,8 +771,9 @@
                     comp.$bus.$emit('type1_hide4');
                     comp.totalCount = result.totalCount;
                     comp.items = [];
-                  
+                    //console.log('datas', result.datas);
                     result.datas.forEach(f => comp.items.push(f))
+                    //console.log('items', comp.items);
                     comp.$refs.userTable.gofrontPage(page);
                     if (!finddata ) {
                         comp.$bus.$emit('alert_show', true);
@@ -883,8 +913,10 @@
             },
             getZonesData(item) {
                 //暫時只有北市
-                var z = [];
-                item.zones[0].data.forEach(f => z.push(f.distName))
+                var z = [];             
+                //item.zones[0].data.forEach(f => z.push(f.distName))              
+                var authZones = item.zones[0].data.filter((x) => x.hasAuth == true);              
+                    authZones.forEach(f => z.push(f.distName));                              
                 return z.join(",");
             },
             changePage: function (pager) {
