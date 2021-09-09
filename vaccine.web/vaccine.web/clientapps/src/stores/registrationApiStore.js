@@ -212,6 +212,8 @@ export default {
                 }).then(res => {
                     results.totalCount = res.data.totlaCount;
                     results.activityId = res.data.activityId;
+                    results.unCheckCount = res.data.unCheckCount;
+                    results.reCheckId = res.data.reCheckId;
                     var vacc, type, datas = [];
                     res.data.data.forEach((data) => {
                         vacc = data.vaccines.map(function (elm) {
