@@ -155,13 +155,13 @@
 
                                             <template v-if="changeStatus=='啟用'">
                                                 <v-btn icon dense>
-                                                    <img src="/admin/menu-disable.svg">
+                                                    <img src="/admin/menu-enable.svg">
                                                 </v-btn><span class="modify-btn-text">{{ changeStatus }}</span>
                                             </template>
                                             <template v-if="changeStatus=='停用'">
                                                 <v-btn icon dense>
-                                                    <img src="/admin/menu-enable.svg">
-                                                </v-btn><span class="modify-btn-text">{{ changeStatus }}</span>
+                                                    <img src="/admin/menu-disable.svg">
+                                                </v-btn><span class="modify-btn-text menu-state">{{ changeStatus }}</span>
                                             </template>
                                         </v-list-item-action-text>
                                     </v-list-item>
@@ -169,7 +169,7 @@
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
                                                 <img src="/admin/menu-delete.svg">
-                                            </v-btn><span class="modify-btn-text">刪除</span>
+                                            </v-btn><span class="modify-btn-text menu-state">刪除</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
 
@@ -503,6 +503,10 @@
     .userform .v-input--checkbox {
         margin: 0;
         padding: 0;
+    }
+
+    .menu-state {
+        color: #F0524B !important;
     }
 </style>
 
