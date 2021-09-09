@@ -1928,10 +1928,7 @@
                         const ws = wb.Sheets[wsname];
                         /* Convert array of arrays */
                         const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-                        //console.log(data);
-                        //var getKeyByValue=fuction(object, value) {
-                        //    return Object.keys(object).find(key => object[key] === value);
-                        //}
+
                         var i, j;
                         var fv = function (nameKey, myArray, name) {
                             for (i = 0; i < myArray.length; i++) {
@@ -1960,12 +1957,16 @@
                             //疫苗種類
                             if (vv) {
                                 vvv = fv(data[j][1], vv['vaccines'], 'itemName');
-                                //console.log(vv['groupName'] + "@" + vvv['itemName'] + "@" + vvv['itemId']);
+                                //console.log(vv);
                                 comp.finalData[k][0] = vv['groupId'];
                                 if (vvv) {
                                     comp.finalData[k][1] = vvv['itemId'];
                                 } else {
-                                    console.log('疫苗種類', "error line:" + (j + 1));
+                                    if (vv['groupId'] == 0) {//肺鏈、流感 ,可不填疫苗類型
+                                        comp.finalData[k][1] = "";
+                                    } else {
+                                        console.log('疫苗種類', "error line:" + (j + 1));
+                                    }
                                 }
                             } else {
                                 console.log('疫苗類型', "error line:" + (j + 1));
@@ -1987,19 +1988,25 @@
                             } else {
                                 console.log('行政區域', "error line:" + (j + 1));
                             }
-                            //醫療院所
-
-                            mm = fv(villageName, m, 'villageName');
-
+                            console.log(villageName);
+                                //醫療院所
+                                //指定區域
+                                //mm = fv(villageName, m, 'villageName');
+                                //if (mm && mm['uName'] == data[j][6].trim()) {
+                                //    comp.finalData[k][6] = mm['id'];
+                                //} else {
+                                //    console.log('醫療院所', "error line:" + (j + 1));
+                                //}
+                                //全部區域
+                            mm = fv(data[j][6].trim(), m, 'uName');
                             if (mm && mm['uName'] == data[j][6].trim()) {
                                 comp.finalData[k][6] = mm['id'];
-                            } else {
+                            }else {
                                 console.log('醫療院所', "error line:" + (j + 1));
                             }
-
                             k++;
                         }
-                        //console.log(finalData);
+                        console.log('finalData',comp.finalData);
                         comp.$bus.$emit('type1_hide4');
                     }
 
