@@ -1654,6 +1654,7 @@
                 var comp = this;
                 this.detailAbnormalCnt = 0;
                 this.loadDetailForm(params).then((r) => {
+
                     comp.detailTotalCount = r.totalCount;
                     comp.activityId = r.activityId;
                     comp.reCheckId = r.reCheckId;
