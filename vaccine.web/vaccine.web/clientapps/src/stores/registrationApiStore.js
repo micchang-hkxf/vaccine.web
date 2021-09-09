@@ -212,11 +212,18 @@ export default {
                 }).then(res => {
                     results.totalCount = res.data.totlaCount;
                     results.activityId = res.data.activityId;
-                    var vacc,datas = [];
+                    var vacc, type, datas = [];
                     res.data.data.forEach((data) => {
                         vacc = data.vaccines.map(function (elm) {
                             return elm.itemName;
                         }).join(",");
+
+                        if (data.signUpChannel === 0)
+                            type = '事先網路';
+                        else if (data.signUpChannel === 1)
+                            type = '現場';
+                        else if (data.signUpChannel === 2)
+                            type = '事先里辦';
 
                         datas.push({
                             id: data.applyNo,
@@ -228,7 +235,7 @@ export default {
                             identity: data.uId,
                             phone: data.mbNo,
                             censusRegister: data.isCitizen ? '北市' : '非北市',
-                            type: data.signUpChannel == 1 ? '現場報名' : '網路自行報名' ,
+                            type: type,
                             //result: data.eligible ? '合格' : '不合格',
                             result: data.logTypeName,
                             status: data.logType,//-2 複檢異常 ，-1取消，0複檢不合格，1複檢成功, 2複檢不合格（人工複檢），3複檢合格（人工複檢）
