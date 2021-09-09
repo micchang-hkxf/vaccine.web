@@ -9,7 +9,7 @@
         </template>
         <template v-slot:app-content>
             <com-loading ref-key="type1"></com-loading>
-            <div id="app">
+            <div id="app" v-if="getReGetInfo">
                 <v-card>
                     <com-table ref="table" ref-key="table" :headers="getHeaders" :items="items" :itemKey="itemKey" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
@@ -36,7 +36,7 @@
                                               return-object>
                                     </v-select>
                                     <v-select v-model="selectDistrict"
-                                              :items="getDistricts"
+                                              :items="zones"
                                               item-text="name"
                                               item-value="id"
                                               placeholder="全部行政區"
@@ -992,24 +992,25 @@
         overflow-y: auto !important;
     }
 
-        /*-------滾動條整體樣式----*/
+         /*滾動條整體樣式*/
         .v-dialog .v-card__text.dialog-content::-webkit-scrollbar {
             width: 8px;
-            height: 8px;
+            height: 8px;           
         }
 
+    
         /*滾動條裡面小方塊樣式*/
         .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-thumb {
-            border-radius: 100px;
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            background: rgba(98,103,129,0.2);
-        }
+                border-radius: 100px;
+                -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+                background: rgba(98,103,129,0.2);                
+            }
 
         /*滾動條裡面軌道樣式*/
         .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-track {
             -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
             border-radius: 20px;
-            background: rgba(98,103,129,0.1);
+            background: rgba(98,103,129,0.1);            
         }
 
     thead tr th {
@@ -1174,7 +1175,7 @@
         data: () => ({
             totalCount: 0,
             itemsPerPage: 5,
-            totalVisible: 4,
+            totalVisible: 10,
             showSelect: true,
             selectVaccine: '',
             selectDistrict: '',
@@ -1214,7 +1215,7 @@
             detailItems: [],
             detailTotalCount: 0,
             detailItemsPerPage: 5,
-            detailTotalVisible: 4,
+            detailTotalVisible: 10,
             detailKeyWord: '',
             detailAbnormalCnt: 0,
             detailCheckTime: 0,
@@ -1278,6 +1279,12 @@
         }),
         computed: {
             ...mapGetters('registration', ['getHeaders', 'getVaccines', 'getDistricts', 'getVillages', 'getInstitutions', 'getRegistrationHeaders', 'getDisMedicals']),
+            ...mapGetters('user', ['getReGetInfo']),
+            zones: function () {
+                var _zones = [];
+                this.getReGetInfo.zones[0].data.filter(f => f.hasAuth == true).forEach(m => { _zones.push({ id: m.distId, name: m.distName }); })
+                return _zones;
+            }
         },
         props: {
 
@@ -1287,6 +1294,7 @@
             this.loadDists();
             this.loadMedicals();
             this.getRegistForm(1);
+
         },
         methods: {
             ...mapActions('registration', ['loadVaccines', 'loadDists', 'loadVillages', 'loadMedicals', 'loadMedicalsByVillage',
@@ -1302,7 +1310,8 @@
                     pageSize: this.itemsPerPage,
                     page: page,
                 };
-
+                if (this.getReGetInfo.userType == 1)
+                    params.district = this.zones[0];
                 this.loadRegistForm(params).then((r) => {
                     this.totalCount = r.totalCount;
                     this.items.splice(0);

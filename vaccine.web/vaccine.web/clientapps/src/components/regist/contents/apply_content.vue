@@ -54,9 +54,9 @@
                         </div>
                     </div>
                     <div class="apply-field">
-                        <div class="apply-field-label">手機（簡訊通知）</div>
+                        <div class="apply-field-label">手機或市話（手機可接收接種通知）<span class="red--text">*</span></div>
                         <div class="apply-field-container">
-                            <v-text-field class="apply-field-text" maxlength="10" placeholder="請輸入手機號碼" v-model="mbNo" :rules="[rules.mobile]"></v-text-field>
+                            <v-text-field class="apply-field-text" maxlength="10" placeholder="手機範例0912345678，市話範例0227208889" v-model="mbNo" :rules="[rules.required,rules.mobile]"></v-text-field>
                         </div>
                     </div>
                     <!--<div class="apply-field">
@@ -66,7 +66,7 @@
                 </div>
             </div>-->
                     <div class="apply-field display type" v-if="vaccines.length > 0 || session.brandName !== ''">
-                        <div class="apply-field-label">接種疫苗</div>
+                        <div class="apply-field-label">可接種項目</div>
                         <div class="apply-field-container">
                             <template v-if="vaccines.length > 0">
                                 <div class="apply-field-type d-flex justify-space-between" v-for="(vaccine , idx) in vaccines" :key="`vaccine_${idx}`">
@@ -125,7 +125,7 @@
             <!--共用 loading -->
             <com-loading ref-key="loading"></com-loading>
             <!---->
-            <com-confirm ref="alert" ref-key="alert" :right-click="alertClick">
+            <com-confirm ref="alert" ref-key="alert" :right-click="alertClick" persistent="false">
                 <template v-slot:confirm-image>
                     <v-img src="/alert_warning.svg"></v-img>
                 </template>
@@ -138,7 +138,7 @@
                 </template>
             </com-confirm>
             <!---->
-            <com-confirm ref="alertRegistered" ref-key="alertRegistered" :left-click="alertRegisteredLeftClick" :right-click="alertRegisteredRightClick" right-color="rgba(240,82,75,1) !important">
+            <com-confirm ref="alertRegistered" ref-key="alertRegistered" :left-click="alertRegisteredLeftClick" :right-click="alertRegisteredRightClick" right-color="rgba(240,82,75,1) !important" persistent="false">
                 <template v-slot:confirm-image>
                     <v-img src="/alert_warning.svg"></v-img>
                 </template>
@@ -155,7 +155,7 @@
                 </template>
             </com-confirm>
             <!---->
-            <com-confirm ref="alertNoConform" ref-key="alertNoConform" :right-click="alertNoConformClick">
+            <com-confirm ref="alertNoConform" ref-key="alertNoConform" :right-click="alertNoConformClick"  persistent="false">
                 <template v-slot:confirm-image>
                     <v-img src="/alert_warning.svg"></v-img>
                 </template>
@@ -167,7 +167,7 @@
                 </template>
             </com-confirm>
             <!---->
-            <com-confirm ref="alertUnknow" ref-key="alertUnknow" :right-click="alertUnknowClick">
+            <com-confirm ref="alertUnknow" ref-key="alertUnknow" :right-click="alertUnknowClick" persistent="false">
                 <template v-slot:confirm-image>
                     <v-img src="/alert_warning.svg"></v-img>
                 </template>
@@ -180,7 +180,7 @@
                 </template>
             </com-confirm>
             <!---->
-            <com-confirm ref="alertApplyNo" ref-key="alertApplyNo" :right-click="alertApplyNoClick">
+            <com-confirm ref="alertApplyNo" ref-key="alertApplyNo" :right-click="alertApplyNoClick" persistent="false">
                 <template v-slot:confirm-image>
                     <v-img src="/alert_success.svg"></v-img>
                 </template>
@@ -200,7 +200,7 @@
                 </template>
             </com-confirm>
 
-            <com-confirm ref="alertTimeout" ref-key="alertTimeout" :right-click="alertTimeoutClick">
+            <com-confirm ref="alertTimeout" ref-key="alertTimeout" :right-click="alertTimeoutClick" persistent="false">
                 <template v-slot:confirm-image>
                     <v-img src="/alert_warning.svg"></v-img>
                 </template>
@@ -236,7 +236,7 @@
             days: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
             rules: {
                 required: v => !!v || '必填',
-                mobile:v=>!v || v.match('0[0-9]{8,9}')|| '手機號碼格式錯誤'
+                mobile:v=>!v || v.match('0[0-9]{8,9}')|| '輸入格式錯誤'
             },
             uName: '',
             uId: '',
