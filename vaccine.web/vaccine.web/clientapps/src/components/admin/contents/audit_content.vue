@@ -18,17 +18,17 @@
                         <div>
                             <v-row>
                                 <v-select v-model="selectType"
-                                            :items="getTypes"
-                                            item-text="name"
-                                            item-value="name"
-                                            placeholder="全部報表類型"
-                                            :menu-props="{ bottom: true, offsetY: true }"
-                                            outlined
-                                            dense
-                                            clearable
-                                            style="max-width:260px"
-                                            class="search-filter fs"
-                                            return-object>
+                                          :items="getTypes"
+                                          item-text="name"
+                                          item-value="name"
+                                          placeholder="全部報表類型"
+                                          :menu-props="{ bottom: true, offsetY: true }"
+                                          outlined
+                                          dense
+                                          clearable
+                                          style="max-width:260px"
+                                          class="search-filter fs"
+                                          return-object>
                                 </v-select>
                                 <v-text-field v-model="keyWord"
                                               class="fs"
@@ -53,19 +53,24 @@
                         <span> 檔案下載紀錄 : </span>
                         <v-spacer></v-spacer>
                         <template>
-                            <v-btn  color="#626781" :ripple="false" @click.stop="addFile">
+                            <v-btn color="#626781" :ripple="false" @click.stop="addFile">
                                 <img src="/addregist.svg">
                                 <span style="color:white">新增案件抽查表</span>
                             </v-btn>
                         </template>
                     </template>
+
+                    <template v-slot:item.date="{item}">
+                        <span class="nowrap">{{$moment(item.date).format('YYYY/MM/DD HH:mm')}}</span>
+                    </template>
+
                     <template v-slot:item.modify="{item}">
                         <template>
                             <!--<v-btn dark icon v-on="on" @click.stop="downloadFile">
-        <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
-        <span style="color:white">下載</span>
-    </v-btn>-->
-                            <v-btn  color="#736DB9" @click.stop="downloadFile(item)" :ripple="false">
+                <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
+                <span style="color:white">下載</span>
+            </v-btn>-->
+                            <v-btn color="#736DB9" @click.stop="downloadFile(item)" :ripple="false">
                                 <img src="/download.svg">
                                 <span style="color:white">下載</span>
                             </v-btn>
@@ -218,6 +223,10 @@
 
     .auditViewer .v-card__actions {
         padding: 24px 32px !important;
+    }
+
+    .table-content-field .nowrap {
+        white-space: nowrap;
     }
 </style>
 

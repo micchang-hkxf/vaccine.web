@@ -61,7 +61,7 @@ export default {
                     res.data.data.forEach((data) => {
                         datas.push({
                             id: data.seq,
-                            date: data.createTime.substr(0, 16).replace('T', ' ').replace(/-/g, '/'),
+                            date: data.createTime,
                             name: data.uName,
                             affiliation: data.unit,
                             type: data.typeName,
