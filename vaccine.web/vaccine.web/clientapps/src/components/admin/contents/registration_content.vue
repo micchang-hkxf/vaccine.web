@@ -83,7 +83,8 @@
                                                   dense
                                                   clearable
                                                   style="max-width:200px"
-                                                  autocomplete="off">
+                                                  autocomplete="off"
+                                                  @keyup.enter="getRegistForm(1)">
                                     </v-text-field>
 
                                     <v-btn icon style="top:3px;" :ripple="false" class="content-search-button"
@@ -641,7 +642,7 @@
                                 <template v-slot:search-bar>
                                     <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
                                         <div class="detail-search-block">
-                                            <v-text-field v-model="detailKeyWord" placeholder="請輸入報名者姓名或身分證" outlined dense clearable class="detail-search-input"></v-text-field>
+                                            <v-text-field v-model="detailKeyWord" placeholder="請輸入報名者姓名或身分證" outlined dense clearable class="detail-search-input" @keyup.enter="getDetailForm(1)"></v-text-field>
                                             <v-btn icon color="#626781" style="top:3px;" :ripple="false"
                                                    @click="getDetailForm(1)">
                                                 <v-icon>fas fa-search</v-icon>
