@@ -372,8 +372,14 @@
                                 }
                             })
                             .catch(ex => {
-                                if (ex.response.data.status == 406) {
+                                // 超過登入時間效期
+                                if (ex.datas.response.status == 406) {
                                     comp.$bus.$emit('alertTimeout_show', true);
+                                    return;
+                                }
+                                // 未符合接種資格
+                                else if (ex.datas.response.status == 400) {
+                                    comp.$bus.$emit('alertNoConform_show', true);
                                     return;
                                 }
                                 console.log(ex);
