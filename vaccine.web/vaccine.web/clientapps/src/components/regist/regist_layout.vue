@@ -33,7 +33,7 @@
                     <span> 確定登出？</span>
                 </template>
                 <template v-slot:confirm-left-btn-text>
-                    取消
+                    <span style="color:#FFF;">取消</span>
                 </template>
                 <template v-slot:confirm-right-btn-text>
                     確定
