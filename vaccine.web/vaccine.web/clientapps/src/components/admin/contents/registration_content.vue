@@ -1318,13 +1318,14 @@
                     page: page,
                     orderType: this.ord
                 };
-                if (this.getReGetInfo.userType == 1)
+     
+                if(this.getReGetInfo && this.getReGetInfo.userType == 1)
                     params.district = this.zones[0];
-                this.loadRegistForm(params).then((r) => {
-                    this.totalCount = r.totalCount;
-                    this.items.splice(0);
-                    r.datas.forEach((x) => this.items.push(x));
-                    this.$refs.table.gofrontPage(page);
+                    this.loadRegistForm(params).then((r) => {
+                        this.totalCount = r.totalCount;
+                        this.items.splice(0);
+                        r.datas.forEach((x) => this.items.push(x));
+                        this.$refs.table.gofrontPage(page);
                 }).catch((e) => {
                     console.log(e);
 
