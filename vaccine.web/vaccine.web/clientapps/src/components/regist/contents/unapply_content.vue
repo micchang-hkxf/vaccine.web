@@ -7,12 +7,17 @@
         <template v-slot:regist-content>
             <unapply-list :group-id="groupId"></unapply-list>
         </template>
+        <template v-slot:regist-footer>
+            <app-footer></app-footer>
+        </template>
     </app-layout>
 </template>
 
 <script>
     import appLayout from 'components/regist/regist_layout'
+    import appFooter from 'components/regist/regist_footer.vue'
     import unapplyList from 'components/regist/forms/unapply_list'
+
     export default {
         // router,
         data: () => ({
@@ -35,7 +40,7 @@
 
         },
         components: {
-            appLayout, unapplyList
+            appLayout, appFooter, unapplyList
         }
     }
 </script>
