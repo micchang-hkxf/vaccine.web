@@ -28,9 +28,10 @@ export default {
                             name: data.uName,
                             identity: data.uId,
                             vaccination: data.activityName,
-                            way: data.applyChannelText,
+                            way: data.applyText,
                             result: (data.eligible) ? "合格" : "不合格",
                             number: data.applyNo,
+                            distName: data.region.distName
                         });
                     });
 
