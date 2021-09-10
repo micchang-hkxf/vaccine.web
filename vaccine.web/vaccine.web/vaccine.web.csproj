@@ -30,6 +30,7 @@
   <ItemGroup>
     <None Remove="clientapps\public\regist\稽核報表2021-07-16.xlsx" />
     <None Remove="clientapps\public\regist\稽核報表2021-07-20.xlsx" />
+    <None Remove="clientapps\src\components\regist\menu.vue" />
   </ItemGroup>
 
   <ItemGroup>

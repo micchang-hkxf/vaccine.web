@@ -1182,6 +1182,7 @@
         data: () => ({
             totalCount: 0,
             itemsPerPage: 5,
+            showPage:1,//目前顯示第幾頁
             totalVisible: 10,
             showSelect: true,
             selectVaccine: '',
@@ -1244,7 +1245,8 @@
             isReChecked: false,
             orderType: null,
             isDesc: null,
-            injectionOkCount: 0,
+            ord:0,
+            injectionOkCount:0,
             regist_beforeDay: 3,//報名截止時間要於施打時間早3天以上
             downloadErrorMessage: '複檢結果至少要有一筆成功且合格才能下載',
             artificialOptions: [
@@ -1309,6 +1311,9 @@
                 'loadRegistForm', 'loadDetailForm', 'getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile', 'execCheck', 'reExecCheck',
                 'doubleCheck', 'registForm', 'updateRegist', 'removeRegist', 'importRegistForm', 'actDetail']),
             getRegistForm: function (page) {
+
+  
+
                 var params = {
                     vaccine: this.selectVaccine,
                     district: this.selectDistrict,
@@ -1317,15 +1322,16 @@
                     keyWord: this.keyWord,
                     pageSize: this.itemsPerPage,
                     page: page,
+                    orderType: this.ord
                 };
-                if (this.getReGetInfo)
-                    if (this.getReGetInfo.userType == 1)
-                        params.district = this.zones[0];
-                this.loadRegistForm(params).then((r) => {
-                    this.totalCount = r.totalCount;
-                    this.items.splice(0);
-                    r.datas.forEach((x) => this.items.push(x));
-                    this.$refs.table.gofrontPage(page);
+     
+                if(this.getReGetInfo && this.getReGetInfo.userType == 1)
+                    params.district = this.zones[0];
+                    this.loadRegistForm(params).then((r) => {
+                        this.totalCount = r.totalCount;
+                        this.items.splice(0);
+                        r.datas.forEach((x) => this.items.push(x));
+                        this.$refs.table.gofrontPage(page);
                 }).catch((e) => {
                     console.log(e);
 
@@ -1333,7 +1339,8 @@
 
             },
             changePage: function (pager) {
-                console.log('c', pager);
+                //console.log('c', pager);
+                this.showPage = pager.page;
                 ///{ page: 2, pageSize: 20}
                 this.getRegistForm(pager.page);
             },
@@ -2057,12 +2064,12 @@
 
                 this.orderType = opt.index[0];
                 this.isDesc = opt.isDesc[0];
-                var ord = 0;
-
+                this.ord = 0;
+        
                 if (opt.index[0] == "regist_create_date") {
-                    ord = (opt.isDesc[0]) ? 0 : 2;
+                    this.ord = (opt.isDesc[0]) ? 0 : 2;
                 } else if (opt.index[0] == "regist_station_date") {
-                    ord = (opt.isDesc[0]) ? 1 : 3;
+                    this.ord = (opt.isDesc[0]) ? 1 : 3;
                 }
 
                 var params = {
@@ -2072,9 +2079,9 @@
                     institution: this.selectInstitution,
                     keyWord: this.keyWord,
                     pageSize: this.itemsPerPage,
-                    page: 1,
-                    orderType: ord
-
+                    page: this.showPage,
+                    orderType: this.ord
+                    
                 };
 
                 var comp = this;

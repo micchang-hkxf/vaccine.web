@@ -3,7 +3,7 @@
         <template v-slot:extension v-if="$slots['regist-extension']">
             <slot name="regist-extension"></slot>
         </template>
-        <template v-slot:app-bar>
+        <template v-slot:app-bar v-if="$slots['regist-title']">
             <div class="regist-header d-flex flex-column">
                 <div class="logo-title d-flex flex-row justify-center">
                     <div class="regist-icon">
@@ -12,7 +12,6 @@
                     <div>
                         <div>里辦疫苗接種便民服務 </div>
                         <div>-網路報名系統-</div>
-
                     </div>
                 </div>
                 <div class="action-title" style="display:flex;justify-content:center;">
@@ -51,19 +50,16 @@
                 <template v-slot:confirm-text>
                     <span> 由於系統閒置過久已將您登出</span>
                 </template>
-                            
+
                 <template v-slot:confirm-right-btn-text>
                     返回首頁
                 </template>
 
             </com-confirm>
-
-
-
-
         </template>
         <template v-slot:app-content>
             <slot name="regist-content"></slot>
+            <slot name="regist-footer"></slot>
         </template>
     </app-layout>
 </template>
