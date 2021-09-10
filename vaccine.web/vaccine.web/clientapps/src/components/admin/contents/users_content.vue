@@ -23,7 +23,7 @@
                             <div>
                                 <v-row>
                                     <v-select v-model="selectRole"
-                                              :items="getRoleItems"
+                                              :items="userRoleItems"
                                               item-text="state"
                                               item-value="id"
                                               placeholder="全部角色"
@@ -610,13 +610,14 @@
             }
         }),
         computed: {
+            ...mapGetters('user', ['getReGetInfo']),
             ...mapGetters('users', ['getTableItems', 'getAreaItems', 'getAllAreaItems', 'getRoleItems', 'getRoleListById', 'getAreaListById']),
-            ...mapActions('user', ['getReGetInfo']),
+            
             userAllAreaItems: function () {
                 return this.getAllAreaItems.filter(f => f.hasAuth == true);
             },
             userRoleItems: function () {
-                if (this.setRole == 0) {
+                if (this.setRole.id == 0) {
                     return this.getRoleItems;
                 }
                 return this.getRoleItems.filter(f=>f.id==1);
@@ -632,8 +633,9 @@
             this.getAreaList();
             var r = this.$store.getters["user/getReGetInfo"];
             if (r) {
-                this.zones = r.zones[0].data.filter(f => f.hasAuth == true).map(m => { return { id: m.distId, state: m.distName }; });
-                this.setRole = r.userType;
+                this.zones = r.zones[0].data.filter(f => f.hasAuth == true).map(m => { return { id: m.distId, state: m.distName }; });               
+                var state = this.$store.getters["users/getRoleListById"](r.userType).state;
+                this.$set(this, "setRole", { id: r.userType, state: state });
                 this.userInfo = r;
             }
             this.$set(this, "setEnable", 'true');
@@ -746,15 +748,13 @@
                 } else  {
                     if (this.userInfo.userType == 1) {
                         filter.userType = 1;
-                    }
+                    } 
                 }
                 if (this.selectArea) {
-                    //filter.zones = this.selectArea.id;
-                    filter.zones = this.selectArea.state;
+                    filter.zones = this.selectArea.id;
                 } else {
-                    if (this.userInfo.userType == 1) {
-                        filter.zones = this.zones[0].id;
-                    }
+                    if (this.userInfo.userType == 1) filter.zones = this.zones[0].id;
+                    if (this.userInfo.userType == 0) filter.zones = 'all';
                 }
                 if (this.selectPermission) {
                     filter.isEnable = this.selectPermission.st;

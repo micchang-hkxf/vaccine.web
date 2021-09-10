@@ -280,11 +280,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                            <v-list-item-content>
-                                <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>-->
+                                            <v-list-item-content>
+                                                <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>-->
                                         <div class="divider"><v-divider></v-divider></div>
                                         <v-list-item two-line>
                                             <v-list-item-content>
@@ -299,11 +299,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                        <v-list-item-content>
-                            <v-list-item-title>備註</v-list-item-title>
-                            <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>-->
+                                            <v-list-item-content>
+                                                <v-list-item-title>備註</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>-->
 
                                         <div class="divider"><v-divider></v-divider></div>
                                     </div>
@@ -413,12 +413,12 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                            <v-list-item-content>
-                                <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                                            <v-list-item-content>
+                                                <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
 
-                            </v-list-item-content><div class="showname">
-                        </v-list-item>-->
+                                            </v-list-item-content><div class="showname">
+                                        </v-list-item>-->
 
                                         <div class="divider"><v-divider></v-divider></div>
 
@@ -435,11 +435,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                        <v-list-item-content>
-                            <v-list-item-title>備註</v-list-item-title>
-                            <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>-->
+                                            <v-list-item-content>
+                                                <v-list-item-title>備註</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>-->
 
                                         <div class="divider"><v-divider></v-divider></div>
                                     </div>
@@ -457,7 +457,7 @@
                                 <template v-slot:confirm-image>
                                     <v-img v-bind:src="alertImgSrc"></v-img>
                                 </template>
-                                <template v-slot:confirm-title>                                    
+                                <template v-slot:confirm-title>
                                     <span style="color:#736DB9;">{{alertTitle}}</span>
                                 </template>
                                 <template v-slot:confirm-text>
@@ -533,9 +533,9 @@
                         </template>
 
                         <template v-slot:item.regist_age_limit="{item}">
-                          <span v-if="item.regist_age_limit==0"><span tyle="color:#626781">-</span></span>
-                           
-                          <span v-if="item.regist_age_limit!=0">{{item.regist_age_limit}}<span tyle="color:#626781">歲以上 </span></span>
+                            <span v-if="item.regist_age_limit==0"><span tyle="color:#626781">-</span></span>
+
+                            <span v-if="item.regist_age_limit!=0">{{item.regist_age_limit}}<span tyle="color:#626781">歲以上 </span></span>
                         </template>
 
                         <template v-slot:item.modify="{item}">
@@ -627,11 +627,11 @@
                             <div class="detail-sub-title">{{detailDistrict}}－{{detailVillage}}｜{{detailType}}｜{{detailBrandName}}</div>
                             <div class="detail-title-desc">
                                 <p>
-                                <div>設站時間：{{detailStationTime}}</div>
-                                <div>報名開放時間：{{detailRegistrationTime}}</div>
-                                <div>承辦醫院：{{detailInstitution}}（{{detailInstutionDistrict}}）</div>
-                                <div>報名名額：<span :class="detailCntQuota >= detailTotalQuota ? 'color-red' : ''">{{detailCntQuota}}</span>/<span style="color:#626781">{{detailTotalQuota}}</span></div>
-                                <div>年齡限制：{{detailAgeLimit}}歲以上</div>
+                                    <div>設站時間：{{detailStationTime}}</div>
+                                    <div>報名開放時間：{{detailRegistrationTime}}</div>
+                                    <div>承辦醫院：{{detailInstitution}}（{{detailInstutionDistrict}}）</div>
+                                    <div>報名名額：<span :class="detailCntQuota >= detailTotalQuota ? 'color-red' : ''">{{detailCntQuota}}</span>/<span style="color:#626781">{{detailTotalQuota}}</span></div>
+                                    <div>年齡限制：{{detailAgeLimit}}歲以上</div>
                             </div>
                             <hr />
                             <com-table class="regUserDetail" ref-key="detailTable" :headers="getRegistrationHeaders" :items="detailItems" :total-count="detailTotalCount"
@@ -877,12 +877,12 @@
         opacity: 1;
     }
 
-    .registration-list .detail-title span {
-        font: normal normal normal 24px/24px Noto Sans T Chinese;
-        letter-spacing: 0px;
-        color: #F0524B;
-        margin: 0 10px;
-    }
+        .registration-list .detail-title span {
+            font: normal normal normal 24px/24px Noto Sans T Chinese;
+            letter-spacing: 0px;
+            color: #F0524B;
+            margin: 0 10px;
+        }
 
     .registration-list .detail-sub-title {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
@@ -993,25 +993,25 @@
         overflow-y: auto !important;
     }
 
-         /*滾動條整體樣式*/
+        /*滾動條整體樣式*/
         .v-dialog .v-card__text.dialog-content::-webkit-scrollbar {
             width: 8px;
-            height: 8px;           
+            height: 8px;
         }
 
-    
+
         /*滾動條裡面小方塊樣式*/
         .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-thumb {
-                border-radius: 100px;
-                -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-                background: rgba(98,103,129,0.2);                
-            }
+            border-radius: 100px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            background: rgba(98,103,129,0.2);
+        }
 
         /*滾動條裡面軌道樣式*/
         .v-dialog .v-card__text.dialog-content::-webkit-scrollbar-track {
             -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
             border-radius: 20px;
-            background: rgba(98,103,129,0.1);            
+            background: rgba(98,103,129,0.1);
         }
 
     thead tr th {
@@ -1119,25 +1119,31 @@
     .fa-search:before {
         content: url('/admin/common_search-24px.svg') !important;
     }
+
     .fs {
         padding: 0px 0px 0px 20px !important;
         width: 120px !important;
     }
+
     .prevContent .v-list-item .v-list-item__title {
         margin: 0 0px !important;
     }
+
     .regUserDetail .detail-action {
         justify-content: flex-end !important;
         width: 100% !important;
     }
+
     .regUserDetail .search-bar {
         padding-right: 0px !important;
     }
+
     .registration-list .v-card__actions {
         padding-right: 32px !important;
     }
+
     .detail-action {
-        padding-bottom:9px;
+        padding-bottom: 9px;
     }
 
     .registViewer .v-list-item,
@@ -1205,7 +1211,7 @@
             detailDistrict: '',
             detailVillage: '',
             detailType: '',
-            detailBrandName:'',
+            detailBrandName: '',
             detailInstitution: '',
             detailInstutionDistrict: '',
             detailStationTime: '',
@@ -1234,11 +1240,11 @@
             warningIcon: '/alert_warning.svg',
             alertIcon: '/alert_warning.svg',
             artificialResult: '',
-            reCheckId:'',
+            reCheckId: '',
             isReChecked: false,
-            orderType :null,
+            orderType: null,
             isDesc: null,
-            injectionOkCount:0,
+            injectionOkCount: 0,
             regist_beforeDay: 3,//報名截止時間要於施打時間早3天以上
             downloadErrorMessage: '複檢結果至少要有一筆成功且合格才能下載',
             artificialOptions: [
@@ -1312,8 +1318,9 @@
                     pageSize: this.itemsPerPage,
                     page: page,
                 };
-                if (this.getReGetInfo.userType == 1)
-                    params.district = this.zones[0];
+                if (this.getReGetInfo)
+                    if (this.getReGetInfo.userType == 1)
+                        params.district = this.zones[0];
                 this.loadRegistForm(params).then((r) => {
                     this.totalCount = r.totalCount;
                     this.items.splice(0);
@@ -1451,7 +1458,7 @@
                         if (result.model.regist_type.requireSubitem === false) {
                             result.model.regist_brand_name = "";
                         }
-                    
+
                         if (result.model.regist_village.name) {
                             result.model.regist_village_name = result.model.regist_village.name;
                         }
@@ -1464,7 +1471,7 @@
                         if (result.model.regist_district.name) {
                             result.model.regist_district_name = result.model.regist_district.name;
                         }
-                        
+
 
                         this.$refs.registEditViewer.open();
                         //console.log('save1', result)
@@ -1665,7 +1672,7 @@
                 };
                 var comp = this;
                 this.detailAbnormalCnt = 0;
-         
+
                 this.loadDetailForm(params).then((r) => {
                     comp.injectionOkCount = 0;
                     comp.detailTotalCount = r.totalCount;
@@ -1674,7 +1681,7 @@
                     if (r.reCheckId != "") {
                         comp.detailAbnormalCnt = r.unCheckCount;
                     }
-            
+
                     comp.detailItems.splice(0);
                     r.datas.forEach((x) => {
                         var code = x.identity.replace(/x/g, '●');
@@ -1696,7 +1703,7 @@
                         this.detailItems.push(x)
                     });
                     comp.actDetail(comp.activityId).then((ret) => {
-                        console.log('ret',ret);
+                        console.log('ret', ret);
                     }).catch((e) => {
                         console.log(e);
                     });
@@ -1765,7 +1772,7 @@
                 if (title == "") {
                     title = comp.detailTitle;
                 }
-                comp.getCompleteFile({ id: comp.detailId,title:title })
+                comp.getCompleteFile({ id: comp.detailId, title: title })
                     .then(function (result) {
                         switch (result.state) {
                             case 'not found':
@@ -1821,7 +1828,7 @@
                     title = comp.detailTitle;
                 }
                 comp.alertMessage = '';
-                comp.getVaccinationFile({ id: comp.detailId, title:title })
+                comp.getVaccinationFile({ id: comp.detailId, title: title })
                     .then(function (result) {
                         switch (result.state) {
                             case 'not found':
@@ -1844,10 +1851,10 @@
                     });
             },
             downloadAgreeFile: function (item) {
-                console.log('bbbb',item);
+                console.log('bbbb', item);
                 var comp = this;
                 comp.alertMessage = '';
-                comp.getAgreeFile({ id: item.id, name: item.name, activityId: this.activityId, title: comp.detailTitle})
+                comp.getAgreeFile({ id: item.id, name: item.name, activityId: this.activityId, title: comp.detailTitle })
                     .then(function (result) {
                         switch (result.state) {
                             case 'not found':
@@ -2015,24 +2022,24 @@
                                 console.log('行政區域', "error line:" + (j + 1));
                             }
                             console.log(villageName);
-                                //醫療院所
-                                //指定區域
-                                //mm = fv(villageName, m, 'villageName');
-                                //if (mm && mm['uName'] == data[j][6].trim()) {
-                                //    comp.finalData[k][6] = mm['id'];
-                                //} else {
-                                //    console.log('醫療院所', "error line:" + (j + 1));
-                                //}
-                                //全部區域
+                            //醫療院所
+                            //指定區域
+                            //mm = fv(villageName, m, 'villageName');
+                            //if (mm && mm['uName'] == data[j][6].trim()) {
+                            //    comp.finalData[k][6] = mm['id'];
+                            //} else {
+                            //    console.log('醫療院所', "error line:" + (j + 1));
+                            //}
+                            //全部區域
                             mm = fv(data[j][6].trim(), m, 'uName');
                             if (mm && mm['uName'] == data[j][6].trim()) {
                                 comp.finalData[k][6] = mm['id'];
-                            }else {
+                            } else {
                                 console.log('醫療院所', "error line:" + (j + 1));
                             }
                             k++;
                         }
-                        console.log('finalData',comp.finalData);
+                        console.log('finalData', comp.finalData);
                         comp.$bus.$emit('type1_hide4');
                     }
 
@@ -2042,7 +2049,7 @@
             },
             setSort(opt) {
                 //有問題未完成
-                console.log('opt',opt);
+                console.log('opt', opt);
 
                 if (opt.index.length == 0 || (this.orderType == opt.index[0] && this.isDesc == opt.isDesc[0])) {
                     return;
@@ -2051,7 +2058,7 @@
                 this.orderType = opt.index[0];
                 this.isDesc = opt.isDesc[0];
                 var ord = 0;
-        
+
                 if (opt.index[0] == "regist_create_date") {
                     ord = (opt.isDesc[0]) ? 0 : 2;
                 } else if (opt.index[0] == "regist_station_date") {
@@ -2067,9 +2074,9 @@
                     pageSize: this.itemsPerPage,
                     page: 1,
                     orderType: ord
-                    
+
                 };
-                
+
                 var comp = this;
                 this.loadRegistForm(params).then((r) => {
                     comp.totalCount = r.totalCount;
@@ -2081,10 +2088,9 @@
                 });
 
 
-                
+
             }
         },
-
         components: {
             appLayout, appMenu, comTable, editor, comDialog, comConfirm, comLoading
         }

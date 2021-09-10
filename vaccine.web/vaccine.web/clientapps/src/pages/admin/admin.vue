@@ -4,6 +4,7 @@
 
 <script>
     import vuetify from '@/plugins/vuetify'
+    import { mapActions } from 'vuex'
     export default {
         vuetify: vuetify,
         // router,
@@ -17,8 +18,14 @@
         },
         created: function () {
         },
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                vm.$store.dispatch("user/getUserInfoData").then(() => {
+                });
+            });
+        },
         methods: {
-           
+            ...mapActions("user", ["getUserInfoData"]) ,
         }
     }
 </script>

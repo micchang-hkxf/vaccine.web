@@ -77,7 +77,7 @@
                         <div><span class="regist-title">設站行政區里</span> <span class="red--text">*</span></div>
                         <div class="d-flex justify-start">
                             <v-select v-model="model.regist_district"
-                                      :items="getDistricts"
+                                      :items="zones"
                                       item-text="name"
                                       :readonly="overStatus==1"
                                       :disabled="overStatus==1"
@@ -648,9 +648,14 @@
         },
         computed: {
             ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders', 'getShowBrand', 'getDisMedicals']),
-            ...mapGetters('user', ['getMedicals']),
+            ...mapGetters('user', ['getMedicals','getReGetInfo']),
             defaultItem: function () {
                 return this.default;
+            },
+            zones: function () {
+                var _zones = [];
+                this.getReGetInfo.zones[0].data.filter(f => f.hasAuth == true).forEach(m => { _zones.push({ id: m.distId, name: m.distName }); })
+                return _zones;
             }
         },
         props: ['width', 'title', 'action', 'saveBtnName'],

@@ -4,7 +4,7 @@ export default {
     namespaced: true,
     actions: {
         searchUser({ state, rootGetters, dispatch }, params) {
-            console.log(state);
+            console.log({ state , params});
             return new Promise(function (resolve, reject) {
                 var datas, testmode = false;
 
