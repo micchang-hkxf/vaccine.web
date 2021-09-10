@@ -1239,6 +1239,7 @@
             isReChecked: false,
             orderType :null,
             isDesc: null,
+            ord:0,
             injectionOkCount:0,
             regist_beforeDay: 3,//報名截止時間要於施打時間早3天以上
             downloadErrorMessage: '複檢結果至少要有一筆成功且合格才能下載',
@@ -1304,6 +1305,9 @@
                 'loadRegistForm', 'loadDetailForm', 'getCompleteFile', 'getSignUpFile', 'getVaccinationFile', 'getAgreeFile', 'execCheck', 'reExecCheck',
                 'doubleCheck', 'registForm', 'updateRegist', 'removeRegist', 'importRegistForm', 'actDetail']),
             getRegistForm: function (page) {
+
+  
+
                 var params = {
                     vaccine: this.selectVaccine,
                     district: this.selectDistrict,
@@ -1312,6 +1316,7 @@
                     keyWord: this.keyWord,
                     pageSize: this.itemsPerPage,
                     page: page,
+                    orderType: this.ord
                 };
                 if (this.getReGetInfo.userType == 1)
                     params.district = this.zones[0];
@@ -2052,12 +2057,12 @@
 
                 this.orderType = opt.index[0];
                 this.isDesc = opt.isDesc[0];
-                var ord = 0;
+                this.ord = 0;
         
                 if (opt.index[0] == "regist_create_date") {
-                    ord = (opt.isDesc[0]) ? 0 : 2;
+                    this.ord = (opt.isDesc[0]) ? 0 : 2;
                 } else if (opt.index[0] == "regist_station_date") {
-                    ord = (opt.isDesc[0]) ? 1 : 3;
+                    this.ord = (opt.isDesc[0]) ? 1 : 3;
                 }
 
                 var params = {
@@ -2068,7 +2073,7 @@
                     keyWord: this.keyWord,
                     pageSize: this.itemsPerPage,
                     page: this.showPage,
-                    orderType: ord
+                    orderType: this.ord
                     
                 };
                 
