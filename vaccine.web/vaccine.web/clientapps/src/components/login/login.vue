@@ -1,13 +1,13 @@
 ﻿<template>
     <v-app class="rectangle">
         <v-main>
-            <v-form lazy-validation ref="loginForm">
+            <v-form lazy-validation ref="loginForm" autocomplete="off">
                 <div class="logo"></div>
                 <div class="title">里辦疫苗接種便民服務</div>
                 <div class="sub-title">-管理後台-</div>
                 <div class="content">
                     <div>
-                        <v-text-field id="uid" placeholder="帳號" v-model="uid" :rules="[rules.required]" ref="uid" solo @keyup.enter="sendLoginForm" autocomplete="off"></v-text-field>
+                        <v-text-field id="uid" placeholder="帳號" v-model="uid" :rules="[rules.required]" ref="uid" solo @keyup.enter="sendLoginForm"></v-text-field>
                     </div>
                     <div>
                         <v-text-field id="upd" placeholder="密碼" v-model="upd" :rules="[rules.required]" ref="upd" solo @keyup.enter="sendLoginForm"
