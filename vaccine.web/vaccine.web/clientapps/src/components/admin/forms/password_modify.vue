@@ -28,7 +28,7 @@
                         <v-text-field v-model="newPassword"
                                       placeholder="請輸入8位以上包含半形英文+數字"
                                       :type="show2 ? 'text' : 'password'"
-                                      :rules="[rules.code]"
+                                      :rules="[rules.code, checkOldNewRule]"
                                       required
                                       outlined
                                       dense>
@@ -122,6 +122,9 @@
             passwordConfirmationRule() {
                 return () => (this.newPassword === this.newPassword2) ||  '新密碼輸入不一致'
             },
+            checkOldNewRule() {
+                return () => (this.oldPassword !== this.newPassword) || '新密碼不能與舊密碼相同'
+            }
         },
         props: ['width','title','action'],
         created: function () {

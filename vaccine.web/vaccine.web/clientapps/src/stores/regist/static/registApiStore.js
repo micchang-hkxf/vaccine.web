@@ -53,7 +53,7 @@ export default {
                     params: {
                         medicalOrgIdFilter: medicalOrgIdFilter, // 醫療院所過濾
                         page: 1,                                // 頁數
-                        rows: 50,                               // 每頁筆數
+                        rows: 100,                              // 每頁筆數
                         distIdFilter: distIdFilter,             // 行政區過濾
                         villageIdFilter: villageIdFilter,       // 村里過濾
                         keyword: keyword,                       // 關鍵字
@@ -286,11 +286,68 @@ export default {
                 resolve();
             });
         },
+        loadDists: function ({ state }) {
+            var zones = JSON.parse(window.sessionStorage.getItem('zoneMap'));
+            var dists = [];
+            if (zones !== null) {
+                zones.forEach((zone) => {
+                    zone.data.forEach((dist) => {
+                        dists.push({
+                            id: dist.distId,
+                            name: dist.distName
+                        });
+                    });
+                });
+
+                state.districts = dists;
+                return;
+            }
+
+            axios({
+                method: 'get',
+                url: `${state.apiRoot}api/DataItem/ZoneMap?api-version=1.0`,
+                data: {},
+                responseType: 'json',
+            }).then(function (res) {
+                window.sessionStorage.setItem('zoneMap', JSON.stringify(res.data));
+
+                res.data.forEach((zone) => {
+                    zone.data.forEach((dist) => {
+                        dists.push({
+                            id: dist.distId,
+                            name: dist.distName
+                        });
+                    });
+                });
+
+                state.districts = dists;
+            });
+        },
+        loadVillages: function ({ state }, params) {
+            var zones = JSON.parse(window.sessionStorage.getItem('zoneMap'));
+            var villages = [];
+            zones.forEach((zone) => {
+                zone.data.forEach((dist) => {
+                    if (dist.distId === params.id) {
+                        dist.data.forEach((village) => {
+                            villages.push({
+                                id: village.villageId,
+                                name: village.villageName
+                            });
+                        });
+                    }
+                });
+            });
+
+            state.villages = villages;
+        }
     },
     state: {
         ...siteConfig,
         vaccineGroups: [],
         vaccineBrands: [],
+        districts: [],
+        villages: [],
         userInfo: null,
         lockUserInfo: {
             lockName: false,
@@ -310,7 +367,13 @@ export default {
                 state.userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
             return state.userInfo;
         },
-        getApiRoot: function () { return siteConfig.apiRoot; }
+        getApiRoot: function () { return siteConfig.apiRoot; },
+        getDistricts: (state) => {
+            return state.districts;
+        },
+        getVillages: (state) => {
+            return state.villages;
+        }
     },
     mutations: {
         saveVaccineGroups: (state, groups) => {
