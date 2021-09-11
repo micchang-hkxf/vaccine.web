@@ -4,14 +4,39 @@
         <div class="action-bar">
             <div class="action-bar-filter">
                 <!--<v-select placeholder="全部新冠肺炎疫苗廠牌" v-model="filterBrandId" :items="getVaccineBrands" item-text="brandName" item-value="brandId" hide-details height="48px" v-if="groupId=='covid'" @change="search">
-                </v-select>-->
-                <v-text-field placeholder="請輸入行政區、村里或場次標題" v-model="filterKeyword" hide-details dense height="48px" @change="search" @input="search" autocomplete="off">
+    </v-select>-->
+                <v-text-field placeholder="查詢場次標題" v-model="filterKeyword" hide-details dense height="48px" @change="search" @input="search" autocomplete="off">
                     <template v-slot:append>
                         <div class="d-flex align-center text-controll">
                             <img src="/regist/search.svg" />
                         </div>
                     </template>
-                </v-text-field>    
+                </v-text-field>
+                <div class="action-bar-select">
+                    <v-select v-model="selectDistrict"
+                              :items="getDistricts"
+                              item-text="name"
+                              item-value="id"
+                              placeholder="查詢行政區"
+                              :menu-props="{ bottom: true, offsetY: true }"
+                              dense
+                              height="48px"
+                              class="search-filter fs"
+                              return-object
+                              @change="loadVillages">
+                    </v-select>
+                    <v-select v-model="selectVillage"
+                              :items="getVillages"
+                              item-text="name"
+                              item-value="id"
+                              placeholder="查詢村里"
+                              :menu-props="{ bottom: true, offsetY: true }"
+                              dense
+                              height="48px"
+                              class="search-filter fs"
+                              return-object>
+                    </v-select>
+                </div>
             </div>
             <div class="action-bar-bottons d-flex justify-space-between">
                 <v-btn class="clear-action" @click="clear">清除條件</v-btn>
@@ -98,22 +123,39 @@
             sessions: [],
             filterBrandId: '',
             filterKeyword: '',
+            selectDistrict: '',
+            selectVillage: '',
         }),
         computed: {
-            ...mapGetters('regist', ['getVaccineBrands']),
+            ...mapGetters('regist', ['getVaccineBrands', 'getDistricts', 'getVillages']),
         },
         props: ['groupId'],
         created: function () {
             this.loacVaccineBrands();
+            this.loadDists();
             this.search();
         },
         methods: {
-            ...mapActions('regist', ['loacVaccineSessions', 'loacVaccineBrands', 'setActivityApply']),
+            ...mapActions('regist', ['loacVaccineSessions', 'loacVaccineBrands', 'setActivityApply', 'loadDists', 'loadVillages']),
             search: function () {
+                var keyword = '';
+
+                if (typeof this.selectDistrict.name === 'string') {
+                    keyword = this.selectDistrict.name;
+                }
+
+                if (typeof this.selectVillage.name === 'string') {
+                    keyword = this.selectVillage.name;
+                }
+
+                if (this.filterKeyword !== '') {
+                    keyword = this.filterKeyword;
+                }
+
                 this.loacVaccineSessions({
                     groupId: this.groupId,
                     brandId: this.filterBrandId,
-                    keyword: this.filterKeyword,
+                    keyword: keyword,
                 }).then(r => {
                     this.sessions.splice(0);
                     r.datas.forEach(f => this.sessions.push(f));
@@ -127,6 +169,9 @@
             clear: function () {
                 this.filterBrandId = '';
                 this.filterKeyword = '';
+                this.selectDistrict = '';
+                this.selectVillage = '';
+                this.loadVillages('');
                 this.search();
             }
         },
@@ -271,7 +316,7 @@
         background-color: #FFFFFF;
         width: 50%;
         margin: 0 auto;
-        height: 150px;
+        /*height: 150px;*/
     }
 
     .unapply-list/deep/ .action-bar .v-text-field .transparent {
@@ -434,6 +479,14 @@
             flex: 0 0 100%;
             max-width: 50%;
         }
+
+        .action-bar-filter .action-bar-select {
+            display: flex;
+        }
+
+        .action-bar-filter .action-bar-select .v-select {
+            max-width: 50%;
+        }
     }
 
 
@@ -468,6 +521,14 @@
             flex: 0 0 100%;
             max-width: 50%;
         }
+
+        .action-bar-filter .action-bar-select {
+            display: flex;
+        }
+
+        .action-bar-filter .action-bar-select .v-select {
+            max-width: 50%;
+        }
     }
 
     /* Extra large devices (large desktops, 1200px and up) */
@@ -499,6 +560,15 @@
 
         .col-6 {
             flex: 0 0 100%;
+            max-width: 50%;
+        }
+
+
+        .action-bar-filter .action-bar-select {
+            display: flex;
+        }
+
+        .action-bar-filter .action-bar-select .v-select {
             max-width: 50%;
         }
     }
