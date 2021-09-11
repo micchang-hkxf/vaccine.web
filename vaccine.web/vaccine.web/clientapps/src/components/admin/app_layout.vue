@@ -388,4 +388,9 @@
     .v-main__wrap .v-toolbar__title {
         padding-left: 10px;
     }
+
+    .v-list-item__action-text > span {
+        margin: 0 8px;
+        vertical-align: middle;
+    }
 </style>
