@@ -10,7 +10,8 @@ namespace vaccine.web.Controllers
     {
         public IActionResult Index()
         {
-            if (!Request.Cookies.ContainsKey("x-token")) return Redirect("/login");
+            if (!Request.Cookies.ContainsKey("x-token"))
+                return Redirect("/login");
             return View();
         }
     }

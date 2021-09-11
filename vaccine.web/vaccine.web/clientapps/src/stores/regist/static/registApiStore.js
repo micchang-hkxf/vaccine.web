@@ -16,19 +16,28 @@ export default {
                 });
             });
         },
-        loacVaccineGroups: function ({ commit }) {
+        findVaccineGroup: function ({ getters }, groupId) {
+            try {
+                var group = getters.getVaccineGroups.find(f => f.groupId == groupId);
+                return group;
+            } catch (e) {
+                return null;
+            }
+        },
+        loacVaccineGroups: function ({state, commit }) {
             return new Promise((resolve) => {
-                var results = {
-                    datas: [
-                        { groupName: '肺鏈、流感', groupId: 'influenza' },
-                        { groupName: '新冠肺炎', groupId: 'covid' },
-                    ], state: ''
-                };
-                commit('saveVaccineGroups', results.datas);
-                resolve(results);
+                var results = [];
+                var apiUrl = `${state.apiRoot}api/DataItem/Vaccines`;
+                axios.get(apiUrl).then(res => {
+                    res.data.forEach((data) => {
+                        results.push({ groupName: data.groupName, groupId: data.groupId, groupNo: data.groupId });
+                    });
+                    commit('saveVaccineGroups', results);
+                    resolve(results);
+                });
             });
         },
-        loacVaccineSessions: function ({ state }, params) {
+        loacVaccineSessions: function ({ state,  }, params) {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/Activity`;
                 var results = { datas: [], state: '', totalCount: 0 };
@@ -36,12 +45,7 @@ export default {
                 var medicalOrgIdFilter = 'all';
                 var distIdFilter = 'all';
                 var villageIdFilter = 'all';
-                var vaccineGroupId = null;
-                if (params.groupId === 'influenza') {
-                    vaccineGroupId = 0;
-                } else if (params.groupId === 'covid') {
-                    vaccineGroupId = 1;
-                }
+                var vaccineGroupId = params.groupId;
                 var keyword = params.keyword === '' ? null : params.keyword;
                 //  TODO: params.brandId 搜尋廠牌目前不支援
 

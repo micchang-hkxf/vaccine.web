@@ -655,12 +655,12 @@
                 this.$set(this, "isReadOnly", true);
 
               
-                var r = this.$store.getters["users/getRoleListById"](item.userType).state;
+                //var r = this.$store.getters["users/getRoleListById"](item.userType).state;
                 //var a = this.$store.getters["users/getAreaListById"](item.zones[0].cityId).state
                 var zone = item.zones[0].data.filter((x) => x.hasAuth == true);                 
                 var area = zone.map((x) => { return { id: x.distId, state: x.distName } });
 
-                this.$set(this, "setRole", { id: item.userType, state: r });
+                //this.$set(this, "setRole", { id: item.userType, state: r });
                 if (item.userType == 0) {
                     this.$set(this, "setArea", { id: '200', state: '管理全區' });
                 } else {
@@ -754,7 +754,7 @@
                     filter.zones = this.selectArea.id;
                 } else {
                     if (this.userInfo.userType == 1) filter.zones = this.zones[0].id;
-                    if (this.userInfo.userType == 0) filter.zones = 'all';
+                    if (this.userInfo.userType == 0) filter.zones = '200';
                 }
                 if (this.selectPermission) {
                     filter.isEnable = this.selectPermission.st;
@@ -801,7 +801,7 @@
                 this.$set(this, "mbNo2", '');
                 this.$set(this, "email", '');
                 this.$set(this, "unitName", '');
-                this.$set(this, "setRole", {});
+                //this.$set(this, "setRole", {});
                 this.$set(this, "setArea", {});
                 this.$set(this, "isReadOnly", false);
                 this.$bus.$emit('userform_show', true);

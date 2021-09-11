@@ -22,13 +22,21 @@ export default {
             return new Promise((reslove) => {
                 var results = {
                     datas: [
-                        { groupName: '肺鏈、流感', groupId: 'influenza' },
-                        { groupName: '新冠肺炎', groupId: 'covid' },
+                        { groupName: '肺鏈、流感', groupId: 0, groupNo: 0 },
+                        { groupName: '流感', groupId: 2, groupNo: 2 },
                     ], state: ''
                 };
                 commit('saveVaccineGroups', results.datas);
                 resolve(results);
             });
+        },
+        findVaccineGroup: function ({ getters }, groupId) {
+            try {
+                var group = getters.getVaccineGroups.find(f => f.groupId == groupId);
+                return group;
+            } catch (e) {
+                return null;
+            }
         },
         loacVaccineSessions: function ({ state }, param) {
             return new Promise((reslove) => {

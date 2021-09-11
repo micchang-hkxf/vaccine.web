@@ -1,8 +1,7 @@
 ﻿<template>
     <app-layout :app-bar="appBar" class="unapply-content">
         <template v-slot:regist-title>
-            「<span v-if="groupId=='influenza'">肺鏈、流感</span>
-              <span v-if="groupId=='covid'">新冠肺炎</span>疫苗」選擇接種場次
+            「<span v-if="findVaccineGroup(groupId)">{{findVaccineGroup(groupId).groupName}}</span>疫苗」選擇接種場次
         </template>
         <template v-slot:regist-content>
             <unapply-list :group-id="groupId"></unapply-list>
@@ -17,6 +16,7 @@
     import appLayout from 'components/regist/regist_layout'
     import appFooter from 'components/regist/regist_footer.vue'
     import unapplyList from 'components/regist/forms/unapply_list'
+    import { mapActions } from 'vuex'
 
     export default {
         // router,
@@ -24,19 +24,21 @@
             appBar: {
                 elevation: 0,
                 height: '144px'
-            }
+            },
+            group :null 
         }),
         computed: {
             groupId: function () {
                 if (this.$route.query) 
                     return this.$route.query.groupId;
                 return null;
-            }
+            } 
         },
         created: function () {
 
         },
         methods: {
+            ...mapActions('regist',['findVaccineGroup']),            
 
         },
         components: {
