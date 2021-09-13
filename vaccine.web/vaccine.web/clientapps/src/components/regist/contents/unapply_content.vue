@@ -14,7 +14,7 @@
 
 <script>
     import appLayout from 'components/regist/regist_layout'
-    import appFooter from 'components/regist/regist_footer.vue'
+    import appFooter from 'components/regist/regist_footer'
     import unapplyList from 'components/regist/forms/unapply_list'
     import { mapActions } from 'vuex'
 
