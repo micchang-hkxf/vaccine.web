@@ -667,8 +667,13 @@
                             comp.forgetAuthenticationTimingStart();
                         }
                     })
-                    .catch(function () {
+                    .catch(ex => {
                         comp.$bus.$emit('loading_hide4');
+
+                        if (ex.datas.response.status == 405) {
+                            comp.forgetUidMessage = '輸入錯誤或此帳號未註冊！';
+                            return;
+                        }
 
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
