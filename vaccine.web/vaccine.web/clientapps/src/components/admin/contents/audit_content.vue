@@ -261,7 +261,7 @@
                 { text: '檔案名稱', value: 'title', sortable: false, align: 'center', flex: 6 },
                 { text: '資料筆數', value: 'count', sortable: false, align: 'center', flex: 6 },
                 { text: '下載事由', value: 'download', sortable: false, align: 'center', flex: 6 },
-                { text: '操作', value: 'modify', sortable: false, align: 'center', flex: 6 },
+                //{ text: '操作', value: 'modify', sortable: false, align: 'center', flex: 6 },
             ],
             title: '',
             model: {

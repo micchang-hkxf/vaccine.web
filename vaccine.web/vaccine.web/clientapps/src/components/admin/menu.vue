@@ -10,6 +10,7 @@
  
 <script>
     //import { mapState } from 'vuex'
+    import { mapActions } from 'vuex'
 
     export default {
         // router,
@@ -44,17 +45,19 @@
              
         },
         created: function () {
-            var r = this.$store.getters["user/getReGetInfo"];
-            this.all.forEach(f => {
-                if (f.key == 'audit' && r) {
-                    if (r.userType == 0) this.menus.push(f);
-                    return;
-                }
-                this.menus.push(f)
-            });            
+            this.getUserInfoData().then(() => {
+                var r = this.$store.getters["user/getReGetInfo"];
+                this.all.forEach(f => {
+                    if (f.key == 'audit' && r) {
+                        if (r.userType == 0) this.menus.push(f);
+                        return;
+                    }
+                    this.menus.push(f)
+                });
+            })
         },
         methods: {
-
+            ...mapActions('user', ['getUserInfoData']),            
             menuActive: function (menu) {
                 if (menu.target != null) {
 

@@ -150,7 +150,7 @@ export default {
                 var setdata = {
                     "acc": data.acc,
                     "uName": data.uName,
-                    "email": "test@gmail.com",//todo
+                    "email": data.email,//todo
                     "mbNo": data.mbNo,
                     "unitName": data.unitName,
                     "userType": data.userType,

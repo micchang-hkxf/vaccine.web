@@ -130,7 +130,7 @@
                     <v-col cols="6">
                         <div> <span class="regist-title">醫療院所</span><span class="red--text">*</span></div>
                         <v-select v-model="model.regist_institution"
-                                  :items="getDisMedicals"
+                                  :items="getMedicals"
                                   item-text="uName"
                                   item-value="id"
                                   placeholder="請選擇醫療院所"

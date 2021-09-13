@@ -15,7 +15,7 @@
                         <div class="action-info d-flex flex-column justify-center" @click="toSession(applied)">
                             <div class="action-info-header d-flex flex-column">
                                 <div class="action-info-subject">
-                                    {{applied.activityName}}//8888{{groupId}}
+                                    {{applied.activityName}}
                                 </div>
                                 <div class="action-info-sec-subject">
                                     {{applied.region.distName

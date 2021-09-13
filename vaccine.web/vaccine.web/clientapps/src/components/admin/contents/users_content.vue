@@ -17,7 +17,8 @@
                             <div>{{   items.item.isEnable.toString()=='true' ? "啟用" : "停用" }}</div>
                         </template>
                         <template v-slot:item.area="items">
-                            <span>{{  getZonesData(items.item) }}</span>
+                            <span v-if="items.item.userType==0">管理全區</span>
+                            <span v-if="items.item.userType==1">{{  getZonesData(items.item) }}</span>
                         </template>
                         <template v-slot:search-bar>
                             <div>
@@ -86,13 +87,13 @@
 
 
                         </template>
-                         
+
                         <template v-slot:toolbar-action={}>
                             <!--<v-checkbox :ripple="false" hide-details @click="switchSelect"></v-checkbox>
-            <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
-                <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
-            </v-btn>
-            -->
+                            <v-btn color="#F0524B" :disabled="selectedItems.length<=0 " @click="deleteSelected(selected)">
+                                <span style="color:white">刪除選取項目{{selectedItems.length}}</span>
+                            </v-btn>
+                            -->
                             <v-spacer></v-spacer>
 
                             <v-menu bottom right offset-y>
@@ -116,12 +117,12 @@
                                         </v-list-item-action-text>
                                     </v-list-item>
                                     <!--<v-list-item @click.stop="importItem(item)">
-                        <v-list-item-action-text>
-                            <v-btn icon dense>
-                                <v-icon small>far fa-trash-alt</v-icon>
-                            </v-btn>檔案匯入
-                        </v-list-item-action-text>
-                    </v-list-item>-->
+                                        <v-list-item-action-text>
+                                            <v-btn icon dense>
+                                                <v-icon small>far fa-trash-alt</v-icon>
+                                            </v-btn>檔案匯入
+                                        </v-list-item-action-text>
+                                    </v-list-item>-->
 
                                 </v-list>
                             </v-menu>
@@ -157,12 +158,14 @@
                                             <template v-if="changeStatus=='啟用'">
                                                 <v-btn icon dense>
                                                     <img src="/admin/menu-enable.svg">
-                                                </v-btn><span class="modify-btn-text">{{ changeStatus }}</span>
+                                                </v-btn>
+                                                <span class="modify-btn-text">{{ changeStatus }}</span>
                                             </template>
                                             <template v-if="changeStatus=='停用'">
                                                 <v-btn icon dense>
                                                     <img src="/admin/menu-disable.svg">
-                                                </v-btn><span class="modify-btn-text menu-state">{{ changeStatus }}</span>
+                                                </v-btn>
+                                                <span class="modify-btn-text menu-state">{{ changeStatus }}</span>
                                             </template>
                                         </v-list-item-action-text>
                                     </v-list-item>
@@ -204,12 +207,12 @@
                                 <v-text-field dense outlined class="w02" placeholder="請輸入帳號" v-model="acc" v-bind:disabled="isReadOnly" :rules="[v => !!v || '必填']"></v-text-field>
                             </v-col>
                         </v-row>
-                        <!--<v-row>
-        <v-col cols="12">
-            <v-label><span class="star">email</span></v-label>
-            <v-text-field outlined class="w02" type='email' v-model="email" :rules="[rules.email.regex]"></v-text-field>
-        </v-col>
-    </v-row>-->
+                        <v-row>
+                            <v-col cols="12">
+                                <v-label><span class="star">信箱</span></v-label>
+                                <v-text-field dense outlined class="w02" type='email' v-model="email" :rules="[rules.email.required,rules.email.regex]"></v-text-field>
+                            </v-col>
+                        </v-row>
                         <v-row>
                             <v-col cols="12">
                                 <v-label><span class="star">手機</span></v-label>
@@ -251,7 +254,7 @@
                         </v-row>
                         <v-row v-if="setRole.id==1 || setRole.id==null">
                             <v-col cols="12">
-                                <v-label><span class="star">管理區域</span></v-label>                                
+                                <v-label><span class="star">管理區域</span></v-label>
                                 <v-select v-model="setArea"
                                           :items="zones"
                                           item-text="state"
@@ -268,7 +271,7 @@
                                 </v-select>
                             </v-col>
                         </v-row>
-                        <v-row v-if="setRole.id==0">
+                        <v-row v-if="false">
                             <v-col cols="12">
                                 <v-select v-model="setArea"
                                           :items="[{id:null , state:'無'},{id:'200' , state:'管理全區'}]"
@@ -364,14 +367,15 @@
                 </template>
             </com-confirm>
 
-            <com-dialog ref="formSaveConfirmPanel" ref-key="formSaveConfirm" width="40%" >
+            <com-dialog ref="formSaveConfirmPanel" ref-key="formSaveConfirm" width="40%">
                 <template v-slot:toolbar>
                     {{ fromSaveConfirmTitle }}
                 </template>
                 <template v-slot:content>
                     <br>
                     {{  fromSaveConfirmMessage }}
-                    <br><br>
+                    <br>
+                    <br>
                     <v-divider></v-divider>
 
                     <div class="showname">姓名</div>
@@ -384,7 +388,8 @@
                     <div class="showname">服務單位</div>
 
                     <span class="p">{{ unitName }}</span>
-                    <br><br>
+                    <br>
+                    <br>
                     <v-divider></v-divider>
                     <div class="showname">角色設定</div>
 
@@ -393,7 +398,8 @@
                     <span class="p">{{ setAreaState }}</span>
                     <div class="showname">啟用狀態 </div>
                     <span class="p">{{ setEnableState }}</span>
-                    <br><br>
+                    <br>
+                    <br>
                     <v-divider></v-divider>
                     <br>
                 </template>
@@ -407,7 +413,7 @@
                 </template>
             </com-dialog>
         </template>
-        
+
 
     </app-layout>
 </template>
@@ -425,6 +431,7 @@
         padding-left: 32px !important;
         padding-right: 32px !important;
     }
+
     .users-list .modify-btn-text {
         color: #626781;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
@@ -437,13 +444,16 @@
     .users-list .app-content {
         background: #F2F3F7 !important;
     }
+
     .users-list .w01 {
-        width:300px;
+        width: 300px;
     }
+
     .users-list .star:after {
         color: red;
         content: "*";
     }
+
     .users-list .w02 {
         /*width: 600px;*/
     }
@@ -452,8 +462,9 @@
         min-width: 170px !important;
         min-height: 53px !important;
     }
-    .users-list .v-list-item__title{
-        color:black;
+
+    .users-list .v-list-item__title {
+        color: black;
     }
     /*.users-list .d-flex {
         padding: 20px 0px 0px 0px !important;
@@ -461,10 +472,12 @@
     .userform .dialog-content {
         padding-bottom: 0px !important;
     }
+
     .users-list .v-text-field {
         padding-top: 0px !important;
         margin-top: 0px !important;
     }
+
     .users-list .showname {
         color: #62678166 !important;
         padding-top: 15px !important;
@@ -476,9 +489,10 @@
     .users-list .v-btn:not(.v-btn--round).v-size--large {
         min-width: 2000px !important;
     }*/
-     .userlist .alertTitle{
-        font-size:8px;
+    .userlist .alertTitle {
+        font-size: 8px;
     }
+
     .p {
         font-size: 16px !important;
     }
@@ -486,9 +500,11 @@
     .fa-search:before {
         content: url('/admin/common_search-24px.svg') !important;
     }
+
     .v-dialog > .v-card > .v-card__title dialog-toolbar {
         padding: 10px 24px 10px 27px !important;
     }
+
     .w02 input[type='number'] {
         -moz-appearance: textfield;
     }
@@ -532,7 +548,7 @@
             totalCount: 0,
             itemsPerPage: 5,
             totalVisible: 10,
-            inpage:1,
+            inpage: 1,
             uName: null,
             acc: null,
             email: null,
@@ -546,15 +562,15 @@
             errorMessage: "",
             errorTitle: "",
             confirmTitle: "刪除人員?",
-            confirmMessage:"",
+            confirmMessage: "",
             editID: "",
             isReadOnly: false,
-            delitem:null,
+            delitem: null,
             formTitle: "新增人員",
             confirmImgSrc: "",
             alertImgSrc: "",
             errorImgSrc: "",
-            successIcon: '/alert_success.svg', 
+            successIcon: '/alert_success.svg',
             warningIcon: '/alert_warning.svg',
             setRole: null,
             setArea: null,
@@ -568,15 +584,15 @@
             changeStatus: null,
             alertrightcolor: '#736DB9',
             zones: [],
-            userInfo:null,
+            userInfo: null,
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
                 { text: '姓名', value: 'uName', align: 'center', sortable: true, flex: 6, width: '10%' },
                 { text: '帳號', value: 'acc', align: 'center', sortable: false, flex: 6 },
-                //{ text: 'email', value: 'email', sortable: false, flex: 6 },
-                { text: '角色', value: 'userTypeDesc', align: 'center', sortable: false, flex: 6},
+                { text: 'email', value: 'email', sortable: false, flex: 6 },
+                { text: '角色', value: 'userTypeDesc', align: 'center', sortable: false, flex: 6 },
                 { text: '管轄區域', value: 'area', align: 'center', sortable: false, flex: 6 },
-                { text: '權限狀態', value: 'isEnable', align: 'center', sortable: false, flex: 6},
+                { text: '權限狀態', value: 'isEnable', align: 'center', sortable: false, flex: 6 },
                 { text: '密碼更改時間', value: 'pdExpTime', sortable: false, align: 'center', flex: 6 },
                 { text: '最後存取時間', value: 'lastAccessTime', sortable: false, align: 'center', flex: 6 },
                 //{ text: '手機', value: 'mbNo', sortable: false, flex: 6 },
@@ -588,11 +604,11 @@
             selectArea: null,
             selectPermission: null,
             selectUser: "",
-            createConfirmMessage:"",
+            createConfirmMessage: "",
             permissionStatus: [
                 { state: '啟用', st: 'true' },
                 { state: '停用', st: 'false' },
-              
+
             ],
             rules: {
                 email: {
@@ -603,37 +619,37 @@
                     required: v => !!v || '欄位必填.',
                     regex: v => /^09\d{8}$/.test(v) || '請輸入正確的手機號碼(十位半形數字)'
                 },
-                select: [(v) => (!!v && v.id>=0) || "請選擇角色"],
+                select: [(v) => (!!v && v.id >= 0) || "請選擇角色"],
                 select2: [(v) => !!v || "請選擇區域"],
-                
-           
+
+
             }
         }),
         computed: {
             ...mapGetters('user', ['getReGetInfo']),
             ...mapGetters('users', ['getTableItems', 'getAreaItems', 'getAllAreaItems', 'getRoleItems', 'getRoleListById', 'getAreaListById']),
-            
+
             userAllAreaItems: function () {
                 return this.getAllAreaItems.filter(f => f.hasAuth == true);
             },
             userRoleItems: function () {
-                if (this.setRole.id == 0) {
+                if (this.userInfo.userType == 0) {
                     return this.getRoleItems;
                 }
-                return this.getRoleItems.filter(f=>f.id==1);
+                return this.getRoleItems.filter(f => f.id == 1);
             }
         },
         props: {
 
         },
-        mounted(){
+        mounted() {
             this.search(1);
         },
         created() {
             this.getAreaList();
             var r = this.$store.getters["user/getReGetInfo"];
             if (r) {
-                this.zones = r.zones[0].data.filter(f => f.hasAuth == true).map(m => { return { id: m.distId, state: m.distName }; });               
+                this.zones = r.zones[0].data.filter(f => f.hasAuth == true).map(m => { return { id: m.distId, state: m.distName }; });
                 var state = this.$store.getters["users/getRoleListById"](r.userType).state;
                 this.$set(this, "setRole", { id: r.userType, state: state });
                 this.userInfo = r;
@@ -654,10 +670,10 @@
                 this.$set(this, "unitName", item.unitName);
                 this.$set(this, "isReadOnly", true);
 
-              
+
                 //var r = this.$store.getters["users/getRoleListById"](item.userType).state;
                 //var a = this.$store.getters["users/getAreaListById"](item.zones[0].cityId).state
-                var zone = item.zones[0].data.filter((x) => x.hasAuth == true);                 
+                var zone = item.zones[0].data.filter((x) => x.hasAuth == true);
                 var area = zone.map((x) => { return { id: x.distId, state: x.distName } });
 
                 //this.$set(this, "setRole", { id: item.userType, state: r });
@@ -668,11 +684,11 @@
                     //this.$set(this, "setArea", { id: item.zones[0].data[0].distId, state: item.zones[0].data[0].distName });
                 }
                 this.$set(this, "setEnable", item.isEnable.toString() == 'true');
-        
-               // this.setRole = { id: item.userType  };
-               // this.setArea = { id: item.zones[0] };//multiple todo
-             
-       
+
+                // this.setRole = { id: item.userType  };
+                // this.setArea = { id: item.zones[0] };//multiple todo
+
+
                 this.fromSaveConfirmTitle = "確認人員更新資訊";
                 this.fromSaveConfirmMessage = " 請確認內容無誤後點選「確定」完成更新";
 
@@ -682,26 +698,26 @@
             stopItem(item) {
                 var comp = this;
                 item.editMode = true;
-             
+
                 item.isEnable = (item.isEnable.toString() == 'true') ? 'false' : 'true';
-                item.zones = [(item.zones[0].data[0]) ? item.zones[0].data[0].distId:""];//todo
+                item.zones = [(item.zones[0].data[0]) ? item.zones[0].data[0].distId : ""];//todo
                 comp.alertImgSrc = comp.warningIcon;
                 comp.changeUser(item).then(function (result) {
-                  
+
                     if (result) {
-                      
+
                         comp.alertImgSrc = comp.successIcon;
                         comp.$bus.$emit('alert_show', true);
-                        comp.alertTitle = comp.changeStatus+'成功';
+                        comp.alertTitle = comp.changeStatus + '成功';
                         comp.search(comp.inpage);
                     } else {
-                     
-                        comp.alertTitle = comp.changeStatus+'失敗';
+
+                        comp.alertTitle = comp.changeStatus + '失敗';
                         this.alertImgSrc = this.alertIcon;
                         comp.$bus.$emit('alert_show', true);
 
                     }
-   
+
                 }).catch(function () {
                     comp.errorImgSrc = comp.alertIcon;
                     comp.errorMessage = '處理錯誤，請重新嘗試';
@@ -742,19 +758,19 @@
                     page: page,
                     rows: this.itemsPerPage,
                 };
-                
+
                 if (this.selectRole) {
                     filter.userType = this.selectRole.id;
-                } else  {
+                } else {
                     if (this.userInfo.userType == 1) {
                         filter.userType = 1;
-                    } 
+                    }
                 }
                 if (this.selectArea) {
                     filter.zones = this.selectArea.id;
                 } else {
                     if (this.userInfo.userType == 1) filter.zones = this.zones[0].id;
-                    if (this.userInfo.userType == 0) filter.zones = '200';
+                    //if (this.userInfo.userType == 0) filter.zones = '200';
                 }
                 if (this.selectPermission) {
                     filter.isEnable = this.selectPermission.st;
@@ -781,12 +797,12 @@
                     result.datas.forEach(f => comp.items.push(f))
                     //console.log('items', comp.items);
                     comp.$refs.userTable.gofrontPage(page);
-                    if (!finddata ) {
+                    if (!finddata) {
                         comp.$bus.$emit('alert_show', true);
                         return;
                     }
-                   
-    
+
+
                 }).catch(function () {
                     comp.errorTitle = '處理錯誤，請重新嘗試';
                     comp.errorImgSrc = comp.warningIcon;
@@ -805,14 +821,14 @@
                 this.$set(this, "setArea", {});
                 this.$set(this, "isReadOnly", false);
                 this.$bus.$emit('userform_show', true);
-               
+
                 this.fromSaveConfirmTitle = "確認人員新增資訊";
                 this.fromSaveConfirmMessage = " 請確認內容無誤後點選「確定」完成新增";
                 //this.setRole = { id: 2 ,state:"轄區管理員"};
                 //this.setArea = { id: 1, state: "松山區" };
                 //this.$set(this, "setRole", { id: 1, state: "轄區管理員" });
                 //this.$set(this, "setArea", { id: "2001", state: "松山區" });
-               
+
                 this.$refs.form.resetValidation();
                 // scroll to top
                 setTimeout(() => this.$refs.form.$el.scrollIntoView(), 0);
@@ -838,7 +854,7 @@
                 } else {
                     //this.$bus.$emit("alert_show", true);
                     //this.$set(this, "alertTitle", '儲存失敗');
-    
+
                     return;
                 }
 
@@ -847,11 +863,11 @@
                 this.$bus.$emit('formSaveConfirm_show', true);
                 this.setRoleState = this.setRole.state;
                 this.setAreaState = this.setArea.state;
-  
-                this.setEnableState = this.setEnable.toString()=="true" ? "啟用" : "停用";
+
+                this.setEnableState = this.setEnable.toString() == "true" ? "啟用" : "停用";
             },
             saveform() {
-   
+
                 var comp = this;
                 var setData = {
                     acc: this.acc,
@@ -862,29 +878,33 @@
                     userType: this.setRole.id,
                     userTypeDesc: this.setRole.state,
                     //zones: [this.setArea], //multi todo
-                    //zones: [this.setArea.id], 
+                    //zones: [this.setArea.id],
                     lastAccessTime: "2021-05-20 08:26:43",
                     pdExpTime: "2021-05-20 08:26:43",
-                    zones: [(this.setArea.id)?this.setArea.id.toString():""],
-                    isEnable: (this.setEnable)?this.setEnable.toString():"false",
+                    zones: [(this.setArea.id) ? this.setArea.id.toString() : ""],
+                    isEnable: (this.setEnable) ? this.setEnable.toString() : "false",
                     stopit: false,
                     editMode: this.isReadOnly,
                 };
-        
+
                 var msg = (this.isReadOnly) ? "更新" : "建立";
                 comp.alertImgSrc = comp.warningIcon;
-  
+
                 comp.$bus.$emit('type1_show4', "資料處理中...");
                 var roleDesc = comp.setRole.state;
                 if (this.setRole.id > 0) {
                     roleDesc += "-" + comp.setArea.state;
                 }
-                var saveMsg = comp.uName + "\n" + comp.acc + "\n" + roleDesc+"\n";
+                if (setData.userType == 0)
+                {
+                    setData.zones = ['200'];
+                }
+                var saveMsg = comp.uName + "\n" + comp.acc + "\n" + roleDesc + "\n";
                 comp.changeUser(setData).then(function (result) {
 
                     if (result.datas.status == "201") {
                         comp.$bus.$emit('duplicatAlert_show', true);
-                    } else { 
+                    } else {
                         comp.$set(comp, "alertTitle", saveMsg + '人員' + msg + '成功');
                         comp.alertImgSrc = comp.successIcon;
                         comp.$bus.$emit('userform_show', false);
@@ -894,7 +914,7 @@
                     }
 
                     comp.$bus.$emit('type1_hide4');
-                   
+
                 }).catch(function (r) {
                     console.log(r.datas.response.status);
                     comp.$bus.$emit('type1_hide4');
@@ -904,11 +924,11 @@
                 });
 
             },
-            alertClick () {
+            alertClick() {
                 this.$bus.$emit(`alert_show`, false);
             },
             confirmRightClick: function () {
-                this.$bus.$emit(`confirmAction_show` ,false);
+                this.$bus.$emit(`confirmAction_show`, false);
                 this.removeItem(this.delitem);
             },
             confirmLeftClick: function () {
@@ -918,15 +938,15 @@
                 this.$refs.form.reset()
             },
             showOptMenu(item) {
-                this.$set(this, "changeStatus", (item.isEnable.toString()=='true') ? "停用" : "啟用");
+                this.$set(this, "changeStatus", (item.isEnable.toString() == 'true') ? "停用" : "啟用");
 
             },
             getZonesData(item) {
                 //暫時只有北市
-                var z = [];             
-                //item.zones[0].data.forEach(f => z.push(f.distName))              
-                var authZones = item.zones[0].data.filter((x) => x.hasAuth == true);              
-                    authZones.forEach(f => z.push(f.distName));                              
+                var z = [];
+                //item.zones[0].data.forEach(f => z.push(f.distName))
+                var authZones = item.zones[0].data.filter((x) => x.hasAuth == true);
+                authZones.forEach(f => z.push(f.distName));
                 return z.join(",");
             },
             changePage: function (pager) {

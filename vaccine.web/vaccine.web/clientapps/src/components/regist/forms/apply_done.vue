@@ -69,12 +69,12 @@
             finish: function () {
                 this.isShow = false;
                 //location.replace('/regist');
-                var groupId = '';
-                if (this.session.vaccineGroupId === 0)
-                    groupId = 'influenza';
-                else if (this.session.vaccineGroupId === 1)
-                    groupId = 'covid';
-                this.$router.push({ name: 'unapply', query: { groupId: groupId } });
+                //var groupId = '';
+                //if (this.session.vaccineGroupId === 0)
+                //    groupId = 'influenza';
+                //else if (this.session.vaccineGroupId === 1)
+                //    groupId = 'covid';
+                this.$router.push({ name: 'unapply', query: { groupId: this.session.vaccineGroupId } });
             }
         },
         components: {
