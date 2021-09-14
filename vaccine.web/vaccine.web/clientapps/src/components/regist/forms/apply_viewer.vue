@@ -3,10 +3,10 @@
 
         <div class="activity-name">{{session.sessionName}}</div>
         <div class="activity-name-descript">{{session.zoneName}}-{{session.villageName}}│{{session.groupName}}</div>
-        <template v-if="session.brandName !== ''">
+        <!--<template v-if="session.brandName !== ''">
             <div class="activity-detail-title">疫苗廠牌</div>
             <div class="activity-detail-descript">{{session.brandName}}</div>
-        </template>
+        </template>-->
 
         <div class="activity-detail-title">接種日期</div>
         <div class="activity-detail-descript">{{$moment(session.sessionStart).format('YYYY/MM/DD')}},{{$moment(session.sessionStart).format('HH:mm')}}-{{$moment(session.sessionEnd).format('HH:mm')}}</div>
