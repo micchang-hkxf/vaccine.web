@@ -4,30 +4,35 @@
             報名登記與身份驗證
         </template>
         <template v-slot:regist-content>
-            <div class="agree-container">
-                <apply-viewer></apply-viewer>
-                <v-divider></v-divider>
-            </div>
-            <div class="agree-actions" v-if="isNeedLogin && isShow">
-                <div class="action-header">請選擇登記方式：</div>
-                <div class="action-content d-flex flex-row justify-space-between">
-                    <div class="action tp-pass d-flex flex-column justify-center align-center" @click="toTpPass($route.params.vote_no)">
-                        <div>
-                            <img src="/regist/tp_pass.svg">
-                        </div>
-                        <div class="action-label">台北通帳號登入</div>
-                    </div>
-                    <div class="action d-flex flex-column justify-center align-center" @click.stop="toLocalPass($route.params.vote_no)">
-                        <div>
-                            <img src="/regist/editor_pen.svg">
-                        </div>
-                        <div class="action-label">手動輸入資料</div>
-                    </div>
+            <div class="main-content">
+                <div class="agree-container">
+                    <apply-viewer></apply-viewer>
+                    <v-divider></v-divider>
                 </div>
-                <!--<v-btn :to="{name:'apply'}">申請</v-btn>
-        <v-btn :to="{name:'regist'}">返回</v-btn>-->
+                <div class="agree-actions" v-if="isNeedLogin && isShow">
+                    <div class="action-header">請選擇登記方式：</div>
+                    <div class="action-content d-flex flex-row justify-space-between">
+                        <div class="action tp-pass d-flex flex-column justify-center align-center" @click="toTpPass($route.params.vote_no)">
+                            <div>
+                                <img src="/regist/tp_pass.svg">
+                            </div>
+                            <div class="action-label">台北通帳號登入</div>
+                        </div>
+                        <div class="action d-flex flex-column justify-center align-center" @click.stop="toLocalPass($route.params.vote_no)">
+                            <div>
+                                <img src="/regist/editor_pen.svg">
+                            </div>
+                            <div class="action-label">手動輸入資料</div>
+                        </div>
+                    </div>
+                    <!--<v-btn :to="{name:'apply'}">申請</v-btn>
+                    <v-btn :to="{name:'regist'}">返回</v-btn>-->
+                </div>
+                <login-switch ref="switch" :login-done="loginDone" :login-cancel="loginCancel"></login-switch>
             </div>
-            <login-switch ref="switch" :login-done="loginDone" :login-cancel="loginCancel"></login-switch>
+        </template>
+        <template v-slot:regist-footer>
+            <app-footer></app-footer>
         </template>
     </app-layout>
 </template>
@@ -35,6 +40,7 @@
 <script>
     import { mapActions, mapGetters } from 'vuex'
     import appLayout from 'components/regist/regist_layout'
+    import appFooter from 'components/regist/regist_footer'
     import applyViewer from 'components/regist/forms/apply_viewer'
     import loginSwitch from 'components/regist/forms/login_switcher'
     import moment from "moment";
@@ -93,17 +99,23 @@
             //}
         },
         components: {
-            appLayout, applyViewer, loginSwitch
+            appLayout, appFooter, applyViewer, loginSwitch
         }
     }
 </script>
 
 <style scoped>
     .agree-content/deep/ .app-content {
-        /*margin-bottom: 78px;*/
+        /*margin-bottom: 78px;
         width: 66%;
-        /*max-width: 992px !important;*/
-        margin: 0 auto;
+        max-width: 992px !important;
+        margin: 0 auto;*/
+    }
+
+    .agree-content/deep/ .main-content {
+        width: calc(100vw - 32px) !important;
+        max-width: 790px !important;
+        margin: 24px auto;
     }
 
     .agree-content/deep/ .action-header {
@@ -113,15 +125,15 @@
         margin-top: 24px !important;
     }
     .agree-content/deep/ .agree-container {
-        padding-top: 24px !important;
+        /*padding-top: 24px !important;
         padding-left: 24px !important;
-        padding-right: 24px !important;
+        padding-right: 24px !important;*/
     }
-    .agree-content/deep/ .agree-actions {
+    /*.agree-content/deep/ .agree-actions {
         padding-left: 24px !important;
         padding-right: 24px !important;
         padding-bottom: 24px !important;
-    }
+    }*/
 
     .agree-content/deep/ .action {
         font-size: 16px;
@@ -129,10 +141,15 @@
         background-color: #736DB9;
         /*width: 152px !important;
         height: 150px;*/
-        width: 300px !important;
-        height: 300px;
+        width: 150px;
+        height: 150px;
         border-radius: 10px;
         cursor: pointer;
+    }
+
+    .agree-content/deep/ .action img {
+        width: 80px;
+        height: 80px;
     }
 
     .agree-content/deep/ .action:hover {
@@ -192,66 +209,34 @@
         margin-right: -30% !important;
     }
 
-    @media (min-device-width: 110px) and (max-device-width: 319px) and (-webkit-min-device-pixel-ratio: 2) {
-        .agree-content/deep/ .app-content {
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        .agree-content/deep/ .action {
-            width: 100px !important;
-            height: 100px;
-        }
-
-        img {
-            width: 60px;
-        }
-
-        .agree-content/deep/ .action-label {
-            margin-top: 0px;
-            font-size: 10px;
-        }
-
-    }
-
-    @media (min-device-width: 320px) and (max-device-width: 540px) and (-webkit-min-device-pixel-ratio: 2) {
-        .agree-content/deep/ .app-content {
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        .agree-content/deep/ .action {
-            width: 150px !important;
-            height: 150px;
-        }
-
-        img {
-            width: 80px;
-        }
+    /* Extra small devices (portrait phones, less than 576px) */
+    @media (min-width: 100px) and (max-width: 350px) {
     }
 
 
-    @media (min-width: 540.5px) and (max-width: 767.98px) {
-        .agree-content/deep/ .app-content {
+    /* Small devices (landscape phones, 576px and up) */
+    @media (min-width: 576px) and (max-width: 767.98px) {
+        /*.agree-content/deep/ .app-content {
             width: 90%;         
-        }
+        }*/
 
         .agree-content/deep/ .action {
-            width: 200px !important;
-            height: 200px;
+            width: 240px !important;
+            height: 240px;
         }
 
-        img {
-            width: 100px;
+        .agree-content/deep/ .action img {
+            width: 150px;
+            height: 150px;
         }
     }
 
 
     /** Medium devices (tablets, 768px and up) */
     @media (min-width: 768px) and (max-width: 991.98px) {
-        .agree-content/deep/ .app-content {
+        /*.agree-content/deep/ .app-content {
             width: 90%;
-        }
+        }*/
 
 
         .agree-content/deep/ .action {
@@ -278,14 +263,14 @@
     /* Large devices (desktops, 992px and up) */
     @media (min-width: 992px) and (max-width: 1199.98px) {
 
-        .agree-content/deep/ .app-content {
+        /*.agree-content/deep/ .app-content {
             width: 86%;
-        }
+        }*/
 
 
         .agree-content/deep/ .action {
-            width: 386px !important;
-            height: 386px;
+            width: 380px !important;
+            height: 380px;
         }
 
         .agree-content/deep/ .action img {
@@ -306,11 +291,11 @@
 
     /* Extra large devices (large desktops, 1200px and up) */
     @media (min-width: 1200px) {
-        .agree-content/deep/ .app-content {
-            /* margin-bottom: 78px; */
-            /*width: 85%;*/
+        /*.agree-content/deep/ .app-content {
+            margin-bottom: 78px;
+            width: 85%;
             margin: 0 auto;
-        }
+        }*/
 
         .agree-content/deep/ .action {
             width: 380px !important;
