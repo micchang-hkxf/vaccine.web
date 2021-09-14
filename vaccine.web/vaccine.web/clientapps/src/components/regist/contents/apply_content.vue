@@ -4,220 +4,226 @@
             報名資訊確認
         </template>
         <template v-slot:regist-content>
-            <!--<div class="apply-header">
-        <v-stepper alt-labels class="elevation-0">
-            <v-stepper-header>readonly
-                <v-stepper-step step="1" class="step-one disable-step"></v-stepper-step>
-                <v-divider></v-divider>
-                <v-stepper-step step="2" class="step-two active-step"> </v-stepper-step>
-            </v-stepper-header>
-        </v-stepper>
-    </div>-->
-            <div class="apply-container" v-if="session!=null">
-                <!--{{getLockUserInfo}}-->
-                <v-form lazy-validation ref="applyForm" autocomplete="off">
-                    <div class="activity-name">{{session.sessionName}}</div>
-                    <div class="activity-name-descript">{{session.zoneName}}-{{session.villageName}}│{{session.groupName}}</div>
+            <div class="main-content">
+                <!--<div class="apply-header">
+                    <v-stepper alt-labels class="elevation-0">
+                        <v-stepper-header>readonly
+                            <v-stepper-step step="1" class="step-one disable-step"></v-stepper-step>
+                            <v-divider></v-divider>
+                            <v-stepper-step step="2" class="step-two active-step"> </v-stepper-step>
+                        </v-stepper-header>
+                    </v-stepper>
+                </div>-->
+                <div class="apply-container" v-if="session!=null">
+                    <!--{{getLockUserInfo}}-->
+                    <v-form lazy-validation ref="applyForm" autocomplete="off">
+                        <div class="activity-name">{{session.sessionName}}</div>
+                        <div class="activity-name-descript">{{session.zoneName}}-{{session.villageName}}│{{session.groupName}}</div>
 
-                    <div class="apply-field">
-                        <div class="apply-field-label">姓名<span class="red--text">*</span></div>
-                        <div class="apply-field-container">
-                            <v-text-field class="apply-field-text" placeholder="請輸入您的姓名" v-model="uName" :rules="[rules.required]" :disabled="getLockUserInfo.lockName"></v-text-field>
+                        <div class="apply-field">
+                            <div class="apply-field-label">姓名<span class="red--text">*</span></div>
+                            <div class="apply-field-container">
+                                <v-text-field class="apply-field-text" placeholder="請輸入您的姓名" v-model="uName" :rules="[rules.required]" :disabled="getLockUserInfo.lockName"></v-text-field>
+                            </div>
                         </div>
-                    </div>
-                    <div class="apply-field">
-                        <div class="apply-field-label">身份證字號<span class="red--text">*</span></div>
-                        <div class="apply-field-container">
-                            <v-text-field class="apply-field-text" placeholder="請輸入您的身分證字號" v-model="uId" :rules="[rules.required]" :disabled="getLockUserInfo.lockIdentify"></v-text-field>
+                        <div class="apply-field">
+                            <div class="apply-field-label">身份證字號<span class="red--text">*</span></div>
+                            <div class="apply-field-container">
+                                <v-text-field class="apply-field-text" placeholder="請輸入您的身分證字號" v-model="uId" :rules="[rules.required]" :disabled="getLockUserInfo.lockIdentify"></v-text-field>
+                            </div>
                         </div>
-                    </div>
-                    <div class="apply-field">
-                        <div class="apply-field-label">生日<span class="red--text">*</span></div>
-                        <div class="apply-field-container d-flex justify-space-between">
-                            <v-select :items="years" placeholder="yyyy" v-model="year" :rules="[rules.required]" :disabled="getLockUserInfo.lockBirthday">
+                        <div class="apply-field">
+                            <div class="apply-field-label">生日<span class="red--text">*</span></div>
+                            <div class="apply-field-container d-flex justify-space-between">
+                                <v-select :items="years" placeholder="yyyy" v-model="year" :rules="[rules.required]" :disabled="getLockUserInfo.lockBirthday">
 
-                            </v-select>
-                            <v-select :items="months" placeholder="mm" v-model="month" :rules="[rules.required]" :disabled="getLockUserInfo.lockBirthday">
-                                <template v-slot:prepend>
-                                    <div class="splid-date d-flex justify-center">
-                                        /
+                                </v-select>
+                                <v-select :items="months" placeholder="mm" v-model="month" :rules="[rules.required]" :disabled="getLockUserInfo.lockBirthday">
+                                    <template v-slot:prepend>
+                                        <div class="splid-date d-flex justify-center">
+                                            /
+                                        </div>
+                                    </template>
+                                </v-select>
+                                <v-select :items="days" placeholder="dd" v-model="day" :rules="[rules.required]" :disabled="getLockUserInfo.lockBirthday">
+                                    <template v-slot:prepend>
+                                        <div class="splid-date d-flex justify-center">
+                                            /
+                                        </div>
+                                    </template>
+                                </v-select>
+                            </div>
+                        </div>
+                        <div class="apply-field">
+                            <div class="apply-field-label">手機或市話（手機可接收接種通知）<span class="red--text">*</span></div>
+                            <div class="apply-field-container">
+                                <v-text-field class="apply-field-text" maxlength="10" placeholder="手機範例0912345678，市話範例0227208889" v-model="mbNo" :rules="[rules.required,rules.mobile]"></v-text-field>
+                            </div>
+                        </div>
+                        <!--<div class="apply-field">
+                    <div class="apply-field-label">戶籍</div>
+                    <div class="apply-field-container">
+                        <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
+                    </div>
+                </div>-->
+                        <div class="apply-field display type" v-if="vaccines.length > 0 || session.brandName !== ''">
+                            <div class="apply-field-label">可接種項目</div>
+                            <div class="apply-field-container">
+                                <template v-if="vaccines.length > 0">
+                                    <div class="apply-field-type d-flex justify-space-between" v-for="(vaccine , idx) in vaccines" :key="`vaccine_${idx}`">
+                                        <div class="apply-field-type-icon d-flex justify-start align-center">
+                                            <img src="/regist/select_vaccine.svg" />
+                                        </div>
+                                        <div class="apply-field-type-text d-flex justify-start align-center">
+                                            {{vaccine.itemName}}
+                                        </div>
                                     </div>
                                 </template>
-                            </v-select>
-                            <v-select :items="days" placeholder="dd" v-model="day" :rules="[rules.required]" :disabled="getLockUserInfo.lockBirthday">
-                                <template v-slot:prepend>
-                                    <div class="splid-date d-flex justify-center">
-                                        /
+                                <template v-else>
+                                    <div class="apply-field-type d-flex justify-space-between">
+                                        <div class="apply-field-type-icon d-flex justify-start align-center">
+                                            <img src="/regist/select_vaccine.svg" />
+                                        </div>
+                                        <div class="apply-field-type-text d-flex justify-start align-center">
+                                            {{session.brandName}}
+                                        </div>
                                     </div>
                                 </template>
-                            </v-select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="apply-field">
-                        <div class="apply-field-label">手機或市話（手機可接收接種通知）<span class="red--text">*</span></div>
-                        <div class="apply-field-container">
-                            <v-text-field class="apply-field-text" maxlength="10" placeholder="手機範例0912345678，市話範例0227208889" v-model="mbNo" :rules="[rules.required,rules.mobile]"></v-text-field>
+                        <v-divider></v-divider>
+
+                        <div class="apply-field display descript">
+                            <div class="apply-field-label">活動聲明</div>
+                            <div class="apply-field-container descript-area">
+                                為避免重複接種，報名後請勿再自行前往院所接種或跨里報名，接種當日，將再次檢核接種資格，屆時依現場判讀可接種之疫苗別為準。
+                            </div>
                         </div>
+
+                        <div class="apply-field display">
+                            <v-checkbox :rules="[rules.required]">
+                                <template v-slot:label>
+                                    我同意以上聲明
+                                    <span class="red--text">*</span>
+                                </template>
+                            </v-checkbox>
+                        </div>
+                    </v-form>
+                    <div class="apply-actions" v-if="isNeedLogin">
+
+                        <v-btn color="#626781" :to="{ name:'regist' }">取消</v-btn>
+                        <v-btn color="#736DB9" :to="{ name:'agree', params: session }" class="btn-agree">上一步</v-btn>
+                        <v-btn color="#736DB9" @click.stop="sendApply()">確定報名</v-btn>
+
+
+
                     </div>
-                    <!--<div class="apply-field">
-                <div class="apply-field-label">戶籍</div>
-                <div class="apply-field-container">
-                    <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
                 </div>
-            </div>-->
-                    <div class="apply-field display type" v-if="vaccines.length > 0 || session.brandName !== ''">
-                        <div class="apply-field-label">可接種項目</div>
-                        <div class="apply-field-container">
-                            <template v-if="vaccines.length > 0">
-                                <div class="apply-field-type d-flex justify-space-between" v-for="(vaccine , idx) in vaccines" :key="`vaccine_${idx}`">
-                                    <div class="apply-field-type-icon d-flex justify-start align-center">
-                                        <img src="/regist/select_vaccine.svg" />
-                                    </div>
-                                    <div class="apply-field-type-text d-flex justify-start align-center">
-                                        {{vaccine.itemName}}
-                                    </div>
-                                </div>
-                            </template>
-                            <template v-else>
-                                <div class="apply-field-type d-flex justify-space-between">
-                                    <div class="apply-field-type-icon d-flex justify-start align-center">
-                                        <img src="/regist/select_vaccine.svg" />
-                                    </div>
-                                    <div class="apply-field-type-text d-flex justify-start align-center">
-                                        {{session.brandName}}
-                                    </div>
-                                </div>
-                            </template>
+
+
+                <apply-done ref="done"></apply-done>
+
+                <!--共用 loading -->
+                <com-loading ref-key="loading"></com-loading>
+                <!---->
+                <com-confirm ref="alert" ref-key="alert" :right-click="alertClick" persistent="false">
+                    <template v-slot:confirm-image>
+                        <v-img src="/alert_warning.svg"></v-img>
+                    </template>
+                    <template v-slot:confirm-text>
+                        <div class="sub-title">名額已滿</div>
+                        <div class="sub-content">請選擇其他場次報名登記</div>
+                    </template>
+                    <template v-slot:confirm-right-btn-text>
+                        了解
+                    </template>
+                </com-confirm>
+                <!---->
+                <com-confirm ref="alertRegistered" ref-key="alertRegistered" :left-click="alertRegisteredLeftClick" :right-click="alertRegisteredRightClick" right-color="rgba(240,82,75,1) !important" persistent="false">
+                    <template v-slot:confirm-image>
+                        <v-img src="/alert_warning.svg"></v-img>
+                    </template>
+                    <template v-slot:confirm-text>
+                        <div class="sub-title">您已報名其他場次</div>
+                        <div class="sub-title-name">{{beforeActivityName}}</div>
+                        <div class="sub-content">是否取消前次登記改為報名本次活動？</div>
+                    </template>
+                    <template v-slot:confirm-left-btn-text>
+                        保留前次
+                    </template>
+                    <template v-slot:confirm-right-btn-text>
+                        報名本次
+                    </template>
+                </com-confirm>
+                <!---->
+                <com-confirm ref="alertNoConform" ref-key="alertNoConform" :right-click="alertNoConformClick" persistent="false">
+                    <template v-slot:confirm-image>
+                        <v-img src="/alert_warning.svg"></v-img>
+                    </template>
+                    <template v-slot:confirm-text>
+                        <div class="sub-content">很抱歉， 您尚未符合接種資格</div>
+                    </template>
+                    <template v-slot:confirm-right-btn-text>
+                        了解
+                    </template>
+                </com-confirm>
+                <!---->
+                <com-confirm ref="alertUnknow" ref-key="alertUnknow" :right-click="alertUnknowClick" persistent="false">
+                    <template v-slot:confirm-image>
+                        <v-img src="/alert_warning.svg"></v-img>
+                    </template>
+                    <template v-slot:confirm-text>
+                        <div class="sub-title">無法識別</div>
+                        <div class="sub-content">請重新嘗試或改用其他方式登記</div>
+                    </template>
+                    <template v-slot:confirm-right-btn-text>
+                        了解
+                    </template>
+                </com-confirm>
+                <!---->
+                <com-confirm ref="alertApplyNo" ref-key="alertApplyNo" :right-click="alertApplyNoClick" persistent="false">
+                    <template v-slot:confirm-image>
+                        <v-img src="/alert_success.svg"></v-img>
+                    </template>
+                    <template v-slot:confirm-text>
+                        <div class="sub-title">您已報名本次活動</div>
+                        <div class="sub-content">
+                            <div class="order-tip full-width">
+                                序號：
+                            </div>
+                            <div class="order">
+                                {{applyNo}}
+                            </div>
                         </div>
-                    </div>
-                    <v-divider></v-divider>
+                    </template>
+                    <template v-slot:confirm-right-btn-text>
+                        了解
+                    </template>
+                </com-confirm>
 
-                    <div class="apply-field display descript">
-                        <div class="apply-field-label">活動聲明</div>
-                        <div class="apply-field-container descript-area">
-                            為避免重複接種，報名後請勿再自行前往院所接種或跨里報名，接種當日，將再次檢核接種資格，屆時依現場判讀可接種之疫苗別為準。
-                        </div>
-                    </div>
-
-                    <div class="apply-field display">
-                        <v-checkbox :rules="[rules.required]">
-                            <template v-slot:label>
-                                我同意以上聲明
-                                <span class="red--text">*</span>
-                            </template>
-                        </v-checkbox>
-                    </div>
-                </v-form>
-                <div class="apply-actions" v-if="isNeedLogin">
-
-                    <v-btn color="#626781" :to="{ name:'regist' }">取消</v-btn>
-                    <v-btn color="#736DB9" :to="{ name:'agree', params: session }" class="btn-agree">上一步</v-btn>
-                    <v-btn color="#736DB9" @click.stop="sendApply()">確定報名</v-btn>
-
-
-
-                </div>
+                <com-confirm ref="alertTimeout" ref-key="alertTimeout" :right-click="alertTimeoutClick" persistent="false">
+                    <template v-slot:confirm-image>
+                        <v-img src="/alert_warning.svg"></v-img>
+                    </template>
+                    <template v-slot:confirm-text>
+                        <div class="sub-title">無法識別</div>
+                        <div class="sub-content">已超過登入時間效期，請重新登入。</div>
+                    </template>
+                    <template v-slot:confirm-right-btn-text>
+                        了解
+                    </template>
+                </com-confirm>
             </div>
-
-
-            <apply-done ref="done"></apply-done>
-
-            <!--共用 loading -->
-            <com-loading ref-key="loading"></com-loading>
-            <!---->
-            <com-confirm ref="alert" ref-key="alert" :right-click="alertClick" persistent="false">
-                <template v-slot:confirm-image>
-                    <v-img src="/alert_warning.svg"></v-img>
-                </template>
-                <template v-slot:confirm-text>
-                    <div class="sub-title">名額已滿</div>
-                    <div class="sub-content">請選擇其他場次報名登記</div>
-                </template>
-                <template v-slot:confirm-right-btn-text>
-                    了解
-                </template>
-            </com-confirm>
-            <!---->
-            <com-confirm ref="alertRegistered" ref-key="alertRegistered" :left-click="alertRegisteredLeftClick" :right-click="alertRegisteredRightClick" right-color="rgba(240,82,75,1) !important" persistent="false">
-                <template v-slot:confirm-image>
-                    <v-img src="/alert_warning.svg"></v-img>
-                </template>
-                <template v-slot:confirm-text>
-                    <div class="sub-title">您已報名其他場次</div>
-                    <div class="sub-title-name">{{beforeActivityName}}</div>
-                    <div class="sub-content">是否取消前次登記改為報名本次活動？</div>
-                </template>
-                <template v-slot:confirm-left-btn-text>
-                    保留前次
-                </template>
-                <template v-slot:confirm-right-btn-text>
-                    報名本次
-                </template>
-            </com-confirm>
-            <!---->
-            <com-confirm ref="alertNoConform" ref-key="alertNoConform" :right-click="alertNoConformClick"  persistent="false">
-                <template v-slot:confirm-image>
-                    <v-img src="/alert_warning.svg"></v-img>
-                </template>
-                <template v-slot:confirm-text>
-                    <div class="sub-content">很抱歉， 您尚未符合接種資格</div>
-                </template>
-                <template v-slot:confirm-right-btn-text>
-                    了解
-                </template>
-            </com-confirm>
-            <!---->
-            <com-confirm ref="alertUnknow" ref-key="alertUnknow" :right-click="alertUnknowClick" persistent="false">
-                <template v-slot:confirm-image>
-                    <v-img src="/alert_warning.svg"></v-img>
-                </template>
-                <template v-slot:confirm-text>
-                    <div class="sub-title">無法識別</div>
-                    <div class="sub-content">請重新嘗試或改用其他方式登記</div>
-                </template>
-                <template v-slot:confirm-right-btn-text>
-                    了解
-                </template>
-            </com-confirm>
-            <!---->
-            <com-confirm ref="alertApplyNo" ref-key="alertApplyNo" :right-click="alertApplyNoClick" persistent="false">
-                <template v-slot:confirm-image>
-                    <v-img src="/alert_success.svg"></v-img>
-                </template>
-                <template v-slot:confirm-text>
-                    <div class="sub-title">您已報名本次活動</div>
-                    <div class="sub-content">
-                        <div class="order-tip full-width">
-                            序號：
-                        </div>
-                        <div class="order">
-                            {{applyNo}}
-                        </div>
-                    </div>
-                </template>
-                <template v-slot:confirm-right-btn-text>
-                    了解
-                </template>
-            </com-confirm>
-
-            <com-confirm ref="alertTimeout" ref-key="alertTimeout" :right-click="alertTimeoutClick" persistent="false">
-                <template v-slot:confirm-image>
-                    <v-img src="/alert_warning.svg"></v-img>
-                </template>
-                <template v-slot:confirm-text>
-                    <div class="sub-title">無法識別</div>
-                    <div class="sub-content">已超過登入時間效期，請重新登入。</div>
-                </template>
-                <template v-slot:confirm-right-btn-text>
-                    了解
-                </template>
-            </com-confirm>
+        </template>
+        <template v-slot:regist-footer>
+            <app-footer></app-footer>
         </template>
     </app-layout>
 </template>
 
 <script>
     import appLayout from 'components/regist/regist_layout'
+    import appFooter from 'components/regist/regist_footer'
     import applyDone from 'components/regist/forms/apply_done'
     import comLoading from 'components/loading'
     import comConfirm from 'components/confirm'
@@ -431,7 +437,7 @@
             });
         },
         components: {
-            appLayout, applyDone, comLoading, comConfirm
+            appLayout, appFooter, applyDone, comLoading, comConfirm
         }
     }
 </script>
@@ -550,20 +556,21 @@
         margin-top: 24px !important;
     }
 
-    .apply-content/deep/ .app-content {
+    /*.apply-content/deep/ .app-content {
        display:flex;
        justify-content:center;
+    }*/
+
+    .apply-content/deep/ .main-content {
+        width: calc(100vw - 32px) !important;
+        max-width: 790px !important;
+        margin: 24px auto;
     }
-
-
 
     .apply-content/deep/ .apply-container {
-        padding-top: 24px !important;
+        /*padding-top: 24px !important;*/
         max-width:800px;
     }
-
-
-   
 
     .apply-content/deep/ .apply-actions {
         padding-top: 24px;

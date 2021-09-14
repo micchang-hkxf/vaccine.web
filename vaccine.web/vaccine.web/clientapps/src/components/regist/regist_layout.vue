@@ -125,15 +125,19 @@
         letter-spacing: 0px;
         color: #FFFFFF;
         opacity: 1;
+        position: relative;
+        top: 15px;
     }
     .action-title > img {
         position: relative;
-        top: 10px;
+        /*top: 10px;*/
         cursor: pointer;
     }
     .logo-title {
         max-width: 200%;
         height: 64px;
+        position: relative;
+        top: 15px;
     }
     .app-bar {
         width: calc(100vw - 32px) !important;

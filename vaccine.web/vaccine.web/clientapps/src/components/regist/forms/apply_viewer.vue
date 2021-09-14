@@ -85,10 +85,9 @@
     }
 </script>
 <style scoped>
-
     .apply-viewer/deep/ .activity-name {
         font-size: 20px !important;
-        color: #626781!important;
+        color: #626781 !important;
     }
     .apply-viewer/deep/ .activity-name-descript {
         font-size: 12px !important;

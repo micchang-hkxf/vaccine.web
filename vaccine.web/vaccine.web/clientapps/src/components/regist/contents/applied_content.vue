@@ -74,11 +74,15 @@
                 </template>
             </com-confirm>
         </template>
+        <template v-slot:regist-footer>
+            <app-footer></app-footer>
+        </template>
     </app-layout>
 </template>
 
 <script>
     import appLayout from 'components/regist/regist_layout'
+    import appFooter from 'components/regist/regist_footer'
     import applyViewer from 'components/regist/forms/apply_viewer'
     import comLoading from 'components/loading'
     import comConfirm from 'components/confirm'
@@ -147,7 +151,7 @@
             });
         },
         components: {
-            appLayout, applyViewer, comLoading, comConfirm
+            appLayout, appFooter, applyViewer, comLoading, comConfirm
         }
     }
 </script>
@@ -180,8 +184,12 @@
         padding-right: 24px !important;*/
         padding-top: 30px !important;
         /*margin-bottom: 78px;*/
-        display:grid;
-        justify-content:center;
+        /*display: grid;*/
+        justify-content: center;
+        width: calc(100vw - 32px) !important;
+        max-width: 790px !important;
+        margin: 0 auto;
+        margin-bottom: 24px;
     }
 
     .applied-content/deep/ .applied-actions {

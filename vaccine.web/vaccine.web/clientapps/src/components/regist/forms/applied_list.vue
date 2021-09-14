@@ -7,89 +7,91 @@
                 </template>
             </v-text-field>
         </div>
-        <div class="action-container"> 
-            <v-row v-if="isLogin && applieds.length !== 0">
-                <v-col v-for="(applied , idx) in applieds" :key="`applied_${idx}`" cols="6">
+        <div class="action-container">
+            <div class="main-content">
+                <v-row v-if="isLogin && applieds.length !== 0">
+                    <v-col v-for="(applied , idx) in applieds" :key="`applied_${idx}`" cols="6">
 
-                    <v-card class="action d-flex flex-row" elevation="0">
-                        <div class="action-info d-flex flex-column justify-center" @click="toSession(applied)">
-                            <div class="action-info-header d-flex flex-column">
-                                <div class="action-info-subject">
-                                    {{applied.activityName}}
-                                </div>
-                                <div class="action-info-sec-subject">
-                                    {{applied.region.distName
-                                    }}-{{applied.region.villageName}}│{{applied.vaccineGroupName}}
-                                </div>
-                            </div>
-                            <v-divider></v-divider>
-                            <div class="action-info-detail d-flex flex-column justify-center">
-                                <div class="d-flex flex-row justify-space-between" v-if="applied.brandName !== ''">
-                                    <div class="action-info-title text-left">疫苗廠牌：</div>
-                                    <div class="action-info-data text-right">{{applied.brandName}}</div>
-                                </div>
-                                <div class="d-flex flex-row justify-space-between">
-                                    <div class="action-info-title text-left">接種日期：</div>
-                                    <div class="action-info-data text-right">{{$moment(applied.implementStartTime).format('YYYY/MM/DD')}},{{$moment(applied.implementStartTime).format('HH:mm')}}-{{$moment(applied.implementEndTime).format('HH:mm')}}</div>
-                                </div>
-                                <div class="d-flex flex-row justify-space-between">
-                                    <div class="action-info-title text-left">事先報名：</div>
-                                    <div class="action-info-data text-right">
-                                        {{$moment(applied.startApplyDate).format('YYYY/MM/DD,HH:mm')}}<br /> - {{$moment(applied.endApplyDate).format('YYYY/MM/DD,HH:mm')}}
+                        <v-card class="action d-flex flex-row" elevation="0">
+                            <div class="action-info d-flex flex-column justify-center" @click="toSession(applied)">
+                                <div class="action-info-header d-flex flex-column">
+                                    <div class="action-info-subject">
+                                        {{applied.activityName}}
+                                    </div>
+                                    <div class="action-info-sec-subject">
+                                        {{applied.region.distName
+                                        }}-{{applied.region.villageName}}│{{applied.vaccineGroupName}}
                                     </div>
                                 </div>
-                                <div class="d-flex flex-row justify-space-between">
-                                    <div class="action-info-title text-left">序號：</div>
-                                    <div class="action-info-data text-right">{{applied.applyNo}}</div>
+                                <v-divider></v-divider>
+                                <div class="action-info-detail d-flex flex-column justify-center">
+                                    <div class="d-flex flex-row justify-space-between" v-if="applied.brandName !== ''">
+                                        <div class="action-info-title text-left">疫苗廠牌：</div>
+                                        <div class="action-info-data text-right">{{applied.brandName}}</div>
+                                    </div>
+                                    <div class="d-flex flex-row justify-space-between">
+                                        <div class="action-info-title text-left">接種日期：</div>
+                                        <div class="action-info-data text-right">{{$moment(applied.implementStartTime).format('YYYY/MM/DD')}},{{$moment(applied.implementStartTime).format('HH:mm')}}-{{$moment(applied.implementEndTime).format('HH:mm')}}</div>
+                                    </div>
+                                    <div class="d-flex flex-row justify-space-between">
+                                        <div class="action-info-title text-left">事先報名：</div>
+                                        <div class="action-info-data text-right">
+                                            {{$moment(applied.startApplyDate).format('YYYY/MM/DD,HH:mm')}}<br /> - {{$moment(applied.endApplyDate).format('YYYY/MM/DD,HH:mm')}}
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row justify-space-between">
+                                        <div class="action-info-title text-left">序號：</div>
+                                        <div class="action-info-data text-right">{{applied.applyNo}}</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="action-button d-flex justify-center align-center">
-                            <template v-if="applied.messageCode === 1 && $moment(now) < $moment(applied.implementStartTime)">
-                                <v-btn class="btn-not-started" height="100%" width="100%" elevation="0" @click="toSession(applied)">
-                                    接種 未開始
-                                </v-btn>
-                            </template>
-                            <template v-else-if="applied.messageCode === 1 && $moment(applied.implementStartTime) <= $moment(now) && $moment(now) <= $moment(applied.implementEndTime)">
-                                <v-btn class="btn-in-progress" height="100%" width="100%" elevation="0" @click="toSession(applied)">
-                                    接種 進行中
-                                </v-btn>
-                            </template>
-                            <template v-else-if="applied.messageCode === 1 && $moment(now) > $moment(applied.implementEndTime)">
-                                <v-btn class="btn-over" height="100%" width="100%" elevation="0" @click="toSession(applied)">
-                                    接種 已結束
-                                </v-btn>
-                            </template>
-                            <template v-else-if="applied.messageCode === 2 || applied.messageCode === 3">
-                                <v-btn class="btn-over" height="100%" width="100%" elevation="0" @click="toSession(applied)">
-                                    複檢 未通過
-                                </v-btn>
-                            </template>
-                            <template v-else-if="applied.messageCode === 4 || applied.messageCode === 5">
-                                <v-btn class="btn-over" height="100%" width="100%" elevation="0" @click="toSession(applied)">
-                                    報名 已取消
-                                </v-btn>
-                            </template>
-                            <template v-else>
-                                <v-btn class="btn-over" height="100%" width="100%" elevation="0" @click="toSession(applied)">
-                                    異常
-                                </v-btn>
-                            </template>
-                        </div>
-                    </v-card>
-                </v-col>
-            </v-row>
-            <div class="null-list" v-if="isLogin && applieds.length === 0">
-                <div class="null-content">
-                    <img src="/regist/null_list.svg" />
-                    <div>尚無相關紀錄</div>
+                            <div class="action-button d-flex justify-center align-center">
+                                <template v-if="applied.messageCode === 1 && $moment(now) < $moment(applied.implementStartTime)">
+                                    <v-btn class="btn-not-started" height="100%" width="100%" elevation="0" @click="toSession(applied)">
+                                        接種 未開始
+                                    </v-btn>
+                                </template>
+                                <template v-else-if="applied.messageCode === 1 && $moment(applied.implementStartTime) <= $moment(now) && $moment(now) <= $moment(applied.implementEndTime)">
+                                    <v-btn class="btn-in-progress" height="100%" width="100%" elevation="0" @click="toSession(applied)">
+                                        接種 進行中
+                                    </v-btn>
+                                </template>
+                                <template v-else-if="applied.messageCode === 1 && $moment(now) > $moment(applied.implementEndTime)">
+                                    <v-btn class="btn-over" height="100%" width="100%" elevation="0" @click="toSession(applied)">
+                                        接種 已結束
+                                    </v-btn>
+                                </template>
+                                <template v-else-if="applied.messageCode === 2 || applied.messageCode === 3">
+                                    <v-btn class="btn-over" height="100%" width="100%" elevation="0" @click="toSession(applied)">
+                                        複檢 未通過
+                                    </v-btn>
+                                </template>
+                                <template v-else-if="applied.messageCode === 4 || applied.messageCode === 5">
+                                    <v-btn class="btn-over" height="100%" width="100%" elevation="0" @click="toSession(applied)">
+                                        報名 已取消
+                                    </v-btn>
+                                </template>
+                                <template v-else>
+                                    <v-btn class="btn-over" height="100%" width="100%" elevation="0" @click="toSession(applied)">
+                                        異常
+                                    </v-btn>
+                                </template>
+                            </div>
+                        </v-card>
+                    </v-col>
+                </v-row>
+                <div class="null-list" v-if="isLogin && applieds.length === 0">
+                    <div class="null-content">
+                        <img src="/regist/null_list.svg" />
+                        <div>尚無相關紀錄</div>
+                    </div>
                 </div>
-            </div>
-            <div class="pls-login" v-if="!isLogin">
-                <div class="login-content">
-                    <img src="/regist/lock.svg" />
-                    <div class="msg">請登入您的身份以查詢接種資料</div>
-                    <v-btn class="click-login" @click="toLogin">點我登入</v-btn>
+                <div class="pls-login" v-if="!isLogin">
+                    <div class="login-content">
+                        <img src="/regist/lock.svg" />
+                        <div class="msg">請登入您的身份以查詢接種資料</div>
+                        <v-btn class="click-login" @click="toLogin">點我登入</v-btn>
+                    </div>
                 </div>
             </div>
         </div>
@@ -195,7 +197,7 @@
     .row {
         /*display: flex;
         justify-content: space-between;*/
-        width: 50%;
+        width: 100%;
         flex-wrap: wrap !important;
         flex: none !important;
         margin-right: 0px !important;
@@ -205,9 +207,14 @@
 
     .applied-context .applied-list/deep/ .action-container {
         background-color: #f4f4f4;
-        height: 100vh;
+        /*sheight: 100vh;*/
         display: flex;
         justify-content: center;
+    }
+
+    .applied-context .applied-list/deep/ .main-content {
+        width: calc(100vw - 32px) !important;
+        max-width: 790px !important;
         margin: 0 auto;
     }
 
@@ -273,10 +280,10 @@
     }
 
     .applied-list/deep/ .action-bar {
-        padding: 16px !important;
+        padding: 16px 0 !important;
         background-color: #FFFFFF;
-        width: 50%;
-        margin: 0 auto;
+        /*width: 50%;
+        margin: 0 auto;*/
     }
 
     .applied-list/deep/ .action-bar .v-text-field .transparent {
@@ -364,12 +371,12 @@
 
     .applied-list/deep/ .action {
         /*background-color: #FFF;*/
-        /*width: 30% !important;*/      
-        height: 198px;      
+        /*width: 30% !important;*/
+        height: 198px;
         padding: 16px;
         border-radius: 8px !important;
-        width: 95%;
-        margin: 10px;
+        width: 98%;
+        margin: 10px 5px;
         /*text-align: left;
         /*font: normal normal normal 12px/20px Noto Sans T Chinese;
         letter-spacing: 0px;*/
@@ -415,12 +422,30 @@
         opacity: 1;
     }
 
-    /* Extra small devices (portrait phones, less than 576px) 
+    /* Extra small devices (portrait phones, less than 576px) */
     @media (max-width: 575.98px) {
+        .applied-list/deep/ .col-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .applied-list/deep/ .action {
+            width: 100%;
+            margin: 10px 0;
+        }
     }
 
     /* Small devices (landscape phones, 576px and up) */
     @media (min-width: 576px) and (max-width: 767.98px) {
+        .applied-list/deep/ .col-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .applied-list/deep/ .action {
+            width: 100%;
+            margin: 10px 0;
+        }
     }
 
     /** Medium devices (tablets, 768px and up) */
@@ -428,13 +453,13 @@
         .applied-list/deep/ .action-container {
             display: flex;
             flex-wrap: wrap;
-            width: 800px;
+            /*width: 800px;*/
         }
 
-        .applied-list/deep/ .action {
+        /*.applied-list/deep/ .action {
             width: 387px !important;
             margin: 6px !important;
-        }
+        }*/
 
         .applied-list/deep/ .action-container {
             padding-left: 0;

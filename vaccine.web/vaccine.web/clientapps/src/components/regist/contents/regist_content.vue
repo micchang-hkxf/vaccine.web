@@ -9,29 +9,34 @@
             </template>
         </template>
         <template v-slot:regist-content>
-            <v-tabs color="black" slider-color="#736DB9" grow v-model="tab">
-                <v-tab key="0" href="#regist" @click="updateHash('#regist')">我要報名</v-tab>
-                <v-tab key="1" href="#applied" @click="updateHash('#applied')">查詢紀錄</v-tab>
-            </v-tabs>
-            <div class="action-container">
-                <v-tabs-items v-model="tab">
-                    <v-tab-item key="0" value="regist" class="regist-container" eager>
-                        <div class="action-sub-title">請選擇疫苗類型：</div>
-                        <div class="action-content d-flex flex-row justify-space-around">
-                            <div class="action d-flex flex-column justify-center align-center" @click.stop="toRegist(group)" v-for="(group,index) in getVaccineGroups" :key="`group_${index}`">
-                                <div>
-                                    <img src="/regist/regist_logo.svg">
+            <div class="main-content">
+                <v-tabs color="black" slider-color="#736DB9" grow v-model="tab">
+                    <v-tab key="0" href="#regist" @click="updateHash('#regist')">我要報名</v-tab>
+                    <v-tab key="1" href="#applied" @click="updateHash('#applied')">查詢紀錄</v-tab>
+                </v-tabs>
+                <div class="action-container">
+                    <v-tabs-items v-model="tab">
+                        <v-tab-item key="0" value="regist" class="regist-container" eager>
+                            <div class="action-sub-title">請選擇疫苗類型：</div>
+                            <div class="action-content d-flex flex-row justify-space-around">
+                                <div class="action d-flex flex-column justify-center align-center" @click.stop="toRegist(group)" v-for="(group,index) in getVaccineGroups" :key="`group_${index}`">
+                                    <div>
+                                        <img src="/regist/regist_logo.svg">
+                                    </div>
+                                    <div>{{group.groupName}}</div>
                                 </div>
-                                <div>{{group.groupName}}</div>
                             </div>
-                        </div>
-                    </v-tab-item>
-                    <v-tab-item key="1" value="applied" eager class="applied-container">
-                        <applied-list ref="applieds" ></applied-list>
-                    </v-tab-item>
-                </v-tabs-items>
-                <login-switch ref="switch" :login-done="toLogin" :login-cancel="loginCancel"></login-switch>
+                        </v-tab-item>
+                        <v-tab-item key="1" value="applied" eager class="applied-container">
+                            <applied-list ref="applieds"></applied-list>
+                        </v-tab-item>
+                    </v-tabs-items>
+                    <login-switch ref="switch" :login-done="toLogin" :login-cancel="loginCancel"></login-switch>
+                </div>
             </div>
+        </template>
+        <template v-slot:regist-footer>
+            <app-footer></app-footer>
         </template>
     </app-layout>
 </template>
@@ -39,6 +44,7 @@
 <script>
     import { mapActions, mapGetters } from 'vuex'
     import appLayout from 'components/regist/regist_layout'
+    import appFooter from 'components/regist/regist_footer'
     import appliedList from 'components/regist/forms/applied_list'
     import loginSwitch from 'components/regist/forms/login_switcher'
     export default {
@@ -136,7 +142,7 @@
             });
         },
         components: {
-            appLayout, appliedList, loginSwitch
+            appLayout, appFooter, appliedList, loginSwitch
         }
     }
 </script>
@@ -144,31 +150,58 @@
     body {
         background: #FFFFFF !important;
     }
-
+    /*
     .regist-context /deep/ .v-main__wrap {
         display: flex;
         justify-content: center;
         width: 100vw;
     }
 
-
     .applied-context/deep/ .v-main__wrap {
         display: flex;
         justify-content: center;
         width: 100vw;
-    }
+    }*/
 
     .applied-context/deep/ .app-content {
-        width: 100%
+        width: 100%;
+    }
+
+    .regist-context /deep/ .main-content {
+        width: calc(100vw - 32px) !important;
+        max-width: 790px !important;
+        margin: 0 auto;
+        min-height: 520px;
+    }
+
+    .applied-context/deep/ .v-tabs,
+    .applied-context/deep/ .action-bar {
+        width: calc(100vw - 32px) !important;
+        max-width: 790px !important;
+        margin: 0 auto;
+    }
+
+    .v-tabs > .v-tabs-bar .v-tab {
+        text-align: center;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #626781;
+    }
+
+    .v-tabs > .v-tabs-bar .v-tab:not(.v-tab--active) {
+        text-align: center;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #43496980;
     }
 
 
+    /*
     .applied-context/deep/ .v-tabs.v-tabs--grow.theme--light {
         width: 48% !important;
         margin: 0 auto;
     }
-
-
+    */
     .regist-content .action img {
         width: 80px;
         height: 80px;
@@ -184,7 +217,7 @@
         letter-spacing: 0px;
         color: #FFFFFF;
         opacity: 1;
-        margin-left: 15px;
+        /*margin-left: 15px;*/
     }
 
     .regist-content .action:hover {
@@ -238,7 +271,7 @@
         .regist-content .action {
             width: 384px !important;
             height: 383px !important;
-            margin-left: 15px;
+            /*margin-left: 15px;*/
         }
 
         .regist-content .action img {
@@ -264,7 +297,7 @@
         .regist-content .action {
             width: 384px !important;
             height: 383px !important;
-            margin-left: 15px;
+            /*margin-left: 15px;*/
         }
 
         .regist-content .action img {
@@ -290,7 +323,7 @@
         .regist-content .action {
             width: 384px !important;
             height: 383px !important;
-            margin-left: 15px;
+            /*margin-left: 15px;*/
         }
 
         .regist-content .action img {
