@@ -84,7 +84,12 @@
                                 <div class="d-flex flex-row justify-space-between" v-if="session.actAge !== null">
                                     <div class="action-info-title text-left">年齡限制：</div>
                                     <div class="action-info-data text-right">
-                                        {{session.actAge}}歲以上
+                                        <template v-if="session.actAge > 0">
+                                            {{session.actAge}}歲<span class="disabled">以上</span>
+                                        </template>
+                                        <template v-else>
+                                            <span class="disabled">無限制</span>
+                                        </template>
                                     </div>
                                 </div>
                             </div>
