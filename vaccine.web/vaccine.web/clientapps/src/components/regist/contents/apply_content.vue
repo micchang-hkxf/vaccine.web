@@ -349,6 +349,10 @@
                                 if (result.datas.length > 0) {
                                     comp.checkJobId = result.datas[0]['checkJobId'];
                                     comp.vaccines = result.datas[0]['vaccines'];
+                                    
+                                    if (typeof result.datas[0]['uName'] === 'string') {
+                                        comp.uName = result.datas[0]['uName'];
+                                    }
 
                                     // 未符合接種資格
                                     if (!result.datas[0]['canApply']) {
