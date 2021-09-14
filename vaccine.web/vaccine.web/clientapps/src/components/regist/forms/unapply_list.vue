@@ -58,10 +58,10 @@
                                 </div>
                             </div>
                             <div class="action-info-detail d-flex flex-column justify-center">
-                                <div  class="d-flex flex-row justify-space-between" v-if="groupId!='influenza'" >
+                                <!--<div  class="d-flex flex-row justify-space-between" v-if="groupId!='influenza'" >
                                     <div class="action-info-title text-left">疫苗廠牌：</div>
                                     <div class="action-info-data text-right">{{session.brandName}}</div>
-                                </div>
+                                </div>-->
                                 <div class="d-flex flex-row justify-space-between">
                                     <div class="action-info-title text-left">接種日期：</div>
                                     <div class="action-info-data text-right">{{$moment(session.sessionStart).format('YYYY/MM/DD')}},{{$moment(session.sessionStart).format('HH:mm')}}-{{$moment(session.sessionEnd).format('HH:mm')}}</div>
@@ -84,7 +84,12 @@
                                 <div class="d-flex flex-row justify-space-between" v-if="session.actAge !== null">
                                     <div class="action-info-title text-left">年齡限制：</div>
                                     <div class="action-info-data text-right">
-                                        {{session.actAge}}歲以上
+                                        <template v-if="session.actAge > 0">
+                                            {{session.actAge}}歲<span class="disabled">以上</span>
+                                        </template>
+                                        <template v-else>
+                                            <span class="disabled">無限制</span>
+                                        </template>
                                     </div>
                                 </div>
                             </div>

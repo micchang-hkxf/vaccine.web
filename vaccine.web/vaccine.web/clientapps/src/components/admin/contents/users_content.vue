@@ -159,7 +159,7 @@
                                                 <v-btn icon dense>
                                                     <img src="/admin/menu-enable.svg">
                                                 </v-btn>
-                                                <span class="modify-btn-text">{{ changeStatus }}</span>
+                                                <span class="modify-btn-text menu-enable">{{ changeStatus }}</span>
                                             </template>
                                             <template v-if="changeStatus=='停用'">
                                                 <v-btn icon dense>
@@ -530,6 +530,10 @@
     .menu-state {
         color: #F0524B !important;
     }
+
+    .menu-enable {
+        color: #736DB9 !important;
+    }
 </style>
 
 
@@ -846,18 +850,25 @@
                 this.$bus.$emit('formSaveConfirm_show', false);
             },
             createConfirm() {
+                if (this.setRole.id > 0 && !this.setArea.id > 0) {
 
+                    this.alertTitle = '請選擇管理區域';
+                    this.alertImgSrc = this.warningIcon;
+                    this.$bus.$emit('alert_show', true);
+                    return;
+                }
                 if (this.$refs.form.validate()) {
+                
                     //this.$set(this, "alertTitle", '儲存成功');
                     console.log("儲存成功");
                     //this.$refs.dialogPanel.close();
                 } else {
                     //this.$bus.$emit("alert_show", true);
                     //this.$set(this, "alertTitle", '儲存失敗');
-
                     return;
                 }
-
+        
+         
                 this.confirmImgSrc = this.warningIcon;
                 this.$bus.$emit('userform_show', false);
                 this.$bus.$emit('formSaveConfirm_show', true);
@@ -881,7 +892,7 @@
                     //zones: [this.setArea.id],
                     lastAccessTime: "2021-05-20 08:26:43",
                     pdExpTime: "2021-05-20 08:26:43",
-                    zones: [(this.setArea.id) ? this.setArea.id.toString() : ""],
+                    zones: [(this.setArea.id) ? this.setArea.id.toString() : "200"],
                     isEnable: (this.setEnable) ? this.setEnable.toString() : "false",
                     stopit: false,
                     editMode: this.isReadOnly,
