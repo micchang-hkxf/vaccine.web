@@ -78,13 +78,14 @@
                                         <span class="full">名額已滿</span>
                                     </div>
                                     <div class="action-info-data text-right" v-else>
-                                        <span style="font: normal normal normal 12px/20px Noto Sans T Chinese;"> {{session.totalCount}}</span>  / <span class="disabled">{{session.maxLimit}}</span>
+                                        <span style="font: normal normal normal 16px/24px Noto Sans T Chinese;"> {{session.totalCount}}</span>  / <span class="disabled">{{session.maxLimit}}</span>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-row justify-space-between" v-if="session.actAge !== null">
                                     <div class="action-info-title text-left">年齡限制：</div>
                                     <div class="action-info-data text-right">
-                                        {{session.actAge}}歲以上
+                                        <span v-if="session.actAge==0"><span tyle="color:#626781">配合疫苗規定</span></span>
+                                        <span v-if="session.actAge!=0">{{session.actAge}}<span tyle="color:#626781">歲以上</span></span>                                       
                                     </div>
                                 </div>
                             </div>
@@ -208,6 +209,7 @@
         box-shadow: none !important;
     }
 
+   
 
     .unapply-list/deep/ .v-btn:not(.v-btn--disabled) {
         color: white !important;
@@ -248,26 +250,28 @@
     }
 
     .unapply-list/deep/ .action-info-data {
-        font-size: 12px;
+        font-size: 16px;
         color: #434969;
     }
 
     .unapply-list/deep/ .action-info-title {
-        font-size: 12px;
-        color: #434969;
-    }
-
-    .unapply-list/deep/ .action-info-subject {
         font-size: 16px;
-        font-weight: bold;
         color: #434969;
     }
 
-    .unapply-list/deep/ .action-info-sec-subject {
-        font-size: 12px;
-        color: rgba(98,103,129,0.5) !important;
-        padding-bottom: 8px !important;
-    }
+        .unapply-list/deep/ .action-info-subject {
+            font-size: 20px;
+            font-weight: bold;
+            color: #434969;
+            white-space: nowrap;
+        }
+
+        .unapply-list/deep/ .action-info-sec-subject {
+            font-size: 16px;
+            color: rgba(98,103,129,0.5) !important;
+            padding-bottom: 8px !important;
+            white-space: nowrap;
+        }
 
     .unapply-list/deep/ .action-info-title {
         width: 30%;
@@ -292,8 +296,12 @@
         }
 
     .unapply-list/deep/ .action-button {
-        width: 64px;
+        width: 58px;
         height: 100%;
+    }
+
+    .v-btn:not(.v-btn--round).v-size--default {
+        min-width: 58px !important;
     }
 
     .unapply-list/deep/ .action-button .v-btn {
@@ -416,6 +424,64 @@
             max-width: 100%;
         }
     }
+
+
+    @media (min-width: 200px) and (max-width: 375px) {
+        .unapply-list/deep/ .action-info-data {
+            font-size: 10px;
+        }
+
+        .unapply-list/deep/ .action-info-title {
+            font-size: 10px;
+        }
+
+        .unapply-list/deep/ .action-info-subject {
+            font-size: 14px;
+        }
+
+        .unapply-list/deep/ .action-info-sec-subject {
+            font-size: 10px;
+        }
+    }
+
+    @media (min-width: 375px) and (max-width: 382px) {
+        .unapply-list/deep/ .action-info-data {
+            font-size: 12px;
+        }
+
+        .unapply-list/deep/ .action-info-title {
+            font-size: 12px;
+        }
+
+        .unapply-list/deep/ .action-info-subject {
+            font-size: 16px;
+        }
+
+        .unapply-list/deep/ .action-info-sec-subject {
+            font-size: 12px;
+        }
+    }
+
+    @media (min-width: 383px) and (max-width: 450px) {
+        .unapply-list/deep/ .action-info-data {
+            font-size: 14px;
+        }
+
+        .unapply-list/deep/ .action-info-title {
+            font-size: 14px;
+        }
+
+        .unapply-list/deep/ .action-info-subject {
+            font-size: 18px;
+        }
+
+        .unapply-list/deep/ .action-info-sec-subject {
+            font-size: 14px;
+        }
+    }
+
+
+
 
     /* Small devices (landscape phones, 576px and up) */
     @media (min-width: 576px) and (max-width: 767.98px) {
