@@ -159,7 +159,7 @@
                                                 <v-btn icon dense>
                                                     <img src="/admin/menu-enable.svg">
                                                 </v-btn>
-                                                <span class="modify-btn-text">{{ changeStatus }}</span>
+                                                <span class="modify-btn-text menu-enable">{{ changeStatus }}</span>
                                             </template>
                                             <template v-if="changeStatus=='停用'">
                                                 <v-btn icon dense>
@@ -529,6 +529,10 @@
 
     .menu-state {
         color: #F0524B !important;
+    }
+
+    .menu-enable {
+        color: #736DB9 !important;
     }
 </style>
 
