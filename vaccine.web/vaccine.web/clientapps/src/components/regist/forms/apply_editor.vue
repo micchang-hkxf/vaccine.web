@@ -50,7 +50,7 @@
         color: #626781!important;
     }
     .apply-viewer/deep/ .activity-name-descript {
-        font-size: 12px !important;
+        font-size: 16px !important;
         color: rgba(98,103,129,0.5)!important;
     }
     .apply-viewer/deep/ .activity-detail-title {

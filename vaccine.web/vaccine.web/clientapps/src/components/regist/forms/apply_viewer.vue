@@ -24,13 +24,9 @@
 
             <template v-if="session.actAge !== null">
                 <div class="activity-detail-title">年齡限制</div>
-                <div class="activity-detail-descript">
-                    <template v-if="session.actAge > 0">
-                        {{session.actAge}}歲<span class="disabled">以上</span>
-                    </template>
-                    <template v-else>
-                        <span class="disabled">無限制</span>
-                    </template>
+                <div class="activity-detail-descript">                 
+                    <span v-if="session.actAge==0"><span tyle="color:#626781">配合疫苗規定</span></span>
+                    <span v-if="session.actAge!=0">{{session.actAge}}<span tyle="color:#626781">歲以上</span></span>
                 </div>
             </template>
         </template>
@@ -97,7 +93,7 @@
         color: #626781 !important;
     }
     .apply-viewer/deep/ .activity-name-descript {
-        font-size: 12px !important;
+        font-size: 16px !important;
         color: rgba(98,103,129,0.5)!important;
     }
     .apply-viewer/deep/ .activity-detail-title {

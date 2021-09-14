@@ -227,25 +227,27 @@
     }*/
 
     .applied-list/deep/ .action-info-data {
-        font-size: 12px;
+        font-size: 16px;
         color: #434969;
     }
 
     .applied-list/deep/ .action-info-title {
-        font-size: 12px;
+        font-size: 16px;
         color: #434969;
     }
 
     .applied-list/deep/ .action-info-subject {
-        font-size: 16px;
+        font-size: 20px;
         font-weight: bold;
         color: #434969;
+        white-space: nowrap;
     }
 
     .applied-list/deep/ .action-info-sec-subject {
-        font-size: 12px;
+        font-size: 16px;
         color: rgba(98,103,129,0.5) !important;
         padding-bottom: 8px !important;
+        white-space: nowrap;
     }
 
     .applied-list/deep/ .action-info-title {
@@ -263,10 +265,14 @@
 
 
     .applied-list/deep/ .action-button {
-        width: 64px;
+        width: 58px;
         height: 100%;
     }
+    .v-btn:not(.v-btn--round).v-size--default {
+        min-width: 58px !important;
+    }
 
+    
     .applied-list/deep/ .action-button .v-btn {
         font-size: 16px;
         color: #ffffff;
@@ -421,6 +427,66 @@
         color: #FFFFFF;
         opacity: 1;
     }
+
+
+
+
+
+    @media (min-width: 200px) and (max-width: 375px) {
+        .applied-list/deep/ .action-info-data {
+            font-size: 10px;
+        }
+
+        .applied-list/deep/ .action-info-title {
+            font-size: 10px;
+        }
+
+        .applied-list/deep/ .action-info-subject {
+            font-size: 14px;
+        }
+
+        .applied-list/deep/ .action-info-sec-subject {
+            font-size: 10px;
+        }
+    }
+
+    @media (min-width: 375px) and (max-width: 382px) {
+        .applied-list/deep/ .action-info-data {
+            font-size: 12px;
+        }
+
+        .applied-list/deep/ .action-info-title {
+            font-size: 12px;
+        }
+
+        .applied-list/deep/ .action-info-subject {
+            font-size: 16px;
+        }
+
+        .applied-list/deep/ .action-info-sec-subject {
+            font-size: 12px;
+        }
+    }
+
+    @media (min-width: 383px) and (max-width: 450px) {
+        .applied-list/deep/ .action-info-data {
+            font-size: 14px;
+        }
+
+        .applied-list/deep/ .action-info-title {
+            font-size: 14px;
+        }
+
+        .applied-list/deep/ .action-info-subject {
+            font-size: 18px;
+        }
+
+        .applied-list/deep/ .action-info-sec-subject {
+            font-size: 14px;
+        }
+    }
+
+
 
     /* Extra small devices (portrait phones, less than 576px) */
     @media (max-width: 575.98px) {

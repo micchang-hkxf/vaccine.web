@@ -533,7 +533,7 @@
                         </template>
 
                         <template v-slot:item.regist_age_limit="{item}">
-                            <span v-if="item.regist_age_limit==0"><span tyle="color:#626781">-</span></span>
+                            <span v-if="item.regist_age_limit==0"><span tyle="color:#626781">配合疫苗規定</span></span>
 
                             <span v-if="item.regist_age_limit!=0">{{item.regist_age_limit}}<span tyle="color:#626781">歲以上 </span></span>
                         </template>
@@ -631,7 +631,14 @@
                                     <div>報名開放時間：{{detailRegistrationTime}}</div>
                                     <div>承辦醫院：{{detailInstitution}}（{{detailInstutionDistrict}}）</div>
                                     <div>報名名額：<span :class="detailCntQuota >= detailTotalQuota ? 'color-red' : ''">{{detailCntQuota}}</span>/<span style="color:#626781">{{detailTotalQuota}}</span></div>
-                                    <div>年齡限制：{{detailAgeLimit}}</div>
+                                    <div>
+                                        年齡限制：
+
+                                        <span v-if="detailAgeLimit==0"><span tyle="color:#626781">配合疫苗規定</span></span>
+
+                                        <span v-if="detailAgeLimit!=0">{{detailAgeLimit}}<span tyle="color:#626781">歲以上 </span></span>
+
+                                    </div>
                             </div>
                             <hr />
                             <com-table class="regUserDetail" ref-key="detailTable" :headers="getRegistrationHeaders" :items="detailItems" :total-count="detailTotalCount"
