@@ -274,7 +274,7 @@
             this.checkBeforeApply();
         },
         methods: {
-            ...mapActions('regist', ['checkApply', 'getBeforeApply','checkLogTime']),
+            ...mapActions('regist', ['checkApply', 'getBeforeApply', 'checkLogTime', 'userLogout']),
             sendApply: function () {
                 var comp = this;
                 var isvaild = comp.$refs.applyForm.validate();
@@ -343,7 +343,7 @@
                                 if (result.datas.length > 0) {
                                     comp.checkJobId = result.datas[0]['checkJobId'];
                                     comp.vaccines = result.datas[0]['vaccines'];
-
+                                    
                                     // 未符合接種資格
                                     if (!result.datas[0]['canApply']) {
                                         comp.$bus.$emit('alertNoConform_show', true);
@@ -369,6 +369,11 @@
                                         comp.$bus.$emit('alert_show', true);
                                         return;
                                     }
+
+                                    if (!!result.datas[0]['uName']) {
+                                        comp.uName = result.datas[0]['uName'];
+                                    }
+
                                 }
                             })
                             .catch(ex => {
@@ -407,12 +412,14 @@
             },
             alertTimeoutClick: function () {
                 this.$bus.$emit('alertTimeout_show', false);
-                sessionStorage.removeItem('userInfo');
-                this.$router.push({ name: 'regist' });
+                this.userLogout();
+                //sessionStorage.removeItem('userInfo');
+                //this.$router.push({ name: 'regist' });
             },
             alertUnknowClick: function () {
                 this.$bus.$emit('alertUnknow_show', false);
-                this.$router.push({ name: 'regist' });
+                this.userLogout();
+                //this.$router.push({ name: 'regist' });
             },
             alertApplyNoClick: function () {
                 this.$bus.$emit('alertApplyNo_show', false);

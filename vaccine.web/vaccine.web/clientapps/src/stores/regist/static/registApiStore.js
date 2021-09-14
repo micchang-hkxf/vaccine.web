@@ -6,12 +6,22 @@ import Vue from 'vue';
 export default {
     namespaced: true,
     actions: {
-        loadAppliedList: function ({ state }, params) {
+        notLoginAdmin({ commit }, error) {
+            if (error.response.status != 403) return;
+            commit('removeAdminLogin');
+            window.location.href = "/";
+        },
+        userLogout({ commit }) {
+            commit('removeAdminLogin');
+            window.location.href = "/";
+        },
+        loadAppliedList: function ({ state, dispatch }, params) {
             return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/applylog?uid=${params.identify}&bd=${Vue.moment(new Date(params.birthday)).format('YYYY/MM/DD')}&keyword=${params.keyword}`;
                 axios.get(apiUrl).then(res => {
                     resolve(res.data);
                 }).catch((ex) => {
+                    dispatch('notLoginAdmin',ex);
                     reject(ex);
                 });
             });
@@ -124,7 +134,7 @@ export default {
             });
         },
         checkUserInfo: function ({ state, commit, dispatch }, userInfo) {
-            return new Promise((reslove) => {
+            return new Promise((reslove) => {                
                 var results = {
                     uName: '', //使用者名稱
                     birthday: Vue.moment(userInfo.birthday).format('YYYY-MM-DD'), //使用者生日
@@ -135,21 +145,23 @@ export default {
                     token: null, //台北通 token
                     type: 'identify'
                 };
-                if (!!userInfo.uName) state.lockUserInfo.lockName = true;
-                if (!!userInfo.identify) state.lockUserInfo.lockIdentify = true;
-                if (!!userInfo.birthday) state.lockUserInfo.lockBirthday = true;
-                commit('saveLockUserInfo', state.lockUserInfo);
-                dispatch('setUserInfo', results).then((user) => {
-                    reslove(user);
-                });
+                dispatch('clearUserInfoLock').then(() => {
+                    if (!!userInfo.uName) state.lockUserInfo.lockName = true;
+                    if (!!userInfo.identify) state.lockUserInfo.lockIdentify = true;
+                    if (!!userInfo.birthday) state.lockUserInfo.lockBirthday = true;
+                    commit('saveLockUserInfo', state.lockUserInfo);
+                    dispatch('setUserInfo', results).then((user) => {
+                        reslove(user);
+                    });
+                })
             });
         },
-        loadUserInfo: function ({ state, commit }, token) {
+        loadUserInfo: function ({ state, commit, dispatch }, token) {
             var tokenInfo = {
                 token: token, //台北通 token
                 type: 'taipei-pass'
             }
-            return new Promise((resolve/*, reject*/) => {
+            return new Promise((resolve, reject) => {
                 var apiUrl = `${state.apiRoot}api/my`;
                 var apiHeader = {
                     headers: {
@@ -166,12 +178,14 @@ export default {
                         sessionId: null, //生日登入 sessionId
                         captcha: null, //生日登入 captcha
                     };
-                    if (!!userInfo.uName) state.lockUserInfo.lockName = true;
-                    if (!!userInfo.identify) state.lockUserInfo.lockIdentify = true;
-                    if (!!userInfo.birthday) state.lockUserInfo.lockBirthday = true;
-                    commit('saveLockUserInfo', state.lockUserInfo);
-                    commit('saveUserInfo', { ...userInfo, ...tokenInfo });
-                    resolve(userInfo);
+                    dispatch('clearUserInfoLock').then(() => {
+                        if (!!userInfo.uName) state.lockUserInfo.lockName = true;
+                        if (!!userInfo.identify) state.lockUserInfo.lockIdentify = true;
+                        if (!!userInfo.birthday) state.lockUserInfo.lockBirthday = true;
+                        commit('saveLockUserInfo', state.lockUserInfo);
+                        commit('saveUserInfo', { ...userInfo, ...tokenInfo });
+                        resolve(userInfo);
+                    })
                 }).catch(() => {
                     var userInfo = {
                         uName: '', //使用者名稱
@@ -183,7 +197,7 @@ export default {
                         type: 'taipei-pass'
                     };
                     commit('saveUserInfo', { ...userInfo, ...tokenInfo });
-                    resolve(userInfo);
+                    reject();
                 });
             });
 
@@ -340,6 +354,17 @@ export default {
             });
 
             state.villages = villages;
+        } ,
+        clearUserInfoLock: function ({ commit, getters }) {
+            new Promise((reslove) => {
+                var lock = getters.getLockUserInfo;
+                lock.lockName = false;
+                lock.lockIdentify = false;
+                lock.lockBirthday = false;
+                lock.lockMobile = false;
+                commit('saveLockUserInfo', lock);
+                reslove();
+            });
         }
     },
     state: {
@@ -376,6 +401,11 @@ export default {
         }
     },
     mutations: {
+        removeAdminLogin(state) {
+            state.userInfo = null;
+            window.sessionStorage.removeItem('userInfo');
+            Vue.$cookies.remove('userInfo');
+        },
         saveVaccineGroups: (state, groups) => {
             state.vaccineGroups.splice(0);
             groups.forEach(f => state.vaccineGroups.push(f));
