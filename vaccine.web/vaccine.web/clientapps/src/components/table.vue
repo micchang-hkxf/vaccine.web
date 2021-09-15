@@ -73,7 +73,8 @@
     .row, .col {
     }
 </style>
-<style>
+<style> 
+
     .table-header-contant {
         white-space: nowrap;
     }
@@ -234,7 +235,11 @@
                 this.$emit('sort', { items, index, isDesc }); 
                 return items;
             },
-            rowClass: function (item) {
+            rowClass: function (item) {                    
+                //var changeColor = this.itemClass(item);
+                //console.log('changeColor', changeColor);
+                //return { 'test': item.result == '已取消' == true };
+              
                 if (!this.disabledProp) return "";
                 return item[this.disabledProp] ? "item-disabled" : "" ;
             },
