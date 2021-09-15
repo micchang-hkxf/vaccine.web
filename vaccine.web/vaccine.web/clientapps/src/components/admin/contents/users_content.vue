@@ -210,7 +210,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-label><span class="star">信箱</span></v-label>
-                                <v-text-field dense outlined class="w02" type='email' v-model="email" :rules="[rules.email.required,rules.email.regex]"></v-text-field>
+                                <v-text-field dense outlined class="w02" placeholder="請輸入email" type='email' v-model="email" :rules="[rules.email.required,rules.email.regex]"></v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
