@@ -1676,7 +1676,7 @@
                 this.detailRegistrationTime = moment(item.regist_apply_start_date).format('YYYY/MM/DD') + ' - ' + moment(item.regist_apply_end_date).format('YYYY/MM/DD');   //item.registrationTime;
                 this.detailCntQuota = item.regist_unpassed;   //item.cntQuota;
                 this.detailTotalQuota = item.regist_quota;    //item.totalQuota;
-                this.detailAgeLimit = (item.regist_age_limit > 0) ? item.regist_age_limit + '歲以上' :'無限制';
+                this.detailAgeLimit = (item.regist_age_limit > 0) ? item.regist_age_limit :'無限制';
                 this.detailAbnormalCnt = item.regist_abnormalCnt;   //item.abnormalCnt;
                 this.detailCheckTime = item.regist_review_date;   //item.checkTime;
                 this.detailCheckPassCnt = item.regist_qualified; //item.checkPassCnt;
