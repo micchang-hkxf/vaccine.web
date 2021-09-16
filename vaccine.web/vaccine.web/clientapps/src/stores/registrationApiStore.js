@@ -170,7 +170,7 @@ export default {
                             regist_institution_name: data.medicalInfo.length > 0 ? data.medicalInfo[0].medicalName : '',
                             regist_institution_code: data.medicalInfo.length > 0 ? data.medicalInfo[0].medicalId : '',
                             regist_instution_district: data.medicalInfo.length > 0 ? data.medicalInfo[0].distId : '',
-                            regist_instution_district_name: data.medicalInfo.length > 0 ? data.medicalInfo[0].distName + '/' + data.region.villageName : '',
+                            regist_instution_district_name: data.medicalInfo.length > 0 ? data.medicalInfo[0].distName /*+ '/' + data.region.villageName*/ : '',
                             regist_station_date: data.implementDate.substr(0, 10),
                             regist_station_start_time: data.implementStartTime.substr(11, 5),
                             regist_station_end_time: data.implementEndTime.substr(11, 5),

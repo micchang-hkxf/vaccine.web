@@ -31,7 +31,7 @@
                     </v-col>
 
                 </v-row>
-                <v-row v-if="getShowBrand">
+                <v-row v-if="getShowBrand" v-show="false">
                     <v-col cols="4">
                         <div><span class="regist-title">疫苗廠牌</span> <span class="red--text">*</span></div>
                         <v-select v-model="model.regist_brand"
@@ -149,8 +149,20 @@
                 </v-row>
                 <v-row>
                     <v-col cols="12">
-                        <div><span class="regist-title">機構代碼：{{regist_institution_code}}</span> </div>
-                        <div style="margin-bottom: 15px;"><span class="regist-title">機構所在行政區：{{regist_institution_name}}</span></div>
+                        <div>
+                            <span class="regist-title">
+                                機構代碼：
+                                <span v-if="!!regist_institution_code">{{regist_institution_code}}</span>
+                                <span v-if="!regist_institution_code">-</span>
+                            </span>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <span class="regist-title">
+                                機構所在行政區：
+                                <span v-if="!!regist_institution_name">臺北市/{{regist_institution_name}}</span>
+                                <span v-if="!regist_institution_name">-</span>
+                            </span>
+                        </div>
                     </v-col>
                 </v-row>
                 <v-divider></v-divider>
@@ -169,7 +181,6 @@
                             <template v-slot:activator="{ on, attrs }">
                                 <v-text-field v-model="stationDate"
                                               :rules="[rules.required]"
-                                             
                                               v-bind="attrs"
                                               placeholder="請選擇日期"
                                               v-on="on"
@@ -290,7 +301,7 @@
                                 <v-text-field v-model="model.regist_apply_start_date"
                                               placeholder="請輸入事先報名開始時間"
                                               :rules="[rules.required]"
-                                              :readonly="overStatus==1" 
+                                              :readonly="overStatus==1"
                                               :disabled="overStatus==1"
                                               v-bind="attrs"
                                               v-on="on"
@@ -400,12 +411,14 @@
                     <v-col cols="5">
                         <div style="margin-top:15px;"><span class="regist-title">報名者最低年齡限制</span></div>
                         <v-text-field v-model="model.regist_age_limit"
+                                      onkeyup="value=value.replace(/[^\d]/g,'')"
                                       placeholder="請輸入年齡下限(預設無限制)"
                                       required
                                       :readonly="overStatus==1"
                                       :disabled="overStatus==1"
                                       type="number"
                                       outlined
+                                      :rules="[rules.ageRequired,rules.ageLimit]"
                                       dense>
                         </v-text-field>
                     </v-col>
@@ -464,9 +477,9 @@
         max-width: 250px !important;
     }
 
-    .zone-selector + .zone-selector {
-        padding-left: 16px !important;
-    }
+        .zone-selector + .zone-selector {
+            padding-left: 16px !important;
+        }
 
     .v-btn--outlined {
         border: thin solid rgba(98,103, 129,0.2) !important;
@@ -480,7 +493,7 @@
     }
 
     .edit-form .v-menu__content {
-        min-width:120px !important;
+        min-width: 120px !important;
     }
     /*.edit-form {
         height: 650px;
@@ -495,14 +508,14 @@
         height: 8px;
     }
 
-        /*滾動條裡面小方塊樣式*/
+    /*滾動條裡面小方塊樣式*/
     .edit-form::-webkit-scrollbar-thumb {
         border-radius: 100px;
         -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
         background: rgba(98,103,129,0.2);
     }
 
-        /*滾動條裡面軌道樣式*/
+    /*滾動條裡面軌道樣式*/
     .edit-form::-webkit-scrollbar-track {
         -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
         border-radius: 20px;
@@ -513,12 +526,15 @@
     .v-date-picker-table .v-btn--rounded:hover {
         background-color: #d4ffd6 !important
     }
+
     .edit-form .v-menu__content, .edit-form .v-input__control {
         min-width: 140px !important;
     }
+
     .edit-form .v-input__control {
         min-width: 150px !important;
     }
+
     .timepicker {
         z-index: 999;
     }
@@ -534,10 +550,10 @@
         color: #9E9E9E !important;
     }
 
-    .timepicker-wrap .timepicker-icon {
-        width: 1.5em !important;
-        height: 1.5em !important;
-    }
+        .timepicker-wrap .timepicker-icon {
+            width: 1.5em !important;
+            height: 1.5em !important;
+        }
 
     .inputDesc {
         color: #9E9E9E;
@@ -603,9 +619,11 @@
                 required: v => !!v || '必填',
                 checkRegistStart: v => new Date(v) >= new Date(this.model.regist_apply_start_date).setDate(-3) || '報名日期須早於設站日期前三天',
                 quotaRule(minNum) {
-  
+
                     return v => (v && v >= minNum && v > 0) || '報名名額上限設定必須大於0且大於等於' + minNum;
-                }
+                },
+                ageLimit: v => v >= 0 || "輸入的數字必須大於0",
+                ageRequired: v => (!!v || v===0 ) || '必填',
             },
             regist_station_start_time: "00:00",
             regist_station_end_time: "23:59",
@@ -622,7 +640,7 @@
             stationDate: function (val) {
                 this.model.regist_station_date = val;
                 if (!val) return;
-   
+
                 //new Date().setDate(new Date(val).getDate() - 2)
                 //this.reCheckDate = this.$moment(new Date().setDate(new Date(val).getDate() - 2)).format('YYYY/MM/DD');
                 //this.registEndDate = this.$moment(new Date().setDate(new Date(val).getDate() - 3)).format('YYYY/MM/DD,23:59');
@@ -648,7 +666,7 @@
         },
         computed: {
             ...mapGetters('registration', ['getVaccines', 'getDistricts', 'getBrands', 'getVillages', 'getInstitutions', 'getRegistrationHeaders', 'getShowBrand', 'getDisMedicals']),
-            ...mapGetters('user', ['getMedicals','getReGetInfo']),
+            ...mapGetters('user', ['getMedicals', 'getReGetInfo']),
             defaultItem: function () {
                 return this.default;
             },
@@ -682,7 +700,7 @@
 
                 this.$set(this, "regist_institution_code", model.regist_institution_code);
                 this.$set(this, "regist_institution_name", model.regist_district_name);
-                
+
                 this.$set(this, "stationDate", model.regist_station_date);
                 this.$set(this, "regist_station_start_time", model.regist_station_start_time);
                 this.$set(this, "regist_station_end_time", model.regist_station_end_time);
@@ -747,7 +765,7 @@
                 this.$store.getters["user/getMedicals"].forEach((d) => {
                     if (d.id === event.id) {
                         this.regist_institution_code = d.id;
-                        this.regist_institution_name = d.cityName + '/' + d.distName;
+                        this.regist_institution_name = /*d.cityName + '/' +*/ d.distName;
                     }
                 });
             },
@@ -773,7 +791,7 @@
                 dd = d.getDate();
                 this.beforeRuleDesc2 = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
 
-          
+
 
             },
             dateClicked2(val) {

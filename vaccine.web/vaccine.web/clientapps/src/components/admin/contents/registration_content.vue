@@ -19,6 +19,7 @@
                             <!--<div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>-->
                             <div><span :class="item.regist_unpassed >= item.regist_quota ? 'color-red' : ''">{{item.regist_unpassed}}</span>/<span style="color:#626781">{{item.regist_quota}}</span></div>
                         </template>
+
                         <template v-slot:search-bar>
                             <div>
                                 <v-row>
@@ -205,12 +206,12 @@
                                                 <v-list-item-subtitle>{{result.model.regist_type_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
+                                        <!--<v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
-                                        </v-list-item>
+                                        </v-list-item>-->
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">場次標題</div></v-list-item-title>
@@ -338,12 +339,12 @@
                                                 <v-list-item-subtitle>{{result.model.regist_type_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
+                                        <!--<v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
-                                        </v-list-item>
+                                        </v-list-item>-->
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">場次標題</div></v-list-item-title>
@@ -665,7 +666,7 @@
                                         </div>
                                         <div class="detail-action">
                                             <div class="detail-rebound-info">
-                                                <div>複檢時間：{{detailCheckTime}}</div>
+                                                <div>複檢時間：{{(!detailCheckTime ? '-' :detailCheckTime)}}</div>
                                                 <div>複檢合格人數：{{detailCheckPassCnt == '0' ? '-' : detailCheckPassCnt}}</div>
                                             </div>
                                             <div class="detail-action-btn">
@@ -962,8 +963,7 @@
     .registration-list .item-disabled {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
-        color: #62678166;
-        background-color: #62678166;
+        color: #62678166;        
         text-align: center;
         opacity: 1;
     }
