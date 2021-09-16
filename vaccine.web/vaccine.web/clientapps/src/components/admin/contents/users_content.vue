@@ -302,7 +302,7 @@
                         <v-divider></v-divider>
                         <div class="d-flex" style="margin-top:16px;">
                             <v-spacer></v-spacer>
-                            <v-btn @click="close" outlined :ripple="false" style="margin-right:16px;"><span style="color:#626781;margin-right:16px;">取消</span></v-btn>
+                            <v-btn @click="close" outlined :ripple="false" style="margin-right:16px;"><span style="color:#626781;">取消</span></v-btn>
                             <v-btn @click="createConfirm" color="primary" :ripple="false"><span>儲存</span></v-btn>
                         </div>
                     </div>
