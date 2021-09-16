@@ -563,7 +563,7 @@
                                             <span class="modify-btn-text">編輯</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="removeItem(item)" class="modify-list-item">
+                                    <v-list-item @click.stop="removeItem(item)" v-if="item.regist_can_del" class="modify-list-item">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
                                                 <img src="/trash.svg">
@@ -1271,7 +1271,8 @@
             isReChecked: false,
             orderType: null,
             isDesc: null,
-            ord:0,
+            ord: 0,
+            showDelete:false,
             injectionOkCount:0,
             regist_beforeDay: 3,//報名截止時間要於施打時間早3天以上
             downloadErrorMessage: '複檢結果至少要有一筆成功且合格才能下載',

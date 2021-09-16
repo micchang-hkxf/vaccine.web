@@ -149,10 +149,10 @@ export default {
                     }
                 }).then(res => {
                     results.totalCount = res.data.totalRows;
-                    
+                    var today = new Date();
                     var datas = [];
                     res.data.data.forEach((data) => {
-                        //console.log(data);
+               
                         datas.push({
                             regist_id: data.activityId,
                             regist_create_date: data.createDate.substr(0, 10).replace(/-/g, '/'),
@@ -181,7 +181,8 @@ export default {
                             regist_quota: data.amount,
                             regist_age_limit: parseInt(data.actAge),
                             regist_unpassed: data.amount - data.leftAmount,
-                            regist_isrechecked: data.isReChecked
+                            regist_isrechecked: data.isReChecked,
+                            regist_can_del: (data.amount > 0 && data.amount == data.leftAmount && (today < new Date(data.startApplyDate)))
                         });
                     });
 
