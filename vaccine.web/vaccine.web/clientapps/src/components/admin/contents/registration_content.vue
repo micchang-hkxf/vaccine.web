@@ -453,7 +453,7 @@
                             </com-dialog>
 
 
-                            <com-confirm ref="registAlert" ref-key="confirm" :right-click="alertRightClick" key="regist-alert-confirm" right-color="#736DB9">
+                            <com-confirm ref="registAlert" ref-key="confirm" :right-click="alertRightClick" key="regist-alert-confirm">
                                 <template v-slot:confirm-image>
                                     <v-img v-bind:src="alertImgSrc"></v-img>
                                 </template>
@@ -461,7 +461,7 @@
                                     <span style="color:#736DB9;">{{alertTitle}}</span>
                                 </template>
                                 <template v-slot:confirm-text>
-                                    {{alertText}}
+                                    <span style="color:#626781">{{alertText}}</span>
                                 </template>
 
                                 <template v-slot:confirm-right-btn-text>
@@ -1641,8 +1641,8 @@
                     this.detailId = item.regist_id;
                     this.downloadCompleteFile(item.regist_title);
                 } else {
-                    this.alertTitle = this.downloadErrorMessage;
-                    this.alertText = '';
+                    this.alertTitle = '';
+                    this.alertText = this.downloadErrorMessage;
                     this.alertImgSrc = this.warningIcon;
                     this.$refs.registAlert.open();
                 }
@@ -1795,8 +1795,8 @@
 
                 comp.alertMessage = '';
                 if (!comp.isReChecked) {
-                    comp.alertTitle = comp.downloadErrorMessage;
-                    comp.alertText = '';
+                    comp.alertTitle = '';
+                    comp.alertText = comp.downloadErrorMessage;
                     comp.alertImgSrc = comp.warningIcon;
 
                     comp.$refs.registAlert.open();
@@ -1932,8 +1932,8 @@
                 comp.doubleCheck({ activityId: comp.activityId, applyNo: comp.applyNo, bd: comp.artificialBirthday, result: comp.artificialResult })
                     .then(function (result) {
                         console.log(result);
-                        comp.alertTitle = '人工複檢完成';
-                        comp.alertText = '';
+                        comp.alertTitle = '';
+                        comp.alertText = '人工複檢完成';
                         comp.alertImgSrc = comp.successIcon;
                         comp.$refs.registAlert.open();
                         comp.$refs.fileViewer.close();
