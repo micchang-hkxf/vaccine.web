@@ -850,12 +850,16 @@
                 this.$bus.$emit('formSaveConfirm_show', false);
             },
             createConfirm() {
-                if (this.setRole.id > 0 && !this.setArea.id > 0) {
+     
+                if (this.setRole.id > 0 && (this.setArea.id == "200" || !this.setArea.id) ) {
 
                     this.alertTitle = '請選擇管理區域';
                     this.alertImgSrc = this.warningIcon;
                     this.$bus.$emit('alert_show', true);
                     return;
+                }
+                if (this.setRole.id==0 ) {
+                    this.$set(this, "setArea", { id: '200', state: '管理全區' });
                 }
                 if (this.$refs.form.validate()) {
                 
