@@ -15,7 +15,7 @@
                         <v-card class="action d-flex flex-row" elevation="0">
                             <div class="action-info d-flex flex-column justify-center" @click="toSession(applied)">
                                 <div class="action-info-header d-flex flex-column">
-                                    <div class="action-info-subject">
+                                    <div class="action-info-subject" :tip="applied.activityName">
                                         {{applied.activityName}}
                                     </div>
                                     <div class="action-info-sec-subject">
@@ -237,6 +237,8 @@
     }
 
     .applied-list/deep/ .action-info-subject {
+        overflow: hidden;
+        text-overflow: ellipsis;
         font-size: 20px;
         font-weight: bold;
         color: #434969;
@@ -245,7 +247,7 @@
 
     .applied-list/deep/ .action-info-sec-subject {
         font-size: 16px;
-        color: rgba(98,103,129,0.5) !important;
+        color: #434969 !important;
         padding-bottom: 8px !important;
         white-space: nowrap;
     }

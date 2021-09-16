@@ -60,12 +60,12 @@
                                 <v-text-field class="apply-field-text" maxlength="10" placeholder="手機範例0912345678，市話範例0227208889" v-model="mbNo" :rules="[rules.required,rules.mobile]"></v-text-field>
                             </div>
                         </div>
-                        <!--<div class="apply-field">
-                    <div class="apply-field-label">戶籍</div>
-                    <div class="apply-field-container">
-                        <v-text-field class="apply-field-text" placeholder="台北市（原）" v-model="census"></v-text-field>
-                    </div>
-                </div>-->
+                        <div class="apply-field">
+                            <div class="apply-field-label">戶籍</div>
+                            <div class="apply-field-container">
+                                <v-text-field class="apply-field-text" v-model="cityMark" disabled></v-text-field>
+                            </div>
+                        </div>
                         <div class="apply-field display type" v-if="vaccines.length > 0 || session.brandName !== ''">
                             <div class="apply-field-label">可接種項目</div>
                             <div class="apply-field-container">
@@ -242,7 +242,7 @@
             days: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
             rules: {
                 required: v => !!v || '必填',
-                mobile:v=>!v || v.match('0[0-9]{8,9}')|| '輸入格式錯誤'
+                mobile: v => !v || v.match('0[0-9]{8,9}') || '輸入格式錯誤'
             },
             uName: '',
             uId: '',
@@ -254,10 +254,20 @@
             beforeActivityName: '',
             checkJobId: '',
             applyNo: '',
-            vaccines: []
+            vaccines: [],
+            isCitizen: false,
+            isIndigenous: false,
+            cityMark:''
         }),
         computed: {
             ...mapGetters('regist', ['getUserInfo', 'getLockUserInfo']),
+            getCityMark: function () {
+                var result = "";
+                if (this.isCitizen) result += "台北市";
+                if (this.isIndigenous) result += "(原)";
+                if (result=="") return "非台北市"
+                return result;
+            },
         },
         props: {
 
@@ -280,7 +290,7 @@
             this.checkBeforeApply();
         },
         methods: {
-            ...mapActions('regist', ['checkApply', 'getBeforeApply', 'checkLogTime', 'userLogout']),
+            ...mapActions('regist', ['checkApply', 'getBeforeApply', 'checkLogTime', 'userLogout']),      
             sendApply: function () {
                 var comp = this;
                 var isvaild = comp.$refs.applyForm.validate();
@@ -347,8 +357,18 @@
                         comp.getBeforeApply(data)
                             .then(function (result) {
                                 if (result.datas.length > 0) {
+                                    var check = result.datas[0];
                                     comp.checkJobId = result.datas[0]['checkJobId'];
                                     comp.vaccines = result.datas[0]['vaccines'];
+
+                                    var reMark = ""
+                                    if (check.isCitizen=='true')
+                                        reMark += "台北市";
+                                    else reMark = "非台北市";
+                                    if (check.isIndigenous == 'true')
+                                        reMark += "(原)";
+
+                                    comp.cityMark = reMark;
 
                                     // 未符合接種資格
                                     if (!result.datas[0]['canApply']) {
@@ -380,6 +400,7 @@
                                         comp.uName = result.datas[0]['uName'];
                                     }
 
+                                    comp.$forceUpdate();
                                 }
                             })
                             .catch(ex => {
@@ -440,7 +461,7 @@
         },
         beforeRouteEnter(to, from, next) {
             next(vm => {
-                vm.$store.dispatch("regist/checkLogTime").then(() => {});
+                vm.$store.dispatch("regist/checkLogTime").then(() => { });
             });
         },
         components: {
@@ -450,7 +471,7 @@
 </script>
 <style scoped>
     .v-btn--contained {
-        box-shadow:none !important;
+        box-shadow: none !important;
     }
 
     .apply-content/deep/ .v-btn {
@@ -461,6 +482,7 @@
         color: #736DB9 !important;
         caret-color: #736DB9 !important;
     }
+
     .apply-content/deep/ .apply-actions .v-btn:not(.v-btn--disabled) {
         color: white !important;
     }
@@ -470,8 +492,8 @@
     }
 
     .apply-content/deep/ .splid-date {
-        width:30px!important;
-        margin-left:10px!important;
+        width: 30px !important;
+        margin-left: 10px !important;
     }
 
 
@@ -513,19 +535,19 @@
         margin-top: 24px !important;
     }
 
-    .apply-content/deep/ .apply-container .apply-field.display {
-        margin-top: 0px !important;
-    }
+        .apply-content/deep/ .apply-container .apply-field.display {
+            margin-top: 0px !important;
+        }
 
-    .apply-content/deep/ .apply-container .apply-field.display.type .apply-field-label {
-        padding-top: 0px !important;
-        padding-bottom: 16px !important;
-    }
+            .apply-content/deep/ .apply-container .apply-field.display.type .apply-field-label {
+                padding-top: 0px !important;
+                padding-bottom: 16px !important;
+            }
 
-    .apply-content/deep/ .apply-container .apply-field.display.descript .apply-field-label {
-        padding-top: 16px !important;
-        padding-bottom: 16px !important;
-    }
+            .apply-content/deep/ .apply-container .apply-field.display.descript .apply-field-label {
+                padding-top: 16px !important;
+                padding-bottom: 16px !important;
+            }
 
     .apply-content/deep/ .v-text-field .v-input__slot::before {
         border-color: rgba(0, 0, 0, 0.12) !important;
@@ -576,7 +598,7 @@
 
     .apply-content/deep/ .apply-container {
         /*padding-top: 24px !important;*/
-        max-width:800px;
+        max-width: 800px;
     }
 
     .apply-content/deep/ .apply-actions {
@@ -740,28 +762,26 @@
             padding-top: 24px !important;
             display: grid;
             justify-content: center;
-            margin:10px;
+            margin: 10px;
         }
 
         .apply-content/deep/ .apply-actions .btn-agree {
             margin-left: 60px;
         }
-
     }
 
-     @media (min-width: 500px) and (max-width: 600px) {
+    @media (min-width: 500px) and (max-width: 600px) {
 
         .apply-content/deep/ .apply-container {
             padding-top: 24px !important;
             display: grid;
             justify-content: center;
-            margin:10px;
+            margin: 10px;
         }
 
         .apply-content/deep/ .apply-actions .btn-agree {
             margin-left: 120px;
         }
-
     }
 
 
@@ -793,5 +813,4 @@
             margin-left: 400px;
         }
     }
-
 </style>
