@@ -158,7 +158,7 @@
                                         </div>
 
                                         <div class="file-btn-container">
-                                            <v-btn color="secondary" @click="onUploadClick">
+                                            <v-btn color="secondary" class="acBtn"  @click="onUploadClick">
                                                 <img src="/upload.svg">
                                                 <span class="file-btn-text">上傳報名表檔案</span>
                                             </v-btn>
@@ -168,7 +168,7 @@
                                                    accept=".xlsx,xls"
                                                    @change="onFileChanged">
                                             <v-spacer class="spacer"></v-spacer>
-                                            <v-btn color="secondary">
+                                            <v-btn color="secondary" class="acBtn">
                                                 <v-img src="/download.svg"></v-img>
                                                 <span><a href="ActivityExample.xlsx" class="file-btn-text">下載報名表格式範本</a></span>
                                             </v-btn>
@@ -857,14 +857,18 @@
         padding: 10px 0px 10px 0px;
     }
 
-
     .registration-list .file-btn-container {
-        display: inline-flex;
+        display: inline;
         justify-content: space-between;
         margin-top: 5px;
         margin-bottom: 10px;
         width: 100%;
     }
+
+    .acBtn {
+        margin: 0px 10px 10px 0px !important;
+    }
+
 
     .registration-list .file-btn-text {
         padding-left: 10px;
@@ -1160,8 +1164,12 @@
         padding-right: 32px !important;
     }
 
-    .detail-action {
+    /*.detail-action {
         padding-bottom: 9px;
+    }*/
+    .fileViewer {
+        max-width: 512px !important;
+        flex: none !important;
     }
 
     .registViewer .v-list-item,
