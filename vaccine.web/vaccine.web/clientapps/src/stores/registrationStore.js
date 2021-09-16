@@ -266,7 +266,7 @@ export default {
             { text: '生日', value: 'birthday', sortable: false, flex: 6 },
             { text: '身分證', value: 'identity', sortable: false, flex: 6 },
             { text: '電話', value: 'phone', sortable: false, flex: 6 },
-            { text: '戶籍地（北市/非北市）', value: 'censusRegister', sortable: false, flex: 6 },
+            { text: '戶籍地', value: 'censusRegister', sortable: false, flex: 6 },
             { text: '報名方式', value: 'type', sortable: false, flex: 6 },
             { text: '複檢結果', value: 'result', sortable: false, flex: 6 },
             { text: '', value: 'modify', sortable: false },
