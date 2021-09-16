@@ -16,6 +16,7 @@
     "core-js": "^3.6.5",
     "crypto-js": "^4.0.0",
     "moment": "^2.29.1",
+    "random-hash": "^4.0.1",
     "roboto-fontface": "*",
     "vue": "^2.6.11",
     "vue-axios": "^3.2.4",

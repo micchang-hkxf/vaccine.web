@@ -69,7 +69,7 @@ export default {
             });
         },
         notLoginAdmin({ commit },error) {
-            if (error.response.status != 406) return;
+            if (error.response.status != 406 && error.response.status != 405 && error.response.status != 403) return;
             commit('removeAdminLogin');
             window.location.href = "/admin";
         }
