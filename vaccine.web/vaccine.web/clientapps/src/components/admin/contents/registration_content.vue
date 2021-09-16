@@ -157,23 +157,21 @@
                                             請注意，資料不完整或檔案格式錯誤都將導致無法成功上傳。
                                         </div>
 
-                                        <div class="file-btn-container">
-                                            <v-btn color="secondary" class="acBtn"  @click="onUploadClick">
+                                        <div class="file-btn-container row justify-start">
+                                            <v-btn color="secondary" class="acBtn" @click="onUploadClick">
                                                 <img src="/upload.svg">
                                                 <span class="file-btn-text">上傳報名表檔案</span>
                                             </v-btn>
-                                            <input ref="excelUploader"
-                                                   type="file"
-                                                   style="display:none"
-                                                   accept=".xlsx,xls"
-                                                   @change="onFileChanged">
-                                            <v-spacer class="spacer"></v-spacer>
                                             <v-btn color="secondary" class="acBtn">
                                                 <v-img src="/download.svg"></v-img>
                                                 <span><a href="ActivityExample.xlsx" class="file-btn-text">下載報名表格式範本</a></span>
                                             </v-btn>
                                         </div>
-
+                                        <input ref="excelUploader"
+                                               type="file"
+                                               style="display:none"
+                                               accept=".xlsx,xls"
+                                               @change="onFileChanged">
                                         <v-divider></v-divider>
                                     </div>
                                 </template>
@@ -858,7 +856,7 @@
     }
 
     .registration-list .file-btn-container {
-        display: inline;
+        display: flex;
         justify-content: space-between;
         margin-top: 5px;
         margin-bottom: 10px;
@@ -869,7 +867,9 @@
         margin: 0px 10px 10px 0px !important;
     }
 
-
+    .registration-list .timepicker-wrap .time {
+        font-size:14px!important;
+    }
     .registration-list .file-btn-text {
         padding-left: 10px;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
@@ -1168,7 +1168,7 @@
         padding-bottom: 9px;
     }*/
     .fileViewer {
-        max-width: 512px !important;
+        /*max-width: 600px !important;*/
         flex: none !important;
     }
 
