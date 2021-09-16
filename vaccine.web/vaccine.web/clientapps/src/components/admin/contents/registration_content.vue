@@ -451,7 +451,7 @@
                             </com-dialog>
 
 
-                            <com-confirm ref="registAlert" ref-key="confirm" :right-click="alertRightClick" key="regist-alert-confirm" right-color="#736DB9">
+                            <com-confirm ref="registAlert" ref-key="confirm" :right-click="alertRightClick" key="regist-alert-confirm">
                                 <template v-slot:confirm-image>
                                     <v-img v-bind:src="alertImgSrc"></v-img>
                                 </template>
@@ -459,7 +459,7 @@
                                     <span style="color:#736DB9;">{{alertTitle}}</span>
                                 </template>
                                 <template v-slot:confirm-text>
-                                    {{alertText}}
+                                    <span style="color:#626781">{{alertText}}</span>
                                 </template>
 
                                 <template v-slot:confirm-right-btn-text>
@@ -561,7 +561,7 @@
                                             <span class="modify-btn-text">編輯</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="removeItem(item)" class="modify-list-item">
+                                    <v-list-item @click.stop="removeItem(item)" v-if="item.regist_can_del" class="modify-list-item">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
                                                 <img src="/trash.svg">
@@ -1271,7 +1271,8 @@
             isReChecked: false,
             orderType: null,
             isDesc: null,
-            ord:0,
+            ord: 0,
+            showDelete:false,
             injectionOkCount:0,
             regist_beforeDay: 3,//報名截止時間要於施打時間早3天以上
             downloadErrorMessage: '複檢結果至少要有一筆成功且合格才能下載',
@@ -1641,8 +1642,8 @@
                     this.detailId = item.regist_id;
                     this.downloadCompleteFile(item.regist_title);
                 } else {
-                    this.alertTitle = this.downloadErrorMessage;
-                    this.alertText = '';
+                    this.alertTitle = '';
+                    this.alertText = this.downloadErrorMessage;
                     this.alertImgSrc = this.warningIcon;
                     this.$refs.registAlert.open();
                 }
@@ -1675,7 +1676,7 @@
                 this.detailRegistrationTime = moment(item.regist_apply_start_date).format('YYYY/MM/DD') + ' - ' + moment(item.regist_apply_end_date).format('YYYY/MM/DD');   //item.registrationTime;
                 this.detailCntQuota = item.regist_unpassed;   //item.cntQuota;
                 this.detailTotalQuota = item.regist_quota;    //item.totalQuota;
-                this.detailAgeLimit = (item.regist_age_limit > 0) ? item.regist_age_limit + '歲以上' :'無限制';
+                this.detailAgeLimit = (item.regist_age_limit > 0) ? item.regist_age_limit :'無限制';
                 this.detailAbnormalCnt = item.regist_abnormalCnt;   //item.abnormalCnt;
                 this.detailCheckTime = item.regist_review_date;   //item.checkTime;
                 this.detailCheckPassCnt = item.regist_qualified; //item.checkPassCnt;
@@ -1795,8 +1796,8 @@
 
                 comp.alertMessage = '';
                 if (!comp.isReChecked) {
-                    comp.alertTitle = comp.downloadErrorMessage;
-                    comp.alertText = '';
+                    comp.alertTitle = '';
+                    comp.alertText = comp.downloadErrorMessage;
                     comp.alertImgSrc = comp.warningIcon;
 
                     comp.$refs.registAlert.open();
@@ -1932,8 +1933,8 @@
                 comp.doubleCheck({ activityId: comp.activityId, applyNo: comp.applyNo, bd: comp.artificialBirthday, result: comp.artificialResult })
                     .then(function (result) {
                         console.log(result);
-                        comp.alertTitle = '人工複檢完成';
-                        comp.alertText = '';
+                        comp.alertTitle = '';
+                        comp.alertText = '人工複檢完成';
                         comp.alertImgSrc = comp.successIcon;
                         comp.$refs.registAlert.open();
                         comp.$refs.fileViewer.close();
