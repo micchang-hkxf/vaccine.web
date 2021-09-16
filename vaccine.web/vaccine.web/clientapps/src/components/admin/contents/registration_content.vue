@@ -205,12 +205,12 @@
                                                 <v-list-item-subtitle>{{result.model.regist_type_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
+                                        <!--<v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
-                                        </v-list-item>
+                                        </v-list-item>-->
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">場次標題</div></v-list-item-title>
@@ -303,15 +303,19 @@
                                             </v-list-item-content>
                                         </v-list-item>-->
 
-                                        <div class="divider"><v-divider></v-divider></div>
+                                        <!--<div class="divider"><v-divider></v-divider></div>-->
                                     </div>
 
                                 </template>
                                 <template v-slot:action>
-
-                                    <v-spacer></v-spacer>
-                                    <v-btn outlined :ripple="false" @click="backToEdit"><span style="color:#626781;">修改</span></v-btn>
-                                    <v-btn @click="saveRegist" color="primary" :ripple="false"><span>確定</span></v-btn>
+                                    <div style="width:100%;">
+                                        <div class="divider"><v-divider></v-divider></div>
+                                        <div class="d-flex" style="margin-top:16px;">
+                                            <v-spacer></v-spacer>
+                                            <v-btn outlined :ripple="false" @click="backToEdit" style="margin-right:16px;"><span style="color:#626781;">修改</span></v-btn>
+                                            <v-btn @click="saveRegist" color="primary" :ripple="false"><span>確定</span></v-btn>
+                                        </div>
+                                    </div>
                                 </template>
                             </com-dialog>
 
@@ -338,12 +342,12 @@
                                                 <v-list-item-subtitle>{{result.model.regist_type_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
-                                        <v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
+                                        <!--<v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
                                                 <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
                                             </v-list-item-content>
-                                        </v-list-item>
+                                        </v-list-item>-->
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">場次標題</div></v-list-item-title>
@@ -443,7 +447,7 @@
                                     </div>
                                 </template>
                                 <template v-slot:action>
-                                    <v-divider></v-divider>
+                                    <div class="divider"><v-divider></v-divider></div>
                                     <v-spacer></v-spacer>
                                     <v-btn outlined :ripple="false" @click="backToEdit2"><span style="color:#626781;">修改</span></v-btn>
                                     <v-btn @click="editSaveRegist" color="primary" :ripple="false"><span>確定</span></v-btn>
@@ -786,8 +790,8 @@
     .dialog-dialogPanel .v-card__actions {
         padding-top: 0px !important;
         padding-bottom: 24px !important;
-        padding-left: 32px !important;
-        padding-right: 32px !important;
+        padding-left: 24px !important;
+        padding-right: 24px !important;
     }
 
     span.table-content-field.regist-village-name {
