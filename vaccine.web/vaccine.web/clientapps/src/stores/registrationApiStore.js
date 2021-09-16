@@ -703,7 +703,7 @@ export default {
             { text: '生日', value: 'birthday', align: 'center', sortable: false, flex: 6 },
             { text: '身分證', value: 'identity', align: 'center', sortable: false, flex: 6 },
             { text: '手機', value: 'phone', align: 'center', sortable: false, flex: 6 },
-            { text: '戶籍地（北市/非北市）', align: 'center', value: 'censusRegister', sortable: false, flex: 6 },
+            { text: '戶籍地', align: 'center', value: 'censusRegister', sortable: false, flex: 6 },
             { text: '報名方式', value: 'type', align: 'center', sortable: false, flex: 6 },
             { text: '備註', value: 'remark', align: 'center', sortable: false, flex: 6 },
             { text: '複檢結果', value: 'result', align: 'center', sortable: false, flex: 6 },
