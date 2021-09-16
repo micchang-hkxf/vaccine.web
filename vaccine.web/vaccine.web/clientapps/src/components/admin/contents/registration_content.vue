@@ -13,7 +13,7 @@
                 <v-card>
                     <com-table ref="table" ref-key="table" :headers="getHeaders" :items="items" :itemKey="itemKey" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               :change-page="changePage" :row-click="handleRowClick" @sort="setSort">
+                               :change-page="changePage" :row-click="handleRowClick" @sort="setSort"  >
 
                         <template v-slot:item.regist_quota="{item}">
                             <!--<div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>-->
@@ -158,7 +158,7 @@
                                         </div>
 
                                         <div class="file-btn-container">
-                                            <v-btn color="secondary" @click="onUploadClick">
+                                            <v-btn color="secondary" class="acBtn"  @click="onUploadClick">
                                                 <img src="/upload.svg">
                                                 <span class="file-btn-text">上傳報名表檔案</span>
                                             </v-btn>
@@ -168,7 +168,7 @@
                                                    accept=".xlsx,xls"
                                                    @change="onFileChanged">
                                             <v-spacer class="spacer"></v-spacer>
-                                            <v-btn color="secondary">
+                                            <v-btn color="secondary" class="acBtn">
                                                 <v-img src="/download.svg"></v-img>
                                                 <span><a href="ActivityExample.xlsx" class="file-btn-text">下載報名表格式範本</a></span>
                                             </v-btn>
@@ -643,8 +643,18 @@
                             <hr />
                             <com-table class="regUserDetail" ref-key="detailTable" :headers="getRegistrationHeaders" :items="detailItems" :total-count="detailTotalCount"
                                        :items-per-page="detailItemsPerPage" :total-visible="detailTotalVisible" :show-select="false"
-                                       :change-page="detailChangePage" disabled-prop="disabled"
+                                       :change-page="detailChangePage" disabled-prop="disabled" 
                                        style="margin-left: 15px;padding-top: 0px;margin-right: 15px;">
+
+                                <template v-slot:item.remark="{item}">                                   
+                                   
+
+                                    <span v-if="item.remark.length==0"><span style="color:#626781">-</span></span>
+
+                                    <span v-if="item.remark.length!=0">{{item.remark}}</span>
+                                </template>
+
+
 
                                 <template v-slot:search-bar>
                                     <div style="display:flex;justify-content:flex-start;margin-left:10px;margin-top:10px;">
@@ -691,7 +701,7 @@
                                 </template>
 
                                 <template v-slot:item.result="{item}">
-                                    <div :class="item.result === '系統異常' ? 'detail-result-abnormal' : ''">{{item.result == '' ? '-' : item.result}}</div>
+                                    <div :class="item.result === '系統異常' ? 'detail-result-abnormal' : ''">{{item.result == '' ? '-' : item.result}}</div>                                    
                                 </template>
 
                                 <template v-slot:item.modify="{item}">
@@ -774,7 +784,7 @@
 </template>
 
 <style>
-
+   
     .dialog-dialogPanel .v-card__actions {
         padding-top: 0px !important;
         padding-bottom: 24px !important;
@@ -847,14 +857,18 @@
         padding: 10px 0px 10px 0px;
     }
 
-
     .registration-list .file-btn-container {
-        display: inline-flex;
+        display: inline;
         justify-content: space-between;
         margin-top: 5px;
         margin-bottom: 10px;
         width: 100%;
     }
+
+    .acBtn {
+        margin: 0px 10px 10px 0px !important;
+    }
+
 
     .registration-list .file-btn-text {
         padding-left: 10px;
@@ -948,7 +962,8 @@
     .registration-list .item-disabled {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
-        color: #626781;
+        color: #62678166;
+        background-color: #62678166;
         text-align: center;
         opacity: 1;
     }
@@ -1149,8 +1164,12 @@
         padding-right: 32px !important;
     }
 
-    .detail-action {
+    /*.detail-action {
         padding-bottom: 9px;
+    }*/
+    .fileViewer {
+        max-width: 512px !important;
+        flex: none !important;
     }
 
     .registViewer .v-list-item,
@@ -1706,7 +1725,7 @@
                         //}
 
                         x['disabled'] = true;
-                        if (comp.isReChecked && (x.status == 1 || x.status == 3)) {
+                        if ( (x.status == 1 || x.status == 3)) {
                             x['disabled'] = false;
                             comp.injectionOkCount++;
                         }
@@ -2101,9 +2120,8 @@
                     console.log(e);
                 });
 
-
-
-            }
+            },
+         
         },
         components: {
             appLayout, appMenu, comTable, editor, comDialog, comConfirm, comLoading
