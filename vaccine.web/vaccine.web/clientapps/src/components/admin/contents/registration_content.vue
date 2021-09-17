@@ -173,13 +173,17 @@
                                                style="display:none"
                                                accept=".xlsx,xls"
                                                @change="onFileChanged">
-                                        <v-divider></v-divider>
                                     </div>
                                 </template>
                                 <template v-slot:action>
-                                    <v-spacer></v-spacer>
-                                    <v-btn outlined :ripple="false" @click="cancelFile"><span style="color:#626781;">關閉</span></v-btn>
-                                    <!--<v-btn @click="saveFile" color="primary" :ripple="false">確定送出</v-btn>-->
+                                    <div style="width:100%; margin-top:9px;">
+                                        <v-divider></v-divider>
+                                        <div class="d-flex" style="margin-top:24px;">
+                                            <v-spacer></v-spacer>
+                                            <v-btn outlined :ripple="false" @click="cancelFile"><span style="color:#626781;">關閉</span></v-btn>
+                                            <!--<v-btn @click="saveFile" color="primary" :ripple="false">確定送出</v-btn>-->
+                                        </div>
+                                    </div>
                                 </template>
                             </com-dialog>
 
@@ -207,11 +211,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
-                    <v-list-item-content>
-                        <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
-                        <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>-->
+                                            <v-list-item-content>
+                                                <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>-->
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">場次標題</div></v-list-item-title>
@@ -279,11 +283,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                    <v-list-item-content>
-                        <v-list-item-title>接種資格複審時間</v-list-item-title>
-                        <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>-->
+                                            <v-list-item-content>
+                                                <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>-->
                                         <div class="divider"><v-divider></v-divider></div>
                                         <v-list-item two-line>
                                             <v-list-item-content>
@@ -298,11 +302,12 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                    <v-list-item-content>
-                        <v-list-item-title>備註</v-list-item-title>
-                        <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>-->
+                                            <v-list-item-content>
+                                                <v-list-item-title>備註</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>-->
+
                                         <!--<div class="divider"><v-divider></v-divider></div>-->
                                     </div>
 
@@ -343,11 +348,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
-                    <v-list-item-content>
-                        <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
-                        <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>-->
+                                            <v-list-item-content>
+                                                <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>-->
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">場次標題</div></v-list-item-title>
@@ -415,12 +420,12 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                    <v-list-item-content>
-                        <v-list-item-title>接種資格複審時間</v-list-item-title>
-                        <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                                            <v-list-item-content>
+                                                <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
 
-                    </v-list-item-content><div class="showname">
-                </v-list-item>-->
+                                            </v-list-item-content><div class="showname">
+                                        </v-list-item>-->
 
                                         <div class="divider"><v-divider></v-divider></div>
 
@@ -437,11 +442,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                    <v-list-item-content>
-                        <v-list-item-title>備註</v-list-item-title>
-                        <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>-->
+                                            <v-list-item-content>
+                                                <v-list-item-title>備註</v-list-item-title>
+                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>-->
 
                                         <div class="divider"><v-divider></v-divider></div>
                                     </div>
@@ -896,8 +901,7 @@
     .registration-list .file-btn-container {
         display: flex;
         justify-content: space-between;
-        margin-top: 5px;
-        margin-bottom: 10px;
+        margin: 5px 0;
         width: 100%;
     }
 
@@ -1207,6 +1211,14 @@
     .fileViewer {
         /*max-width: 600px !important;*/
         flex: none !important;
+    }
+
+    .fileViewer .v-card__text {
+        padding: 0 24px !important;
+    }
+
+    .fileViewer .v-card__actions {
+        padding: 0 24px 24px 24px !important;
     }
 
     .registViewer .v-list-item,
