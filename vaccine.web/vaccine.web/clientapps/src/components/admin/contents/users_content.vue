@@ -194,7 +194,7 @@
                     </v-btn>
                 </template>
                 <template v-slot:content>
-                    <v-form v-model="valid" ref="form">
+                    <v-form v-model="valid" ref="form" autocomplete="off">
                         <v-row>
                             <v-col cols="12">
                                 <v-label><span class="star">姓名</span></v-label>
@@ -368,8 +368,12 @@
             </com-confirm>
 
             <com-dialog ref="formSaveConfirmPanel" ref-key="formSaveConfirm" width="40%">
-                <template v-slot:toolbar>
+                <template v-slot:toolbar="{close}">
                     {{ fromSaveConfirmTitle }}
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click.stop="close" :ripple="false">
+                        <v-icon color="white">fas fa-times</v-icon>
+                    </v-btn>
                 </template>
                 <template v-slot:content>
                     <br>
@@ -405,11 +409,8 @@
                 </template>
                 <template v-slot:action>
                     <v-spacer></v-spacer>
-                    <v-spacer></v-spacer>
-                    <v-spacer></v-spacer>
-                    <v-spacer></v-spacer>
-                    <v-btn @click="close" outlined style="margin-right:16px;"><span style="color:#626781;">修改</span></v-btn>
-                    <v-btn @click="saveform" color="primary" style="margin-left:20px"><span>確定</span></v-btn>
+                    <v-btn @click="close" outlined :ripple="false" style="margin-right:16px;"><span style="color:#626781;">修改</span></v-btn>
+                    <v-btn @click="saveform" color="primary" :ripple="false" style="margin-left:0;"><span>確定</span></v-btn>
                 </template>
             </com-dialog>
         </template>
