@@ -211,11 +211,21 @@
         },
         created: function () {
             this.getUserInfo();
+            window.addEventListener("resize", this.resizeEventHandler);
         },
         methods: {
             ...mapActions('users', ['modifyPassword']),
-            ...mapActions('user', ['getUserInfoData','userLogout']),
+            ...mapActions('user', ['getUserInfoData', 'userLogout']),
+            resizeEventHandler(e) {
+                if (e.currentTarget.innerWidth >= 960) {
+                    this.drawer = false;
+                    this.toggleDrawer();
+                }
+                //var mm = getComputedStyle(document.querySelector('.fa-bars'), ':before').getPropertyValue('content');
+         
+            },
             toggleDrawer() {
+            
                 this.drawer = !this.drawer;
                 var m = document.querySelector(".v-main__wrap");
                 if (!this.drawer) {
