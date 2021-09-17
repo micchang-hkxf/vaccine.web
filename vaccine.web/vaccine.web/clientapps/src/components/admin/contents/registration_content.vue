@@ -714,7 +714,7 @@
                                             </v-img>
                                             <span style="color:white">下載同意書</span>
                                         </v-btn>
-                                        <v-btn color="#736DB9" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.status != -2 ? 'hidden' : ''" class="btn-warning">
+                                        <v-btn color="#FCBF5E" @click.stop="artificialAction(item)" :ripple="false" :disabled="item.disabled || lessCheckTime" :class="item.status != -2 ? 'hidden' : ''" class="btn-warning">
                                             <span style="color:white">人工複檢</span>
                                         </v-btn>
                                     </template>
@@ -1730,7 +1730,7 @@
                         //}
 
                         x['disabled'] = true;
-                        if ( (x.status == 1 || x.status == 3)) {
+                        if ((x.status == 1 || x.status == 3 || x.status==-2)) {
                             x['disabled'] = false;
                             comp.injectionOkCount++;
                         }
