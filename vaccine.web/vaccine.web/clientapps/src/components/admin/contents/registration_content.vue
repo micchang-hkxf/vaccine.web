@@ -178,8 +178,8 @@
                                 </template>
                                 <template v-slot:action>
                                     <v-spacer></v-spacer>
-                                    <v-btn outlined :ripple="false" @click="cancelFile"><span style="color:#626781;">取消</span></v-btn>
-                                    <v-btn @click="saveFile" color="primary" :ripple="false">確定送出</v-btn>
+                                    <v-btn outlined :ripple="false" @click="cancelFile"><span style="color:#626781;">關閉</span></v-btn>
+                                    <!--<v-btn @click="saveFile" color="primary" :ripple="false">確定送出</v-btn>-->
                                 </template>
                             </com-dialog>
 
@@ -207,11 +207,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
-                                            <v-list-item-content>
-                                                <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>-->
+                    <v-list-item-content>
+                        <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
+                        <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
+                    </v-list-item-content>
+                </v-list-item>-->
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">場次標題</div></v-list-item-title>
@@ -279,11 +279,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>-->
+                    <v-list-item-content>
+                        <v-list-item-title>接種資格複審時間</v-list-item-title>
+                        <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                    </v-list-item-content>
+                </v-list-item>-->
                                         <div class="divider"><v-divider></v-divider></div>
                                         <v-list-item two-line>
                                             <v-list-item-content>
@@ -298,12 +298,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>備註</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>-->
-
+                    <v-list-item-content>
+                        <v-list-item-title>備註</v-list-item-title>
+                        <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
+                    </v-list-item-content>
+                </v-list-item>-->
                                         <!--<div class="divider"><v-divider></v-divider></div>-->
                                     </div>
 
@@ -344,11 +343,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
-                                            <v-list-item-content>
-                                                <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>-->
+                    <v-list-item-content>
+                        <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
+                        <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
+                    </v-list-item-content>
+                </v-list-item>-->
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">場次標題</div></v-list-item-title>
@@ -416,12 +415,12 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                    <v-list-item-content>
+                        <v-list-item-title>接種資格複審時間</v-list-item-title>
+                        <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
 
-                                            </v-list-item-content><div class="showname">
-                                        </v-list-item>-->
+                    </v-list-item-content><div class="showname">
+                </v-list-item>-->
 
                                         <div class="divider"><v-divider></v-divider></div>
 
@@ -438,11 +437,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>備註</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>-->
+                    <v-list-item-content>
+                        <v-list-item-title>備註</v-list-item-title>
+                        <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
+                    </v-list-item-content>
+                </v-list-item>-->
 
                                         <div class="divider"><v-divider></v-divider></div>
                                     </div>
@@ -524,7 +523,41 @@
                                     確認
                                 </template>
                             </com-confirm>
+                            <com-confirm ref="warringAlert2" ref-key="warringAlert2" :right-click="closeRightClick2" key="warring-alert-confirm2" width=400 height=600>
+                                <template v-slot:confirm-image>
+                                    <v-img src="/alert_warning.svg"></v-img>
+                                </template>
+                                <template v-slot:confirm-title>
+                                    <span style="color:#736DB9">{{alertTitle}}</span>
 
+                                </template>
+                                <template v-slot:confirm-text>
+                                    <span style="color:#626781">{{alertText}}</span>
+                                </template>
+
+                                <template v-slot:confirm-right-btn-text>
+                                    確認
+                                </template>
+                            </com-confirm>
+                            <com-confirm ref="uploadConfirm" ref-key="uploadConfirm" :right-click="uploadRightClick" :left-click="closeConfirmLeftClick" key="upload-final-confirm" >
+                                <template v-slot:confirm-image>
+                                    <v-img src="/upload2.svg"></v-img>
+                                </template>
+                                <template v-slot:confirm-title>
+                                    <span style="color:#736DB9">{{alertTitle}}</span>
+
+                                </template>
+                                <template v-slot:confirm-text>
+                                    <span style="color:#626781">{{alertText}}</span>
+                                </template>
+
+                                <template v-slot:confirm-left-btn-text>
+                                    返回
+                                </template>
+                                <template v-slot:confirm-right-btn-text>
+                                    確認
+                                </template>
+                            </com-confirm>
                         </template>
 
                         <template v-slot:item.regist_station_date="{item}">
@@ -1597,6 +1630,16 @@
             closeRightClick: function () {
                 this.$refs.warringAlert.close();
             },
+            closeRightClick2: function () {
+                this.$refs.warringAlert2.close();
+            },
+            closeConfirmLeftClick: function () {
+                this.$refs.uploadConfirm.close();
+            },
+            uploadRightClick: function () {
+                this.$refs.uploadConfirm.close();
+                this.saveFile();
+            },
             removeRightClick: function () {
 
                 //console.log('compSelectedItems', this.compSelectedItems);
@@ -1889,7 +1932,7 @@
                     });
             },
             downloadAgreeFile: function (item) {
-                console.log('bbbb', item);
+            
                 var comp = this;
                 comp.alertMessage = '';
                 comp.getAgreeFile({ id: item.id, name: item.name, activityId: this.activityId, title: comp.detailTitle })
@@ -1982,7 +2025,7 @@
                 }
             },
             onFileChanged(event) {
-
+             
                 this.uploadFile = event.target.files ? event.target.files[0] : null;
 
                 if (this.uploadFile) {
@@ -2013,14 +2056,51 @@
                             z = comp.$store.getters['user/getZones'][0].data,
                             m = comp.$store.getters['user/getMedicals'];
 
-                        var vv, vvv, k = 0;
-                        var zz, zzz, mm, villageName;
+                        var vv, vvv, k = 0, errorMsg="",errLineCount=0;
+                        var sd, ed, zz, zzz, mm, villageName;
+                        var regex = /^\d{4}-\d{2}-\d{2}$/;
+                        var maxErrorShow = 3;//錯誤行數顯示框警告限制
                         comp.finalData = [];
                         for (j = 4; j < data.length; j++) {
 
+                            //alert(data[j][8]+"@"+data[j][8].trim().match(regex));
+                   
+                
                             if (!data[j][0]) {
                                 //console.log("line " + (j + 1) + "is null");
                                 continue;
+                            }
+
+                            sd = data[j][7];
+                            ed = data[j][10];
+                            if (typeof (sd) == "string" && sd.trim() != "") {
+
+                                if (!sd.match(regex)) {
+                                    if (errLineCount < maxErrorShow) {
+                                        errorMsg += "設站日期:第" + (j + 1) + "行錯誤(請用格式YYYY-mm-dd)\n";
+                                    }
+                                    errLineCount++;
+                                }
+                            } else {
+                                if (errLineCount < maxErrorShow) {
+                                    errorMsg += "設站日期:第" + (j + 1) + "行錯誤(請用文字類型儲存格式)\n";
+                                }
+                                errLineCount++;
+
+                            }
+                            if (typeof(ed) == "string" && ed.trim() != "") {
+                                if (!ed.match(regex)) {
+                                    if (errLineCount < maxErrorShow) {
+                                        errorMsg += "事先報名開始時間:第" + (j + 1) + "行錯誤(請用格式YYYY-mm-dd)\n";
+                                    }
+                                    errLineCount++;
+                                }
+                            } else {
+                                if (errLineCount < maxErrorShow) {
+                                    errorMsg += "事先報名開始時間:第" + (j + 1) + "行錯誤(請用文字類型儲存格式)\n";
+                                }
+                                errLineCount++;
+
                             }
                             vv = fv(data[j][0], v, 'groupName');
                             comp.finalData[k] = data[j];
@@ -2036,11 +2116,19 @@
                                     if (vv['groupId'] == 0) {//肺鏈、流感 ,可不填疫苗類型
                                         comp.finalData[k][1] = "";
                                     } else {
-                                        console.log('疫苗種類', "error line:" + (j + 1));
+                                        if (errLineCount < maxErrorShow) {
+                                            //errorMsg += "疫苗廠牌:第" + (j + 1) + "行錯誤\n";//規格有問題先不檢查
+                                        }
+                                        console.log('疫苗廠牌', "error line:" + (j + 1));
+                                        //errLineCount++;//規格有問題先不檢查
                                     }
                                 }
                             } else {
+                                if (errLineCount < maxErrorShow) {
+                                    errorMsg += "疫苗類型:第" + (j + 1) + "行錯誤\n";
+                                }
                                 console.log('疫苗類型', "error line:" + (j + 1));
+                                errLineCount++;
                             }
 
                             //行政區域
@@ -2054,10 +2142,18 @@
                                 if (zzz) {
                                     comp.finalData[k][4] = zzz['villageId'];
                                 } else {
+                                    if (errLineCount < maxErrorShow) {
+                                        errorMsg += "村里:第" + (j + 1) + "行錯誤\n";
+                                    }
                                     console.log('村里', "error line:" + (j + 1));
+                                    errLineCount++;
                                 }
                             } else {
+                                if (errLineCount < maxErrorShow) {
+                                    errorMsg += "行政區域:第" + (j + 1) + "行錯誤\n";
+                                }
                                 console.log('行政區域', "error line:" + (j + 1));
+                                errLineCount++;
                             }
                             console.log(villageName);
                             //醫療院所
@@ -2073,12 +2169,28 @@
                             if (mm && mm['uName'] == data[j][6].trim()) {
                                 comp.finalData[k][6] = mm['id'];
                             } else {
+                                errorMsg += "醫療院所:第" + (j + 1) + "行錯誤\n";
                                 console.log('醫療院所', "error line:" + (j + 1));
                             }
                             k++;
                         }
-                        console.log('finalData', comp.finalData);
                         comp.$bus.$emit('type1_hide4');
+                        if (errorMsg != "") {
+                            comp.alertTitle = '檔案匯入錯誤(' + errLineCount + '處錯誤)';
+                            var dot = "";
+                            if (errLineCount < maxErrorShow) {
+                                dot = "..........";
+                            }
+                            comp.alertText = errorMsg + dot;
+                            comp.$refs.warringAlert2.open();
+                            return;
+                        } else {
+                        
+                            comp.alertText = "確定上傳?\n" + comp.uploadFile.name;
+                            comp.$refs.uploadConfirm.open();
+                        }
+                        console.log('finalData', comp.finalData);
+                        
                     }
 
                     reader.readAsBinaryString(this.uploadFile);
