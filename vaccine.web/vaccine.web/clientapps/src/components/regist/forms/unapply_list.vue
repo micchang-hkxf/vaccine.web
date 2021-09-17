@@ -12,7 +12,7 @@
                         </div>
                     </template>
                 </v-text-field>
-                <div class="action-bar-select">
+                <div class="action-bar-select justify-space-between">
                     <v-select v-model="selectDistrict"
                               :items="getDistricts"
                               item-text="name"
@@ -553,7 +553,7 @@
         }
 
         .action-bar-filter .action-bar-select .v-select {
-            max-width: 50%;
+            max-width: 49%;
         }
     }
 
@@ -595,7 +595,7 @@
         }
 
         .action-bar-filter .action-bar-select .v-select {
-            max-width: 50%;
+            max-width: 49%;
         }
     }
 
@@ -637,7 +637,7 @@
         }
 
         .action-bar-filter .action-bar-select .v-select {
-            max-width: 50%;
+            max-width: 49%;
         }
     }
 </style>
