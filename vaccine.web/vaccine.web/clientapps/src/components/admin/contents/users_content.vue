@@ -314,7 +314,8 @@
                     <v-img v-bind:src="alertImgSrc"></v-img>
                 </template>
                 <template v-slot:confirm-title>
-                    <span class="alertTitle">{{ alertTitle }}</span>
+                    <span class="alertTitle"
+                          style="color:#626781;">{{ alertTitle }}</span>
                 </template>
                 <template v-slot:confirm-text>
                     {{ alertMessage }}
@@ -492,6 +493,8 @@
     }*/
     .userlist .alertTitle {
         font-size: 8px;
+
+       
     }
 
     .p {
