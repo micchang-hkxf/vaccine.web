@@ -173,13 +173,17 @@
                                                style="display:none"
                                                accept=".xlsx,xls"
                                                @change="onFileChanged">
-                                        <v-divider></v-divider>
                                     </div>
                                 </template>
                                 <template v-slot:action>
-                                    <v-spacer></v-spacer>
-                                    <v-btn outlined :ripple="false" @click="cancelFile"><span style="color:#626781;">取消</span></v-btn>
-                                    <v-btn @click="saveFile" color="primary" :ripple="false">確定送出</v-btn>
+                                    <div style="width:100%; margin-top:9px;">
+                                        <v-divider></v-divider>
+                                        <div class="d-flex" style="margin-top:24px;">
+                                            <v-spacer></v-spacer>
+                                            <v-btn outlined :ripple="false" @click="cancelFile" style="margin-right:16px;"><span style="color:#626781;">取消</span></v-btn>
+                                            <v-btn @click="saveFile" color="primary" :ripple="false">確定送出</v-btn>
+                                        </div>
+                                    </div>
                                 </template>
                             </com-dialog>
 
@@ -863,8 +867,7 @@
     .registration-list .file-btn-container {
         display: flex;
         justify-content: space-between;
-        margin-top: 5px;
-        margin-bottom: 10px;
+        margin: 5px 0;
         width: 100%;
     }
 
@@ -1174,6 +1177,14 @@
     .fileViewer {
         /*max-width: 600px !important;*/
         flex: none !important;
+    }
+
+    .fileViewer .v-card__text {
+        padding: 0 24px !important;
+    }
+
+    .fileViewer .v-card__actions {
+        padding: 0 24px 24px 24px !important;
     }
 
     .registViewer .v-list-item,
