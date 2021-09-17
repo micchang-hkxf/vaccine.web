@@ -379,6 +379,21 @@
                         console.log(result);
                         comp.close();
                         comp.getAudit(1);
+
+                        // 新增完直接下載
+                        var data = result.datas;
+                        var item = {
+                            id: data.seq,
+                            date: data.createTime,
+                            name: data.uName,
+                            affiliation: data.unit,
+                            type: data.typeName,
+                            title: data.fileName,
+                            count: data.dataCount,
+                            download: data.desc,
+                            fileId: data.fileId
+                        };
+                        comp.downloadFile(item);
                     })
                     .catch(function () {
                         comp.alertMessage = '網站異常，請稍後再試';
