@@ -1730,7 +1730,7 @@
                         //}
 
                         x['disabled'] = true;
-                        if ((x.status == 1 || x.status == 3 || x.status==-2)) {
+                        if ((x.status == 1 || x.status == 3 || x.status==-2 )) {
                             x['disabled'] = false;
                             comp.injectionOkCount++;
                         }
