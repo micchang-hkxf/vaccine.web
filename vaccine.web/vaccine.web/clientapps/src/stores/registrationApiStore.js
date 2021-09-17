@@ -707,7 +707,7 @@ export default {
             { text: '報名方式', value: 'type', align: 'center', sortable: false, flex: 6 },
             { text: '備註', value: 'remark', align: 'center', sortable: false, flex: 6 },
             { text: '複檢結果', value: 'result', align: 'center', sortable: false, flex: 6 },
-            { text: '', value: 'modify', sortable: false },
+            { text: '操作', value: 'modify', align: 'center', sortable: false },
         ],
         showBrand: false,
         
