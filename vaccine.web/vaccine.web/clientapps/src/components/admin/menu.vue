@@ -37,12 +37,13 @@
             if (n == "") {
                 n = "registration";
             }
-            var selection = document.querySelector(".v-list-item__content." + n);
-        
-            if (selection!=null) {
-                selection.style.setProperty('background-color', '#FFFFFF0F', 'important');
-            }
-             
+            var checkExist = setInterval(function () {
+                var selection = document.querySelector(".v-list-item__content." + n);
+                if (selection != null) {
+                    selection.style.setProperty('background-color', '#FFFFFF0F', 'important');
+                    clearInterval(checkExist);
+                }
+            },500);   
         },
         created: function () {
             this.getUserInfoData().then(() => {
