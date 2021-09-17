@@ -1,5 +1,5 @@
 ﻿<template> 
-        <v-dialog v-model="isShow"  width="264" :persistent="isPersistent"  >
+        <v-dialog v-model="isShow" :width="setWidth" :height="setHeight" :persistent="isPersistent"  >
             <v-card>
                 <!--@keydown.enter="isShow = false-->
                 <v-card-title>
@@ -178,14 +178,15 @@
 
 <script>
     export default {    
-        props: ['refKey', 'rightClick', 'leftClick', 'leftColor', 'rightColor', 'leftOutlined', 'rightOutlined','persistent'],
+        props: ['refKey', 'rightClick', 'leftClick', 'leftColor', 'rightColor', 'leftOutlined', 'rightOutlined','persistent','height','width'],
         data: () => ({
             isShow: false,
             setLeftColor: "rgba(50,65,80,0.2)",
             setRightColor: "#626781",
             setLeftOutlined: true,
             setRightOutlined: false,           
-
+            setHeight:200,
+            setWidth:260
         }),
         computed: {
             isPersistent: function () {
@@ -204,16 +205,19 @@
             var comp = this;
          
             //this.setRightBtnColor(this.rightColor);
-            comp.$set(comp, "setLeftColor", (comp.leftColor) ? comp.leftColor : comp.setLeftColor);
-            comp.$set(comp, "setRightColor", (comp.rightColor) ? comp.rightColor : comp.setRightColor);            
+            this.$set(this, "setLeftColor", (this.leftColor) ? this.leftColor : this.setLeftColor);
+            this.$set(this, "setRightColor", (this.rightColor) ? this.rightColor : this.setRightColor);            
 
-            comp.$set(comp, "setLeftOutlined", comp.leftOutlined == "on");
-            comp.$set(comp, "setRightOutlined", comp.rightOutlined == "on");
+            this.$set(this, "setLeftOutlined", this.leftOutlined == "on");
+            this.$set(this, "setRightOutlined", this.rightOutlined == "on");
 
-            this.$bus.$on(`${comp.refKey}_show`, function (isShow) {
+            this.$set(this, "setHeight", (this.height) ? this.height : this.setHeight);
+            this.$set(this, "setWidth", (this.width) ? this.width : this.setWidth);        
+
+            this.$bus.$on(`${this.refKey}_show`, function (isShow) {
                 comp.$set(comp, "isShow", isShow);
             });
-            this.$bus.$on(`${comp.refKey}_switch`, function () {
+            this.$bus.$on(`${this.refKey}_switch`, function () {
                 comp.$set(comp, "isShow", !comp.isShow);
             });
         },
@@ -230,6 +234,7 @@
             close: function () {
                 this.$set(this, 'isShow', false);
             },
+ 
             hasSlot: function (templateName) {
                 return this.$slots[templateName] != null || this.$scopedSlots[templateName] != null;
             },
