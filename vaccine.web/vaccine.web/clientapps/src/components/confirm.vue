@@ -182,7 +182,7 @@
         data: () => ({
             isShow: false,
             setLeftColor: "rgba(50,65,80,0.2)",
-            setRightColor: "#626781",
+            setRightColor: location.pathname === '/admin' ? "#736DB9" : "#626781",
             setLeftOutlined: true,
             setRightOutlined: false,           
             setHeight:200,
