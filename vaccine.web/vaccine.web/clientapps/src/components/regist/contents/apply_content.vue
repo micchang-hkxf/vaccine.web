@@ -257,7 +257,7 @@
             vaccines: [],
             isCitizen: false,
             isIndigenous: false,
-            cityMark:''
+            cityMark: ''
         }),
         computed: {
             ...mapGetters('regist', ['getUserInfo', 'getLockUserInfo']),
@@ -332,6 +332,8 @@
                 var comp = this;
                 comp.checkJobId = '';
                 comp.vaccines = [];
+                comp.uName = '';
+                comp.cityMark = '';
 
                 var userInfo = comp.getUserInfo;
                 if (userInfo !== null) {
@@ -357,15 +359,20 @@
                         comp.getBeforeApply(data)
                             .then(function (result) {
                                 if (result.datas.length > 0) {
-                                    var check = result.datas[0];
                                     comp.checkJobId = result.datas[0]['checkJobId'];
                                     comp.vaccines = result.datas[0]['vaccines'];
 
-                                    var reMark = ""
-                                    if (check.isCitizen=='true')
+                                    if (typeof result.datas[0]['uName'] === 'string') {
+                                        comp.uName = result.datas[0]['uName'];
+                                    }
+
+                                    var reMark = "";
+                                    if (result.datas[0].isCitizen === true)
                                         reMark += "台北市";
-                                    else reMark = "非台北市";
-                                    if (check.isIndigenous == 'true')
+                                    else
+                                        reMark = "非台北市";
+
+                                    if (result.datas[0].isIndigenous === true)
                                         reMark += "(原)";
 
                                     comp.cityMark = reMark;
@@ -394,10 +401,6 @@
                                     if (result.datas[0]['messageCode'] === 4) {
                                         comp.$bus.$emit('alert_show', true);
                                         return;
-                                    }
-
-                                    if (typeof result.datas[0]['uName'] === 'string') {
-                                        comp.uName = result.datas[0]['uName'];
                                     }
 
                                     comp.$forceUpdate();
