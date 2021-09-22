@@ -257,6 +257,7 @@
     .unapply-list/deep/ .action-info-title {
         font-size: 16px;
         color: #434969;
+        white-space: nowrap;
     }
 
         .unapply-list/deep/ .action-info-subject {
@@ -288,14 +289,14 @@
         padding-right: 16px;
     }
 
-        .unapply-list/deep/ .action {
-            height: 198px;
-            /*height: 100%;*/
-            padding: 16px;
-            border-radius: 8px !important;
-            width: 95%;
-            margin: 10px;
-        }
+    .unapply-list/deep/ .action {
+        height: 214px;
+        /*height: 100%;*/
+        padding: 16px;
+        border-radius: 8px !important;
+        width: 100%;
+        margin: 6px 0;
+    }
 
     .unapply-list/deep/ .action-button {
         width: 58px;
@@ -346,10 +347,10 @@
     }
 
         .unapply-list/deep/ .action-container {
-            padding-left: 16px;
-            padding-right: 16px;
-            padding-top: 16px;
-            padding-bottom: 16px;
+            padding-left: 8px;
+            padding-right: 8px;
+            padding-top: 8px;
+            padding-bottom: 8px;
             margin-bottom: 78px;
             display: flex;
             justify-content: center;
@@ -400,10 +401,10 @@
     /* Extra small devices (portrait phones, less than 576px) */
     @media (max-width: 575.98px) {
         .unapply-list/deep/ .action-container {
-            padding-left: 16px;
-            padding-right: 16px;
-            padding-top: 16px;
-            padding-bottom: 16px;
+            padding-left: 8px;
+            padding-right: 8px;
+            padding-top: 8px;
+            padding-bottom: 8px;
             margin-bottom: 78px;
             display: block;
             justify-content: center;
@@ -444,6 +445,10 @@
         .unapply-list/deep/ .action-info-sec-subject {
             font-size: 10px;
         }
+
+        .unapply-list/deep/ .action {
+            height: 198px;
+        }
     }
 
     @media (min-width: 375px) and (max-width: 382px) {
@@ -461,6 +466,10 @@
 
         .unapply-list/deep/ .action-info-sec-subject {
             font-size: 12px;
+        }
+
+        .unapply-list/deep/ .action {
+            height: 198px;
         }
     }
 
@@ -480,6 +489,10 @@
         .unapply-list/deep/ .action-info-sec-subject {
             font-size: 14px;
         }
+
+        .unapply-list/deep/ .action {
+            height: 198px;
+        }
     }
 
 
@@ -488,10 +501,10 @@
     /* Small devices (landscape phones, 576px and up) */
     @media (min-width: 576px) and (max-width: 767.98px) {
         .unapply-list/deep/ .action-container {
-            padding-left: 16px;
-            padding-right: 16px;
-            padding-top: 16px;
-            padding-bottom: 16px;
+            padding-left: 8px;
+            padding-right: 8px;
+            padding-top: 8px;
+            padding-bottom: 8px;
             margin-bottom: 78px;
             display: block;
             justify-content: center;
@@ -519,10 +532,10 @@
     /** Medium devices (tablets, 768px and up) */
     @media (min-width: 768px) and (max-width: 991.98px) {
         .unapply-list/deep/ .action-container {
-            padding-left: 16px;
-            padding-right: 16px;
-            padding-top: 16px;
-            padding-bottom: 16px;
+            padding-left: 8px;
+            padding-right: 8px;
+            padding-top: 8px;
+            padding-bottom: 8px;
             margin-bottom: 78px;
             display: block;
             justify-content: center;
@@ -554,6 +567,11 @@
 
         .action-bar-filter .action-bar-select .v-select {
             max-width: 49%;
+        }
+
+        .unapply-list/deep/ .action {
+            width: 97%;
+            margin: 6px;
         }
     }
 
@@ -561,10 +579,10 @@
     /* Large devices (desktops, 992px and up) */
     @media (min-width: 992px) and (max-width: 1199.98px) {
         .unapply-list/deep/ .action-container {
-            padding-left: 16px;
-            padding-right: 16px;
-            padding-top: 16px;
-            padding-bottom: 16px;
+            padding-left: 8px;
+            padding-right: 8px;
+            padding-top: 8px;
+            padding-bottom: 8px;
             margin-bottom: 78px;
             display: block;
             justify-content: center;
@@ -596,16 +614,21 @@
 
         .action-bar-filter .action-bar-select .v-select {
             max-width: 49%;
+        }
+
+        .unapply-list/deep/ .action {
+            width: 97%;
+            margin: 6px;
         }
     }
 
     /* Extra large devices (large desktops, 1200px and up) */
     @media (min-width: 1200px) {
         .unapply-list/deep/ .action-container {
-            padding-left: 16px;
-            padding-right: 16px;
-            padding-top: 16px;
-            padding-bottom: 16px;
+            padding-left: 8px;
+            padding-right: 8px;
+            padding-top: 8px;
+            padding-bottom: 8px;
             margin-bottom: 78px;
             display: block;
             justify-content: center;
@@ -638,6 +661,11 @@
 
         .action-bar-filter .action-bar-select .v-select {
             max-width: 49%;
+        }
+
+        .unapply-list/deep/ .action {
+            width: 97%;
+            margin: 6px;
         }
     }
 </style>
