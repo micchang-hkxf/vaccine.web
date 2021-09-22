@@ -114,12 +114,12 @@
 
                 <v-row>
                     <v-col cols="12">
-                        <div><span class="regist-title">設站地點</span><span class="red--text">*</span></div>
+                        <div><span class="regist-title">設站地址</span><span class="red--text">*</span></div>
                         <v-text-field v-model="model.regist_place"
                                       :readonly="overStatus==1"
                                       :disabled="overStatus==1"
-                                      placeholder="請輸入設站地點"
-                                      :rules="[rules.required]"
+                                      placeholder="請輸入接種站地址(50字內)"
+                                      :rules="[rules.required,rules.maxLengthLimit]"
                                       required
                                       outlined
                                       dense>
@@ -623,6 +623,7 @@
                     return v => (v && v >= minNum && v > 0) || '報名名額上限設定必須大於0且大於等於' + minNum;
                 },
                 ageLimit: v => v >= 0 || "輸入的數字必須大於0",
+                maxLengthLimit: v => v.length <= 50 || "輸入長度必須50字內",
                 ageRequired: v => (!!v || v===0 ) || '必填',
             },
             regist_station_start_time: "00:00",
