@@ -68,7 +68,8 @@ export default {
                         villageIdFilter: villageIdFilter,       // 村里過濾
                         keyword: keyword,                       // 關鍵字
                         vaccineGroupId: vaccineGroupId,         // 疫苗種類
-                        token: ''
+                        token: '',
+                        orderType: 1,                           // 排序條件
                     }
                 }).then(res => {
                     results.totalCount = res.data.totalRows;
