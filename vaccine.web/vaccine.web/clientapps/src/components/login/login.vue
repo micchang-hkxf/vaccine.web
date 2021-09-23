@@ -132,7 +132,10 @@
                 </template>
                 <template v-slot:action>
                     <v-spacer></v-spacer>
-                    <v-btn @click="sendResetPwForm" :ripple="false">送出</v-btn>
+                    <v-btn @click="toLoginPage" :ripple="false" outlined color="rgba(50,65,80,0.2)">
+                        <span style="color:#626781;">取消</span>
+                    </v-btn>
+                    <v-btn @click="sendResetPwForm" :ripple="false"><span>送出</span></v-btn>
                 </template>
             </com-dialog>
             <!---->
@@ -323,7 +326,7 @@
         },
         created: function () {
             var comp = this;
-
+            
             // uid focus
             setTimeout(() => this.$refs.uid.focus(), 0); 
 
@@ -1121,6 +1124,11 @@
         background: #9D99CE 0% 0% no-repeat padding-box !important;
         opacity: 1 !important;
     }
+
+    .dialogResetPw .v-card__text {
+        padding: 24px 24px 0 24px !important;
+    }
+
     /* Extra small devices (portrait phones, less than 576px) */
     @media (max-width: 575.98px) {
         body {
