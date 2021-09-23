@@ -80,7 +80,7 @@
                 </v-card>
             </v-dialog>
             <!---->
-            <com-confirm ref="alertPw" ref-key="alertPw" :left-click="alertPwLeftClick" :right-click="alertPwRightClick">
+            <com-confirm ref="alertPw" ref-key="alertPw" :left-click="alertPwLeftClick" :right-click="alertPwRightClick" leftColor="#FFFFFF" right-color="#736DB9">
                 <template v-slot:confirm-image>
                     <v-img :src="alertPwImg"></v-img>
                 </template>
@@ -88,10 +88,10 @@
                     {{alertPwMessage}}
                 </template>
                 <template v-slot:confirm-left-btn-text>
-                    {{alertPwCancel}}
+                    <span style="color:#626781">{{alertPwCancel}}</span>
                 </template>
                 <template v-slot:confirm-right-btn-text>
-                    修改密碼
+                    <span>修改密碼</span>
                 </template>
             </com-confirm>
             <!---->
@@ -326,7 +326,7 @@
         },
         created: function () {
             var comp = this;
-            
+
             // uid focus
             setTimeout(() => this.$refs.uid.focus(), 0); 
 
@@ -517,7 +517,7 @@
 
                         if (result.state1 === 'first login') {
                             comp.alertPwState = result.state1;
-                            comp.alertPwImg = '';
+                            comp.alertPwImg = '/alert_warning.svg';
                             comp.alertPwMessage = '提醒您！為了確保您的資料安全，請更新您的個人密碼。';
                             comp.alertPwCancel = '取消';
                             comp.$bus.$emit('alertPw_show', true);
