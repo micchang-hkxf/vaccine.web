@@ -647,17 +647,17 @@
                 //this.registEndDate = this.$moment(new Date().setDate(new Date(val).getDate() - 3)).format('YYYY/MM/DD,23:59');
 
                 var d = new Date(val);
-                d.setDate(d.getDate() - 4);//before 3 day
+                d.setDate(d.getDate() - 3);//before 3 day
 
                 var mm = d.getMonth() + 1;
                 var dd = d.getDate();
-
-                this.model.regist_apply_end_date = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
-                d.setDate(d.getDate() + 2); //before 2 day
-                this.reCheckDate = this.model.regist_apply_end_date + " 23:59"
+                this.registEndDate = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
+                this.model.regist_apply_end_date = this.registEndDate
+                d.setDate(d.getDate() +1); //before 2 day
                 mm = d.getMonth() + 1;
                 dd = d.getDate();
-                this.registEndDate = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
+
+                this.reCheckDate = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd + " 23:59"
 
             },
             //'getInstitutions': function () {
@@ -779,19 +779,7 @@
                         x.parentNode.style = '';
                     }
                 });
-                var d = new Date(val);
-                d.setDate(d.getDate() - 4);//before 3 day
-
-                var mm = d.getMonth() + 1;
-                var dd = d.getDate();
-
-                this.model.regist_apply_end_date = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
-                d.setDate(d.getDate() + 2); //before 2 day
-                this.beforeRuleDesc = this.model.regist_apply_end_date + " 23:59"
-                mm = d.getMonth() + 1;
-                dd = d.getDate();
-                this.beforeRuleDesc2 = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
-
+     
 
 
             },

@@ -1488,7 +1488,7 @@
                 }
 
                 if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) <
-                    Date.parse(result.model.regist_apply_end_date) + this.regist_beforeDay * 60 * 60 * 24 * 1000) {
+                    Date.parse(result.model.regist_apply_end_date+' 00:00') + this.regist_beforeDay * 60 * 60 * 24 * 1000) {
                     errMsg = "(開放報名結束時間)必須早於(開始施打時間)至少" + this.regist_beforeDay + "天";
                 }
 
