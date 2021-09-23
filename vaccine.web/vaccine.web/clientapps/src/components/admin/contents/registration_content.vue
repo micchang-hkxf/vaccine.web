@@ -612,29 +612,28 @@
                                             <span class="modify-btn-text">刪除</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="dowloadAgreeItem(item)">
+                                    <v-list-item @click.stop="dowloadAgreeItem(item)" class="modify-list-item" :disabled="!item.regist_isrechecked">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
                                                 <img src="/download2.svg">
                                             </v-btn>
-                                            <span class="modify-btn-text">下載完整接種同意書</span>
+                                            <span class="modify-btn-text" :style="item.regist_isrechecked ? '' : 'color:#62678166'">下載完整接種同意書</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="dowloadRegistItem(item)" class="modify-list-item">
+                                    <v-list-item @click.stop="dowloadRegistItem(item)" class="modify-list-item" :disabled="!item.regist_isrechecked">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
                                                 <img src="/download2.svg">
                                             </v-btn>
-                                            <span class="modify-btn-text">下載報名清冊</span>
+                                            <span class="modify-btn-text" :style="item.regist_isrechecked ? '' : 'color:#62678166'">下載報名清冊</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="dowloadList(item)" class="modify-list-item">
+                                    <v-list-item @click.stop="dowloadList(item)" class="modify-list-item" :disabled="!item.regist_isrechecked">
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
                                                 <img src="/download2.svg">
-
                                             </v-btn>
-                                            <span class="modify-btn-text">下載施打清冊</span>
+                                            <span class="modify-btn-text" :style="item.regist_isrechecked ? '' : 'color:#62678166'">下載施打清冊</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
                                 </v-list>
@@ -708,7 +707,7 @@
                                         </div>
                                         <div class="detail-action">
                                             <div class="detail-rebound-info">
-                                                <div>複檢時間：{{(!detailCheckTime ? '-' :detailCheckTime)}}</div>
+                                                <div>複檢時間：{{(!detailCheckTime ? '-' : $moment(detailCheckTime).format('YYYY/MM/DD HH:mm'))}}</div>
                                                 <div>複檢合格人數：{{detailCheckPassCnt == '0' ? '-' : detailCheckPassCnt}}</div>
                                             </div>
                                             <div class="detail-action-btn">
@@ -716,17 +715,17 @@
                                                 <v-btn @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
                                                     <span :style="detailAbnormalCnt > 0 ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
                                                 </v-btn>
-                                                <v-btn color="#736DB9" @click.stop="downloadCompleteFile('')" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn color="#736DB9" @click.stop="downloadCompleteFile('')" :ripple="false" :disabled="!isReChecked">
                                                     <v-img src="/admin/download_icon.svg" width="24px" height="24px">
                                                     </v-img>
                                                     <span style="color:white">下載完整接種同意書</span>
                                                 </v-btn>
-                                                <v-btn color="#736DB9" @click.stop="downloadSignUpFile('')" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn color="#736DB9" @click.stop="downloadSignUpFile('')" :ripple="false" :disabled="!isReChecked">
                                                     <v-img src="/admin/download_icon.svg" width="24px" height="24px">
                                                     </v-img>
                                                     <span style="color:white">下載報名清冊</span>
                                                 </v-btn>
-                                                <v-btn color="#736DB9" @click.stop="downloadVaccinationFile('')" :ripple="false" :disabled="lessCheckTime">
+                                                <v-btn color="#736DB9" @click.stop="downloadVaccinationFile('')" :ripple="false" :disabled="!isReChecked">
                                                     <v-img src="/admin/download_icon.svg" width="24px" height="24px">
                                                     </v-img>
                                                     <span style="color:white">下載施打清冊</span>
@@ -1785,7 +1784,10 @@
                         //}
 
                         x['disabled'] = true;
-                        if ((x.status == 1 || x.status == 3 || x.status==-2 )) {
+                        if (x.status == 1 && comp.isReChecked && x.isReChecked) {
+                            x['disabled'] = false;
+                            comp.injectionOkCount++;
+                        } else if (x.status == 3 || x.status == -2) {
                             x['disabled'] = false;
                             comp.injectionOkCount++;
                         }

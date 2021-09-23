@@ -221,7 +221,7 @@ export default {
                         vacc = data.vaccines.map(function (elm) {
                             return elm.itemName;
                         }).join(",");
-
+                        
                         datas.push({
                             id: data.applyNo,
                             date: data.signUpTime.substr(0, 16).replace(/-/g, '/').replace('T', ' '),
@@ -237,8 +237,8 @@ export default {
                             result: data.logTypeName,
                             status: data.logType,//-2 複檢異常 ，-1取消，0複檢不合格，1複檢成功/合格, 2複檢不合格（人工複檢），3複檢合格（人工複檢）
                             //status: -2,//test only
-                            remark:vacc//備註
-                     
+                            remark: vacc, //備註
+                            isReChecked: data.isReChecked //個人的複檢狀態
                         });
                     });
 
