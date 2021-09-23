@@ -81,7 +81,7 @@
                 </v-card>
             </v-dialog>
             <!---->
-            <com-confirm ref="alertPw" ref-key="alertPw" :left-click="alertPwLeftClick" :right-click="alertPwRightClick">
+            <com-confirm ref="alertPw" ref-key="alertPw" :left-click="alertPwLeftClick" :right-click="alertPwRightClick" leftColor="#FFFFFF" right-color="#736DB9">
                 <template v-slot:confirm-image>
                     <v-img :src="alertPwImg"></v-img>
                 </template>
@@ -89,10 +89,10 @@
                     {{alertPwMessage}}
                 </template>
                 <template v-slot:confirm-left-btn-text>
-                    {{alertPwCancel}}
+                    <span style="color:#626781">{{alertPwCancel}}</span>
                 </template>
                 <template v-slot:confirm-right-btn-text>
-                    修改密碼
+                    <span>修改密碼</span>
                 </template>
             </com-confirm>
             <!---->
@@ -133,7 +133,10 @@
                 </template>
                 <template v-slot:action>
                     <v-spacer></v-spacer>
-                    <v-btn @click="sendResetPwForm" :ripple="false">送出</v-btn>
+                    <v-btn @click="toLoginPage" :ripple="false" outlined color="rgba(50,65,80,0.2)">
+                        <span style="color:#626781;">取消</span>
+                    </v-btn>
+                    <v-btn @click="sendResetPwForm" :ripple="false"><span>送出</span></v-btn>
                 </template>
             </com-dialog>
             <!---->
@@ -515,7 +518,7 @@
 
                         if (result.state1 === 'first login') {
                             comp.alertPwState = result.state1;
-                            comp.alertPwImg = '';
+                            comp.alertPwImg = '/alert_warning.svg';
                             comp.alertPwMessage = '提醒您！為了確保您的資料安全，請更新您的個人密碼。';
                             comp.alertPwCancel = '取消';
                             comp.$bus.$emit('alertPw_show', true);
@@ -1122,6 +1125,11 @@
         background: #9D99CE 0% 0% no-repeat padding-box !important;
         opacity: 1 !important;
     }
+
+    .dialogResetPw .v-card__text {
+        padding: 24px 24px 0 24px !important;
+    }
+
     /* Extra small devices (portrait phones, less than 576px) */
     @media (max-width: 575.98px) {
         body {
