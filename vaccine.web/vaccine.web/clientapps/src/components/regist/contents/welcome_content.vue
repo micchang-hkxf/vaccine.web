@@ -6,7 +6,7 @@
                     <img src="/regist/login_logo.svg" style="background-color:#736DB9;" />
                 </div>
                 <div class="welcome-button-container">
-                    <div class="content-one">配合北市府數位里辦服務，即日起各類疫苗接種活動已陸續開放可在網路上自行報名，只要憑「台北通」登入或者手動輸入身份資料即可線上確認接種資格並完成報名登記作業，請點選「開始報名」跟著指引進行操作</div>
+                    <div class="content-one">配合北市府數位里辦服務，即日起各類疫苗接種活動已陸續開放可在網路上自行報名，只要憑「台北通」登入或者手動輸入身份資料即可線上確認接種資格並完成報名登記作業，請點選「我要報名」跟著指引進行操作</div>
                     <div class="content-two">適用疫苗：肺炎鏈球菌疫苗、流感</div>
                 </div>
                 <div class="welcome-actions-container">
