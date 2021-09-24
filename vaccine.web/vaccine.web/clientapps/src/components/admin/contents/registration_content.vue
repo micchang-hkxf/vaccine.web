@@ -664,7 +664,7 @@
                         </template>
                         <template v-slot:content>
                             <div class="detail-title">{{detailTitle}}<span :class="detailCntQuota < detailTotalQuota ? 'hidden' : ''">名額已滿</span></div>
-                            <div class="detail-sub-title">{{detailDistrict}}－{{detailVillage}}｜{{detailType}}｜{{detailBrandName}}</div>
+                            <div class="detail-sub-title">{{detailDistrict}}－{{detailVillage}}｜{{detailType}}<!--｜{{detailBrandName}}--></div>
                             <div class="detail-title-desc">
                                 <p>
                                     <div>設站時間：{{detailStationTime}}</div>
