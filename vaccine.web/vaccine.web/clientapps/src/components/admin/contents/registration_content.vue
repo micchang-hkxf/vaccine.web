@@ -1498,13 +1498,12 @@
                     this.$refs.warringAlert.open();
                 } else {
                     //mappping
-
                     result.model.regist_type_name = result.model.regist_type.name;
                     result.model.regist_brand_name = result.model.regist_brand.name;
                     result.model.regist_village_name = result.model.regist_village.name;
                     result.model.regist_institution_name = result.model.regist_institution.uName;
                     result.model.regist_institution_code = result.model.regist_institution.id;
-                    result.model.regist_instution_district_name = result.model.regist_district.name;
+                    result.model.regist_instution_district_name = result.model.regist_institution.distName;
                     result.model.regist_district_name = result.model.regist_district.name;
 
                     Object.assign(this.result, result);
