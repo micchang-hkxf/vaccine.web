@@ -5,12 +5,14 @@
         </template>
         <template v-slot:app-bar v-if="$slots['regist-title']">
             <div class="regist-header d-flex flex-column">
+                <div class="d-flex flex-row justify-center">
+                    <div>【測試】預約尚未開始</div>
+                </div>
                 <div class="logo-title d-flex flex-row justify-center">
                     <div class="regist-icon">
                         <img src="/regist/logo.svg">
                     </div>
                     <div>
-                        <div>【測試】預約尚未開始</div>
                         <div>里辦疫苗接種便民服務 </div>
                         <div>-網路報名系統-</div>
                     </div>

@@ -36,7 +36,7 @@
         </template>
         <template v-if="session.vaccines!=null">
 
-            <div class="activity-detail-title">接種疫苗</div>
+            <div class="activity-detail-title">可接種疫苗</div>
             <template v-if="session.vaccines.length > 0">
                 <div class="activity-detail-descript" v-for="(vaccine , idx) in session.vaccines" :key="`vaccine_${idx}`">
                     <div class="apply-field-type-icon d-flex justify-start align-center">

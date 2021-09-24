@@ -1,9 +1,9 @@
 ﻿{
-  "apiRoot": "https://devvm.japaneast.cloudapp.azure.com/VAC/",
-  "tpPassOauth": "https://demo.jrsys.com.tw/tpcd/",
-  "tpPassClientId": "2717a73d51b9d96c8cee71dd7689073bfa05740b",
+  "apiRoot": "https://vac.health.gov.tw:5443/",
+  "tpPassOauth": "https://id.taipei/tpcd/",
+  "tpPassClientId": "678355f31f50b916f2aeb5410f92060e7c6c4de7",
   "tpPassClientScope": "uuid id_no account member_type real_name phone_no birthday formatted_name verify_level",
-  "configEnabled": "Debug整合組態設定已啟用",
+  "configEnabled": "Releasee整合組態設定已啟用",
   "requestSystem": "PC",
   "oauthProxy": false,
   "oauthTerminal": "https://localhost:44324/"
