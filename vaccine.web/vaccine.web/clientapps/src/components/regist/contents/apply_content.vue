@@ -6,14 +6,14 @@
         <template v-slot:regist-content>
             <div class="main-content">
                 <!--<div class="apply-header">
-                    <v-stepper alt-labels class="elevation-0">
-                        <v-stepper-header>readonly
-                            <v-stepper-step step="1" class="step-one disable-step"></v-stepper-step>
-                            <v-divider></v-divider>
-                            <v-stepper-step step="2" class="step-two active-step"> </v-stepper-step>
-                        </v-stepper-header>
-                    </v-stepper>
-                </div>-->
+        <v-stepper alt-labels class="elevation-0">
+            <v-stepper-header>readonly
+                <v-stepper-step step="1" class="step-one disable-step"></v-stepper-step>
+                <v-divider></v-divider>
+                <v-stepper-step step="2" class="step-two active-step"> </v-stepper-step>
+            </v-stepper-header>
+        </v-stepper>
+    </div>-->
                 <div class="apply-container" v-if="session!=null">
                     <!--{{getLockUserInfo}}-->
                     <v-form lazy-validation ref="applyForm" autocomplete="off">
@@ -113,7 +113,7 @@
 
                         <v-btn color="#626781" :to="{ name:'regist' }">取消</v-btn>
                         <v-btn color="#736DB9" :to="{ name:'agree', params: session }" class="btn-agree">上一步</v-btn>
-                        <v-btn color="#736DB9" @click.stop="sendApply()">確定報名</v-btn>
+                        <v-btn color="#736DB9" @click.stop="alertCheckDataShow()">確定報名</v-btn>
 
 
 
@@ -200,7 +200,7 @@
                         了解
                     </template>
                 </com-confirm>
-
+                <!---->
                 <com-confirm ref="alertTimeout" ref-key="alertTimeout" :right-click="alertTimeoutClick" persistent="false">
                     <template v-slot:confirm-image>
                         <v-img src="/alert_warning.svg"></v-img>
@@ -211,6 +211,25 @@
                     </template>
                     <template v-slot:confirm-right-btn-text>
                         了解
+                    </template>
+                </com-confirm>
+                <!---->
+                <com-confirm ref="alertCheckData" ref-key="alertCheckData"  :left-click="alertCheckDataLeftClick" :right-click="alertCheckDataRightClick" left-color="#626781" right-color="#736DB9" persistent="false" width="300">
+                    <template v-slot:confirm-image>
+                        <v-img src="/alert_warning.svg"></v-img>
+                    </template>
+                    <template v-slot:confirm-text>
+                        <div class="sub-title">請確認以下資料是否正確？</div>
+                        <div class="sub-content data">
+                            <div class="uName">{{uName}}</div>
+                            <div class="mbNo">{{mbNo}}</div>
+                        </div>
+                    </template>
+                    <template v-slot:confirm-left-btn-text>
+                        修改
+                    </template>
+                    <template v-slot:confirm-right-btn-text>
+                        確定
                     </template>
                 </com-confirm>
             </div>
@@ -461,6 +480,20 @@
                 //    groupId = 'covid';
                 this.$router.push({ name: 'unapply', query: { groupId: this.session.vaccineGroupId } });
             },
+            alertCheckDataShow: function () {
+                var comp = this;
+                var isvaild = comp.$refs.applyForm.validate();
+                if (!isvaild) return;
+
+                comp.$bus.$emit('alertCheckData_show', true);
+            },
+            alertCheckDataLeftClick: function () {
+                this.$bus.$emit('alertCheckData_show', false);
+            },
+            alertCheckDataRightClick: function () {
+                this.$bus.$emit('alertCheckData_show', false);
+                this.sendApply();
+            },
         },
         beforeRouteEnter(to, from, next) {
             next(vm => {
@@ -704,6 +737,19 @@
         letter-spacing: 0px;
         color: #626781;
         margin: 8px 0;
+    }
+
+    .apply-content/deep/ .sub-content.data {
+        margin: 20px 0;
+    }
+
+    .apply-content/deep/ .sub-content .uName {
+        font: normal normal bold 24px/24px Noto Sans T Chinese;
+    }
+
+    .apply-content/deep/ .sub-content .mbNo {
+        font: normal normal bold 20px/24px Noto Sans T Chinese;
+        margin-top: 8px;
     }
 
     /*.apply-content/deep/ .v-dialog .v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
