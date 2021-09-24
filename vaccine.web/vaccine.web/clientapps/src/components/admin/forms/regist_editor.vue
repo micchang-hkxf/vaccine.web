@@ -652,12 +652,12 @@
                 var mm = d.getMonth() + 1;
                 var dd = d.getDate();
                 this.registEndDate = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
-                this.model.regist_apply_end_date = this.registEndDate
+                this.model.regist_apply_end_date = this.registEndDate;
                 d.setDate(d.getDate() +1); //before 2 day
                 mm = d.getMonth() + 1;
                 dd = d.getDate();
 
-                this.reCheckDate = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd + " 23:59"
+                this.reCheckDate = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
 
             },
             //'getInstitutions': function () {
