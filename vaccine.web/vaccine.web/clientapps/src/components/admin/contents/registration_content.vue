@@ -13,9 +13,10 @@
                 <v-card>
                     <com-table ref="table" ref-key="table" :headers="getHeaders" :items="items" :itemKey="itemKey" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               :change-page="changePage" :row-click="handleRowClick" @sort="setSort"  >
+                               :change-page="changePage" :row-click="handleRowClick" @sort="setSort" select-key="regist_can_del"  >
 
                         <template v-slot:item.regist_quota="{item}">
+                            {{item.regist_can_del}}
                             <!--<div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>-->
                             <div><span :class="item.regist_unpassed >= item.regist_quota ? 'color-red' : ''">{{item.regist_unpassed}}</span>/<span style="color:#626781">{{item.regist_quota}}</span></div>
                         </template>

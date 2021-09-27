@@ -183,7 +183,8 @@ export default {
                             regist_age_limit: parseInt(data.actAge),
                             regist_unpassed: data.amount - data.leftAmount,
                             regist_isrechecked: data.isReChecked,
-                            regist_can_del: !(data.amount > 0 && data.amount == data.leftAmount && (today < new Date(data.startApplyDate)))
+                            //regist_can_del: !(data.amount > 0 || data.amount == data.leftAmount && (today < new Date(data.startApplyDate)))
+                            regist_can_del: (today < new Date(data.startApplyDate) && data.amount == 0)
                         });
                     });
 
@@ -514,6 +515,10 @@ export default {
                     actAge: typeof data.model.regist_age_limit === 'undefined' ? 0 : parseInt(data.model.regist_age_limit),
                     //remarks: [data.model.remarks],
                 }];
+
+                if (setData[0].vaccineIds.length == 1 && setData[0].vaccineIds[0]=='') {
+                    setData[0].vaccineIds = [];
+                }
                 //console.log("setData", setData);
             
                 axios({
@@ -550,7 +555,7 @@ export default {
                     dd = dy.getDate();
                     endDay = dy.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
 
-                    setData.push({
+                    var newData = {
                         vaccineGroupId: d[0],
                         vaccineIds: [d[1]],
                         title: d[2],
@@ -563,10 +568,18 @@ export default {
                         implementEndDate: d[7] + "T" + d[9] + ":00",
                         startApplyDate: d[10],
                         endApplyDate: endDay,
-                        amount: (d[11])?parseInt(d[11]):500,
-                        actAge: (d[12])?parseInt(d[12]):0,
+                        amount: (d[11]) ? parseInt(d[11]) : 500,
+                        actAge: (d[12]) ? parseInt(d[12]) : 0,
                         //remarks: parseInt(d[14]),
-                    });
+                    };
+
+                    if (newData.vaccineIds.length == 1 && newData.vaccineIds[0] == '') {
+                        newData.vaccineIds = [];
+                    }
+
+                    setData.push(newData);
+                    
+
                 }
             });
          

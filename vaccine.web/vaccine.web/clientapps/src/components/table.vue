@@ -6,6 +6,7 @@
                   :page.sync="page"
                   :items-per-page="itemsPerPage"
                   :show-select="showSelect"
+                  :selectable-key="(!!selectKey)?selectKey:'canSelect'"
                   :item-class="rowClass"
                   :single-select="singleSelect"
                   class="elevation-0"
@@ -175,7 +176,7 @@
 
 <script>
     export default {
-        props: ['refKey', 'headers', 'items', 'itemKey', 'totalCount', 'itemsPerPage', 'totalVisible', 'showSelect', 'disabledProp', 'changePage', 'rowClick'],
+        props: ['refKey', 'headers', 'items', 'itemKey', 'totalCount', 'itemsPerPage', 'totalVisible', 'showSelect', 'disabledProp', 'changePage', 'rowClick','selectKey'],
         data: () => ({
             page:1,
             isShow: false,

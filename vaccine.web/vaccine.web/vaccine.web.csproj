@@ -60,7 +60,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="xcopy &quot;$(ProjectDir)site.config.$(ConfigurationName).json&quot; &quot;$(ProjectDir)site.config.json&quot; /q /y&#xD;&#xA;" />
+    <Exec Command="xcopy &quot;$(ProjectDir)site.config.$(ConfigurationName).json&quot; &quot;$(ProjectDir)site.config.json&quot; /q /y &#xD;&#xA;" />
   </Target>
 
 </Project>
