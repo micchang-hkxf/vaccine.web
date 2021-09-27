@@ -16,7 +16,7 @@
     import appLayout from 'components/regist/regist_layout'
     import appFooter from 'components/regist/regist_footer'
     import unapplyList from 'components/regist/forms/unapply_list'
-    import { mapActions } from 'vuex'
+    import { mapGetters } from 'vuex'
 
     export default {
         // router,
@@ -28,6 +28,7 @@
             group :null 
         }),
         computed: {
+            ...mapGetters('regist', ['findVaccineGroup']),
             groupId: function () {
                 if (this.$route.query) 
                     return this.$route.query.groupId;
@@ -38,8 +39,6 @@
 
         },
         methods: {
-            ...mapActions('regist',['findVaccineGroup']),            
-
         },
         components: {
             appLayout, appFooter, unapplyList
