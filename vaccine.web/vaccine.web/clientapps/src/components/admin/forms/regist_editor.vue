@@ -221,14 +221,14 @@
                     </v-col>
                 </v-row>
 
-                <!--<v-row>
+                <v-row>
                     <v-col cols="12">
                         <div>  <span class="regist-title">設站時段設定</span><span class="red--text">*</span></div>
                         <com-timepicker :readonly="overStatus==1" :disabled="overStatus==1" v-model="regist_station_start_time"></com-timepicker>
                         <com-timepicker :readonly="overStatus==1" :disabled="overStatus==1" v-model="regist_station_end_time"></com-timepicker>
                     </v-col>
 
-                </v-row>-->
+                </v-row>
                 <!--<v-row>
                     <v-col cols="3">
                         <v-menu v-model="start"
@@ -586,7 +586,7 @@
 <script>
 
     import comDialog from 'components/dialog'
-    //import comTimepicker from 'components/vue-timepicker/timepicker'
+    import comTimepicker from 'components/vue-timepicker/timepicker'
     import { mapActions, mapGetters } from 'vuex'
 
     export default {
@@ -797,7 +797,7 @@
 
         },
         components: {
-            comDialog
+            comDialog, comTimepicker
         }
     }
 </script>
