@@ -26,14 +26,6 @@ export default {
                 });
             });
         },
-        findVaccineGroup: function ({ getters }, groupId) {
-            try {
-                var group = getters.getVaccineGroups.find(f => f.groupId == groupId);
-                return group;
-            } catch (e) {
-                return null;
-            }
-        },
         loacVaccineGroups: function ({state, commit }) {
             return new Promise((resolve) => {
                 var results = [];
@@ -399,7 +391,15 @@ export default {
         },
         getVillages: (state) => {
             return state.villages;
-        }
+        },
+        findVaccineGroup: (state) => (groupId) => {
+            try {
+                var group = state.vaccineGroups.find(f => f.groupId == groupId);
+                return group;
+            } catch (e) {
+                return null;
+            }
+        },
     },
     mutations: {
         removeAdminLogin(state) {
