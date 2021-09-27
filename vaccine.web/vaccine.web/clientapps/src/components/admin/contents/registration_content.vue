@@ -266,8 +266,8 @@
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">設站時間</div></v-list-item-title>
                                                 <v-list-item-subtitle>
-                                                    {{result.model.regist_station_date}} ,
-                                                    {{result.model.regist_station_start_time}}-{{result.model.regist_station_end_time}}
+                                                    {{result.model.regist_station_date}}
+                                                    
                                                 </v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -404,7 +404,7 @@
                                                 <v-list-item-title><div class="showname">設站時間</div></v-list-item-title>
                                                 <v-list-item-subtitle>
                                                     {{result.model.regist_station_date}} ,
-                                                    {{result.model.regist_station_start_time}}-{{result.model.regist_station_end_time}}
+                                                 
                                                 </v-list-item-subtitle>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -567,7 +567,7 @@
                         </template>
 
                         <template v-slot:item.regist_station_date="{item}">
-                            {{$moment(item.regist_station_date).format('YYYY/MM/DD')}} {{item.regist_station_start_time}} - {{item.regist_station_end_time}}
+                            {{$moment(item.regist_station_date).format('YYYY/MM/DD')}} 
                         </template>
 
                         <template v-slot:item.regist_apply_start_date="{item}">
