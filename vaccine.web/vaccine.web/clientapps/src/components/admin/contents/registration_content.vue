@@ -1028,6 +1028,7 @@
         color: #626781;
         text-align: left;
         opacity: 1;
+        margin-top: 24px;
     }
 
     .registration-list .double-check label {
@@ -1039,11 +1040,23 @@
     }
 
     .registration-list .double-check hr {
-        margin: 24px 0;
+        margin: 24px 0 0 0;
     }
 
     .registration-list .double-check .row {
-        margin-bottom: 16px !important;
+        margin-top: 24px !important;
+    }
+
+    .registration-list .double-check .col-12 {
+        padding: 0 12px;
+    }
+
+    .registration-list .dialogDoubleCheck .v-card__text.dialog-content {
+        padding: 0 24px;
+    }
+
+    .registration-list .dialogDoubleCheck .v-card__actions {
+        padding: 24px !important;
     }
 
     .registration-list .v-btn--outlined {
