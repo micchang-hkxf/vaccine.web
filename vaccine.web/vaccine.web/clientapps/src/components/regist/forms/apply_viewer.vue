@@ -12,7 +12,7 @@
         <div class="activity-detail-descript">{{$moment(session.sessionStart).format('YYYY/MM/DD')}},{{$moment(session.sessionStart).format('HH:mm')}}-{{$moment(session.sessionEnd).format('HH:mm')}}</div>
 
         <div class="activity-detail-title">事先報名</div>
-        <div class="activity-detail-descript">{{$moment(session.registStart).format('YYYY/MM/DD,HH:mm')}} - {{$moment(session.registEnd).format('YYYY/MM/DD,HH:mm')}}</div>
+        <div class="activity-detail-descript">{{$moment(session.registStart).format('YYYY/MM/DD')}} - {{$moment(session.registEnd).format('YYYY/MM/DD')}}</div>
 
         <div class="activity-detail-title">設站地點</div>
         <div class="activity-detail-descript">{{session.implementAddr}}</div>
