@@ -2,6 +2,8 @@
 import siteConfig from "project/site.config"
 import axios from 'axios'
 import { Promise } from "core-js";
+import Vue from 'vue';
+import dateHelper from 'stores/dateHelper'
 
 export default {
     namespaced: true,
@@ -509,7 +511,7 @@ export default {
                     distId: data.model.regist_district.id,
                     villageId: data.model.regist_village.id,
                     startApplyDate: data.model.regist_apply_start_date,
-                    endApplyDate: data.model.regist_apply_end_date,
+                    endApplyDate: Vue.moment(dateHelper.addDays(new Date(data.model.regist_apply_end_date),1)).format("YYYY-MM-DD"),
                     amount: parseInt(data.model.regist_quota),
                     medicalIds: [data.model.regist_institution.id],
                     actAge: typeof data.model.regist_age_limit === 'undefined' ? 0 : parseInt(data.model.regist_age_limit),

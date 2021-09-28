@@ -1263,6 +1263,7 @@
     import { mapActions, mapGetters } from 'vuex'
     import XLSX from 'xlsx'
     import moment from "moment";
+    import dateHelper from 'stores/dateHelper'
 
     export default {
         // router,
@@ -1335,7 +1336,7 @@
             ord: 0,
             showDelete:false,
             injectionOkCount:0,
-            regist_beforeDay: 3,//報名截止時間要於施打時間早3天以上
+            regist_beforeDay: 4,//報名截止時間要於施打時間早3天以上
             downloadErrorMessage: '複檢結果至少要有一筆成功且合格才能下載',
             artificialOptions: [
                 { state: '複檢合格', id: 'pass' },
@@ -1499,10 +1500,21 @@
                     errMsg = "(事先開放報名開始時間)必須早於(事先開放報名結束時間)";
                 }
 
-                if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) <
-                    Date.parse(result.model.regist_apply_end_date + ' 00:00') + (this.regist_beforeDay + 1) * 60 * 60 * 24 * 1000) {
-                    errMsg = "(開放報名結束時間)必須早於(開始施打時間)至少" + (this.regist_beforeDay + 1) + "天";
+                if (new Date(result.model.regist_station_date + ' 00:00') <
+                    dateHelper.addDays(new Date(result.model.regist_apply_end_date + ' 00:00'), this.regist_beforeDay -1 ))
+                    //Date.parse(result.model.regist_apply_end_date + ' 00:00') + this.regist_beforeDay * 60 * 60 * 24 * 1000) 
+                {
+                    errMsg = "(開放報名結束時間)必須早於(開始施打時間)至少" + (this.regist_beforeDay-1) + "天";
                 }
+
+                if (new Date(result.model.regist_station_date + ' 00:00') <
+                    dateHelper.addDays(new Date(result.model.regist_apply_start_date + ' 00:00'), this.regist_beforeDay))
+                //Date.parse(result.model.regist_apply_end_date + ' 00:00') + this.regist_beforeDay * 60 * 60 * 24 * 1000) 
+                {
+                    errMsg = "(開放報名開始時間)必須早於(開始施打時間)至少" + (this.regist_beforeDay) + "天";
+                }
+
+                result.model.regist_apply_end_date = this.$moment(dateHelper.addDays(new Date(result.model.regist_apply_end_date),-1)).format("YYYY-MM-DD")
 
                 if (errMsg != "") {
                     this.alertTitle = '設定錯誤';
