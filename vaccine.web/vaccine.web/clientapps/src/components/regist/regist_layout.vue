@@ -18,11 +18,20 @@
                     </div>
                 </div>
                 <div class="action-title" style="display:flex;justify-content:center;">
-                    <img src="../../../public/login/home.svg" @click.stop="goWelcome" />
+                    <v-btn color="#736DB9" @click.stop="goWelcome" :ripple="false" width="152">
+                        <v-img src="/regist/home.svg"></v-img>
+                        <v-spacer></v-spacer>
+                        <span>返回首頁</span>
+                    </v-btn>
                     <v-spacer></v-spacer>
-                    <slot name="regist-title"></slot>
+                    <span class="regist-title"><slot name="regist-title"></slot></span>
                     <v-spacer></v-spacer>
-                    <img src="../../../public/login/logout_logo.svg" @click.stop="confirmLogOut" v-show="user!=null" />
+                    <v-btn color="#736DB9" @click.stop="confirmLogOut" :ripple="false" width="152" v-show="user!=null">
+                        <v-img src="/regist/log-out.svg" width="25" height="24"></v-img>
+                        <v-spacer></v-spacer>
+                        <span>改登其他身份</span>
+                    </v-btn>
+                    <div style="width:152px;" v-show="user==null"></div>
                 </div>
             </div>
 
@@ -123,8 +132,8 @@
     .action-title {
         text-align: center;
         font: normal normal bold 16px/24px Noto Sans T Chinese;
-        height: 50px;
-        line-height: 50px;
+        height: 40px;
+        line-height: 40px;
         letter-spacing: 0px;
         color: #FFFFFF;
         opacity: 1;
@@ -136,6 +145,19 @@
         /*top: 10px;*/
         cursor: pointer;
     }
+
+    .action-title .v-btn {
+        border: 1px solid #FFF !important;
+        border-radius: 4px;
+        font: normal normal normal 16px/24px Noto Sans T Chinese;
+        letter-spacing: 0px;
+        color: #FFFFFF;
+    }
+
+    .action-title .v-responsive__content {
+        width: 0 !important;
+    }
+
     .logo-title {
         max-width: 200%;
         height: 64px;
@@ -172,5 +194,34 @@
         color: #ffffff;
     }
     .app {
+    }
+
+    /* Extra small devices (portrait phones, less than 576px) */
+    @media (max-width: 575.98px) {
+        .logo-title {
+            top: -15px;
+        }
+
+        .action-title .regist-title {
+            position: relative;
+            top: -38px;
+            white-space: nowrap;
+        }
+    }
+
+    /* Small devices (landscape phones, 576px and up) */
+    @media (min-width: 576px) and (max-width: 767.98px) {
+    }
+
+    /** Medium devices (tablets, 768px and up) */
+    @media (min-width: 768px) and (max-width: 991.98px) {
+    }
+
+    /* Large devices (desktops, 992px and up) */
+    @media (min-width: 992px) and (max-width: 1199.98px) {
+    }
+
+    /* Extra large devices (large desktops, 1200px and up) */
+    @media (min-width: 1200px) {
     }
 </style>
