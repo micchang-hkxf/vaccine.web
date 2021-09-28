@@ -184,7 +184,7 @@ export default {
                             regist_unpassed: data.amount - data.leftAmount,
                             regist_isrechecked: data.isReChecked,
                             //regist_can_del: !(data.amount > 0 || data.amount == data.leftAmount && (today < new Date(data.startApplyDate)))
-                            regist_can_del: (today < new Date(data.startApplyDate) && data.amount == 0)
+                            regist_can_del: (today < new Date(data.startApplyDate) && data.amount == data.leftAmount)
                         });
                     });
 

@@ -617,7 +617,7 @@
             regist_institution_name: "",
             rules: {
                 required: v => !!v || '必填',
-                checkRegistStart: v => new Date(v) >= new Date(this.model.regist_apply_start_date).setDate(-3) || '報名日期須早於設站日期前三天',
+                checkRegistStart: v => new Date(v) >= new Date(this.model.regist_apply_start_date).setDate(-4) || '報名日期須早於設站日期前三天',
                 quotaRule(minNum) {
 
                     return v => (v && v >= minNum && v > 0) || '報名名額上限設定必須大於0且大於等於' + minNum;
