@@ -1,6 +1,11 @@
 const path = require("path");
 const webpack = require('webpack');
-
+const { RandomHash } = require('random-hash');
+const generateHash = new RandomHash({
+    length: 6,
+    charset: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzab0123456789',
+});
+const versionHash = generateHash()
 
 module.exports = {
     filenameHashing: false,
@@ -9,26 +14,30 @@ module.exports = {
     pages: {
         main: {
             entry: "./src/pages/main/main.js",
-            template: "./src/pages/main/main.html",
-            //title: "main",
+            template: "../Templates/Main/Index.cshtml",
+            filename:"../Views/Main/Index.cshtml",
+            title: "main",
             chunks: ['chunk-vendors', 'chunk-common',"main"]
         },
         admin: {
             entry: "./src/pages/admin/admin.js",
-            template: "./src/pages/admin/admin.html",
-            //title: "main",
+            template: "../Templates/Admin/Index.cshtml",
+            filename: "../Views/Admin/Index.cshtml",
+            title: "admin",
             chunks: ['chunk-vendors', 'chunk-common',"admin"]
         },
         regist: {
             entry: "./src/pages/regist/regist.js",
-            template: "./src/pages/regist/regist.html",
-            //title: "main",
+            template: "../Templates/Regist/Index.cshtml",
+            filename: "../Views/Regist/Index.cshtml",
+            title: "regist",
             chunks: ['chunk-vendors', 'chunk-common',"regist"]
         },
         login: {
             entry: "./src/pages/login/login.js",
-            template: "./src/pages/login/login.html",
-            //title: "main",
+            template: "../Templates/Login/Index.cshtml",
+            filename: "../Views/Login/Index.cshtml",
+            title: "login",
             chunks: ['chunk-vendors', 'chunk-common', "login"]
         },
     },
@@ -37,8 +46,8 @@ module.exports = {
         if (config.plugins.has('extract-css')) {
             const extractCSSPlugin = config.plugin('extract-css')
             extractCSSPlugin && extractCSSPlugin.tap(() => [{
-                filename: '[name].css',
-                chunkFilename: '[name].css'
+                filename: `[name].${versionHash}.css`,
+                chunkFilename: `[name].${versionHash}.css`
             }])
         }
 
@@ -61,8 +70,8 @@ module.exports = {
     },
     configureWebpack: {
         output: {
-            filename: '[name].js',
-            chunkFilename: '[name].js'
+            filename: `[name].${versionHash}.js`,
+            chunkFilename: `[name].${versionHash}.js`
         },
         plugins: [
             new webpack.DefinePlugin({
