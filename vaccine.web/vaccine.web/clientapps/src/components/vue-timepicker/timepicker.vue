@@ -2,9 +2,9 @@
 
     <div class="timepicker-container">
         <div class="timepicker-wrap">
-            <img src="/images/time_picker_icon.svg" class="timepicker-icon timepicker-icon__clock" @click="open" style="cursor:pointer;"/>
-            <input type="text" class="time" ref="timeInput" :value="value"
-                   @focus="open">
+            <img src="/images/time_picker_icon.svg" class="timepicker-icon timepicker-icon__clock" @click="isTimePickerOpen" style="cursor:pointer;"/>
+            <input type="text" class="time" ref="timeInput" :value="value"  :style="getTimeStyle()"
+                   @focus="isTimePickerOpen">
         </div>
         <div class="timepicker" tabindex="0"
              :class="{'is-open': isOpen}"
@@ -87,6 +87,13 @@
             }
         },
         methods: {
+            isTimePickerOpen: function () {              
+                if (this.readonly == true) return;       
+                    this.open();
+            },   
+            getTimeStyle: function () {
+                return { 'color': this.readonly ? ' rgba(0, 0, 0, 0.38)' :'#626781'};                 
+            },
             open() {
                 if (document.querySelectorAll('.is-open').length > 0) {
                     return;
@@ -153,6 +160,9 @@
         width: 120px;
         text-align: center;
     }
+
+
+
 
     .flex-wrap {
         display: flex;
