@@ -118,7 +118,7 @@
             var tpassToken = clientHelper.getCookie('access_token');
             if (tpassToken) {
                 this.loadEmbeddedUserInfo(tpassToken);
-            }
+            //}
         },
         methods: {
             ...mapActions('regist', ['loadEmbeddedUserInfo']),

@@ -120,6 +120,12 @@
                     this.$refs.login.create();
                 });
             },
+            toTPassEmbeddedLogin: function (redPath) {
+                this.loginType = 'tpass-embedded';
+                this.claerRed();
+                if (this.getUserInfo.type != 'tpass-embedded') return;
+                this.$router.push({ path: redPath });              
+            },
             toLocalLoginParam: function (redParam) {
                 this.loginType = 'identify';
                 this.claerRed();
