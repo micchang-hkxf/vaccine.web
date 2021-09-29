@@ -9,7 +9,7 @@ namespace vaccine.web.Controllers
 {
     public class RegistController : Controller
     {
-        [Identify(IdentifyRole.User, "wv_vaccine_regist")]
+        [Identify(IdentifyRole.Guest, "wv_vaccine_regist")]
         public IActionResult Index()
         {
             return View();

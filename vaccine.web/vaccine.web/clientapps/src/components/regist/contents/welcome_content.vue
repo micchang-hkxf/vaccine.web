@@ -96,7 +96,8 @@
 <script>
     import appLayout from 'components/regist/regist_layout'
     import appFooter from 'components/regist/regist_footer'
-    import clientHelper from 'store/clientHelper'
+    import clientHelper from 'stores/clientHelper'
+    import { mapActions } from 'vuex'
 
     export default {
         // router,
@@ -114,7 +115,7 @@
             }
         },
         created: function () {
-            var tpassToken = clientHelper.getCookie('tpass_token');
+            var tpassToken = clientHelper.getCookie('access_token');
             if (tpassToken) {
                 this.loadEmbeddedUserInfo(tpassToken);
             }

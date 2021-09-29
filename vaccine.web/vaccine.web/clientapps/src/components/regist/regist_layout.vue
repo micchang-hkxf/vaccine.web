@@ -26,7 +26,7 @@
                     <v-spacer></v-spacer>
                     <span class="regist-title"><slot name="regist-title"></slot></span>
                     <v-spacer></v-spacer>
-                    <v-btn color="#736DB9" @click.stop="confirmLogOut" :ripple="false" width="152" v-show="user!=null">
+                    <v-btn color="#736DB9" @click.stop="confirmLogOut" :ripple="false" width="152" v-show="user!=null && user.type!=='tpass-embedded'">
                         <v-img src="/regist/log-out.svg" width="25" height="24"></v-img>
                         <v-spacer></v-spacer>
                         <span>改登其他身份</span>
@@ -80,6 +80,7 @@
     import appLayout from 'components/app_layout'
     import comConfirm from 'components/confirm'
     import { mapActions } from 'vuex'
+    import clientHelper from 'stores/clientHelper'
     export default {
         // router,
         data: () => ({
@@ -111,6 +112,10 @@
             },
             logoutRightClick: function () {
                 this.setUserInfo(null).then(() => {
+                    clientHelper.removeCookie('access_token');
+                    clientHelper.removeCookie('tpass_token');
+                    clientHelper.removeCookie('tpwv_lang');
+                    clientHelper.removeCookie('target_page_id');
                     sessionStorage.removeItem('activityApply');
                     this.$router.push({ name: 'welcome' });
                 });
