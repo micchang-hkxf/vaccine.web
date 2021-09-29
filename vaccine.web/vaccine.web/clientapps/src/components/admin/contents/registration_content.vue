@@ -672,12 +672,8 @@
                                     <div>承辦醫院：{{detailInstitution}}（{{detailInstutionDistrict}}）</div>
                                     <div>報名名額：<span :class="detailCntQuota >= detailTotalQuota ? 'color-red' : ''">{{detailCntQuota}}</span>/<span style="color:#626781">{{detailTotalQuota}}</span></div>
                                     <div>
-                                        年齡限制：
-
-                                        <span v-if="detailAgeLimit==0"><span tyle="color:#626781">配合疫苗規定</span></span>
-
-                                        <span v-if="detailAgeLimit!=0">{{detailAgeLimit}}<span tyle="color:#626781">歲以上 </span></span>
-
+                                        年齡限制：<span v-if="detailAgeLimit==0"><span tyle="color:#626781">配合疫苗規定</span></span>
+                                                  <span v-else>{{detailAgeLimit}}<span tyle="color:#626781">歲以上 </span></span>
                                     </div>
                             </div>
                             <hr />
@@ -712,8 +708,8 @@
                                             </div>
                                             <div class="detail-action-btn">
                                                 <!--v-on="on"-->
-                                                <v-btn @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
-                                                    <span :style="detailAbnormalCnt > 0 ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
+                                                <v-btn @click.stop="againCheck" :ripple="false" :class="detailCntQuota > 0 && isReChecked ? 'btn-warning' : ''" :disabled="detailCntQuota == 0 || !isReChecked">
+                                                    <span :style="detailCntQuota > 0 && isReChecked ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
                                                 </v-btn>
                                                 <v-btn color="#736DB9" @click.stop="downloadCompleteFile('')" :ripple="false" :disabled="!isReChecked">
                                                     <v-img src="/admin/download_icon.svg" width="24px" height="24px">
@@ -1316,6 +1312,7 @@
             detailAbnormalCnt: 0,
             detailCheckTime: 0,
             detailCheckPassCnt: 0,
+            detailCurrentPage: 0,
             alertMessage: '',
             lessCheckTime: false,
             artificialId: '',
@@ -1758,7 +1755,7 @@
                 this.detailRegistrationTime = moment(item.regist_apply_start_date).format('YYYY/MM/DD') + ' - ' + moment(item.regist_apply_end_date).format('YYYY/MM/DD');   //item.registrationTime;
                 this.detailCntQuota = item.regist_unpassed;   //item.cntQuota;
                 this.detailTotalQuota = item.regist_quota;    //item.totalQuota;
-                this.detailAgeLimit = (item.regist_age_limit > 0) ? item.regist_age_limit :'無限制';
+                this.detailAgeLimit = item.regist_age_limit;
                 this.detailAbnormalCnt = item.regist_abnormalCnt;   //item.abnormalCnt;
                 this.detailCheckTime = item.regist_review_date;   //item.checkTime;
                 this.detailCheckPassCnt = item.regist_qualified; //item.checkPassCnt;
@@ -1780,14 +1777,16 @@
                 this.getDetailForm(pager.page);
             },
             getDetailForm: function (page) {
+                var comp = this;
+                comp.detailAbnormalCnt = 0;
+                comp.detailCurrentPage = page;
+
                 var params = {
                     id: this.detailId,
                     keyWord: this.detailKeyWord,
                     pageSize: this.detailItemsPerPage,
                     page: page,
                 };
-                var comp = this;
-                this.detailAbnormalCnt = 0;
 
                 this.loadDetailForm(params).then((r) => {
                     comp.injectionOkCount = 0;
@@ -2025,6 +2024,8 @@
                         comp.$refs.fileViewer.close();
 
                         comp.$bus.$emit('dialogDoubleCheck_show', false);
+                        // TODO: 複檢完成後載入最新資料
+                        comp.getDetailForm(comp.detailCurrentPage);
                     })
                     .catch(function () {
                         comp.alertMessage = '網站異常，請稍後再試';
