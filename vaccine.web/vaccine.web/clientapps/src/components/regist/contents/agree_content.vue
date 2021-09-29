@@ -9,25 +9,32 @@
                     <apply-viewer></apply-viewer>
                     <v-divider></v-divider>
                 </div>
-                <div class="agree-actions" v-if="isNeedLogin && isShow">
-                    <div class="action-header">請選擇登記方式：</div>
-                    <div class="action-content d-flex flex-row justify-space-between">
-                        <div class="action tp-pass d-flex flex-column justify-center align-center" @click="toTpPass($route.params.vote_no)">
-                            <div>
-                                <img src="/regist/tp_pass.svg">
+                <template v-if="getUserInfo.type!='tpass-embedded'">
+                    <div class="agree-actions" v-if="isNeedLogin && isShow">
+                        <div class="action-header">請選擇登記方式：</div>
+                        <div class="action-content d-flex flex-row justify-space-between">
+                            <div class="action tp-pass d-flex flex-column justify-center align-center" @click="toTpPass($route.params.vote_no)">
+                                <div>
+                                    <img src="/regist/tp_pass.svg">
+                                </div>
+                                <div class="action-label">台北通帳號登入</div>
                             </div>
-                            <div class="action-label">台北通帳號登入</div>
-                        </div>
-                        <div class="action d-flex flex-column justify-center align-center" @click.stop="toLocalPass($route.params.vote_no)">
-                            <div>
-                                <img src="/regist/editor_pen.svg">
+                            <div class="action d-flex flex-column justify-center align-center" @click.stop="toLocalPass($route.params.vote_no)">
+                                <div>
+                                    <img src="/regist/editor_pen.svg">
+                                </div>
+                                <div class="action-label">手動輸入資料</div>
                             </div>
-                            <div class="action-label">手動輸入資料</div>
                         </div>
+                        <!--<v-btn :to="{name:'apply'}">申請</v-btn>
+            <v-btn :to="{name:'regist'}">返回</v-btn>-->
                     </div>
-                    <!--<v-btn :to="{name:'apply'}">申請</v-btn>
-                    <v-btn :to="{name:'regist'}">返回</v-btn>-->
-                </div>
+                </template>
+                <template v-if="getUserInfo.type =='tpass-embedded'">
+                    <div class="agree-actions" @click.stop="toLocalTPassEmbedded($route.params.vote_no)">
+                        <v-btn style="width: 100%; margin-top: 30px;" color="#736DB9"> <span style="color:white">前往報名</span></v-btn>
+                    </div>
+                </template>
                 <login-switch ref="switch" :login-done="loginDone" :login-cancel="loginCancel"></login-switch>
             </div>
         </template>
@@ -58,7 +65,7 @@
             now: new Date()
         }),
         computed: {
-            ...mapGetters('regist', ['getUserInfo']),
+            ...mapGetters('regist', ['getUserInfo']),           
         },
         props: {
 
@@ -72,6 +79,7 @@
                 }
             }
             window.scrollTo(0, 0);
+            console.log('tpuser', this.getUserInfo)
         },
         methods: {
             ...mapActions('regist', ['setUserInfo']),
@@ -86,6 +94,9 @@
             },
             loginCancel: function () {
 
+            },
+            toLocalTPassEmbedded: function (sessionId) {
+                this.$refs.switch.toTPassEmbeddedLogin(`/apply/${sessionId}`);
             },
             //toLogin: function () {
             //    if (!this.getUserInfo) {
@@ -105,6 +116,10 @@
 </script>
 
 <style scoped>
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
+
     .agree-content/deep/ .app-content {
         /*margin-bottom: 78px;
         width: 66%;

@@ -126,7 +126,7 @@ export default {
                 reslove(getters.getUserInfo);
             });
         },
-        loadEmbeddedUserInfo: function ({ commit }, token) {
+        loadEmbeddedUserInfo: function ({ state,commit, dispatch}, token) {
             console.log(token);
             return new Promise((resolve) => {
                 var passInfo = {
@@ -152,12 +152,12 @@ export default {
                 };
 
                 dispatch('clearUserInfoLock').then(() => {
-                    if (!!userInfo.uName) state.lockUserInfo.lockName = true;
-                    if (!!userInfo.identify) state.lockUserInfo.lockIdentify = true;
-                    if (!!userInfo.birthday) state.lockUserInfo.lockBirthday = true;
+                    if (!!passInfo.uName) state.lockUserInfo.lockName = true;
+                    if (!!passInfo.identify) state.lockUserInfo.lockIdentify = true;
+                    if (!!passInfo.birthday) state.lockUserInfo.lockBirthday = true;
                     commit('saveLockUserInfo', state.lockUserInfo);
                     dispatch('setUserInfo', results).then((user) => {
-                        reslove(user);
+                        resolve(user);
                     });
                 })
 
