@@ -13,7 +13,7 @@
                         <img src="/regist/logo.svg">
                     </div>
                     <div>
-                        <div>里辦疫苗接種便民服務 </div>
+                        <div>社區疫苗接種便民服務 </div>
                         <div>-網路報名系統-</div>
                     </div>
                 </div>
