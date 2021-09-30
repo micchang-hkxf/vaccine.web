@@ -1,6 +1,6 @@
 ﻿<template>
     <app-layout :app-bar="appBar" class="agree-content">
-        <template v-slot:regist-title>
+        <template v-slot:regist-title v-if="getUserInfo.type !='tpass-embedded'">
             報名登記與身份驗證
         </template>
         <template v-slot:regist-content>
@@ -38,7 +38,7 @@
                 <login-switch ref="switch" :login-done="loginDone" :login-cancel="loginCancel"></login-switch>
             </div>
         </template>
-        <template v-slot:regist-footer>
+        <template v-slot:regist-footer v-if="getUserInfo.type !='tpass-embedded'">
             <app-footer></app-footer>
         </template>
     </app-layout>

@@ -5,6 +5,6 @@
   "tpPassClientScope": "real_name phone_no id_no birthday",
   "configEnabled": "Debug整合組態設定已啟用",
   "requestSystem": "PC",
-  "oauthProxy": true,
+  "oauthProxy": false,
   "oauthTerminal": "https://localhost:44324/"
 }
