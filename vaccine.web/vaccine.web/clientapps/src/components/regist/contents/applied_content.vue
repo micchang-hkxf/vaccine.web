@@ -93,7 +93,7 @@
         data: () => ({
             appBar: {
                 elevation: 0,
-                height: '144px'
+                height: '160px'
             },
             isNeedLogin: true,
             now: new Date()
@@ -109,7 +109,7 @@
             window.scrollTo(0, 0);
         },
         methods: {
-            ...mapActions('regist', ['deleteApply']),
+            ...mapActions('regist', ['deleteApply','scrollToZero']),
             toTpton: function () {
 
             },
@@ -147,6 +147,7 @@
         },
         beforeRouteEnter: function beforeRouteEnter(to, from, next) {
             next(function (vm) {
+                vm.$store.dispatch("regist/scrollToZero");
                 vm.$store.dispatch("regist/checkLogTime").then(function () { });
             });
         },

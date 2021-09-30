@@ -103,10 +103,10 @@
     export default {
         // router,
         data: () => ({
-            appBar: {
-                elevation: 0,
-                height: '144px'
-            },
+            //appBar: {
+            //    elevation: 0,
+            //    height: '160px'
+            //},
             applieds: [],
             filterKeyword: '',
             isShow: false,

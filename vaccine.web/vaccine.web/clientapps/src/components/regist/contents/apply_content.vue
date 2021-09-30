@@ -254,7 +254,7 @@
         data: () => ({
             appBar: {
                 elevation: 0,
-                height: '144px'
+                height: '160px'
             }, isNeedLogin: true,
             years: Array.from({ length: new Date().getFullYear() - 1910 }, (value, index) => (new Date().getFullYear() - index).toString()),
             months: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
@@ -291,6 +291,12 @@
         props: {
 
         },
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                vm.$store.dispatch("regist/scrollToZero");
+                vm.$store.dispatch("regist/checkLogTime").then(() => { });
+            });
+        },
         created: function () {
             var error = this.$cookies.get('error');
             if (error) {
@@ -309,7 +315,7 @@
             this.checkBeforeApply();
         },
         methods: {
-            ...mapActions('regist', ['checkApply', 'getBeforeApply', 'checkLogTime', 'userLogout']),      
+            ...mapActions('regist', ['checkApply', 'getBeforeApply', 'checkLogTime', 'userLogout','scrollToZero']),
             sendApply: function () {
                 var comp = this;
                 var isvaild = comp.$refs.applyForm.validate();
@@ -494,11 +500,6 @@
                 this.$bus.$emit('alertCheckData_show', false);
                 this.sendApply();
             },
-        },
-        beforeRouteEnter(to, from, next) {
-            next(vm => {
-                vm.$store.dispatch("regist/checkLogTime").then(() => { });
-            });
         },
         components: {
             appLayout, appFooter, applyDone, comLoading, comConfirm

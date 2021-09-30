@@ -3,7 +3,7 @@
         <v-main>
             <v-form lazy-validation ref="loginForm" autocomplete="off">
                 <div class="logo"></div>
-                <div class="title">【測試】預約尚未開始</div>
+                <!--<div class="title">【測試】預約尚未開始</div>-->
                 <div class="title">社區疫苗接種便民服務</div>
                 <div class="sub-title">-管理後台-</div>
                 <div class="content">

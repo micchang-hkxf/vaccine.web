@@ -58,12 +58,15 @@
             activeId: 555 ,
             appBar: {
                 elevation: 0,
-                height: '144px'
+                height: '160px'
             },
             isNeedLogin: true,
             isShow: false,
             now: new Date()
         }),
+        beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+            next(vm => vm.$store.dispatch("regist/scrollToZero"));
+        },
         computed: {
             ...mapGetters('regist', ['getUserInfo']),           
         },
@@ -82,7 +85,7 @@
             console.log('tpuser', this.getUserInfo)
         },
         methods: {
-            ...mapActions('regist', ['setUserInfo']),
+            ...mapActions('regist', ['setUserInfo','scrollToZero']),
             toTpPass: function (sessionId) {
                 this.$refs.switch.toTpPassLogin(`/regist/#/apply/${sessionId}`);
             },

@@ -5,9 +5,9 @@
         </template>
         <template v-slot:app-bar v-if="$slots['regist-title']">
             <div class="regist-header d-flex flex-column">
-                <div class="d-flex flex-row justify-center">
-                    <div>【測試】預約尚未開始</div>
-                </div>
+                <!--<div class="d-flex flex-row justify-center">
+        <div>【測試】預約尚未開始</div>
+    </div>-->
                 <div class="logo-title d-flex flex-row justify-center">
                     <div class="regist-icon">
                         <img src="/regist/logo.svg">
@@ -26,7 +26,23 @@
                     <v-spacer></v-spacer>
                     <span class="regist-title"><slot name="regist-title"></slot></span>
                     <v-spacer></v-spacer>
-                    <v-btn color="#736DB9" @click.stop="confirmLogOut" :ripple="false" width="152" v-show="user!=null && user.type!=='tpass-embedded'">
+                    <v-btn color="#736DB9" @click.stop="confirmLogOut" :ripple="false" width="152" v-show="user!=null">
+                        <v-img src="/regist/log-out.svg" width="25" height="24"></v-img>
+                        <v-spacer></v-spacer>
+                        <span>改登其他身份</span>
+                    </v-btn>
+                    <div style="width:152px;" v-show="user==null"></div>
+                </div>
+                <div class="action-title" style="display:flex;justify-content:center;">
+                    <v-btn color="#736DB9" @click.stop="goWelcome" :ripple="false" width="152">
+                        <v-img src="/regist/home.svg"></v-img>
+                        <v-spacer></v-spacer>
+                        <span>返回首頁</span>
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                    <span class="regist-title"><slot name="regist-title"></slot></span>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#736DB9" @click.stop="confirmLogOut" :ripple="false" width="152" v-show="user!=null">
                         <v-img src="/regist/log-out.svg" width="25" height="24"></v-img>
                         <v-spacer></v-spacer>
                         <span>改登其他身份</span>
@@ -86,7 +102,7 @@
         data: () => ({
             appBar: {
                 elevation: 0,
-                height: '144px',
+                height: '160px',
                 fixed:true
             },
             user:null

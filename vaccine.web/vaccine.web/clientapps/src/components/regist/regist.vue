@@ -34,7 +34,7 @@
         data: () => ({
             appBar: {
                 elevation: 0,
-                height:'144px'
+                height:'160px'
             }
         }),
         computed: {
