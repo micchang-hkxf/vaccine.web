@@ -161,7 +161,7 @@
                         <v-img src="/alert_warning.svg"></v-img>
                     </template>
                     <template v-slot:confirm-text>
-                        <div class="sub-content">很抱歉， 您尚未符合接種資格</div>
+                        <div class="sub-content">很抱歉， 您尚未符合接種資格，若有疑問請於上班時間撥打02-2375-4341</div>
                     </template>
                     <template v-slot:confirm-right-btn-text>
                         了解

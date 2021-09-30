@@ -7,7 +7,7 @@
                 </div>
                 <div class="welcome-button-container">
                     <!--{{getUserInfo}}-->
-                    <!--<div class="content-one">【測試】預約尚未開始</div>-->
+                    <div class="content-one">【測試】預約尚未開始</div>
                     <div class="content-one">
                         【小叮嚀】<br />
                         
