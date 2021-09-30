@@ -13,7 +13,7 @@
                         <img src="/regist/logo.svg">
                     </div>
                     <div>
-                        <div>社區疫苗接種便民服務 </div>
+                        <div>社區疫苗接種便民服務</div>
                         <div>-網路報名系統-</div>
                     </div>
                 </div>
@@ -132,6 +132,9 @@
     }
 </script>
 <style>
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
     .regist-icon {
         padding-right:8px!important;
     }

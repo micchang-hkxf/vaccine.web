@@ -116,10 +116,10 @@
         },
         created: function () {
             var tpassToken = clientHelper.getCookie('access_token');
-            //if (tpassToken) {
-            //this.loadEmbeddedUserInfo(tpassToken);
-            this.loadFakeEmbeddedUserInfo(tpassToken);
-            //}
+            if (tpassToken) {
+            this.loadEmbeddedUserInfo(tpassToken);
+            //this.loadFakeEmbeddedUserInfo(tpassToken);
+            }
         },
         methods: {
             ...mapActions('regist', ['loadEmbeddedUserInfo','loadFakeEmbeddedUserInfo']),
