@@ -114,7 +114,7 @@
 <script>
     import appLayout from 'components/regist/regist_layout'
     import appFooter from 'components/regist/regist_footer'
-    //import clientHelper from 'stores/clientHelper'
+    import clientHelper from 'stores/clientHelper'
     import { mapActions, mapGetters} from 'vuex'
 
     export default {
@@ -135,11 +135,11 @@
         },
         created: function () {
            
-            //var tpassToken = clientHelper.getCookie('access_token');
-           /// if (tpassToken) {
-            //this.loadEmbeddedUserInfo(tpassToken);
+            var tpassToken = clientHelper.getCookie('access_token');
+            if (tpassToken) {
+            this.loadEmbeddedUserInfo(tpassToken);
             //this.loadFakeEmbeddedUserInfo(tpassToken);
-           // }
+            }
             //console.log('tpuser', this.getUserInfo)
         },
         methods: {
