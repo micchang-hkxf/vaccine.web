@@ -69,7 +69,7 @@
                                 <div class="d-flex flex-row justify-space-between">
                                     <div class="action-info-title text-left">事先報名：</div>
                                     <div class="action-info-data text-right">
-                                        {{$moment(session.registStart).format('YYYY/MM/DD')}}<br /> - {{$moment(session.registEnd).format('YYYY/MM/DD')}}
+                                        {{$moment(session.registStart).format('YYYY/MM/DD')}}<!--<br />--> - {{$moment(session.registEnd).format('YYYY/MM/DD')}}
                                     </div>
                                 </div>
                                 <div class="d-flex flex-row justify-space-between">

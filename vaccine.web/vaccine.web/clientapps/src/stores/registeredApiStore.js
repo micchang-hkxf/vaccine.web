@@ -29,7 +29,7 @@ export default {
                             identity: data.uId,
                             vaccination: data.activityName,
                             way: data.applyText,
-                            result: (data.logType==1) ? "合格" : "不合格",
+                            result: data.logTypeName,
                             number: data.applyNo,
                             distName: data.region.distName
                         });

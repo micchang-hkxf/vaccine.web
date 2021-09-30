@@ -12,6 +12,8 @@
             {{ uName }}
             <div class="profileShow">帳號</div>
             {{ acc }}
+            <div class="profileShow">信箱</div>
+            {{ email }}
             <div class="profileShow">手機</div>
             {{ mbNo }}
             <div class="profileShow">服務單位</div>
@@ -47,6 +49,7 @@
             model: {},
             uName: "",
             acc: "",
+            email: "",
             mbNo: "",
             unit: "",
             perm: "",
@@ -71,6 +74,7 @@
                 //get inform from api(todo)
                 this.$set(this, "uName", data.uName);
                 this.$set(this, "acc", data.acc);
+                this.$set(this, "email", data.email);
                 this.$set(this, "mbNo", data.mbNo);
                 this.$set(this, "unit", data.unit);
                 this.$set(this, "perm", data.userTypeDesc);

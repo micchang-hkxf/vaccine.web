@@ -387,6 +387,9 @@
                     <span class="p">{{ uName }}</span>
                     <div class="showname">帳號</div>
                     <span class="p">{{ acc }}</span>
+                    <div class="showname">信箱</div>
+                    <span class="p">{{ email }}</span>
+                    
                     <div class="showname">手機</div>
                     <span class="p">{{ mbNo }}</span>
 

@@ -3,7 +3,7 @@
         <template v-slot:extension v-if="$slots['regist-extension']">
             <slot name="regist-extension"></slot>
         </template>
-        <template v-slot:app-bar v-if="$slots['regist-title']">
+        <template v-slot:app-bar v-if="$slots['regist-title'] && getUserInfo.type !='tpass-embedded'" >
             <div class="regist-header">
                 <!--<div class="d-flex flex-row justify-center">
         <div>【測試】預約尚未開始</div>
@@ -13,7 +13,7 @@
                         <img src="/regist/logo.svg">
                     </div>
                     <div>
-                        <div>社區疫苗接種便民服務 </div>
+                        <div>社區疫苗接種便民服務</div>
                         <div>-網路報名系統-</div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
 <script>
     import appLayout from 'components/app_layout'
     import comConfirm from 'components/confirm'
-    import { mapActions } from 'vuex'
+    import { mapActions,mapGetters } from 'vuex'
     import clientHelper from 'stores/clientHelper'
     export default {
         // router,
@@ -109,6 +109,7 @@
             user:null
         }),
         computed: {
+            ...mapGetters('regist', ['getUserInfo']),       
             mobileClass: function () {
                 return {
                     "large-device": window.outerWidth >= 769,
@@ -159,8 +160,9 @@
     }
 </script>
 <style>
-
-
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
     .regist-icon {
         padding-right:8px!important;
     }
