@@ -1,11 +1,11 @@
-﻿<template >
-    <v-footer v-if="getUserInfo.type !='tpass-embedded'">
+﻿<template>
+    <v-footer  v-if="isEmbeddedLoging == false">
         <v-col cols="12">
             <div class="footer-content">
                 <img src="/regist/Emblem_of_Taipei_City.png">
                 <div>
-                    <div>免付費電話：臺北市民當家熱線 1999(公共電話及預付卡除外)</div>
-                    <div>Copyright {{ new Date().getFullYear() }} 版權所有 © 台北市政府</div>
+                    <div>電話：02-23759800(代表號)、02-23754341(預注專線)</div>
+                    <div>{{ new Date().getFullYear() }} Copyright © 臺北市政府衛生局 All Rights Reserved.</div>
                 </div>
             </div>
         </v-col>
@@ -20,7 +20,12 @@
 
         }),
         computed: {
-            ...mapGetters('regist', ['getUserInfo']),     
+            ...mapGetters('regist', ['getUserInfo']),  
+            isEmbeddedLoging: function () {
+                if (this.getUserInfo == null) return false;
+                if (this.getUserInfo.type == 'tpass-embedded') return true;
+                return false;
+            },
         },
         props: {
 

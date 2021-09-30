@@ -3,8 +3,11 @@
         <template v-slot:extension v-if="$slots['regist-extension']">
             <slot name="regist-extension"></slot>
         </template>
-        <template v-slot:app-bar v-if="$slots['regist-title'] && getUserInfo.type !='tpass-embedded'" >
-            <div class="regist-header">
+        <template v-slot:app-bar v-if="$slots['regist-title'] && isEmbeddedLoging == false">
+            <div class="regist-header d-flex flex-column">
+                <!--<div class="d-flex flex-row justify-center">
+        <div>【測試】預約尚未開始</div>
+    </div>-->
                 <div class="logo-title d-flex flex-row justify-center">
                     <div class="regist-icon">
                         <img src="/regist/logo.svg">
@@ -118,13 +121,19 @@
                     "lang-tw": this.getLangType == 'tw',
                     "lang-en": this.getLangType == 'en',
                 };
-            }
+            } ,          
+            isEmbeddedLoging: function () {
+                if (this.getUserInfo == null) return false;
+                if (this.getUserInfo.type == 'tpass-embedded') return true;
+                return false;
+            },
         },
         props: {
 
         },
         created: function () {
-            this.user = sessionStorage.getItem('userInfo');          
+            this.user = sessionStorage.getItem('userInfo');
+            console.log('type', this.getUserInfo)
         },
         methods: {
             ...mapActions('regist', ['setUserInfo']),
