@@ -109,7 +109,7 @@
                 { text: '接種活動', value: 'vaccination', sortable: false, align: 'center', flex: 6 },
                 { text: '行政區', value: 'distName', sortable: false, align: 'center', flex: 6 },
                 { text: '報名方式', value: 'way', sortable: false, align: 'center',  flex: 6 },
-                { text: '複審結果', value: 'result', sortable: false, align: 'center', flex: 6 },
+                { text: '複檢結果', value: 'result', sortable: false, align: 'center', flex: 6 },
                 { text: '序號', value: 'number', sortable: false, align: 'center',  flex: 6 },
             ],
         }),
