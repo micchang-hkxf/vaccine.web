@@ -1742,7 +1742,7 @@
                 console.log('item', item);
             },
             detailItem: function (item) {
-                this.isReChecked = item.regist_isrechecked //是否複檢成功
+                this.isReChecked = item.regist_isrechecked; //是否複檢成功
                 this.detailId = item.regist_id;//item.id;
                 this.detailTitle = item.regist_title;//item.title;
                 this.detailType = item.regist_type_name; //item.type;
@@ -2012,7 +2012,7 @@
                 var comp = this;
                 var isvaild = comp.$refs.doubleCheckForm.validate();
                 if (!isvaild) return;
-
+                
                 comp.alertMessage = '';
                 comp.doubleCheck({ activityId: comp.activityId, applyNo: comp.applyNo, bd: comp.artificialBirthday, result: comp.artificialResult })
                     .then(function (result) {
@@ -2026,6 +2026,16 @@
                         comp.$bus.$emit('dialogDoubleCheck_show', false);
                         // TODO: 複檢完成後載入最新資料
                         comp.getDetailForm(comp.detailCurrentPage);
+                        comp.getRegistForm(comp.showPage);
+                        setTimeout(() => {
+                            var item = comp.items.find(f => f.regist_id == comp.detailId);
+                            if (item !== undefined) {
+                                comp.isReChecked = item.regist_isrechecked;
+                                comp.detailCntQuota = item.regist_unpassed;
+                                comp.detailCheckTime = item.regist_review_date;
+                                comp.detailCheckPassCnt = item.regist_qualified;
+                            }
+                        }, 1500);
                     })
                     .catch(function () {
                         comp.alertMessage = '網站異常，請稍後再試';
