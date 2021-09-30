@@ -5,9 +5,6 @@
         </template>
         <template v-slot:app-bar v-if="$slots['regist-title'] && getUserInfo.type !='tpass-embedded'" >
             <div class="regist-header">
-                <!--<div class="d-flex flex-row justify-center">
-        <div>【測試】預約尚未開始</div>
-    </div>-->
                 <div class="logo-title d-flex flex-row justify-center">
                     <div class="regist-icon">
                         <img src="/regist/logo.svg">
@@ -87,7 +84,7 @@
             </com-confirm>
         </template>
         <template v-slot:app-content>
-            <slot name="regist-content"></slot>
+            <slot name="regist-content" class="regist-layout-content"></slot>
             <slot name="regist-footer"></slot>
         </template>
     </app-layout>
@@ -112,6 +109,7 @@
             ...mapGetters('regist', ['getUserInfo']),       
             mobileClass: function () {
                 return {
+                    "embedded-content": (this.getUserInfo ? this.getUserInfo.type =='tpass-embedded':false) ,
                     "large-device": window.outerWidth >= 769,
                     "small-device": window.outerWidth <= 768 && window.outerWidth >= 481,
                     "mobile-device": window.outerWidth < 481,
@@ -160,6 +158,9 @@
     }
 </script>
 <style>
+    .embedded-content .regist-layout-content {
+        padding: 14px;
+    }
     .v-btn--contained {
         box-shadow: none !important;
     }
