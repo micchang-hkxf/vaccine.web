@@ -1,10 +1,10 @@
 ﻿<template>
-    <app-layout :app-bar="appBar">
+    <app-layout :app-bar="appBar" :class="mobileClass">
         <template v-slot:extension v-if="$slots['regist-extension']">
             <slot name="regist-extension"></slot>
         </template>
         <template v-slot:app-bar v-if="$slots['regist-title']">
-            <div class="regist-header d-flex flex-column">
+            <div class="regist-header">
                 <!--<div class="d-flex flex-row justify-center">
         <div>【測試】預約尚未開始</div>
     </div>-->
@@ -17,37 +17,38 @@
                         <div>-網路報名系統-</div>
                     </div>
                 </div>
-                <div class="action-title" style="display:flex;justify-content:center;">
-                    <v-btn color="#736DB9" @click.stop="goWelcome" :ripple="false" width="152">
-                        <v-img src="/regist/home.svg"></v-img>
+                <div class="action-title">
+                    <div class="d-flex flex-row">
+                        <v-btn color="#736DB9" @click.stop="goWelcome" :ripple="false" width="152" class="large-button">
+                            <v-img src="/regist/home.svg"></v-img>
+                            <v-spacer></v-spacer>
+                            <span>返回首頁</span>
+                        </v-btn>
                         <v-spacer></v-spacer>
-                        <span>返回首頁</span>
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                    <span class="regist-title"><slot name="regist-title"></slot></span>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#736DB9" @click.stop="confirmLogOut" :ripple="false" width="152" v-show="user!=null">
-                        <v-img src="/regist/log-out.svg" width="25" height="24"></v-img>
+                        <span class="regist-title"><slot name="regist-title"></slot></span>
                         <v-spacer></v-spacer>
-                        <span>改登其他身份</span>
-                    </v-btn>
-                    <div style="width:152px;" v-show="user==null"></div>
-                </div>
-                <div class="action-title" style="display:flex;justify-content:center;">
-                    <v-btn color="#736DB9" @click.stop="goWelcome" :ripple="false" width="152">
-                        <v-img src="/regist/home.svg"></v-img>
-                        <v-spacer></v-spacer>
-                        <span>返回首頁</span>
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                    <span class="regist-title"><slot name="regist-title"></slot></span>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#736DB9" @click.stop="confirmLogOut" :ripple="false" width="152" v-show="user!=null">
-                        <v-img src="/regist/log-out.svg" width="25" height="24"></v-img>
-                        <v-spacer></v-spacer>
-                        <span>改登其他身份</span>
-                    </v-btn>
-                    <div style="width:152px;" v-show="user==null"></div>
+                        <v-btn color="#736DB9" @click.stop="confirmLogOut" :ripple="false" width="152" v-show="user!=null" class="large-button">
+                            <v-img src="/regist/log-out.svg" width="25" height="24"></v-img>
+                            <v-spacer></v-spacer>
+                            <span>改登其他身份</span>
+                        </v-btn>
+                        <div class="large-button" v-show="user==null" style="width:152px!important;">&nbsp;</div>
+                    </div>
+                    <div class="mobile-button">
+                        <div class="d-flex flex-row">
+                            <v-btn color="#736DB9" @click.stop="goWelcome" :ripple="false" width="152">
+                                <v-img src="/regist/home.svg"></v-img>
+                                <v-spacer></v-spacer>
+                                <span>返回首頁</span>
+                            </v-btn>
+                            <v-spacer></v-spacer>
+                            <v-btn color="#736DB9" @click.stop="confirmLogOut" :ripple="false" width="152" v-show="user!=null">
+                                <v-img src="/regist/log-out.svg" width="25" height="24"></v-img>
+                                <v-spacer></v-spacer>
+                                <span>改登其他身份</span>
+                            </v-btn>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -108,6 +109,17 @@
             user:null
         }),
         computed: {
+            mobileClass: function () {
+                return {
+                    "large-device": window.outerWidth >= 769,
+                    "small-device": window.outerWidth <= 768 && window.outerWidth >= 481,
+                    "mobile-device": window.outerWidth < 481,
+                    "mobile-ios": navigator.userAgent.indexOf('Mobile') != -1 && navigator.userAgent.indexOf('iPhone OS') != -1,
+                    "mobile-android": navigator.userAgent.indexOf('Mobile') != -1 && navigator.userAgent.indexOf('Linux') != -1,
+                    "lang-tw": this.getLangType == 'tw',
+                    "lang-en": this.getLangType == 'en',
+                };
+            }
         },
         props: {
 
@@ -147,25 +159,28 @@
     }
 </script>
 <style>
+
+
     .regist-icon {
         padding-right:8px!important;
     }
     .action-title {
         text-align: center;
         font: normal normal bold 16px/24px Noto Sans T Chinese;
-        height: 40px;
         line-height: 40px;
         letter-spacing: 0px;
         color: #FFFFFF;
         opacity: 1;
         position: relative;
         top: 15px;
+        margin-top: -20px;
     }
-    .action-title > img {
-        position: relative;
-        /*top: 10px;*/
-        cursor: pointer;
-    }
+        .action-title > img {
+            position: relative;
+            margin-top: -38px;
+            /*top: 10px;*/
+            cursor: pointer;
+        }
 
     .action-title .v-btn {
         border: 1px solid #FFF !important;
@@ -182,8 +197,6 @@
     .logo-title {
         max-width: 200%;
         height: 64px;
-        position: relative;
-        top: 15px;
     }
     .app-bar {
         width: calc(100vw - 32px) !important;
@@ -225,8 +238,25 @@
 
         .action-title .regist-title {
             position: relative;
-            top: -38px;
             white-space: nowrap;
+        }
+    }
+    @media (max-width:576px) {
+        .mobile-button {
+            display: block;
+        }
+
+        .large-button {
+            display: none;
+        }
+    }
+    @media (min-width:575px) {
+        .mobile-button {
+            display: none;
+        }
+
+        .large-button {
+            display: block;
         }
     }
 

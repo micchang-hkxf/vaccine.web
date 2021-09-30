@@ -254,7 +254,7 @@
         data: () => ({
             appBar: {
                 elevation: 0,
-                height: '160px'
+                //height: '160px'
             }, isNeedLogin: true,
             years: Array.from({ length: new Date().getFullYear() - 1910 }, (value, index) => (new Date().getFullYear() - index).toString()),
             months: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
