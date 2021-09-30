@@ -16,7 +16,7 @@
                 </div>
             </div>
         </template>
-        <template v-slot:regist-footer>
+        <template v-slot:regist-footer >
             <app-footer></app-footer>
         </template>
     </app-layout>
@@ -97,7 +97,7 @@
     import appLayout from 'components/regist/regist_layout'
     import appFooter from 'components/regist/regist_footer'
     import clientHelper from 'stores/clientHelper'
-    import { mapActions } from 'vuex'
+    import { mapActions/*, mapGetters*/} from 'vuex'
 
     export default {
         // router,
@@ -107,7 +107,7 @@
                 height: '144px'
             }
         }),
-        computed: {
+        computed: {          
             groupId: function () {
                 if (this.$route.query)
                     return this.$route.query.groupId;
@@ -116,12 +116,13 @@
         },
         created: function () {
             var tpassToken = clientHelper.getCookie('access_token');
-            if (tpassToken) {
-                this.loadEmbeddedUserInfo(tpassToken);
-            }
+            //if (tpassToken) {
+            //this.loadEmbeddedUserInfo(tpassToken);
+            this.loadFakeEmbeddedUserInfo(tpassToken);
+            //}
         },
         methods: {
-            ...mapActions('regist', ['loadEmbeddedUserInfo']),
+            ...mapActions('regist', ['loadEmbeddedUserInfo','loadFakeEmbeddedUserInfo']),
             
         },
         components: {

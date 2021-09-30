@@ -3,7 +3,7 @@
         <template v-slot:extension v-if="$slots['regist-extension']">
             <slot name="regist-extension"></slot>
         </template>
-        <template v-slot:app-bar v-if="$slots['regist-title']">
+        <template v-slot:app-bar v-if="$slots['regist-title'] && getUserInfo.type !='tpass-embedded'" >
             <div class="regist-header d-flex flex-column">
                 <div class="d-flex flex-row justify-center">
                     <div>【測試】預約尚未開始</div>
@@ -79,7 +79,7 @@
 <script>
     import appLayout from 'components/app_layout'
     import comConfirm from 'components/confirm'
-    import { mapActions } from 'vuex'
+    import { mapActions,mapGetters } from 'vuex'
     import clientHelper from 'stores/clientHelper'
     export default {
         // router,
@@ -92,6 +92,7 @@
             user:null
         }),
         computed: {
+            ...mapGetters('regist', ['getUserInfo']),       
         },
         props: {
 

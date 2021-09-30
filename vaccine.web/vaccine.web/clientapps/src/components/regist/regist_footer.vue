@@ -1,5 +1,5 @@
-﻿<template>
-    <v-footer>
+﻿<template >
+    <v-footer v-if="getUserInfo.type !='tpass-embedded'">
         <v-col cols="12">
             <div class="footer-content">
                 <img src="/regist/Emblem_of_Taipei_City.png">
@@ -13,12 +13,14 @@
 </template>
 
 <script>
+    import { /*mapActions,*/ mapGetters } from 'vuex'
     export default {
         // router,
         data: () => ({
 
         }),
         computed: {
+            ...mapGetters('regist', ['getUserInfo']),     
         },
         props: {
 
