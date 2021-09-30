@@ -35,7 +35,7 @@
                 </div>
             </div>
         </template>
-        <template v-slot:regist-footer v-if="getUserInfo.type !='tpass-embedded'">
+        <template v-slot:regist-footer>
             <app-footer></app-footer>
         </template>
     </app-layout>

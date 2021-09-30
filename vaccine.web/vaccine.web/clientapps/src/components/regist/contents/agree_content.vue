@@ -1,6 +1,6 @@
 ﻿<template>
     <app-layout :app-bar="appBar" class="agree-content">
-        <template v-slot:regist-title v-if="getUserInfo.type !='tpass-embedded'">
+        <template v-slot:regist-title>
             報名登記與身份驗證
         </template>
         <template v-slot:regist-content>
@@ -9,8 +9,8 @@
                     <apply-viewer></apply-viewer>
                     <v-divider></v-divider>
                 </div>
-                <template v-if="getUserInfo.type!='tpass-embedded'">
-                    <div class="agree-actions" v-if="isNeedLogin && isShow">
+                <template v-if="isEmbeddedLoging==false">
+                    <div class="agree-actions" v-if="isNeedLogin && isShow && isTPassLoging == false">
                         <div class="action-header">請選擇登記方式：</div>
                         <div class="action-content d-flex flex-row justify-space-between">
                             <div class="action tp-pass d-flex flex-column justify-center align-center" @click="toTpPass($route.params.vote_no)">
@@ -27,10 +27,10 @@
                             </div>
                         </div>
                         <!--<v-btn :to="{name:'apply'}">申請</v-btn>
-            <v-btn :to="{name:'regist'}">返回</v-btn>-->
+        <v-btn :to="{name:'regist'}">返回</v-btn>-->
                     </div>
                 </template>
-                <template v-if="getUserInfo.type =='tpass-embedded'">
+                <template v-if="isEmbeddedLoging==true">
                     <div class="agree-actions" @click.stop="toLocalTPassEmbedded($route.params.vote_no)">
                         <v-btn style="width: 100%; margin-top: 30px;" color="#736DB9"> <span style="color:white">前往報名</span></v-btn>
                     </div>
@@ -38,7 +38,7 @@
                 <login-switch ref="switch" :login-done="loginDone" :login-cancel="loginCancel"></login-switch>
             </div>
         </template>
-        <template v-slot:regist-footer v-if="getUserInfo.type !='tpass-embedded'">
+        <template v-slot:regist-footer>
             <app-footer></app-footer>
         </template>
     </app-layout>
@@ -62,13 +62,20 @@
             },
             isNeedLogin: true,
             isShow: false,
+            isLoging: false,
             now: new Date()
         }),
         beforeRouteEnter: function beforeRouteEnter(to, from, next) {
             next(vm => vm.$store.dispatch("regist/scrollToZero"));
         },
         computed: {
-            ...mapGetters('regist', ['getUserInfo']),           
+            ...mapGetters('regist', ['getUserInfo']),  
+            isEmbeddedLoging: function () {
+                if (this.getUserInfo == null) return false;
+                if (this.getUserInfo.type == 'tpass-embedded') return true;
+                return false;
+            },
+            
         },
         props: {
 
@@ -82,7 +89,7 @@
                 }
             }
             window.scrollTo(0, 0);
-            console.log('tpuser', this.getUserInfo)
+            console.log('type', this.getUserInfo)
         },
         methods: {
             ...mapActions('regist', ['setUserInfo','scrollToZero']),

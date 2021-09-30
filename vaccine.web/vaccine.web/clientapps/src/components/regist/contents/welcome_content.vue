@@ -6,13 +6,24 @@
                     <img src="/regist/login_logo.svg" style="background-color:#736DB9;" />
                 </div>
                 <div class="welcome-button-container">
+                    <!--{{getUserInfo}}-->
                     <!--<div class="content-one">【測試】預約尚未開始</div>-->
-                    <div class="content-one">配合北市府數位里辦服務，即日起各類疫苗接種活動已陸續開放可在網路上自行報名，只要憑「台北通」登入或者手動輸入身份資料即可線上確認接種資格並完成報名登記作業，請點選「我要報名」跟著指引進行操作</div>
-                    <div class="content-two">適用疫苗：肺炎鏈球菌疫苗、流感</div>
+                    <div class="content-one">
+                        【小叮嚀】<br />
+                        
+                        1.每人僅能擇一場次進行報名。 <br />
+                        2.各項疫苗接種資格，依衛生局公告為主，報名後將進行資格檢核，如檢核後對接種資格有疑義，請向各區健康服務中心或衛生局洽詢。<br />
+                        3.接種當日請戴口罩並攜帶「健保卡」、「身分證」，55-64歲原住民欲接種肺炎鏈球菌疫苗請攜帶原住民身分證明，進行身分核對。 <br />
+                        4.接種活動現場同步開放現場報名接種疫苗。 <br />
+
+
+                    </div>
+                    <div class="content-two">適用疫苗：肺炎鏈球菌疫苗、季節性流感疫苗</div>
                 </div>
                 <div class="welcome-actions-container">
                     <v-btn color="#171D3CCC" height="48px" :to="{ name:'regist' }">我要報名</v-btn>
                     <v-btn color="#171D3CCC" height="48px" :to="{ name:'regist' , params:{ mode:'applied' } }">查詢紀錄</v-btn>
+                  
                 </div>
             </div>
         </template>
@@ -28,9 +39,16 @@
         opacity: 1;
     }
 
+    .content-one {
+        max-width: 520px;
+        margin: 0 auto;
+        text-align: left;
+    }
+
     .content-two {
         position: relative;
         top: 23px;
+        text-align: center;
     }
 
     .welcome-panel {
@@ -96,8 +114,8 @@
 <script>
     import appLayout from 'components/regist/regist_layout'
     import appFooter from 'components/regist/regist_footer'
-    import clientHelper from 'stores/clientHelper'
-    import { mapActions/*, mapGetters*/} from 'vuex'
+    //import clientHelper from 'stores/clientHelper'
+    import { mapActions, mapGetters} from 'vuex'
 
     export default {
         // router,
@@ -108,6 +126,7 @@
             }
         }),
         computed: {          
+            ...mapGetters('regist', ['getUserInfo']),     
             groupId: function () {
                 if (this.$route.query)
                     return this.$route.query.groupId;
@@ -115,11 +134,13 @@
             }
         },
         created: function () {
-            var tpassToken = clientHelper.getCookie('access_token');
-            if (tpassToken) {
-            this.loadEmbeddedUserInfo(tpassToken);
+           
+            //var tpassToken = clientHelper.getCookie('access_token');
+           /// if (tpassToken) {
+            //this.loadEmbeddedUserInfo(tpassToken);
             //this.loadFakeEmbeddedUserInfo(tpassToken);
-            }
+           // }
+            //console.log('tpuser', this.getUserInfo)
         },
         methods: {
             ...mapActions('regist', ['loadEmbeddedUserInfo','loadFakeEmbeddedUserInfo']),
