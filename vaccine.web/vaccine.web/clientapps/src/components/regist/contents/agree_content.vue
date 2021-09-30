@@ -10,7 +10,7 @@
                     <v-divider></v-divider>
                 </div>
                 <template v-if="isEmbeddedLoging==false">
-                    <div class="agree-actions" v-if="isNeedLogin && isShow && isTPassLoging == false">
+                    <div class="agree-actions" v-if="isNeedLogin && isShow">
                         <div class="action-header">請選擇登記方式：</div>
                         <div class="action-content d-flex flex-row justify-space-between">
                             <div class="action tp-pass d-flex flex-column justify-center align-center" @click="toTpPass($route.params.vote_no)">
