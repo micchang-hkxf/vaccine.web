@@ -126,43 +126,76 @@ export default {
                 reslove(getters.getUserInfo);
             });
         },
-        loadEmbeddedUserInfo: function ({ commit, dispatch ,state }, token) {
-            console.log(token);
+        loadEmbeddedUserInfo: function ({ commit, dispatch, state }, token) {
+
+            var tokenInfo = {
+                token: token, //台北通 token
+                type: 'tpass-embedded'
+            }
             return new Promise((resolve) => {
-                var passInfo = {
-                    uuid: '123456',
-                    uName: '張閔傑',
-                    acc: 'micchang@g.hkxf.org',
-                    email: 'micchang@g.hkxf.org',
-                    renew: '',
-                    uid: 'A123456789',
-                    bd: '1950-5-5',
-                    mbNo: '0988507536',
-                };
-
-                var results = {
-                    uName: passInfo.uName, //使用者名稱
-                    birthday: Vue.moment(passInfo.bd).format('YYYY-MM-DD'), //使用者生日
-                    //birthday: userInfo.birthday, //使用者生日
-                    identify: passInfo.uid, //使用者身分證
-                    token: null, //台北通 token
-                    type: 'tpass-embedded',
-                    sessionId: null, //生日登入 sessionId
-                    captcha: null, //生日登入 captcha
-                };
-
-                dispatch('clearUserInfoLock').then(() => {
-                    if (!!passInfo.uName) state.lockUserInfo.lockName = true;
-                    if (!!passInfo.identify) state.lockUserInfo.lockIdentify = true;
-                    if (!!passInfo.birthday) state.lockUserInfo.lockBirthday = true;
-                    commit('saveLockUserInfo', state.lockUserInfo);
-                    dispatch('setUserInfo', results).then((user) => {
-                        resolve(user);
-                    });
-                })
-
-                resolve(results);
+                var apiUrl = `${state.apiRoot}api/my`;
+                var apiHeader = {
+                    headers: {
+                        'x-token': token
+                    }
+                }
+                axios.get(apiUrl, apiHeader).then(res => {
+                    var userInfo = {
+                        uName: res.data.uName, //使用者名稱
+                        birthday: Vue.moment(res.data.bd).format('YYYY-MM-DD'), //使用者生日
+                        identify: res.data.uid, //使用者身分證
+                        token: token, //台北通 token
+                        type: 'tpass-embedded',
+                        sessionId: null, //生日登入 sessionId
+                        captcha: null, //生日登入 captcha
+                    };
+                    dispatch('clearUserInfoLock').then(() => {
+                        if (!!userInfo.uName) state.lockUserInfo.lockName = true;
+                        if (!!userInfo.identify) state.lockUserInfo.lockIdentify = true;
+                        if (!!userInfo.birthday) state.lockUserInfo.lockBirthday = true;
+                        commit('saveLockUserInfo', state.lockUserInfo);
+                        commit('saveUserInfo', { ...userInfo, ...tokenInfo });
+                        resolve(userInfo);
+                    })
+                });
             });
+
+            //console.log(token);
+            //return new Promise((resolve) => {
+            //    var passInfo = {
+            //        uuid: '123456',
+            //        uName: '張閔傑',
+            //        acc: 'micchang@g.hkxf.org',
+            //        email: 'micchang@g.hkxf.org',
+            //        renew: '',
+            //        uid: 'A123456789',
+            //        bd: '1950-5-5',
+            //        mbNo: '0988507536',
+            //    };
+
+            //    var results = {
+            //        uName: passInfo.uName, //使用者名稱
+            //        birthday: Vue.moment(passInfo.bd).format('YYYY-MM-DD'), //使用者生日
+            //        //birthday: userInfo.birthday, //使用者生日
+            //        identify: passInfo.uid, //使用者身分證
+            //        token: null, //台北通 token
+            //        type: 'tpass-embedded',
+            //        sessionId: null, //生日登入 sessionId
+            //        captcha: null, //生日登入 captcha
+            //    };
+
+            //    dispatch('clearUserInfoLock').then(() => {
+            //        if (!!passInfo.uName) state.lockUserInfo.lockName = true;
+            //        if (!!passInfo.identify) state.lockUserInfo.lockIdentify = true;
+            //        if (!!passInfo.birthday) state.lockUserInfo.lockBirthday = true;
+            //        commit('saveLockUserInfo', state.lockUserInfo);
+            //        dispatch('setUserInfo', results).then((user) => {
+            //            resolve(user);
+            //        });
+            //    })
+
+            //    resolve(results);
+            //});
         },
         checkUserInfo: function ({ state, commit, dispatch }, userInfo) {
             return new Promise((reslove) => {                
