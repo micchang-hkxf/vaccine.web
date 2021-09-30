@@ -23,7 +23,7 @@
         data: () => ({
             appBar: {
                 elevation: 0,
-                height: '160px'
+                //height: '160px'
             },
             group :null 
         }),
