@@ -549,14 +549,13 @@ export default {
             importData.forEach((d) => {
   
                 if (d[2] != "") {
-
-                    endDay = d[7] - 3;
                     dy = new Date(d[7]);
                     dy.setDate(dy.getDate() - 4);//before 3 day
                     mm = dy.getMonth() + 1;
                     dd = dy.getDate();
                     endDay = dy.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
-
+                    endDay = Vue.moment(dateHelper.addDays(new Date(endDay), 1)).format("YYYY-MM-DD");
+                    
                     var newData = {
                         vaccineGroupId: d[0],
                         vaccineIds: [d[1]],
@@ -584,7 +583,6 @@ export default {
 
                 }
             });
-         
 
             return new Promise((reslove, reject) => {
                 //console.log('import', setData);
