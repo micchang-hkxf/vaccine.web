@@ -440,6 +440,7 @@
     .users-list .modify-btn-text {
         color: #626781;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
+        margin: 0;
     }
 
     .users-list .modify-list-item {
