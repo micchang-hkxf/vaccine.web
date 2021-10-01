@@ -452,18 +452,18 @@
             },
             alertClick: function () {
                 this.$bus.$emit('alert_show', false);
-                this.$router.push({ name: 'regist' });
+                this.$router.replace({ name: 'regist' });
             },
             alertRegisteredLeftClick: function () {
                 this.$bus.$emit('alertRegistered_show', false);
-                this.$router.push({ name: 'regist' });
+                this.$router.replace({ name: 'regist' });
             },
             alertRegisteredRightClick: function () {
                 this.$bus.$emit('alertRegistered_show', false);
             },
             alertNoConformClick: function () {
                 this.$bus.$emit('alertNoConform_show', false);
-                this.$router.push({ name: 'regist' });
+                this.$router.replace({ name: 'regist' });
             },
             alertTimeoutClick: function () {
                 this.$bus.$emit('alertTimeout_show', false);
@@ -484,7 +484,7 @@
                 //    groupId = 'influenza';
                 //else if (this.session.vaccineGroupId === 1)
                 //    groupId = 'covid';
-                this.$router.push({ name: 'unapply', query: { groupId: this.session.vaccineGroupId } });
+                this.$router.replace({ name: 'unapply', query: { groupId: this.session.vaccineGroupId } });
             },
             alertCheckDataShow: function () {
                 var comp = this;

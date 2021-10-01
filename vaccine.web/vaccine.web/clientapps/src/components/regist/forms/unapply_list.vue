@@ -164,7 +164,7 @@
             },
             toSession: function (session) {
                 this.setActivityApply(session).then(() => {
-                    this.$router.push({ path: 'agree/' + session.sessionId, params: session });
+                    this.$router.replace({ path: 'agree/' + session.sessionId, params: session });
                 });
             },
             clear: function () {

@@ -100,7 +100,7 @@
                 this.$refs.switch.toLocalLogin(`/apply/${sessionId}`);
             },
             loginDone: function () {
-                this.$router.push({ path: `/apply/${this.$route.params.vote_no}` });
+                this.$router.replace({ path: `/apply/${this.$route.params.vote_no}` });
             },
             loginCancel: function () {
 
