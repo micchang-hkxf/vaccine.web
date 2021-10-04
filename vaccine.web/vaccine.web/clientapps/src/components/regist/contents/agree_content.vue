@@ -7,8 +7,21 @@
             <div class="main-content">
                 <div class="agree-container">
                     <apply-viewer></apply-viewer>
-                    <v-divider></v-divider>                  
+                    <v-divider></v-divider>
                 </div>
+                <template v-if="!isShow && session.totalCount != session.maxLimit">
+                    <div class="regist-status">
+                        <span class="regist-status-text" style="color: #626781;">事先報名時段尚未開放或已結束</span>
+                    </div>
+                </template>
+
+                <template v-if="session.totalCount === session.maxLimit">
+                    <div class="regist-status" style="background-color:#F4A95F;">
+                        <span class="regist-status-text" style="color: #626781;">名額已滿</span>
+                    </div>
+                </template>
+
+
                 <template v-if="isEmbeddedLoging==false">
                     <div class="agree-actions" v-if="isNeedLogin && isShow">
                         <div class="action-header">請選擇登記方式：</div>
@@ -27,7 +40,7 @@
                             </div>
                         </div>
                         <!--<v-btn :to="{name:'apply'}">申請</v-btn>
-        <v-btn :to="{name:'regist'}">返回</v-btn>-->
+            <v-btn :to="{name:'regist'}">返回</v-btn>-->
                     </div>
                 </template>
                 <template v-if="isEmbeddedLoging==true && isShow">
@@ -233,6 +246,22 @@
         margin-left: -30% !important;
         margin-right: -30% !important;
     }
+
+    .regist-status {
+        background-color: rgba(67, 73, 105, 0.3);       
+        margin-top: 15px;
+        width: calc(100vw - 32px) !important;
+        max-width: 790px !important;
+    }
+
+    .regist-status-text {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
 
     /* Extra small devices (portrait phones, less than 576px) */
     @media (min-width: 100px) and (max-width: 350px) {
