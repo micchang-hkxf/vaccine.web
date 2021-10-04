@@ -697,7 +697,7 @@
                 }
                 this.$set(this, "setEnable", item.isEnable.toString() == 'true');
 
-                // this.setRole = { id: item.userType  };
+                 this.setRole = { id: item.userType  };
                 // this.setArea = { id: item.zones[0] };//multiple todo
 
 
