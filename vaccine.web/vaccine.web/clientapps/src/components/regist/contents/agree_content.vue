@@ -7,7 +7,7 @@
             <div class="main-content">
                 <div class="agree-container">
                     <apply-viewer></apply-viewer>
-                    <v-divider></v-divider>
+                    <v-divider></v-divider>                  
                 </div>
                 <template v-if="isEmbeddedLoging==false">
                     <div class="agree-actions" v-if="isNeedLogin && isShow">
@@ -30,9 +30,9 @@
         <v-btn :to="{name:'regist'}">返回</v-btn>-->
                     </div>
                 </template>
-                <template v-if="isEmbeddedLoging==true">
+                <template v-if="isEmbeddedLoging==true && isShow">
                     <div class="agree-actions" @click.stop="toLocalTPassEmbedded($route.params.vote_no)">
-                        <v-btn style="width: 100%; margin-top: 30px;" color="#736DB9"> <span style="color:white">前往報名</span></v-btn>
+                        <v-btn style="width: 100%; margin-top: 30px;" color="#736DB9"><span style="color:white">前往報名</span></v-btn>
                     </div>
                 </template>
                 <login-switch ref="switch" :login-done="loginDone" :login-cancel="loginCancel"></login-switch>
