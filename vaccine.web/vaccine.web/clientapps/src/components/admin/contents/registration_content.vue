@@ -1794,9 +1794,10 @@
                     comp.detailTotalCount = r.totalCount;
                     comp.activityId = r.activityId;
                     comp.reCheckId = r.reCheckId;
-                    if (r.reCheckId != "") {
-                        comp.detailAbnormalCnt = r.unCheckCount;
-                    }
+                    comp.detailAbnormalCnt = r.unCheckCount || 0;
+                    //if (r.reCheckId != "") {
+                    //    comp.detailAbnormalCnt = r.unCheckCount;
+                    //}
 
                     comp.detailItems.splice(0);
                     r.datas.forEach((x) => {

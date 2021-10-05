@@ -16,8 +16,7 @@ export default new VueRouter({
         { name: 'audit', path: '/audit', component: content_audit },
         { name: 'registed', path: '/registed', component: content_registed },
         { name: 'registration', path: '/registration', component: content_registration },
-        { name: 'admin', path: '/admin', component: content_registration },
-        { name: 'users', path: '/users', component: content_users },
-        { name: '*', path: '/', component: content_registration }
+        { name: 'admin', path: '/admin', component: content_registration , alias : '*' },
+        { name: 'users', path: '/users', component: content_users }
     ]
 })
