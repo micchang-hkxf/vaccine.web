@@ -1,0 +1,1 @@
+cd .. & dotnet build --configuration Debug & cd clientapps & npm run watch & cd builds

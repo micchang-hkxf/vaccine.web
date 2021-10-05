@@ -1,0 +1,1 @@
+cd .. & dotnet build --configuration Release & cd clientapps & npm run build-prod & cd .. & dotnet build --configuration Release /p:DeployOnBuild=True /p:PublishProfile=Properties/PublishProfiles/Release.pubxml & cd builds
