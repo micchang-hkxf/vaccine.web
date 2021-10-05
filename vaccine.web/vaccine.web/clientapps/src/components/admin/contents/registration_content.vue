@@ -709,7 +709,7 @@
                                             <div class="detail-action-btn">
                                                 <!--v-on="on"-->
                                                 <v-btn @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 && isReChecked ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0 || !isReChecked">
-                                                    <span :style="detailAbnormalCnt > 0 && isReChecked ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
+                                                    <span style="color:white">再次執行複檢（{{detailAbnormalCnt}}）</span>
                                                 </v-btn>
                                                 <v-btn color="#736DB9" @click.stop="downloadCompleteFile('')" :ripple="false" :disabled="!isReChecked">
                                                     <v-img src="/admin/download_icon.svg" width="24px" height="24px">
