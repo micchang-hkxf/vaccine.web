@@ -7,7 +7,7 @@
                         <img src="/regist/regist_logo.png">
                     </div>
                     <div>
-                        <div>里辦疫苗接種便民服務 </div>
+                        <div>社區疫苗接種便民服務 </div>
                         <div>-網路報名系統-</div>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
         data: () => ({
             appBar: {
                 elevation: 0,
-                height:'144px'
+                height:'160px'
             }
         }),
         computed: {

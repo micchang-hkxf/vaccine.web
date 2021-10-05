@@ -52,7 +52,7 @@
         data: () => ({
             appBar: {
                 elevation: 0,
-                height: '144px'
+                //height: '160px'
             },
             tab: null,
             loginInfo: {
@@ -135,9 +135,10 @@
             updateHash: function (hash) {
                 this.$router.push({ hash: hash });
             }
-        },
+        },        
         beforeRouteEnter: function beforeRouteEnter(to, from, next) {
             next(function (vm) {
+                vm.$store.dispatch("regist/scrollToZero")
                 vm.$store.dispatch("regist/checkLogTime").then(function () { });
             });
         },

@@ -123,7 +123,7 @@
                                         <v-list-item-action-text>
                                             <v-btn icon dense :ripple="false">
                                                 <img src="/pen.svg">
-                                            </v-btn> <span class="modify-btn-text">手動輸入</span>
+                                            </v-btn><span class="modify-btn-text">手動輸入</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
                                     <v-list-item @click.stop="fileImport">
@@ -672,12 +672,8 @@
                                     <div>承辦醫院：{{detailInstitution}}（{{detailInstutionDistrict}}）</div>
                                     <div>報名名額：<span :class="detailCntQuota >= detailTotalQuota ? 'color-red' : ''">{{detailCntQuota}}</span>/<span style="color:#626781">{{detailTotalQuota}}</span></div>
                                     <div>
-                                        年齡限制：
-
-                                        <span v-if="detailAgeLimit==0"><span tyle="color:#626781">配合疫苗規定</span></span>
-
-                                        <span v-if="detailAgeLimit!=0">{{detailAgeLimit}}<span tyle="color:#626781">歲以上 </span></span>
-
+                                        年齡限制：<span v-if="detailAgeLimit==0"><span tyle="color:#626781">配合疫苗規定</span></span>
+                                                  <span v-else>{{detailAgeLimit}}<span tyle="color:#626781">歲以上 </span></span>
                                     </div>
                             </div>
                             <hr />
@@ -712,8 +708,8 @@
                                             </div>
                                             <div class="detail-action-btn">
                                                 <!--v-on="on"-->
-                                                <v-btn @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0">
-                                                    <span :style="detailAbnormalCnt > 0 ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
+                                                <v-btn @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 && isReChecked ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0 || !isReChecked">
+                                                    <span :style="detailAbnormalCnt > 0 && isReChecked ? 'color:white' : ''">再次執行複檢（{{detailAbnormalCnt}}）</span>
                                                 </v-btn>
                                                 <v-btn color="#736DB9" @click.stop="downloadCompleteFile('')" :ripple="false" :disabled="!isReChecked">
                                                     <v-img src="/admin/download_icon.svg" width="24px" height="24px">
@@ -921,6 +917,7 @@
     .registration-list .modify-btn-text {
         color: #626781;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
+        margin: 0;
     }
 
     .registration-list .modify-list-item {
@@ -1263,6 +1260,7 @@
     import { mapActions, mapGetters } from 'vuex'
     import XLSX from 'xlsx'
     import moment from "moment";
+    import dateHelper from 'stores/dateHelper'
 
     export default {
         // router,
@@ -1315,6 +1313,7 @@
             detailAbnormalCnt: 0,
             detailCheckTime: 0,
             detailCheckPassCnt: 0,
+            detailCurrentPage: 0,
             alertMessage: '',
             lessCheckTime: false,
             artificialId: '',
@@ -1495,14 +1494,25 @@
                     errMsg = "(開始施打時間)必須早於(結束施打時間)";
                 }
 
+                console.log(result.model)
                 if (Date.parse(result.model.regist_apply_start_date) > Date.parse(result.model.regist_apply_end_date)) {
                     errMsg = "(事先開放報名開始時間)必須早於(事先開放報名結束時間)";
                 }
 
-                if (Date.parse(result.model.regist_station_date + ' ' + result.model.regist_station_start_time) <
-                    Date.parse(result.model.regist_apply_end_date + ' 00:00') + (this.regist_beforeDay + 1) * 60 * 60 * 24 * 1000) {
-                    errMsg = "(開放報名結束時間)必須早於(開始施打時間)至少" + (this.regist_beforeDay + 1) + "天";
+                if (new Date(result.model.regist_station_date + ' 00:00') <
+                    dateHelper.addDays(new Date(result.model.regist_apply_end_date + ' 00:00'), this.regist_beforeDay ))
+                    //Date.parse(result.model.regist_apply_end_date + ' 00:00') + this.regist_beforeDay * 60 * 60 * 24 * 1000) 
+                {
+                    errMsg = "(開放報名結束時間)必須早於(開始施打時間)至少" + (this.regist_beforeDay) + "天";
                 }
+
+                if (new Date(result.model.regist_station_date + ' 00:00') <
+                    dateHelper.addDays(new Date(result.model.regist_apply_start_date + ' 00:00'), this.regist_beforeDay + 1 ))
+                //Date.parse(result.model.regist_apply_end_date + ' 00:00') + this.regist_beforeDay * 60 * 60 * 24 * 1000) 
+                {
+                    errMsg = "(開放報名開始時間)必須早於(開始施打時間)至少" + (this.regist_beforeDay+1) + "天";
+                }
+
 
                 if (errMsg != "") {
                     this.alertTitle = '設定錯誤';
@@ -1519,7 +1529,7 @@
                     result.model.regist_instution_district_name = result.model.regist_institution.distName;
                     result.model.regist_district_name = result.model.regist_district.name;
 
-                    Object.assign(this.result, result);
+                    this.result = Object.assign(this.result, result);
 
 
                     switch (result.action) {
@@ -1733,7 +1743,7 @@
                 console.log('item', item);
             },
             detailItem: function (item) {
-                this.isReChecked = item.regist_isrechecked //是否複檢成功
+                this.isReChecked = item.regist_isrechecked; //是否複檢成功
                 this.detailId = item.regist_id;//item.id;
                 this.detailTitle = item.regist_title;//item.title;
                 this.detailType = item.regist_type_name; //item.type;
@@ -1746,7 +1756,7 @@
                 this.detailRegistrationTime = moment(item.regist_apply_start_date).format('YYYY/MM/DD') + ' - ' + moment(item.regist_apply_end_date).format('YYYY/MM/DD');   //item.registrationTime;
                 this.detailCntQuota = item.regist_unpassed;   //item.cntQuota;
                 this.detailTotalQuota = item.regist_quota;    //item.totalQuota;
-                this.detailAgeLimit = (item.regist_age_limit > 0) ? item.regist_age_limit :'無限制';
+                this.detailAgeLimit = item.regist_age_limit;
                 this.detailAbnormalCnt = item.regist_abnormalCnt;   //item.abnormalCnt;
                 this.detailCheckTime = item.regist_review_date;   //item.checkTime;
                 this.detailCheckPassCnt = item.regist_qualified; //item.checkPassCnt;
@@ -1768,14 +1778,16 @@
                 this.getDetailForm(pager.page);
             },
             getDetailForm: function (page) {
+                var comp = this;
+                comp.detailAbnormalCnt = 0;
+                comp.detailCurrentPage = page;
+
                 var params = {
                     id: this.detailId,
                     keyWord: this.detailKeyWord,
                     pageSize: this.detailItemsPerPage,
                     page: page,
                 };
-                var comp = this;
-                this.detailAbnormalCnt = 0;
 
                 this.loadDetailForm(params).then((r) => {
                     comp.injectionOkCount = 0;
@@ -2001,7 +2013,7 @@
                 var comp = this;
                 var isvaild = comp.$refs.doubleCheckForm.validate();
                 if (!isvaild) return;
-
+                
                 comp.alertMessage = '';
                 comp.doubleCheck({ activityId: comp.activityId, applyNo: comp.applyNo, bd: comp.artificialBirthday, result: comp.artificialResult })
                     .then(function (result) {
@@ -2013,6 +2025,18 @@
                         comp.$refs.fileViewer.close();
 
                         comp.$bus.$emit('dialogDoubleCheck_show', false);
+                        // TODO: 複檢完成後載入最新資料
+                        comp.getDetailForm(comp.detailCurrentPage);
+                        comp.getRegistForm(comp.showPage);
+                        setTimeout(() => {
+                            var item = comp.items.find(f => f.regist_id == comp.detailId);
+                            if (item !== undefined) {
+                                comp.isReChecked = item.regist_isrechecked;
+                                comp.detailCntQuota = item.regist_unpassed;
+                                comp.detailCheckTime = item.regist_review_date;
+                                comp.detailCheckPassCnt = item.regist_qualified;
+                            }
+                        }, 1500);
                     })
                     .catch(function () {
                         comp.alertMessage = '網站異常，請稍後再試';

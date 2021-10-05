@@ -588,6 +588,7 @@
     import comDialog from 'components/dialog'
     import comTimepicker from 'components/vue-timepicker/timepicker'
     import { mapActions, mapGetters } from 'vuex'
+    import dateHelper from 'stores/dateHelper'
 
     export default {
         data: () => ({
@@ -646,18 +647,21 @@
                 //this.reCheckDate = this.$moment(new Date().setDate(new Date(val).getDate() - 2)).format('YYYY/MM/DD');
                 //this.registEndDate = this.$moment(new Date().setDate(new Date(val).getDate() - 3)).format('YYYY/MM/DD,23:59');
 
-                var d = new Date(val);
-                d.setDate(d.getDate() - 3);//before 3 day
-
-                var mm = d.getMonth() + 1;
-                var dd = d.getDate();
-                this.registEndDate = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
+                //var d = new Date(val);
+                //d.setDate(d.getDate() - 3);//before 3 day
+                //
+                //var mm = d.getMonth() + 1;
+                //var dd = d.getDate();
+                this.registEndDate = this.$moment(dateHelper.addDays(new Date(this.model.regist_station_date),-4)).format("YYYY-MM-DD");
+                this.reCheckDate = this.$moment(dateHelper.addDays(new Date(this.model.regist_station_date),-3)).format("YYYY-MM-DD");
+                //this.registEndDate = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
                 this.model.regist_apply_end_date = this.registEndDate;
-                d.setDate(d.getDate() +1); //before 2 day
-                mm = d.getMonth() + 1;
-                dd = d.getDate();
-
-                this.reCheckDate = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
+                
+                //d.setDate(d.getDate() +1); //before 2 day
+                //mm = d.getMonth() + 1;
+                //dd = d.getDate();
+                //
+                //this.reCheckDate = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
 
             },
             //'getInstitutions': function () {
@@ -779,7 +783,7 @@
                         x.parentNode.style = '';
                     }
                 });
-     
+
 
 
             },

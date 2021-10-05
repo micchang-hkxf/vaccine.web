@@ -161,7 +161,7 @@
                         <v-img src="/alert_warning.svg"></v-img>
                     </template>
                     <template v-slot:confirm-text>
-                        <div class="sub-content">很抱歉， 您尚未符合接種資格</div>
+                        <div class="sub-content">很抱歉， 您尚未符合接種資格，若有疑問請於上班時間撥打02-2375-4341</div>
                     </template>
                     <template v-slot:confirm-right-btn-text>
                         了解
@@ -254,7 +254,7 @@
         data: () => ({
             appBar: {
                 elevation: 0,
-                height: '144px'
+                //height: '160px'
             }, isNeedLogin: true,
             years: Array.from({ length: new Date().getFullYear() - 1910 }, (value, index) => (new Date().getFullYear() - index).toString()),
             months: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
@@ -291,6 +291,12 @@
         props: {
 
         },
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                vm.$store.dispatch("regist/scrollToZero");
+                vm.$store.dispatch("regist/checkLogTime").then(() => { });
+            });
+        },
         created: function () {
             var error = this.$cookies.get('error');
             if (error) {
@@ -309,7 +315,7 @@
             this.checkBeforeApply();
         },
         methods: {
-            ...mapActions('regist', ['checkApply', 'getBeforeApply', 'checkLogTime', 'userLogout']),      
+            ...mapActions('regist', ['checkApply', 'getBeforeApply', 'checkLogTime', 'userLogout','scrollToZero']),
             sendApply: function () {
                 var comp = this;
                 var isvaild = comp.$refs.applyForm.validate();
@@ -446,18 +452,18 @@
             },
             alertClick: function () {
                 this.$bus.$emit('alert_show', false);
-                this.$router.push({ name: 'regist' });
+                this.$router.replace({ name: 'regist' });
             },
             alertRegisteredLeftClick: function () {
                 this.$bus.$emit('alertRegistered_show', false);
-                this.$router.push({ name: 'regist' });
+                this.$router.replace({ name: 'regist' });
             },
             alertRegisteredRightClick: function () {
                 this.$bus.$emit('alertRegistered_show', false);
             },
             alertNoConformClick: function () {
                 this.$bus.$emit('alertNoConform_show', false);
-                this.$router.push({ name: 'regist' });
+                this.$router.replace({ name: 'regist' });
             },
             alertTimeoutClick: function () {
                 this.$bus.$emit('alertTimeout_show', false);
@@ -478,7 +484,7 @@
                 //    groupId = 'influenza';
                 //else if (this.session.vaccineGroupId === 1)
                 //    groupId = 'covid';
-                this.$router.push({ name: 'unapply', query: { groupId: this.session.vaccineGroupId } });
+                this.$router.replace({ name: 'unapply', query: { groupId: this.session.vaccineGroupId } });
             },
             alertCheckDataShow: function () {
                 var comp = this;
@@ -494,11 +500,6 @@
                 this.$bus.$emit('alertCheckData_show', false);
                 this.sendApply();
             },
-        },
-        beforeRouteEnter(to, from, next) {
-            next(vm => {
-                vm.$store.dispatch("regist/checkLogTime").then(() => { });
-            });
         },
         components: {
             appLayout, appFooter, applyDone, comLoading, comConfirm

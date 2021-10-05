@@ -51,8 +51,9 @@
                         為避免重複接種，報名後請勿再自行前往院所接種或跨里報名，接種當日，將再次檢核接種資格，屆時依現場判讀可接種之疫苗別為準。
                     </div>
                 </div>
-            </div>
+            </div>  {{session}}
             <div class="applied-actions" v-if="isNeedLogin && (session.messageCode === 1 || session.messageCode === 2) && ($moment(now) < $moment(session.sessionStart))">
+
                 <v-btn @click.stop="cancelRegistered()">我要取消報名</v-btn>
             </div>
             <!--共用 loading -->
@@ -93,7 +94,7 @@
         data: () => ({
             appBar: {
                 elevation: 0,
-                height: '144px'
+                //height: '160px'
             },
             isNeedLogin: true,
             now: new Date()
@@ -109,7 +110,7 @@
             window.scrollTo(0, 0);
         },
         methods: {
-            ...mapActions('regist', ['deleteApply']),
+            ...mapActions('regist', ['deleteApply','scrollToZero']),
             toTpton: function () {
 
             },
@@ -147,6 +148,7 @@
         },
         beforeRouteEnter: function beforeRouteEnter(to, from, next) {
             next(function (vm) {
+                vm.$store.dispatch("regist/scrollToZero");
                 vm.$store.dispatch("regist/checkLogTime").then(function () { });
             });
         },

@@ -59,10 +59,10 @@
     export default {
         // router,
         data: () => ({
-            appBar: {
-                elevation: 0,
-                height: '144px'
-            },
+            //appBar: {
+            //    elevation: 0,
+            //    height: '160px'
+            //},
             isShow: false,
             years: [],
             months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
@@ -139,7 +139,7 @@
                 this.$refs.loginForm.resetValidation();
             },
             checkUid: function () {
-                var re = /^[A-Za-z]{1}[1-2]{1}[0-9]{8}$/;
+                var re = /^[A-Z]{1}[1-2]{1}[0-9]{8}$/;
                 if (!re.test(this.uid)) {
                     return '身份證字號格式不正確！';
                 }

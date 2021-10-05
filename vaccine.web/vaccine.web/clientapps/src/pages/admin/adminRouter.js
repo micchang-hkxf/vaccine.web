@@ -6,10 +6,10 @@
 //import content_registed from 'components/admin/contents/registed_content.vue'
 //import content_audit from 'components/admin/contents/audit_content.vue'
 
-const content_users = () => import(/* webpackChunkName: "adminUsers" */'components/admin/contents/users_content.vue')
-const content_registration = () => import(/* webpackChunkName: "adminRegistration" */'components/admin/contents/registration_content.vue')
-const content_registed = () => import(/* webpackChunkName: "adminRegisted" */'components/admin/contents/registed_content.vue')
-const content_audit = () => import(/* webpackChunkName: "adminAudit" */'components/admin/contents/audit_content.vue')
+const content_users = () => import(/* webpackChunkName: "admin-Users" */'components/admin/contents/users_content.vue')
+const content_registration = () => import(/* webpackChunkName: "admin-Registration" */'components/admin/contents/registration_content.vue')
+const content_registed = () => import(/* webpackChunkName: "admin-Registed" */'components/admin/contents/registed_content.vue')
+const content_audit = () => import(/* webpackChunkName: "admin-Audit" */'components/admin/contents/audit_content.vue')
 
 export default new VueRouter({
     routes: [

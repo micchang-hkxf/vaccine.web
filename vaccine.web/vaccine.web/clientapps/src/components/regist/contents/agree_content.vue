@@ -9,25 +9,45 @@
                     <apply-viewer></apply-viewer>
                     <v-divider></v-divider>
                 </div>
-                <div class="agree-actions" v-if="isNeedLogin && isShow">
-                    <div class="action-header">請選擇登記方式：</div>
-                    <div class="action-content d-flex flex-row justify-space-between">
-                        <div class="action tp-pass d-flex flex-column justify-center align-center" @click="toTpPass($route.params.vote_no)">
-                            <div>
-                                <img src="/regist/tp_pass.svg">
-                            </div>
-                            <div class="action-label">台北通帳號登入</div>
-                        </div>
-                        <div class="action d-flex flex-column justify-center align-center" @click.stop="toLocalPass($route.params.vote_no)">
-                            <div>
-                                <img src="/regist/editor_pen.svg">
-                            </div>
-                            <div class="action-label">手動輸入資料</div>
-                        </div>
+                <template v-if="!isShow && session.totalCount != session.maxLimit">
+                    <div class="regist-status">
+                        <span class="regist-status-text" style="color: #626781;">事先報名時段尚未開放或已結束</span>
                     </div>
-                    <!--<v-btn :to="{name:'apply'}">申請</v-btn>
-                    <v-btn :to="{name:'regist'}">返回</v-btn>-->
-                </div>
+                </template>
+
+                <template v-if="session.totalCount === session.maxLimit">
+                    <div class="regist-status" style="background-color:#F4A95F;">
+                        <span class="regist-status-text" style="color: #626781;">名額已滿</span>
+                    </div>
+                </template>
+
+
+                <template v-if="isEmbeddedLoging==false">
+                    <div class="agree-actions" v-if="isNeedLogin && isShow">
+                        <div class="action-header">請選擇登記方式：</div>
+                        <div class="action-content d-flex flex-row justify-space-between">
+                            <div class="action tp-pass d-flex flex-column justify-center align-center" @click="toTpPass($route.params.vote_no)">
+                                <div>
+                                    <img src="/regist/tp_pass.svg">
+                                </div>
+                                <div class="action-label">台北通帳號登入</div>
+                            </div>
+                            <div class="action d-flex flex-column justify-center align-center" @click.stop="toLocalPass($route.params.vote_no)">
+                                <div>
+                                    <img src="/regist/editor_pen.svg">
+                                </div>
+                                <div class="action-label">手動輸入資料</div>
+                            </div>
+                        </div>
+                        <!--<v-btn :to="{name:'apply'}">申請</v-btn>
+            <v-btn :to="{name:'regist'}">返回</v-btn>-->
+                    </div>
+                </template>
+                <template v-if="isEmbeddedLoging==true && isShow">
+                    <div class="agree-actions" @click.stop="toLocalTPassEmbedded($route.params.vote_no)">
+                        <v-btn style="width: 100%; margin-top: 30px;" color="#736DB9"><span style="color:white">前往報名</span></v-btn>
+                    </div>
+                </template>
                 <login-switch ref="switch" :login-done="loginDone" :login-cancel="loginCancel"></login-switch>
             </div>
         </template>
@@ -51,14 +71,24 @@
             activeId: 555 ,
             appBar: {
                 elevation: 0,
-                height: '144px'
+                //height: '160px'
             },
             isNeedLogin: true,
             isShow: false,
+            isLoging: false,
             now: new Date()
         }),
+        beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+            next(vm => vm.$store.dispatch("regist/scrollToZero"));
+        },
         computed: {
-            ...mapGetters('regist', ['getUserInfo']),
+            ...mapGetters('regist', ['getUserInfo']),  
+            isEmbeddedLoging: function () {
+                if (this.getUserInfo == null) return false;
+                if (this.getUserInfo.type == 'tpass-embedded') return true;
+                return false;
+            },
+            
         },
         props: {
 
@@ -72,9 +102,10 @@
                 }
             }
             window.scrollTo(0, 0);
+            console.log('type', this.getUserInfo)
         },
         methods: {
-            ...mapActions('regist', ['setUserInfo']),
+            ...mapActions('regist', ['setUserInfo','scrollToZero']),
             toTpPass: function (sessionId) {
                 this.$refs.switch.toTpPassLogin(`/regist/#/apply/${sessionId}`);
             },
@@ -82,10 +113,13 @@
                 this.$refs.switch.toLocalLogin(`/apply/${sessionId}`);
             },
             loginDone: function () {
-                this.$router.push({ path: `/apply/${this.$route.params.vote_no}` });
+                this.$router.replace({ path: `/apply/${this.$route.params.vote_no}` });
             },
             loginCancel: function () {
 
+            },
+            toLocalTPassEmbedded: function (sessionId) {
+                this.$refs.switch.toTPassEmbeddedLogin(`/apply/${sessionId}`);
             },
             //toLogin: function () {
             //    if (!this.getUserInfo) {
@@ -105,6 +139,10 @@
 </script>
 
 <style scoped>
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
+
     .agree-content/deep/ .app-content {
         /*margin-bottom: 78px;
         width: 66%;
@@ -208,6 +246,22 @@
         margin-left: -30% !important;
         margin-right: -30% !important;
     }
+
+    .regist-status {
+        background-color: rgba(67, 73, 105, 0.3);       
+        margin-top: 15px;
+        width: calc(100vw - 32px) !important;
+        max-width: 790px !important;
+    }
+
+    .regist-status-text {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
 
     /* Extra small devices (portrait phones, less than 576px) */
     @media (min-width: 100px) and (max-width: 350px) {

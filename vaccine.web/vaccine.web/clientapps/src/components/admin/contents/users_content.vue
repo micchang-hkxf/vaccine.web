@@ -387,6 +387,9 @@
                     <span class="p">{{ uName }}</span>
                     <div class="showname">帳號</div>
                     <span class="p">{{ acc }}</span>
+                    <div class="showname">信箱</div>
+                    <span class="p">{{ email }}</span>
+                    
                     <div class="showname">手機</div>
                     <span class="p">{{ mbNo }}</span>
 
@@ -437,6 +440,7 @@
     .users-list .modify-btn-text {
         color: #626781;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
+        margin: 0;
     }
 
     .users-list .modify-list-item {
@@ -693,7 +697,7 @@
                 }
                 this.$set(this, "setEnable", item.isEnable.toString() == 'true');
 
-                // this.setRole = { id: item.userType  };
+                 this.setRole = { id: item.userType  };
                 // this.setArea = { id: item.zones[0] };//multiple todo
 
 

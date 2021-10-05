@@ -36,7 +36,7 @@
                                     <div class="d-flex flex-row justify-space-between">
                                         <div class="action-info-title text-left">事先報名：</div>
                                         <div class="action-info-data text-right">
-                                            {{$moment(applied.startApplyDate).format('YYYY/MM/DD')}}<br /> - {{$moment(applied.endApplyDate).format('YYYY/MM/DD')}}
+                                            {{$moment(applied.startApplyDate).format('YYYY/MM/DD')}}<!--<br />--> - {{$moment(applied.endApplyDate).format('YYYY/MM/DD')}}
                                         </div>
                                     </div>
                                     <div class="d-flex flex-row justify-space-between">
@@ -103,10 +103,10 @@
     export default {
         // router,
         data: () => ({
-            appBar: {
-                elevation: 0,
-                height: '144px'
-            },
+            //appBar: {
+            //    elevation: 0,
+            //    height: '160px'
+            //},
             applieds: [],
             filterKeyword: '',
             isShow: false,

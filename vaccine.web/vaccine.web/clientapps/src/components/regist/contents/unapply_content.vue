@@ -23,10 +23,15 @@
         data: () => ({
             appBar: {
                 elevation: 0,
-                height: '144px'
+                //height: '160px'
             },
             group :null 
         }),
+        beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+            next(function (vm) {
+                vm.$store.dispatch("regist/scrollToZero")
+            });
+        },
         computed: {
             ...mapGetters('regist', ['findVaccineGroup']),
             groupId: function () {
