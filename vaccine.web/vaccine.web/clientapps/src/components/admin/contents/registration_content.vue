@@ -1892,8 +1892,13 @@
                 if (title == "") {
                     title = comp.detailTitle;
                 }
+
+                comp.$bus.$emit('type1_show4', "資料處理中...");
+                
                 comp.getCompleteFile({ id: comp.detailId, title: title })
                     .then(function (result) {
+                        comp.$bus.$emit('type1_hide4');
+
                         switch (result.state) {
                             case 'not found':
                                 comp.alertMessage = '檔案不存在';
@@ -1910,6 +1915,8 @@
                         //console.log(result);
                     })
                     .catch(function () {
+                        comp.$bus.$emit('type1_hide4');
+
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
@@ -1920,8 +1927,13 @@
                 if (title == "") {
                     title = comp.detailTitle;
                 }
+
+                comp.$bus.$emit('type1_show4', "資料處理中...");
+
                 comp.getSignUpFile({ id: comp.detailId, title: title })
                     .then(function (result) {
+                        comp.$bus.$emit('type1_hide4');
+
                         switch (result.state) {
                             case 'not found':
                                 comp.alertMessage = '檔案不存在';
@@ -1938,6 +1950,8 @@
                         //console.log(result);
                     })
                     .catch(function () {
+                        comp.$bus.$emit('type1_hide4');
+
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
@@ -1948,8 +1962,13 @@
                     title = comp.detailTitle;
                 }
                 comp.alertMessage = '';
+
+                comp.$bus.$emit('type1_show4', "資料處理中...");
+
                 comp.getVaccinationFile({ id: comp.detailId, title: title })
                     .then(function (result) {
+                        comp.$bus.$emit('type1_hide4');
+
                         switch (result.state) {
                             case 'not found':
                                 comp.alertMessage = '檔案不存在';
@@ -1966,16 +1985,22 @@
                         //console.log(result);
                     })
                     .catch(function () {
+                        comp.$bus.$emit('type1_hide4');
+
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
             },
             downloadAgreeFile: function (item) {
-            
                 var comp = this;
                 comp.alertMessage = '';
+
+                comp.$bus.$emit('type1_show4', "資料處理中...");
+
                 comp.getAgreeFile({ id: item.id, name: item.name, activityId: this.activityId, title: comp.detailTitle })
                     .then(function (result) {
+                        comp.$bus.$emit('type1_hide4');
+
                         switch (result.state) {
                             case 'not found':
                                 comp.alertMessage = '檔案不存在';
@@ -1992,6 +2017,8 @@
                         //console.log(result);
                     })
                     .catch(function () {
+                        comp.$bus.$emit('type1_hide4');
+
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
