@@ -78,8 +78,10 @@
             isLoging: false,
             now: new Date()
         }),
-        beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-            next(vm => vm.$store.dispatch("regist/scrollToZero"));
+        beforeRouteEnter: function beforeRouteEnter(to, from, next) {            
+            next(vm => {
+                vm.$store.dispatch("regist/scrollToZero");
+            });
         },
         computed: {
             ...mapGetters('regist', ['getUserInfo']),  

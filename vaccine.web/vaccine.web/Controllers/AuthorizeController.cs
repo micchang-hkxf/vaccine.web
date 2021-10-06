@@ -10,9 +10,11 @@ using vaccine.web.Helpers;
 
 namespace vaccine.web.Controllers
 {
+
     [Route("authorize")]
     public class AuthorizeController : Controller
     {
+
         public IActionResult Index(TpwvOauthStatus Status)
         {
             if (Constants.SiteSetting.oauthProxy)
@@ -42,9 +44,7 @@ namespace vaccine.web.Controllers
                 return View(Result);
             }
         }
-
-
-
+               
         public class TpwvOauthResult {
             public string RedirectTo { get; set; }
             public string Message { get; set; }
@@ -83,6 +83,7 @@ namespace vaccine.web.Controllers
                 throw except;
             }
         }
+
     }
 
 }
