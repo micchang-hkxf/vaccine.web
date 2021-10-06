@@ -211,11 +211,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
-                                <v-list-item-content>
-                                    <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
-                                    <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
-                                </v-list-item-content>
-                            </v-list-item>-->
+                            <v-list-item-content>
+                                <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
+                                <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>-->
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">場次標題</div></v-list-item-title>
@@ -283,11 +283,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                <v-list-item-content>
-                                    <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                    <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
-                                </v-list-item-content>
-                            </v-list-item>-->
+                            <v-list-item-content>
+                                <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>-->
                                         <div class="divider"><v-divider></v-divider></div>
                                         <v-list-item two-line>
                                             <v-list-item-content>
@@ -302,11 +302,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                <v-list-item-content>
-                                    <v-list-item-title>備註</v-list-item-title>
-                                    <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
-                                </v-list-item-content>
-                            </v-list-item>-->
+                            <v-list-item-content>
+                                <v-list-item-title>備註</v-list-item-title>
+                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>-->
                                         <!--<div class="divider"><v-divider></v-divider></div>-->
                                     </div>
 
@@ -347,11 +347,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
-                                <v-list-item-content>
-                                    <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
-                                    <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
-                                </v-list-item-content>
-                            </v-list-item>-->
+                            <v-list-item-content>
+                                <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
+                                <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>-->
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">場次標題</div></v-list-item-title>
@@ -419,12 +419,12 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                <v-list-item-content>
-                                    <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                    <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                            <v-list-item-content>
+                                <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
 
-                                </v-list-item-content><div class="showname">
-                            </v-list-item>-->
+                            </v-list-item-content><div class="showname">
+                        </v-list-item>-->
 
                                         <div class="divider"><v-divider></v-divider></div>
 
@@ -441,11 +441,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                <v-list-item-content>
-                                    <v-list-item-title>備註</v-list-item-title>
-                                    <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
-                                </v-list-item-content>
-                            </v-list-item>-->
+                            <v-list-item-content>
+                                <v-list-item-title>備註</v-list-item-title>
+                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>-->
 
                                         <div class="divider"><v-divider></v-divider></div>
                                     </div>
@@ -824,36 +824,38 @@
                             <v-btn color="primary" @click="confirmDoubleCheck" :ripple="false"><span>確定</span></v-btn>
                         </template>
                     </com-dialog>
+
+
+                    <!--下載事由-->
+                    <com-dialog ref="reasonEditViewer" ref-key="reasonEditViewer" width="40%" key="reason-download-viewer" eager>
+                        <template v-slot:toolbar>
+                            下載事由－{{downloadType}}
+                            <v-spacer></v-spacer>
+                        </template>
+                        <template v-slot:content>
+                            <div class="prevDesc">
+                                請填寫下載事由後，按下「確定」即可進行下載。
+                            </div>
+                            <v-form lazy-validation ref="reasonForm">
+                                <v-textarea v-model="reason"
+                                            auto-grow
+                                            outlined
+                                            placeholder="請輸入下載事由（限30字內）"
+                                            maxlength="30"
+                                            :rules="[rules.required]">
+                                </v-textarea>
+                            </v-form>
+                            <div class="divider"><v-divider></v-divider></div>
+                        </template>
+                        <template v-slot:action>
+                            <!--<div class="divider"><v-divider></v-divider></div>-->
+                            <v-spacer></v-spacer>
+                            <v-btn outlined :ripple="false" @click.stop="closeDownloadReason"><span style="color:#626781;">取消</span></v-btn>
+                            <v-btn @click.stop="downloadListType(downloadType,reason)" color="primary" :ripple="false"><span>確定</span></v-btn>
+                        </template>
+                    </com-dialog>
                 </v-card>
 
-                <!--下載事由-->
-                <com-dialog ref="reasonEditViewer" ref-key="reasonEditViewer" width="40%" key="reason-download-viewer" eager>
-                    <template v-slot:toolbar>
-                        下載事由－{{downloadType}}
-                        <v-spacer></v-spacer>
-                    </template>
-                    <template v-slot:content>
-                        <div class="prevDesc">
-                            請填寫下載事由後，按下「確定」即可進行下載。
-                        </div>
-                        <v-form ref="reasonForm">
-                            <v-textarea v-model="reason"
-                                        auto-grow
-                                        outlined
-                                        placeholder="請輸入下載事由（限30字內）"
-                                        maxlength="30"
-                                        :rules="[rules.required]">
-                            </v-textarea>
-                        </v-form>
-                        <div class="divider"><v-divider></v-divider></div>
-                    </template>
-                    <template v-slot:action>
-                        <!--<div class="divider"><v-divider></v-divider></div>-->
-                        <v-spacer></v-spacer>
-                        <v-btn outlined :ripple="false" @click.stop="closeDownloadReason"><span style="color:#626781;">取消</span></v-btn>
-                        <v-btn @click.stop="downloadListType(downloadType,reason)" color="primary" :ripple="false"><span>確定</span></v-btn>
-                    </template>
-                </com-dialog>
             </div>
         </template>
     </app-layout>
@@ -1416,7 +1418,7 @@
                 regist_age_limit: 0,
                 uploadFile: null,
                 finalData: []
-            },
+            },          
             reason: '',
             downloadItem: '',
             downloadType: '',
@@ -1924,18 +1926,20 @@
                     });
             },
             openDownloadReason: function (item, type) {
-                var comp = this;
+               
 
-                comp.reason = '';
+                this.reason = '';
                 this.downloadItem = item;
                 this.downloadType = type;
                 this.$refs.reasonEditViewer.open();
-                comp.$refs.reasonForm.reset();
-
+                this.$refs.reasonForm.reset();
+               
             },
             downloadListType: function (type, reason) {
-                if (type == '' || reason == '') return;
-
+                var comp = this;
+                //if (type == '' || reason == '') return;
+                var isvaild = comp.$refs.reasonForm.validate();
+                if (!isvaild) return;
                 switch (type) {
                     case '完整接種同意書':
                         return this.downloadCompleteAgreeList(reason);
@@ -1947,9 +1951,10 @@
 
             },
             closeDownloadReason: function () {
-                var comp = this;
-                comp.$refs.reasonForm.reset();
+                //var comp = this;
+            
                 this.$refs.reasonEditViewer.close();
+                this.$refs.reasonForm.reset();
             },
             downloadCompleteAgreeList: function (reason) {
                 this.closeDownloadReason();
