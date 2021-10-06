@@ -216,13 +216,13 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-label><span class="star">手機</span></v-label>
-                                <v-text-field dense outlined class="w02" placeholder="請輸入手機號碼" type="number" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
+                                <v-text-field dense outlined class="w02" placeholder="請輸入手機號碼" v-model="mbNo" :rules="[rules.mbNo.regex]"></v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="12">
                                 <v-label><span class="star">再次確認手機</span></v-label>
-                                <v-text-field dense outlined class="w02" placeholder="再次輸入手機號碼" type="number" v-model="mbNo2" :rules="[rules.mbNo.regex, checkMbNo]"></v-text-field>
+                                <v-text-field dense outlined class="w02" placeholder="再次輸入手機號碼" v-model="mbNo2" :rules="[rules.mbNo.regex, checkMbNo]"></v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
