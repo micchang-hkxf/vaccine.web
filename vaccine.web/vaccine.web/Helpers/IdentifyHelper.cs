@@ -70,29 +70,23 @@ using System.Threading.Tasks;
          }
          public void OnActionExecuting(ActionExecutingContext Context)
         {
-            try
-            {
 
-                var message = string.Empty;
-                var isDebugMode = Context.HttpContext.Request.Query.ContainsKey("debugger");
-                if (isDebugMode)
+            var message = string.Empty;
+            var isDebugMode = Context.HttpContext.Request.Query.ContainsKey("debugger");
+            if (isDebugMode)
+            {
+                var Code = Context.HttpContext.Request.Query["code"];
+                var DebugMode = Context.HttpContext.Request.Query["debugger"];
+                if (DebugMode == "showcode")
                 {
-                    var Code = Context.HttpContext.Request.Query["code"];
-                    var DebugMode = Context.HttpContext.Request.Query["debugger"];
-                    if (DebugMode == "showcode")
-                    {
-                        message += $"取得Code:[{Code}]更換網址:[{Constants.ApiRoot}api/token?code={Code}]";
-                        throw new MessageException(message, null);
-                    }
+                    message += $"取得Code:[{Code}]更換網址:[{Constants.ApiRoot}api/token?code={Code}]";
+                    throw new MessageException(message, null);
                 }
-                Context.HttpContext.User = new ClaimsPrincipal(IdentifyUser.CreateUser(Context.HttpContext, ServiceName));
+            }
+            Context.HttpContext.User = new ClaimsPrincipal(IdentifyUser.CreateUser(Context.HttpContext, ServiceName));
 
-            }
-            catch (Exception ex)
-            {
-            }
-         }
-     }
+        }
+    }
      public enum IdentifyRole
     {
         Guest = 0,
