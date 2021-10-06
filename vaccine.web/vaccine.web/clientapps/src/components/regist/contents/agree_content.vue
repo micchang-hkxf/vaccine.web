@@ -1,5 +1,5 @@
 ﻿<template>
-    <app-layout :app-bar="appBar" class="agree-content">
+    <app-layout :app-bar="appBar" class="agree-content" v-if="getActivityApply!=null">
         <template v-slot:regist-title>
             報名登記與身份驗證
         </template>
@@ -84,7 +84,9 @@
             });
         },
         computed: {
-            ...mapGetters('regist', ['getUserInfo']),  
+            ...mapGetters('regist', ['getUserInfo']),
+            ...mapGetters('regist/user', ['getActivityApply']),
+            
             isEmbeddedLoging: function () {
                 if (this.getUserInfo == null) return false;
                 if (this.getUserInfo.type == 'tpass-embedded') return true;
@@ -96,15 +98,37 @@
 
         },
         created: function () {
-            this.isShow = false;
-            this.session = this.$store.getters['regist/user/getActivityApply'];
-            if (moment(this.session.registStart) <= moment(this.now) && moment(this.now) <= moment(this.session.registEnd)) {
-                if (this.session.totalCount < this.session.maxLimit) {
-                    this.isShow = true;
+
+            if (this.getActivityApply == null) {
+
+                this.$store.dispatch("regist/loacVaccineSessions", {
+                    groupId: null,
+                    brandId: null,
+                    keyword: null,
+                    sessionId: this.$route.params.vote_no
+                }).then(r => {
+                    this.$store.dispatch("regist/setActivityApply", r.datas[0]);
+
+                    this.isShow = false;
+                    this.session = this.$store.getters['regist/user/getActivityApply'];
+                    if (moment(this.session.registStart) <= moment(this.now) && moment(this.now) <= moment(this.session.registEnd)) {
+                        if (this.session.totalCount < this.session.maxLimit) {
+                            this.isShow = true;
+                        }
+                    }
+                    window.scrollTo(0, 0);
+                });
+            } else {
+                this.isShow = false;
+                this.session = this.$store.getters['regist/user/getActivityApply'];
+                if (moment(this.session.registStart) <= moment(this.now) && moment(this.now) <= moment(this.session.registEnd)) {
+                    if (this.session.totalCount < this.session.maxLimit) {
+                        this.isShow = true;
+                    }
                 }
+                window.scrollTo(0, 0);
             }
-            window.scrollTo(0, 0);
-            console.log('type', this.getUserInfo)
+
         },
         methods: {
             ...mapActions('regist', ['setUserInfo','scrollToZero']),

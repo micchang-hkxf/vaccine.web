@@ -62,6 +62,7 @@ export default {
                         vaccineGroupId: vaccineGroupId,         // 疫苗種類
                         token: '',
                         orderType: 1,                           // 排序條件
+                        activityId: params.sessionId
                     }
                 }).then(res => {
                     results.totalCount = res.data.totalRows;

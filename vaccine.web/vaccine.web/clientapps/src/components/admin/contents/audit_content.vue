@@ -138,6 +138,7 @@
                     <v-btn @click="save" color="primary" :ripple="false"><span>確定</span></v-btn>
                 </template>
             </com-dialog>
+            <com-loading :enabled="isLoading"></com-loading>
         </template>
     </app-layout>
 </template>
@@ -243,7 +244,6 @@
     import comLoading from 'components/circle_loading'
     import comDialog from 'components/dialog'
     import comConfirm from 'components/confirm'
-    import comLoading from 'components/loading'
     import { mapActions, mapGetters } from 'vuex'
 
     export default {
@@ -425,7 +425,7 @@
             }
         },
         components: {
-            appLayout, appMenu, comTable, editor, comDialog, comConfirm
+            appLayout, appMenu, comTable, editor, comDialog, comConfirm, comLoading
         }
     };
 </script>
