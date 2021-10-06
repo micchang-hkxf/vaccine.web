@@ -257,7 +257,8 @@ export default {
         
         getCompleteFile: function ({ state, rootGetters, dispatch }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement?activityId=` + params.id;
+                //var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement?activityId=` + params.id ;
+                var apiUrl = `${state.apiRoot}api/Activity/Export/Agreement?activityId=` + params.id + `&reason=${encodeURI(params.reason)}`;
                 var results = { datas: [], state: '' };
         
                 fetch(apiUrl, {
@@ -293,7 +294,7 @@ export default {
         },
         getSignUpFile: function ({ state, rootGetters, dispatch }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/Activity/Export/ApplyList?activityId=` + params.id;
+                var apiUrl = `${state.apiRoot}api/Activity/Export/ApplyList?activityId=` + params.id + `&reason=${encodeURI(params.reason)}`;
                 var results = { datas: [], state: '' };
 
                 fetch(apiUrl, {
@@ -329,7 +330,7 @@ export default {
         },
         getVaccinationFile: function ({ state, rootGetters, dispatch }, params) {
             return new Promise((resolve, reject) => {
-                var apiUrl = `${state.apiRoot}api/Activity/Export/VaccinationList?activityId=` + params.id;
+                var apiUrl = `${state.apiRoot}api/Activity/Export/VaccinationList?activityId=` + params.id + `&reason=${encodeURI(params.reason)}`;
                 var results = { datas: [], state: '' };
 
                 fetch(apiUrl, {
