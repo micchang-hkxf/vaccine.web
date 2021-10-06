@@ -67,9 +67,9 @@
                     <template v-slot:item.modify="{item}">
                         <template>
                             <!--<v-btn dark icon v-on="on" @click.stop="downloadFile">
-                                <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
-                                <span style="color:white">下載</span>
-                            </v-btn>-->
+                        <v-icon color='#858585'>mdi-dots-horizontal</v-icon>
+                        <span style="color:white">下載</span>
+                    </v-btn>-->
                             <v-btn color="#736DB9" @click.stop="downloadFile(item)" :ripple="false">
                                 <img src="/download.svg">
                                 <span style="color:white">下載</span>
@@ -134,11 +134,10 @@
                 </template>
                 <template v-slot:action>
                     <v-spacer></v-spacer>
-                    <v-btn outlined :ripple="false" @click="backToEdit" style="margin-right:16px;" :disabled="isLoading"><span style="color:#626781;">修改</span></v-btn>
-                    <v-btn @click="save" color="primary" :ripple="false" :disabled="isLoading"><span>確定</span></v-btn>
+                    <v-btn outlined :ripple="false" @click="backToEdit"  style="margin-right:16px;"><span style="color:#626781;">修改</span></v-btn>
+                    <v-btn @click="save" color="primary" :ripple="false"><span>確定</span></v-btn>
                 </template>
             </com-dialog>
-            <com-loading :enabled="isLoading"></com-loading>
         </template>
     </app-layout>
 </template>
@@ -244,7 +243,9 @@
     import comLoading from 'components/circle_loading'
     import comDialog from 'components/dialog'
     import comConfirm from 'components/confirm'
+    import comLoading from 'components/loading'
     import { mapActions, mapGetters } from 'vuex'
+
     export default {
         // router,
         data: () => ({
@@ -336,8 +337,13 @@
                 var comp = this;
                 comp.isLoading = true;
                 comp.alertMessage = '';
+
+                comp.$bus.$emit('loading_show4', '資料處理中...');
+                
                 comp.downloadAudit(item)
                     .then(function (result) {
+                        comp.$bus.$emit('loading_hide4');
+
                         switch (result.state) {
                             case 'not found':
                                 comp.alertMessage = '紀錄不存在';
@@ -354,7 +360,6 @@
                         console.log(result);
                     })
                     .catch(function () {
-                        comp.isLoading = false;
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
@@ -378,8 +383,13 @@
             save: function () {
                 var comp = this;
                 console.log('result', comp.result);
+
+                comp.$bus.$emit('loading_show4', '資料處理中...');
+
                 comp.saveAudit(comp.result.model)
                     .then(function (result) {
+                        comp.$bus.$emit('loading_hide4');
+
                         console.log(result);
                         comp.close();
                         comp.getAudit(1);
@@ -400,6 +410,8 @@
                         comp.downloadFile(item);
                     })
                     .catch(function () {
+                        comp.$bus.$emit('loading_hide4');
+
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
@@ -413,7 +425,7 @@
             }
         },
         components: {
-            appLayout, appMenu, comTable, editor, comDialog, comConfirm , comLoading
+            appLayout, appMenu, comTable, editor, comDialog, comConfirm
         }
     };
 </script>

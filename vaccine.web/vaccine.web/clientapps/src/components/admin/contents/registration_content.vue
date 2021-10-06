@@ -13,7 +13,7 @@
                 <v-card>
                     <com-table ref="table" ref-key="table" :headers="getHeaders" :items="items" :itemKey="itemKey" :total-count="totalCount"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               :change-page="changePage" :row-click="handleRowClick" @sort="setSort" select-key="regist_can_del"  >
+                               :change-page="changePage" :row-click="handleRowClick" @sort="setSort" select-key="regist_can_del">
 
                         <template v-slot:item.regist_quota="{item}">
                             <!--<div><span :class="item.cntQuota >= item.totalQuota ? 'color-red' : ''">{{item.cntQuota}}</span>/<span style="color:#626781">{{item.totalQuota}}</span></div>-->
@@ -211,11 +211,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
-                                            <v-list-item-content>
-                                                <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>-->
+                                <v-list-item-content>
+                                    <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
+                                    <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>-->
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">場次標題</div></v-list-item-title>
@@ -283,11 +283,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>-->
+                                <v-list-item-content>
+                                    <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                    <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>-->
                                         <div class="divider"><v-divider></v-divider></div>
                                         <v-list-item two-line>
                                             <v-list-item-content>
@@ -302,12 +302,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>備註</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>-->
-
+                                <v-list-item-content>
+                                    <v-list-item-title>備註</v-list-item-title>
+                                    <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>-->
                                         <!--<div class="divider"><v-divider></v-divider></div>-->
                                     </div>
 
@@ -348,11 +347,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line v-if="typeof result.model.regist_brand_name !== 'undefined' && result.model.regist_brand_name !== ''">
-                                            <v-list-item-content>
-                                                <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>-->
+                                <v-list-item-content>
+                                    <v-list-item-title><div class="showname">疫苗廠牌</div></v-list-item-title>
+                                    <v-list-item-subtitle>{{result.model.regist_brand_name}}</v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>-->
                                         <v-list-item two-line>
                                             <v-list-item-content>
                                                 <v-list-item-title><div class="showname">場次標題</div></v-list-item-title>
@@ -420,12 +419,12 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>接種資格複審時間</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
+                                <v-list-item-content>
+                                    <v-list-item-title>接種資格複審時間</v-list-item-title>
+                                    <v-list-item-subtitle>{{result.model.regist_review_date}}</v-list-item-subtitle>
 
-                                            </v-list-item-content><div class="showname">
-                                        </v-list-item>-->
+                                </v-list-item-content><div class="showname">
+                            </v-list-item>-->
 
                                         <div class="divider"><v-divider></v-divider></div>
 
@@ -442,11 +441,11 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                         <!--<v-list-item two-line>
-                                            <v-list-item-content>
-                                                <v-list-item-title>備註</v-list-item-title>
-                                                <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>-->
+                                <v-list-item-content>
+                                    <v-list-item-title>備註</v-list-item-title>
+                                    <v-list-item-subtitle>{{result.model.remarks}}</v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>-->
 
                                         <div class="divider"><v-divider></v-divider></div>
                                     </div>
@@ -544,7 +543,7 @@
                                     確認
                                 </template>
                             </com-confirm>
-                            <com-confirm ref="uploadConfirm" ref-key="uploadConfirm" :right-click="uploadRightClick" :left-click="closeConfirmLeftClick" key="upload-final-confirm" >
+                            <com-confirm ref="uploadConfirm" ref-key="uploadConfirm" :right-click="uploadRightClick" :left-click="closeConfirmLeftClick" key="upload-final-confirm">
                                 <template v-slot:confirm-image>
                                     <v-img src="/upload2.svg"></v-img>
                                 </template>
@@ -612,7 +611,8 @@
                                             <span class="modify-btn-text">刪除</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="dowloadAgreeItem(item)" class="modify-list-item" :disabled="!item.regist_isrechecked">
+                                    <v-list-item @click.stop="openDownloadReason(item,'完整接種同意書')" class="modify-list-item" :disabled="!item.regist_isrechecked">
+                                        <!--<v-list-item @click.stop="dowloadAgreeItem(item)" class="modify-list-item" :disabled="!item.regist_isrechecked">-->
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
                                                 <img src="/download2.svg">
@@ -620,7 +620,8 @@
                                             <span class="modify-btn-text" :style="item.regist_isrechecked ? '' : 'color:#62678166'">下載完整接種同意書</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="dowloadRegistItem(item)" class="modify-list-item" :disabled="!item.regist_isrechecked">
+                                    <v-list-item @click.stop="openDownloadReason(item,'報名清冊')" class="modify-list-item" :disabled="!item.regist_isrechecked">
+                                        <!--<v-list-item @click.stop="dowloadRegistItem(item)" class="modify-list-item" :disabled="!item.regist_isrechecked">-->
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
                                                 <img src="/download2.svg">
@@ -628,7 +629,8 @@
                                             <span class="modify-btn-text" :style="item.regist_isrechecked ? '' : 'color:#62678166'">下載報名清冊</span>
                                         </v-list-item-action-text>
                                     </v-list-item>
-                                    <v-list-item @click.stop="dowloadList(item)" class="modify-list-item" :disabled="!item.regist_isrechecked">
+                                    <v-list-item @click.stop="openDownloadReason(item,'施打清冊')" class="modify-list-item" :disabled="!item.regist_isrechecked">
+                                        <!--<v-list-item @click.stop="dowloadList(item)" class="modify-list-item" :disabled="!item.regist_isrechecked">-->
                                         <v-list-item-action-text>
                                             <v-btn icon dense>
                                                 <img src="/download2.svg">
@@ -641,6 +643,12 @@
 
                         </template>
                     </com-table>
+
+
+
+
+
+
                     <!--共用 alert -->
                     <com-confirm ref="alert" ref-key="alert" :right-click="alertClick" key="alert-message-confirm">
                         <template v-slot:confirm-image>
@@ -673,17 +681,17 @@
                                     <div>報名名額：<span :class="detailCntQuota >= detailTotalQuota ? 'color-red' : ''">{{detailCntQuota}}</span>/<span style="color:#626781">{{detailTotalQuota}}</span></div>
                                     <div>
                                         年齡限制：<span v-if="detailAgeLimit==0"><span tyle="color:#626781">配合疫苗規定</span></span>
-                                                  <span v-else>{{detailAgeLimit}}<span tyle="color:#626781">歲以上 </span></span>
+                                        <span v-else>{{detailAgeLimit}}<span tyle="color:#626781">歲以上 </span></span>
                                     </div>
                             </div>
                             <hr />
                             <com-table class="regUserDetail" ref-key="detailTable" :headers="getRegistrationHeaders" :items="detailItems" :total-count="detailTotalCount"
                                        :items-per-page="detailItemsPerPage" :total-visible="detailTotalVisible" :show-select="false"
-                                       :change-page="detailChangePage" disabled-prop="disabled" 
+                                       :change-page="detailChangePage" disabled-prop="disabled"
                                        style="margin-left: 15px;padding-top: 0px;margin-right: 15px;">
 
-                                <template v-slot:item.remark="{item}">                                   
-                                   
+                                <template v-slot:item.remark="{item}">
+
 
                                     <span v-if="item.remark.length==0"><span style="color:#626781">-</span></span>
 
@@ -711,17 +719,20 @@
                                                 <v-btn @click.stop="againCheck" :ripple="false" :class="detailAbnormalCnt > 0 && isReChecked ? 'btn-warning' : ''" :disabled="detailAbnormalCnt == 0 || !isReChecked">
                                                     <span style="color:white">再次執行複檢（{{detailAbnormalCnt}}）</span>
                                                 </v-btn>
-                                                <v-btn color="#736DB9" @click.stop="downloadCompleteFile('')" :ripple="false" :disabled="!isReChecked">
+                                                <v-btn color="#736DB9" @click.stop="openDownloadReason('','完整接種同意書')" :ripple="false" :disabled="!isReChecked">
+                                                    <!--<v-btn color="#736DB9" @click.stop="downloadCompleteFile('')" :ripple="false" :disabled="!isReChecked">-->
                                                     <v-img src="/admin/download_icon.svg" width="24px" height="24px">
                                                     </v-img>
                                                     <span style="color:white">下載完整接種同意書</span>
                                                 </v-btn>
-                                                <v-btn color="#736DB9" @click.stop="downloadSignUpFile('')" :ripple="false" :disabled="!isReChecked">
+                                                <v-btn color="#736DB9" @click.stop="openDownloadReason('','報名清冊')" :ripple="false" :disabled="!isReChecked">
+                                                    <!--<v-btn color="#736DB9" @click.stop="downloadSignUpFile('')" :ripple="false" :disabled="!isReChecked">-->
                                                     <v-img src="/admin/download_icon.svg" width="24px" height="24px">
                                                     </v-img>
                                                     <span style="color:white">下載報名清冊</span>
                                                 </v-btn>
-                                                <v-btn color="#736DB9" @click.stop="downloadVaccinationFile('')" :ripple="false" :disabled="!isReChecked">
+                                                <v-btn color="#736DB9" @click.stop="openDownloadReason('','施打清冊')" :ripple="false" :disabled="!isReChecked">
+                                                    <!--<v-btn color="#736DB9" @click.stop="downloadVaccinationFile('')" :ripple="false" :disabled="!isReChecked">-->
                                                     <v-img src="/admin/download_icon.svg" width="24px" height="24px">
                                                     </v-img>
                                                     <span style="color:white">下載施打清冊</span>
@@ -737,7 +748,7 @@
                                 </template>
 
                                 <template v-slot:item.result="{item}">
-                                    <div :class="item.result === '系統異常' ? 'detail-result-abnormal' : ''">{{item.result == '' ? '-' : item.result}}</div>                                    
+                                    <div :class="item.result === '系統異常' ? 'detail-result-abnormal' : ''">{{item.result == '' ? '-' : item.result}}</div>
                                 </template>
 
                                 <template v-slot:item.modify="{item}">
@@ -814,13 +825,45 @@
                         </template>
                     </com-dialog>
                 </v-card>
+
+                <!--下載事由-->
+                <com-dialog ref="reasonEditViewer" ref-key="reasonEditViewer" width="40%" key="reason-download-viewer" eager>
+                    <template v-slot:toolbar>
+                        下載事由－{{downloadType}}
+                        <v-spacer></v-spacer>
+                    </template>
+                    <template v-slot:content>
+                        <div class="prevDesc">
+                            請填寫下載事由後，按下「確定」即可進行下載。
+                        </div>
+                        <v-form ref="reasonForm">
+                            <v-textarea v-model="reason"
+                                        auto-grow
+                                        outlined
+                                        placeholder="請輸入下載事由（限30字內）"
+                                        maxlength="30"
+                                        :rules="[rules.required]">
+                            </v-textarea>
+                        </v-form>
+                        <div class="divider"><v-divider></v-divider></div>
+                    </template>
+                    <template v-slot:action>
+                        <!--<div class="divider"><v-divider></v-divider></div>-->
+                        <v-spacer></v-spacer>
+                        <v-btn outlined :ripple="false" @click.stop="closeDownloadReason"><span style="color:#626781;">取消</span></v-btn>
+                        <v-btn @click.stop="downloadListType(downloadType,reason)" color="primary" :ripple="false"><span>確定</span></v-btn>
+                    </template>
+                </com-dialog>
             </div>
         </template>
     </app-layout>
 </template>
 
 <style>
-   
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
+
     .dialog-dialogPanel .v-card__actions {
         padding-top: 0px !important;
         padding-bottom: 24px !important;
@@ -905,8 +948,9 @@
     }
 
     .registration-list .timepicker-wrap .time {
-        font-size:14px!important;
+        font-size: 14px !important;
     }
+
     .registration-list .file-btn-text {
         padding-left: 10px;
         font: normal normal normal 16px/24px Noto Sans T Chinese;
@@ -1000,7 +1044,7 @@
     .registration-list .item-disabled {
         font: normal normal normal 16px/24px Noto Sans T Chinese;
         letter-spacing: 0px;
-        color: #62678166;        
+        color: #62678166;
         text-align: center;
         opacity: 1;
     }
@@ -1222,13 +1266,13 @@
         flex: none !important;
     }
 
-    .fileViewer .v-card__text {
-        padding: 0 24px !important;
-    }
+        .fileViewer .v-card__text {
+            padding: 0 24px !important;
+        }
 
-    .fileViewer .v-card__actions {
-        padding: 0 24px 24px 24px !important;
-    }
+        .fileViewer .v-card__actions {
+            padding: 0 24px 24px 24px !important;
+        }
 
     .registViewer .v-list-item,
     .registEditViewer .v-list-item {
@@ -1267,7 +1311,7 @@
         data: () => ({
             totalCount: 0,
             itemsPerPage: 5,
-            showPage:1,//目前顯示第幾頁
+            showPage: 1,//目前顯示第幾頁
             totalVisible: 10,
             showSelect: true,
             selectVaccine: '',
@@ -1332,8 +1376,8 @@
             orderType: null,
             isDesc: null,
             ord: 0,
-            showDelete:false,
-            injectionOkCount:0,
+            showDelete: false,
+            injectionOkCount: 0,
             regist_beforeDay: 3,//報名截止時間要於施打時間早3天以上
             downloadErrorMessage: '複檢結果至少要有一筆成功且合格才能下載',
             artificialOptions: [
@@ -1373,6 +1417,9 @@
                 uploadFile: null,
                 finalData: []
             },
+            reason: '',
+            downloadItem: '',
+            downloadType: '',
         }),
         computed: {
             ...mapGetters('registration', ['getHeaders', 'getVaccines', 'getDistricts', 'getVillages', 'getInstitutions', 'getRegistrationHeaders', 'getDisMedicals']),
@@ -1399,7 +1446,7 @@
                 'doubleCheck', 'registForm', 'updateRegist', 'removeRegist', 'importRegistForm', 'actDetail']),
             getRegistForm: function (page) {
 
-  
+
 
                 var params = {
                     vaccine: this.selectVaccine,
@@ -1411,14 +1458,14 @@
                     page: page,
                     orderType: this.ord
                 };
-     
-                if(this.getReGetInfo && this.getReGetInfo.userType == 1)
+
+                if (this.getReGetInfo && this.getReGetInfo.userType == 1)
                     params.district = this.zones[0];
-                    this.loadRegistForm(params).then((r) => {
-                        this.totalCount = r.totalCount;
-                        this.items.splice(0);
-                        r.datas.forEach((x) => this.items.push(x));
-                        this.$refs.table.gofrontPage(page);
+                this.loadRegistForm(params).then((r) => {
+                    this.totalCount = r.totalCount;
+                    this.items.splice(0);
+                    r.datas.forEach((x) => this.items.push(x));
+                    this.$refs.table.gofrontPage(page);
                 }).catch((e) => {
                     console.log(e);
 
@@ -1500,17 +1547,17 @@
                 }
 
                 if (new Date(result.model.regist_station_date + ' 00:00') <
-                    dateHelper.addDays(new Date(result.model.regist_apply_end_date + ' 00:00'), this.regist_beforeDay ))
-                    //Date.parse(result.model.regist_apply_end_date + ' 00:00') + this.regist_beforeDay * 60 * 60 * 24 * 1000) 
+                    dateHelper.addDays(new Date(result.model.regist_apply_end_date + ' 00:00'), this.regist_beforeDay))
+                //Date.parse(result.model.regist_apply_end_date + ' 00:00') + this.regist_beforeDay * 60 * 60 * 24 * 1000)
                 {
                     errMsg = "(開放報名結束時間)必須早於(開始施打時間)至少" + (this.regist_beforeDay) + "天";
                 }
 
                 if (new Date(result.model.regist_station_date + ' 00:00') <
-                    dateHelper.addDays(new Date(result.model.regist_apply_start_date + ' 00:00'), this.regist_beforeDay + 1 ))
-                //Date.parse(result.model.regist_apply_end_date + ' 00:00') + this.regist_beforeDay * 60 * 60 * 24 * 1000) 
+                    dateHelper.addDays(new Date(result.model.regist_apply_start_date + ' 00:00'), this.regist_beforeDay + 1))
+                //Date.parse(result.model.regist_apply_end_date + ' 00:00') + this.regist_beforeDay * 60 * 60 * 24 * 1000)
                 {
-                    errMsg = "(開放報名開始時間)必須早於(開始施打時間)至少" + (this.regist_beforeDay+1) + "天";
+                    errMsg = "(開放報名開始時間)必須早於(開始施打時間)至少" + (this.regist_beforeDay + 1) + "天";
                 }
 
 
@@ -1715,12 +1762,12 @@
             removeLeftClick: function () {
                 this.$bus.$emit(`confirm_show`, false);
             },
-            dowloadAgreeItem: function (item) {
+            dowloadAgreeItem: function (item, reason) {
                 //console.log('Agree', item);
                 if (item.regist_isrechecked) {
                     this.isReChecked = item.regist_isrechecked;
                     this.detailId = item.regist_id;
-                    this.downloadCompleteFile(item.regist_title);
+                    this.downloadCompleteFile(item.regist_title, reason);
                 } else {
                     this.alertTitle = '';
                     this.alertText = this.downloadErrorMessage;
@@ -1729,15 +1776,15 @@
                 }
 
             },
-            dowloadRegistItem: function (item) {
+            dowloadRegistItem: function (item, reason) {
                 //console.log('Regist', item);
                 this.detailId = item.regist_id;
-                this.downloadSignUpFile(item.regist_title);
+                this.downloadSignUpFile(item.regist_title, reason);
             },
-            dowloadList: function (item) {
+            dowloadList: function (item, reason) {
                 //console.log('List', item);
                 this.detailId = item.regist_id;
-                this.downloadVaccinationFile(item.regist_title);
+                this.downloadVaccinationFile(item.regist_title, reason);
             },
             handleRowClick: function (item) {
                 console.log('item', item);
@@ -1876,7 +1923,57 @@
                         comp.$bus.$emit('alert_show', true);
                     });
             },
-            downloadCompleteFile: function (title) {
+            openDownloadReason: function (item, type) {
+                var comp = this;
+
+                comp.reason = '';
+                this.downloadItem = item;
+                this.downloadType = type;
+                this.$refs.reasonEditViewer.open();
+                comp.$refs.reasonForm.reset();
+
+            },
+            downloadListType: function (type, reason) {
+                if (type == '' || reason == '') return;
+
+                switch (type) {
+                    case '完整接種同意書':
+                        return this.downloadCompleteAgreeList(reason);
+                    case '報名清冊':
+                        return this.downloadSignUpList(reason);
+                    case '施打清冊':
+                        return this.downloadVaccinationList(reason);
+                }
+
+            },
+            closeDownloadReason: function () {
+                var comp = this;
+                comp.$refs.reasonForm.reset();
+                this.$refs.reasonEditViewer.close();
+            },
+            downloadCompleteAgreeList: function (reason) {
+                this.closeDownloadReason();
+                if (this.downloadItem != '') return this.dowloadAgreeItem(this.downloadItem, reason);
+
+                return this.downloadCompleteFile('', reason);
+
+            },
+            downloadSignUpList: function (reason) {
+                this.closeDownloadReason();
+                if (this.downloadItem != '') return this.dowloadRegistItem(this.downloadItem, reason);
+
+                return this.downloadSignUpFile('', reason);
+
+            },
+            downloadVaccinationList: function (reason) {
+                this.closeDownloadReason();
+                if (this.downloadItem != '') return this.dowloadList(this.downloadItem, reason);
+
+                return this.downloadVaccinationFile('', reason);
+
+            },
+            downloadCompleteFile: function (title, reason) {
+                console.log('t', reason);
                 var comp = this;
                 //this.injectionOkCount>0 <---應該加判斷有資格注射人員數, 但活動管理階段抓不到資料,只有報名列表階段才有這個資料
 
@@ -1889,11 +1986,15 @@
                     comp.$refs.registAlert.open();
                     return false;
                 }
+
                 if (title == "") {
                     title = comp.detailTitle;
                 }
-                comp.getCompleteFile({ id: comp.detailId, title: title })
+               comp.$bus.$emit('type1_show4', "資料處理中...");
+    comp.getCompleteFile({ id: comp.detailId, title: title, reason: reason })
                     .then(function (result) {
+                        comp.$bus.$emit('type1_hide4');
+
                         switch (result.state) {
                             case 'not found':
                                 comp.alertMessage = '檔案不存在';
@@ -1910,18 +2011,24 @@
                         //console.log(result);
                     })
                     .catch(function () {
+                        comp.$bus.$emit('type1_hide4');
+
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
             },
-            downloadSignUpFile: function (title) {
+            downloadSignUpFile: function (title,reason) {
                 var comp = this;
                 comp.alertMessage = '';
                 if (title == "") {
                     title = comp.detailTitle;
                 }
-                comp.getSignUpFile({ id: comp.detailId, title: title })
+                comp.$bus.$emit('type1_show4', "資料處理中...");
+    comp.getSignUpFile({ id: comp.detailId, title: title, reason: reason })
+
                     .then(function (result) {
+                        comp.$bus.$emit('type1_hide4');
+
                         switch (result.state) {
                             case 'not found':
                                 comp.alertMessage = '檔案不存在';
@@ -1938,18 +2045,23 @@
                         //console.log(result);
                     })
                     .catch(function () {
+                        comp.$bus.$emit('type1_hide4');
+
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
             },
-            downloadVaccinationFile: function (title) {
+            downloadVaccinationFile: function (title, reason) {
                 var comp = this;
                 if (title == "") {
                     title = comp.detailTitle;
                 }
                 comp.alertMessage = '';
-                comp.getVaccinationFile({ id: comp.detailId, title: title })
+          comp.$bus.$emit('type1_show4', "資料處理中...");
+    comp.getVaccinationFile({ id: comp.detailId, title: title, reason: reason })
                     .then(function (result) {
+                        comp.$bus.$emit('type1_hide4');
+
                         switch (result.state) {
                             case 'not found':
                                 comp.alertMessage = '檔案不存在';
@@ -1966,16 +2078,23 @@
                         //console.log(result);
                     })
                     .catch(function () {
+                        comp.$bus.$emit('type1_hide4');
+
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
             },
             downloadAgreeFile: function (item) {
-            
+
                 var comp = this;
                 comp.alertMessage = '';
+
+                comp.$bus.$emit('type1_show4', "資料處理中...");
+
                 comp.getAgreeFile({ id: item.id, name: item.name, activityId: this.activityId, title: comp.detailTitle })
                     .then(function (result) {
+                        comp.$bus.$emit('type1_hide4');
+
                         switch (result.state) {
                             case 'not found':
                                 comp.alertMessage = '檔案不存在';
@@ -1992,6 +2111,8 @@
                         //console.log(result);
                     })
                     .catch(function () {
+                        comp.$bus.$emit('type1_hide4');
+
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
@@ -2014,7 +2135,7 @@
                 var comp = this;
                 var isvaild = comp.$refs.doubleCheckForm.validate();
                 if (!isvaild) return;
-                
+
                 comp.alertMessage = '';
                 comp.doubleCheck({ activityId: comp.activityId, applyNo: comp.applyNo, bd: comp.artificialBirthday, result: comp.artificialResult })
                     .then(function (result) {
@@ -2076,7 +2197,7 @@
                 }
             },
             onFileChanged(event) {
-             
+
                 this.uploadFile = event.target.files ? event.target.files[0] : null;
 
                 if (this.uploadFile) {
@@ -2107,7 +2228,7 @@
                             z = comp.$store.getters['user/getZones'][0].data,
                             m = comp.$store.getters['user/getMedicals'];
 
-                        var vv, vvv, k = 0, errorMsg="",errLineCount=0;
+                        var vv, vvv, k = 0, errorMsg = "", errLineCount = 0;
                         var sd, ed, zz, zzz, mm, villageName;
                         var regex = /^\d{4}-\d{2}-\d{2}$/;
                         var maxErrorShow = 3;//錯誤行數顯示框警告限制
@@ -2115,8 +2236,8 @@
                         for (j = 4; j < data.length; j++) {
 
                             //alert(data[j][8]+"@"+data[j][8].trim().match(regex));
-                   
-                
+
+
                             if (!data[j][0]) {
                                 //console.log("line " + (j + 1) + "is null");
                                 continue;
@@ -2139,7 +2260,7 @@
                                 errLineCount++;
 
                             }
-                            if (typeof(ed) == "string" && ed.trim() != "") {
+                            if (typeof (ed) == "string" && ed.trim() != "") {
                                 if (!ed.match(regex)) {
                                     if (errLineCount < maxErrorShow) {
                                         errorMsg += "事先報名開始時間:第" + (j + 1) + "行錯誤(請用格式YYYY-mm-dd)\n";
@@ -2236,12 +2357,12 @@
                             comp.$refs.warringAlert2.open();
                             return;
                         } else {
-                        
+
                             comp.alertText = "確定上傳?\n" + comp.uploadFile.name;
                             comp.$refs.uploadConfirm.open();
                         }
                         console.log('finalData', comp.finalData);
-                        
+
                     }
 
                     reader.readAsBinaryString(this.uploadFile);
@@ -2259,7 +2380,7 @@
                 this.orderType = opt.index[0];
                 this.isDesc = opt.isDesc[0];
                 this.ord = 0;
-        
+
                 if (opt.index[0] == "regist_create_date") {
                     this.ord = (opt.isDesc[0]) ? 0 : 2;
                 } else if (opt.index[0] == "regist_station_date") {
@@ -2275,7 +2396,7 @@
                     pageSize: this.itemsPerPage,
                     page: this.showPage,
                     orderType: this.ord
-                    
+
                 };
 
                 var comp = this;
@@ -2289,7 +2410,7 @@
                 });
 
             },
-         
+
         },
         components: {
             appLayout, appMenu, comTable, editor, comDialog, comConfirm, comLoading
