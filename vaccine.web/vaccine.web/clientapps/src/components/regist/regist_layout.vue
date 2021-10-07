@@ -88,7 +88,7 @@
         </template>
         <template v-slot:app-content>
             <slot name="regist-content" class="regist-layout-content"></slot>
-            <slot name="regist-footer"></slot>
+            <slot name="regist-footer" ></slot>
         </template>
     </app-layout>
 </template>

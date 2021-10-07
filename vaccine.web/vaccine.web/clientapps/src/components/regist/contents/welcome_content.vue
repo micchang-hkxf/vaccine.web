@@ -19,17 +19,23 @@
 
                     </div>
                     <div class="content-two">適用疫苗：肺炎鏈球菌疫苗、季節性流感疫苗</div>
+                    <!--<div class="welcome-actions-container">
+                        <v-btn color="#171D3CCC" height="48px" :to="{ name:'regist' }">我要報名</v-btn>
+                        <v-btn color="#171D3CCC" height="48px" :to="{ name:'regist' , params:{ mode:'applied' } }">查詢紀錄</v-btn>
+                    </div>-->
+                    
                 </div>
                 <div class="welcome-actions-container">
-                    <v-btn color="#171D3CCC" height="48px" :to="{ name:'regist' }">我要報名</v-btn>
-                    <v-btn color="#171D3CCC" height="48px" :to="{ name:'regist' , params:{ mode:'applied' } }">查詢紀錄</v-btn>
-                  
-                </div>
+                <v-btn color="#171D3CCC" height="48px" :to="{ name:'regist' }">我要報名</v-btn>
+                <v-btn color="#171D3CCC" height="48px" :to="{ name:'regist' , params:{ mode:'applied' } }">查詢紀錄</v-btn>
+
+            </div>
+
             </div>
         </template>
         <template v-slot:regist-footer >
-            <app-footer></app-footer>
-        </template>
+         <app-footer></app-footer>
+    </template>
     </app-layout>
 </template>
 
@@ -52,7 +58,7 @@
     }
 
     .welcome-panel {
-        height: 100vh;
+        height: calc(100vh - 110px);
         background-color: #736DB9;
     }
 
@@ -109,6 +115,79 @@
     .v-btn--contained {
         box-shadow: none !important;
     }
+
+    @media (min-width: 100px) and (max-width: 300px) {
+
+        img {
+            width: 160px;
+            height: 160px;
+        }
+
+
+        .welcome-panel {
+            /*height: calc(100vh - 110px);*/
+            background-color: #736DB9;
+        }
+
+        .welcome-image-container {
+            top: 10px;
+        }
+
+        .welcome-button-container {
+            top: 10px;
+            font: normal normal normal 16px/18px Noto Sans T Chinese;
+        }
+
+        .welcome-actions-container {
+            top: 50px;
+        }
+    }
+
+
+
+    @media (min-width: 300px) and (max-width: 500px) {
+        .welcome-panel {
+            /*height: calc(100vh - 110px);*/
+            background-color: #736DB9;
+        }
+
+        .welcome-image-container {         
+            top: 10px;           
+        }
+
+        .welcome-button-container {          
+            top: 15px;           
+        }
+
+        .welcome-actions-container {         
+            top: 50px;           
+        }
+
+    }
+
+
+    /*@media (min-width: 380px) and (max-width: 500px) {
+        .welcome-panel {        
+            background-color: #736DB9;
+        }
+
+        .welcome-image-container {
+            top: 10px;
+        }
+
+        .welcome-button-container {
+            top: 15px;
+        }
+
+        .welcome-actions-container {
+            top: 50px;
+        }
+    }*/
+
+
+
+
+
 </style>
 
 <script>
