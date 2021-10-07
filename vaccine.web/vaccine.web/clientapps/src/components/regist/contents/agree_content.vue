@@ -1,21 +1,39 @@
 ﻿<template>
-    <app-layout :app-bar="appBar" class="agree-content" v-if="getActivityApply!=null">
+    <app-layout :app-bar="appBar" class="agree-content">
         <template v-slot:regist-title>
             報名登記與身份驗證
+
+            <com-dialog ref="errorActivityId" ref-key="errorActivityId" eager>
+                <template v-slot:toolbar>
+                    場次代號錯誤
+                    <v-spacer></v-spacer>
+                </template>
+                <template v-slot:content>
+                    <div class="prevDesc">
+                        場次代號錯誤請重新查詢
+                    </div>
+                    <div class="divider"><v-divider></v-divider></div>
+                </template>
+                <template v-slot:action>
+                    <!--<div class="divider"><v-divider></v-divider></div>-->
+                    <v-spacer></v-spacer>
+                    <v-btn @click.stop="backToWelcome()" color="primary" :ripple="false"><span>確定</span></v-btn>
+                </template>
+            </com-dialog>
         </template>
         <template v-slot:regist-content>
-            <div class="main-content">
+            <div class="main-content" v-if="isLoaded">
                 <div class="agree-container">
                     <apply-viewer></apply-viewer>
                     <v-divider></v-divider>
                 </div>
-                <template v-if="!isShow && session.totalCount != session.maxLimit">
+                <template v-if="isNotStart">
                     <div class="regist-status">
                         <span class="regist-status-text" style="color: #626781;">事先報名時段尚未開放或已結束</span>
                     </div>
                 </template>
 
-                <template v-if="session.totalCount === session.maxLimit">
+                <template v-if="isFull">
                     <div class="regist-status" style="background-color:#F4A95F;">
                         <span class="regist-status-text" style="color: #626781;">名額已滿</span>
                     </div>
@@ -40,9 +58,10 @@
                             </div>
                         </div>
                         <!--<v-btn :to="{name:'apply'}">申請</v-btn>
-            <v-btn :to="{name:'regist'}">返回</v-btn>-->
+                <v-btn :to="{name:'regist'}">返回</v-btn>-->
                     </div>
                 </template>
+
                 <template v-if="isEmbeddedLoging==true && isShow">
                     <div class="agree-actions" @click.stop="toLocalTPassEmbedded($route.params.vote_no)">
                         <v-btn style="width: 100%; margin-top: 30px;" color="#736DB9"><span style="color:white">前往報名</span></v-btn>
@@ -50,6 +69,7 @@
                 </template>
                 <login-switch ref="switch" :login-done="loginDone" :login-cancel="loginCancel"></login-switch>
             </div>
+
         </template>
         <template v-slot:regist-footer>
             <app-footer></app-footer>
@@ -76,7 +96,9 @@
             isNeedLogin: true,
             isShow: false,
             isLoging: false,
-            now: new Date()
+            now: new Date(),
+            session: {},
+            isLoaded: false
         }),
         beforeRouteEnter: function beforeRouteEnter(to, from, next) {            
             next(vm => {
@@ -86,7 +108,18 @@
         computed: {
             ...mapGetters('regist', ['getUserInfo']),
             ...mapGetters('regist/user', ['getActivityApply']),
-            
+            hasSession: function () {
+                return this.session != null;
+            },
+            isFull: function () {
+                if (this.session == null) return false;
+                return this.session.totalCount == this.session.maxLimit; 
+
+            },
+            isNotStart: function () {
+                if (this.session == null) return false;
+                return !this.isShow && this.session.totalCount != this.session.maxLimit
+            },
             isEmbeddedLoging: function () {
                 if (this.getUserInfo == null) return false;
                 if (this.getUserInfo.type == 'tpass-embedded') return true;
@@ -98,40 +131,54 @@
 
         },
         created: function () {
+            var voteNo = this.$route.params.vote_no;
+            
+            this.$store.dispatch("regist/loacVaccineSessions", {
+                groupId: null,
+                brandId: null,
+                keyword: null,
+                sessionId: this.$route.params.vote_no
+            }).then(r => {
 
-            if (this.getActivityApply == null) {
-
-                this.$store.dispatch("regist/loacVaccineSessions", {
-                    groupId: null,
-                    brandId: null,
-                    keyword: null,
-                    sessionId: this.$route.params.vote_no
-                }).then(r => {
-                    this.$store.dispatch("regist/setActivityApply", r.datas[0]);
-
-                    this.isShow = false;
-                    this.session = this.$store.getters['regist/user/getActivityApply'];
-                    if (moment(this.session.registStart) <= moment(this.now) && moment(this.now) <= moment(this.session.registEnd)) {
-                        if (this.session.totalCount < this.session.maxLimit) {
-                            this.isShow = true;
-                        }
-                    }
-                    window.scrollTo(0, 0);
-                });
-            } else {
+                var active = r.datas.find(f => f.sessionId == voteNo);
+                if (active == null) {
+                    this.$refs.errorActivityId.open();
+                    return;
+                }
+                this.$store.dispatch("regist/setActivityApply", active);
+                console.log('active', active)
                 this.isShow = false;
-                this.session = this.$store.getters['regist/user/getActivityApply'];
+                this.session= Object.assign(this.session, active);
+                
+                //this.session = this.$store.getters['regist/user/getActivityApply'];
+                console.log('session', this.session)
                 if (moment(this.session.registStart) <= moment(this.now) && moment(this.now) <= moment(this.session.registEnd)) {
                     if (this.session.totalCount < this.session.maxLimit) {
                         this.isShow = true;
                     }
                 }
                 window.scrollTo(0, 0);
-            }
+                this.isLoaded = true;
+            });
+            //if (this.getActivityApply == null) {
+
+            //} else {
+            //    this.isShow = false;
+            //    this.session = this.$store.getters['regist/user/getActivityApply'];
+            //    if (moment(this.session.registStart) <= moment(this.now) && moment(this.now) <= moment(this.session.registEnd)) {
+            //        if (this.session.totalCount < this.session.maxLimit) {
+            //            this.isShow = true;
+            //        }
+            //    }
+            //    window.scrollTo(0, 0);
+            //}
 
         },
         methods: {
-            ...mapActions('regist', ['setUserInfo','scrollToZero']),
+            ...mapActions('regist', ['setUserInfo', 'scrollToZero']),
+            backToWelcome: function () {
+                this.$router.replace({ name: `welcome` });
+            },
             toTpPass: function (sessionId) {
                 this.$refs.switch.toTpPassLogin(`/regist/#/apply/${sessionId}`);
             },

@@ -121,7 +121,7 @@ export default {
         },
         getActivityApply: (state) => {
             var data = window.sessionStorage.getItem('activityApply');
-            if (!state.activityApply && data !== null)
+            //if (!state.activityApply && data !== null)
                 state.activityApply = data;
             return JSON.parse(state.activityApply);
         },
