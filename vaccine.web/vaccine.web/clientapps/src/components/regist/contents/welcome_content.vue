@@ -26,8 +26,8 @@
                     
                 </div>
                 <div class="welcome-actions-container">
-                <v-btn color="#171D3CCC" height="48px" :to="{ name:'regist' }">我要報名</v-btn>
-                <v-btn color="#171D3CCC" height="48px" :to="{ name:'regist' , params:{ mode:'applied' } }">查詢紀錄</v-btn>
+                <v-btn color="#171D3CCC" class="welcome-action-btn" :to="{ name:'regist' }">我要報名</v-btn>
+                <v-btn color="#171D3CCC"  class="welcome-action-btn"  :to="{ name:'regist' , params:{ mode:'applied' } }">查詢紀錄</v-btn>
 
             </div>
 
@@ -116,9 +116,13 @@
         box-shadow: none !important;
     }
 
-    @media (min-width: 100px) and (max-width: 300px) {
 
-        img {
+    .welcome-action-btn {
+        height:48px !important;
+    }
+
+    @media (min-width: 100px) and (max-width: 300px) {
+        .welcome-panel img {
             width: 160px;
             height: 160px;
         }
@@ -146,7 +150,7 @@
 
 
     @media (min-width: 305px) and (max-width: 400px) {
-        img {
+        .welcome-panel img {
             width: 160px;
             height: 160px;
         }
@@ -165,13 +169,18 @@
         }
 
         .welcome-actions-container {
-            top: 50px;
+            /*top: 50px;*/
+            top:15px;
+        }
+
+        .welcome-action-btn {
+            height: 40px !important;
         }
     }
 
 
     @media (min-width: 405px) and (max-width: 500px) {
-        img {
+        .welcome-panel img {
             width: 160px;
             height: 160px;
         }
@@ -197,9 +206,23 @@
     }
 
 
-    @media (min-width: 501px) and (max-width: 800px) {     
+    @media (min-width: 501px) and (max-width: 800px) {
+        .welcome-panel img {
+            width: 170px;
+            height: 170px;
+        }
+
+        .welcome-image-container {
+            top: 10px;
+        }
+
+        .welcome-button-container {
+            top: -20px;
+            font: normal normal normal 16px/22px Noto Sans T Chinese;
+        }
+
         .welcome-actions-container {
-            top: 140px;
+            top: 20px;
         }
     }
 
