@@ -145,7 +145,37 @@
 
 
 
-    @media (min-width: 300px) and (max-width: 500px) {
+    @media (min-width: 305px) and (max-width: 400px) {
+        img {
+            width: 160px;
+            height: 160px;
+        }
+        .welcome-panel {
+            /*height: calc(100vh - 110px);*/
+            background-color: #736DB9;
+        }
+
+        .welcome-image-container {
+            top: 10px;
+        }
+
+        .welcome-button-container {
+            top: -18px;
+            font: normal normal normal 16px/18px Noto Sans T Chinese;
+        }
+
+        .welcome-actions-container {
+            top: 50px;
+        }
+    }
+
+
+    @media (min-width: 405px) and (max-width: 500px) {
+        img {
+            width: 160px;
+            height: 160px;
+        }
+                
         .welcome-panel {
             /*height: calc(100vh - 110px);*/
             background-color: #736DB9;
@@ -155,38 +185,23 @@
             top: 10px;           
         }
 
-        .welcome-button-container {          
-            top: 15px;           
+        .welcome-button-container {
+            top: -20px;
+            font: normal normal normal 16px/22px Noto Sans T Chinese;
         }
 
         .welcome-actions-container {         
-            top: 50px;           
+            top: 16px;           
         }
 
     }
 
 
-    /*@media (min-width: 380px) and (max-width: 500px) {
-        .welcome-panel {        
-            background-color: #736DB9;
-        }
-
-        .welcome-image-container {
-            top: 10px;
-        }
-
-        .welcome-button-container {
-            top: 15px;
-        }
-
+    @media (min-width: 501px) and (max-width: 800px) {     
         .welcome-actions-container {
-            top: 50px;
+            top: 140px;
         }
-    }*/
-
-
-
-
+    }
 
 </style>
 
