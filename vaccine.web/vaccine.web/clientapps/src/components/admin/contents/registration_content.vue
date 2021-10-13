@@ -2219,7 +2219,7 @@
                         const ws = wb.Sheets[wsname];
                         /* Convert array of arrays */
                         const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-
+                        console.log(data);
                         var i, j;
                         var fv = function (nameKey, myArray, name) {
                             for (i = 0; i < myArray.length; i++) {
