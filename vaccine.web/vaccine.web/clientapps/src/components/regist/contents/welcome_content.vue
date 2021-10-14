@@ -33,7 +33,7 @@
 
             </div>
         </template>
-        <template v-slot:regist-footer >
+        <template v-slot:regist-footer v-if="isEmbeddedLoging == false">
          <app-footer></app-footer>
     </template>
     </app-layout>
@@ -61,6 +61,12 @@
         height: calc(100vh - 110px);
         background-color: #736DB9;
     }
+
+    .embedded-content .welcome-panel {
+        min-height: 100vh;
+        background-color: #736DB9;
+    }
+
 
     .welcome-image-container {
         position: relative;
@@ -248,16 +254,21 @@
                 if (this.$route.query)
                     return this.$route.query.groupId;
                 return null;
-            }
+            },
+            isEmbeddedLoging: function () {
+                if (this.getUserInfo == null) return false;
+                if (this.getUserInfo.type == 'tpass-embedded') return true;
+                return false;
+            },
         },
         created: function () {
            
             var tpassToken = clientHelper.getCookie('access_token');
-            if (tpassToken) {
-            this.loadEmbeddedUserInfo(tpassToken);
-            //this.loadFakeEmbeddedUserInfo(tpassToken);
-            }
-            //console.log('tpuser', this.getUserInfo)
+            //if (tpassToken) {
+            //this.loadEmbeddedUserInfo(tpassToken);
+            //}
+            this.loadFakeEmbeddedUserInfo(tpassToken);
+            console.log('tpuser', this.getUserInfo)
         },
         methods: {
             ...mapActions('regist', ['loadEmbeddedUserInfo','loadFakeEmbeddedUserInfo']),

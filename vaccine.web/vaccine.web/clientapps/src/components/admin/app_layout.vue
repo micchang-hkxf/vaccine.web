@@ -128,7 +128,7 @@
     import comConfirm from 'components/confirm'
     import comDialog from 'components/dialog'
     import crypto from "crypto"
-    import { mapActions } from 'vuex'
+    import { mapActions, mapGetters } from 'vuex'
     //import appMenu from 'components/main/menu'
     //import appLayout from 'components/app_layout'
     //import { Object } from 'core-js';
@@ -186,6 +186,7 @@
             ],
         }),
         computed: {
+            ...mapGetters('regist', ['getUserInfo']),  
             showNavi: {
                 get: function () {
                     return this.drawer && this.$slots['navigation'];
@@ -199,6 +200,7 @@
             },
             mobileClass: function () {
                 return {
+                    "embedded-content": this.getUserInfo.type == 'tpass-embedded',
                     "mobile-ios": navigator.userAgent.indexOf('Mobile') != -1 && navigator.userAgent.indexOf('iPhone OS') != -1,
                     "mobile-android": navigator.userAgent.indexOf('Mobile') != -1 && navigator.userAgent.indexOf('Linux') != -1,
                     "lang-tw": this.getLangType == 'tw',
