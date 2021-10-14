@@ -264,10 +264,10 @@
         created: function () {
            
             var tpassToken = clientHelper.getCookie('access_token');
-            //if (tpassToken) {
-            //this.loadEmbeddedUserInfo(tpassToken);
-            //}
-            this.loadFakeEmbeddedUserInfo(tpassToken);
+            if (tpassToken) {
+            this.loadEmbeddedUserInfo(tpassToken);
+            }
+            //this.loadFakeEmbeddedUserInfo(tpassToken);
             console.log('tpuser', this.getUserInfo)
         },
         methods: {
