@@ -918,15 +918,16 @@
                 comp.alertImgSrc = comp.warningIcon;
 
                 comp.$bus.$emit('type1_show4', "資料處理中...");
-                var roleDesc = comp.setRole.state;
+                var roleDesc = typeof comp.setRole.state === 'undefined' ? '' : comp.setRole.state;
                 if (this.setRole.id > 0) {
                     roleDesc += "-" + comp.setArea.state;
                 }
+                if (roleDesc !== '') roleDesc += "\n";
                 if (setData.userType == 0)
                 {
                     setData.zones = ['200'];
                 }
-                var saveMsg = comp.uName + "\n" + comp.acc + "\n" + roleDesc + "\n";
+                var saveMsg = comp.uName + "\n" + comp.acc + "\n" + roleDesc;
                 comp.changeUser(setData).then(function (result) {
 
                     if (result.datas.status == "201") {

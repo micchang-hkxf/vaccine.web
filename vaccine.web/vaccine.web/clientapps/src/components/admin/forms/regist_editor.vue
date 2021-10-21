@@ -29,7 +29,6 @@
                                   @change="loadVaccines">
                         </v-select>
                     </v-col>
-
                 </v-row>
                 <v-row v-if="getShowBrand" v-show="false">
                     <v-col cols="4">
@@ -134,7 +133,6 @@
                                   item-text="uName"
                                   item-value="id"
                                   placeholder="請選擇醫療院所"
-                                  :readonly="overStatus==1"
                                   :menu-props="{ bottom: true, offsetY: true }"
                                   :rules="[rules.required]"
                                   outlined
@@ -656,7 +654,7 @@
                 this.reCheckDate = this.$moment(dateHelper.addDays(new Date(this.model.regist_station_date),-3)).format("YYYY-MM-DD");
                 //this.registEndDate = d.getFullYear() + '-' + ((mm > 9 ? '' : '0') + mm) + '-' + (dd > 9 ? '' : '0') + dd;
                 this.model.regist_apply_end_date = this.registEndDate;
-                
+
                 //d.setDate(d.getDate() +1); //before 2 day
                 //mm = d.getMonth() + 1;
                 //dd = d.getDate();
@@ -769,8 +767,8 @@
             setMedicalInfo: function (event) {
                 this.$store.getters["user/getMedicals"].forEach((d) => {
                     if (d.id === event.id) {
-                        this.regist_institution_code = d.id;
-                        this.regist_institution_name = /*d.cityName + '/' +*/ d.distName;
+                        this.model.regist_institution_code = this.regist_institution_code = d.id;
+                        this.model.regist_instution_district_name =  this.regist_institution_name = /*d.cityName + '/' +*/ d.distName;
                     }
                 });
             },

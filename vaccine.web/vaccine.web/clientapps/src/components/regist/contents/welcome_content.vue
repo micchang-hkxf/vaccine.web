@@ -26,14 +26,14 @@
                     
                 </div>
                 <div class="welcome-actions-container">
-                <v-btn color="#171D3CCC" height="48px" :to="{ name:'regist' }">我要報名</v-btn>
-                <v-btn color="#171D3CCC" height="48px" :to="{ name:'regist' , params:{ mode:'applied' } }">查詢紀錄</v-btn>
+                <v-btn color="#171D3CCC" class="welcome-action-btn" :to="{ name:'regist' }">我要報名</v-btn>
+                <v-btn color="#171D3CCC"  class="welcome-action-btn"  :to="{ name:'regist' , params:{ mode:'applied' } }">查詢紀錄</v-btn>
 
             </div>
 
             </div>
         </template>
-        <template v-slot:regist-footer >
+        <template v-slot:regist-footer v-if="isEmbeddedLoging == false">
          <app-footer></app-footer>
     </template>
     </app-layout>
@@ -61,6 +61,12 @@
         height: calc(100vh - 110px);
         background-color: #736DB9;
     }
+
+    .embedded-content .welcome-panel {
+        min-height: 100vh;
+        background-color: #736DB9;
+    }
+
 
     .welcome-image-container {
         position: relative;
@@ -116,16 +122,20 @@
         box-shadow: none !important;
     }
 
-    @media (min-width: 100px) and (max-width: 300px) {
 
-        img {
+    .welcome-action-btn {
+        height:48px !important;
+    }
+
+    @media (min-width: 100px) and (max-width: 300px) {
+        .welcome-panel img {
             width: 160px;
             height: 160px;
         }
 
 
         .welcome-panel {
-            /*height: calc(100vh - 110px);*/
+            height: auto;
             background-color: #736DB9;
         }
 
@@ -145,29 +155,13 @@
 
 
 
-    @media (min-width: 300px) and (max-width: 500px) {
+    @media (min-width: 305px) and (max-width: 400px) {
+        .welcome-panel img {
+            width: 160px;
+            height: 160px;
+        }
         .welcome-panel {
-            /*height: calc(100vh - 110px);*/
-            background-color: #736DB9;
-        }
-
-        .welcome-image-container {         
-            top: 10px;           
-        }
-
-        .welcome-button-container {          
-            top: 15px;           
-        }
-
-        .welcome-actions-container {         
-            top: 50px;           
-        }
-
-    }
-
-
-    /*@media (min-width: 380px) and (max-width: 500px) {
-        .welcome-panel {        
+            height: auto;
             background-color: #736DB9;
         }
 
@@ -176,17 +170,67 @@
         }
 
         .welcome-button-container {
-            top: 15px;
+            top: -18px;
+            font: normal normal normal 16px/18px Noto Sans T Chinese;
         }
 
         .welcome-actions-container {
-            top: 50px;
+            /*top: 50px;*/
+            top:15px;
         }
-    }*/
+
+        .welcome-action-btn {
+            height: 40px !important;
+        }
+    }
 
 
+    @media (min-width: 405px) and (max-width: 500px) {
+        .welcome-panel img {
+            width: 160px;
+            height: 160px;
+        }
+
+        .welcome-panel {
+            height: auto;
+            background-color: #736DB9;
+        }
+
+        .welcome-image-container {         
+            top: 10px;           
+        }
+
+        .welcome-button-container {
+            top: -20px;
+            font: normal normal normal 16px/22px Noto Sans T Chinese;
+        }
+
+        .welcome-actions-container {         
+            top: 16px;           
+        }
+
+    }
 
 
+    @media (min-width: 501px) and (max-width: 800px) {
+        .welcome-panel img {
+            width: 170px;
+            height: 170px;
+        }
+
+        .welcome-image-container {
+            top: 10px;
+        }
+
+        .welcome-button-container {
+            top: -20px;
+            font: normal normal normal 16px/22px Noto Sans T Chinese;
+        }
+
+        .welcome-actions-container {
+            top: 20px;
+        }
+    }
 
 </style>
 
@@ -210,16 +254,21 @@
                 if (this.$route.query)
                     return this.$route.query.groupId;
                 return null;
-            }
+            },
+            isEmbeddedLoging: function () {
+                if (this.getUserInfo == null) return false;
+                if (this.getUserInfo.type == 'tpass-embedded') return true;
+                return false;
+            },
         },
         created: function () {
            
             var tpassToken = clientHelper.getCookie('access_token');
             if (tpassToken) {
             this.loadEmbeddedUserInfo(tpassToken);
-            //this.loadFakeEmbeddedUserInfo(tpassToken);
             }
-            //console.log('tpuser', this.getUserInfo)
+            //this.loadFakeEmbeddedUserInfo(tpassToken);
+            console.log('tpuser', this.getUserInfo)
         },
         methods: {
             ...mapActions('regist', ['loadEmbeddedUserInfo','loadFakeEmbeddedUserInfo']),

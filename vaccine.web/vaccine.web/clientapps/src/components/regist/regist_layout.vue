@@ -10,7 +10,7 @@
     </div>-->
                 <div class="logo-title d-flex flex-row justify-center">
                     <div class="regist-icon">
-                        <img src="/regist/logo.svg">
+                        <img src="/regist/logo.svg" width="32" height="32">
                     </div>
                     <div>
                         <div>社區疫苗接種便民服務</div>

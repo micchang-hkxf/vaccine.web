@@ -51,7 +51,7 @@
                         為避免重複接種，報名後請勿再自行前往院所接種或跨里報名，接種當日，將再次檢核接種資格，屆時依現場判讀可接種之疫苗別為準。
                     </div>
                 </div>
-            </div>  {{session}}
+            </div>
             <div class="applied-actions" v-if="isNeedLogin && (session.messageCode === 1 || session.messageCode === 2) && ($moment(now) < $moment(session.sessionStart))">
 
                 <v-btn @click.stop="cancelRegistered()">我要取消報名</v-btn>

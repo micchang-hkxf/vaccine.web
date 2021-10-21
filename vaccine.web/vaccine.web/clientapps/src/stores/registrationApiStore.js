@@ -559,7 +559,7 @@ export default {
                     
                     var newData = {
                         vaccineGroupId: d[0],
-                        vaccineIds: [d[1]],
+                        vaccineIds: [],
                         title: d[2],
                         distId: d[3],
                         villageId: d[4],
@@ -575,8 +575,8 @@ export default {
                         //remarks: parseInt(d[14]),
                     };
 
-                    if (newData.vaccineIds.length == 1 && newData.vaccineIds[0] == '') {
-                        newData.vaccineIds = [];
+                    if (d[1] != null && d[1] != '') {
+                        newData.vaccineIds.push(d[1]); 
                     }
 
                     setData.push(newData);
