@@ -1422,6 +1422,7 @@
             reason: '',
             downloadItem: '',
             downloadType: '',
+            uploadFile:null,
         }),
         computed: {
             ...mapGetters('registration', ['getHeaders', 'getVaccines', 'getDistricts', 'getVillages', 'getInstitutions', 'getRegistrationHeaders', 'getDisMedicals']),
@@ -2191,6 +2192,7 @@
                         comp.$refs.fileViewer.close();
                         comp.$refs.successUploadAlert.open();
                         comp.getRegistForm(1);
+                        comp.$refs.excelUploader.value='';
                     }).catch(function (r) {
                         console.log(r.datas);
                         comp.alertTitle = '連線異常';
@@ -2219,7 +2221,7 @@
                         const ws = wb.Sheets[wsname];
                         /* Convert array of arrays */
                         const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-
+                        console.log(data);
                         var i, j;
                         var fv = function (nameKey, myArray, name) {
                             for (i = 0; i < myArray.length; i++) {
@@ -2236,6 +2238,7 @@
                         var vv, vvv, k = 0, errorMsg = "", errLineCount = 0;
                         var sd, ed, zz, zzz, mm, villageName;
                         var regex = /^\d{4}-\d{2}-\d{2}$/;
+                        var timeRegex = /^\d{2}:\d{2}$/;
                         var maxErrorShow = 3;//錯誤行數顯示框警告限制
                         comp.finalData = [];
                         for (j = 4; j < data.length; j++) {
@@ -2281,6 +2284,44 @@
                             }
                             vv = fv(data[j][0], v, 'groupName');
                             comp.finalData[k] = data[j];
+
+                            //設站起迄時間
+                            var startTime = data[j][8];
+                            var endTime = data[j][9];
+                            if (typeof (startTime) == "string" && startTime.trim() != "") {
+
+                                if (!startTime.match(timeRegex)) {
+                                    if (errLineCount < maxErrorShow) {
+                                        errorMsg += "設站起始時間:第" + (j + 1) + "行錯誤(請用格式mm:dd)\n";
+                                    }
+                                    errLineCount++;
+                                }
+                            } else {
+                                if (errLineCount < maxErrorShow) {
+                                    errorMsg += "設站起始時間:第" + (j + 1) + "行錯誤(請用文字類型儲存格式)\n";
+                                }
+                                errLineCount++;
+
+                            }
+
+
+                            if (typeof (endTime) == "string" && endTime.trim() != "") {
+
+                                if (!endTime.match(timeRegex)) {
+                                    if (errLineCount < maxErrorShow) {
+                                        errorMsg += "設站結束時間:第" + (j + 1) + "行錯誤(請用格式mm:dd)\n";
+                                    }
+                                    errLineCount++;
+                                }
+                            } else {
+                                if (errLineCount < maxErrorShow) {
+                                    errorMsg += "設站結束時間:第" + (j + 1) + "行錯誤(請用文字類型儲存格式)\n";
+                                }
+                                errLineCount++;
+
+                            }
+
+
 
                             //疫苗種類
                             if (vv) {

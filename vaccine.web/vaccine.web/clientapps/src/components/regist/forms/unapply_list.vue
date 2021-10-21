@@ -7,8 +7,8 @@
     </v-select>-->
                 <v-text-field placeholder="查詢場次標題" v-model="filterKeyword" hide-details dense height="48px" @change="search" @input="search" autocomplete="off">
                     <template v-slot:append>
-                        <div class="d-flex align-center text-controll">
-                            <img src="/regist/search.svg" />
+                        <div class="d-flex align-center text-controll search-icon">
+                            <img src="/regist/search.svg" width="32" height="32"/>
                         </div>
                     </template>
                 </v-text-field>
@@ -182,6 +182,11 @@
 
 </script>
 <style scoped>
+
+    .search-icon img {
+        width: 32px;
+        height: 32px;
+    }
 
     .col {
         padding: 0px !important;

@@ -34,7 +34,7 @@
                 </template>
 
                 <template v-if="isFull">
-                    <div class="regist-status" style="background-color:#F4A95F;">
+                    <div class="regist-status" style="background-color:#F4A95F;opacity: 0.3;">
                         <span class="regist-status-text" style="color: #626781;">名額已滿</span>
                     </div>
                 </template>

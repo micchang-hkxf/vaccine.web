@@ -3,7 +3,9 @@
         <div class="action-bar">
             <v-text-field placeholder="請輸入行政區、村里或場次標題" v-model="filterKeyword" hide-details dense height="48px" outlined @change="search"  @input="search" autocomplete="off">
                 <template v-slot:append>
-                    <img src="/regist/search.svg" />
+                    <div class="d-flex align-center text-controll search-icon">
+                        <img src="/regist/search.svg" />
+                    </div>
                 </template>
             </v-text-field>
         </div>
@@ -184,7 +186,10 @@
     }
 </script>
 <style scoped>
-
+    .search-icon img {
+        width: 32px;
+        height: 32px;
+    }
     .v-btn--contained {
         box-shadow: none !important;
     }

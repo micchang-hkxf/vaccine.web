@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --mode development",
-    "watch": "vue-cli-service build --watch --mode development",
-    "build-prod": "vue-cli-service build",
+    "copys": "powershell xcopy '..\\Templates\\*.*' '..\\Views\\*.*' /q /y /s",
+    "serve": "powershell xcopy '..\\Templates\\*.*' '..\\Views\\*.*' /q /y /s && vue-cli-service serve",
+    "build": "powershell xcopy '..\\Templates\\*.*' '..\\Views\\*.*' /q /y /s && vue-cli-service build",
+    "build-prod": "powershell xcopy '..\\Templates\\*.*' '..\\Views\\*.*' /q /y /s && vue-cli-service build",
+    "watch": "powershell xcopy '..\\Templates\\*.*' '..\\Views\\*.*' /q /y /s && vue-cli-service build --watch",
     "watch-prod": "vue-cli-service build --watch",
     "lint": "vue-cli-service lint"
   },
