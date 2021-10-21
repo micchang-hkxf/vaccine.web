@@ -10,7 +10,7 @@
             <v-card>
                 <com-table ref="auditTable" ref-key="table" :headers="headers" :items="items" :total-count="totalCount"
                            :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                           :change-page="changePage">
+                           :change-page="changePage" @sort="setSort">
                     <template v-slot:item.quota>
                         <div>45/<span style="color:dimgrey">60</span></div>
                     </template>
@@ -256,6 +256,10 @@
             selectType: '',
             keyWord: '',
             items: [],
+            inpage:1,
+            orderType: null,
+            isDesc: null,
+            ord: 0,
             headers: [
                 { text: '下載日期/時間', value: 'date', align: 'center', sortable: true, flex: 6 },
                 { text: '使用者', value: 'name', sortable: false, align: 'center', flex: 6 },
@@ -311,8 +315,10 @@
                     type: this.selectType,
                     keyWord: this.keyWord,
                     pageSize: this.itemsPerPage,
+                    orderType: this.ord,
                     page: page,
                 };
+
                 this.loadAudit(params).then((r) => {
                     this.totalCount = r.totalCount;
                     this.items.splice(0);
@@ -325,6 +331,7 @@
             },
             changePage: function (pager) {
                 console.log(pager);
+                this.inpage = pager.page;
                 ///{ page: 2, pageSize: 20}
                 this.getAudit(pager.page);
             },
@@ -422,7 +429,28 @@
             },
             alertClick: function () {
                 this.$bus.$emit('alert_show', false);
-            }
+            },
+            setSort: function (opt) {
+
+                console.log('opt', opt);
+                var od = (opt.isDesc[0]) ? 0 : 1;
+                if (od == this.ord || opt.index.length == 0 || opt.items.length == 0 || (this.orderType == opt.index[0] && this.isDesc == opt.isDesc[0])) {
+
+                    return;
+                }
+
+                this.isDesc = opt.isDesc[0];
+                //this.orderType = (opt.isDesc[0]) ? 1 : 0;
+                this.ord = od;
+
+                if (opt.index[0] == "date") {
+                    this.ord = (opt.isDesc[0]) ? 0 : 1;
+                }
+
+                this.getAudit(this.inpage);
+
+
+            },
         },
         components: {
             appLayout, appMenu, comTable, editor, comDialog, comConfirm, comLoading
