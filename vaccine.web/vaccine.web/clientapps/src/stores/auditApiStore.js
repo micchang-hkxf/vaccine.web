@@ -49,7 +49,8 @@ export default {
                         auditTypeFilter: auditTypeFilter,       // 報表類別
                         page: params.page,                      // 頁數
                         rows: params.pageSize,                  // 每頁筆數
-                        keyword: keyword                        // 關鍵字
+                        keyword: keyword,                        // 關鍵字
+                        orderType:params.orderType
                     },
                     headers: {
                         'x-token': rootGetters['user/getToken']
