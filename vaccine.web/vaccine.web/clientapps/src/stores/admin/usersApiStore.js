@@ -9,7 +9,7 @@ export default {
                 var datas, testmode = false;
 
                 try {
-
+       
                     var apiUrl = (testmode) ? '/testUserList.json' : `${state.apiRoot}api/User?api-version=1.0`,
                         result = { datas: [], state: '', totalCount: 0, page: 0, rows: 0 };
                     axios({
@@ -24,6 +24,7 @@ export default {
                             rows: params.rows,
                             userTypeFilter: params.userType,
                             //distFilter: params.zones,
+                            orderType: params.orderType,
                             zoneFilter: params.zones,
                             statusFilter: params.isEnable,
                             keyword: params.uName,
