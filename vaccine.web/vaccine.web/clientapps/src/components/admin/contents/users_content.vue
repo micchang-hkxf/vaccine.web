@@ -12,7 +12,7 @@
                 <v-card>
                     <com-table ref="userTable" ref-key="table" :headers="headers" :items="items" :total-count="totalCount" disabled-prop="disabled"
                                :items-per-page="itemsPerPage" :total-visible="totalVisible" :show-select="showSelect"
-                               :change-page="changePage">
+                               :change-page="changePage"  @sort="setSort">
                         <template v-slot:item.isEnable="items">
                             <div>{{   items.item.isEnable.toString()=='true' ? "啟用" : "停用" }}</div>
                         </template>
@@ -596,6 +596,9 @@
             changeStatus: null,
             alertrightcolor: '#736DB9',
             zones: [],
+            orderType: null,
+            isDesc: null,
+            ord: 0,
             userInfo: null,
             headers: [
                 //{ text: '', value: 'checked', align: 'start', sortable: false, flex: 3 },
@@ -790,6 +793,7 @@
                 if (this.selectUser) {
                     filter.uName = this.selectUser;
                 }
+                filter.orderType = this.ord;
                 var comp = this;
                 comp.$bus.$emit('type1_show4', "資料處理中...");
                 comp.searchUser(filter).then(function (result) {
@@ -988,6 +992,27 @@
                     return '兩次輸入號碼不一致';
                 }
                 return true;
+            },
+            setSort:function (opt) {
+
+                console.log('opt', opt);
+                var od = (opt.isDesc[0]) ? 0 : 1;
+                if (od== this.ord || opt.index.length == 0 || opt.items.length == 0 || (this.orderType == opt.index[0] && this.isDesc == opt.isDesc[0])) {
+            
+                    return;
+                }
+        
+                this.isDesc = opt.isDesc[0];
+                //this.orderType = (opt.isDesc[0]) ? 1 : 0;
+                this.ord = od;
+
+                if (opt.index[0] == "uName") {
+                    this.ord = (opt.isDesc[0]) ? 0 : 1;
+                }
+
+                this.search(this.inpage);
+
+
             },
             //modify: function () {
             //    this.$bus.$emit('userform_show', true);
