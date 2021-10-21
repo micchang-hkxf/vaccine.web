@@ -212,7 +212,7 @@
 
         },
         created: function () {
-            this.getUserInfo();
+            this.getUserInfoForLayout();
             window.addEventListener("resize", this.resizeEventHandler);
         },
         methods: {
@@ -295,7 +295,7 @@
             alertRightClick: function () {
                 this.$bus.$emit(`confirm_show`, false);
             },
-            getUserInfo() {
+            getUserInfoForLayout() {
                 var comp = this;
                 comp.getUserInfoData().then(function (result) {
                     comp.user = result.datas;
