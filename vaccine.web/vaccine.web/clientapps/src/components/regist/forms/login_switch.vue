@@ -1,13 +1,13 @@
 ﻿<template>
     <v-dialog v-model="isShow">
         <v-card class="login-switch">
-            <v-card-title class="login-header">請確認您的身份以查詢記錄<v-spacer></v-spacer><v-icon>close</v-icon></v-card-title>
+            <v-card-title class="login-header">請確認您的身分以查詢記錄<v-spacer></v-spacer><v-icon>close</v-icon></v-card-title>
             <v-card-text class="login-container d-flex justify-space-between">
                 <div class="login-logo d-flex justify-center align-center">
                     <img src="/regist/tp_pass_alert.svg" />
                 </div>
                 <div class="login-descript d-flex justify-center align-center">
-                    本服務將利用您的台北通帳號進行身份確認
+                    本服務將利用您的台北通帳號進行身分確認
                 </div>
             </v-card-text>
             <v-card-actions class="login-actions d-flex justify-space-between">

@@ -42,7 +42,7 @@
             <v-dialog v-model="authenticationDialog" persistent max-width="304px" max-height="392px" content-class="dialog">
                 <v-card>
                     <v-card-title>
-                        <span>身份驗證（{{authenticationSec}}s）</span>
+                        <span>身分驗證（{{authenticationSec}}s）</span>
                         <v-spacer></v-spacer>
                         <v-btn icon @click.stop="reload" :ripple="false">
                             <v-icon color="white">fas fa-times</v-icon>
@@ -52,7 +52,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <div class="dialog-sub-title">
-                                    請輸入６位數驗證碼以完成身份確認
+                                    請輸入６位數驗證碼以完成身分確認
                                 </div>
                                 <div>
                                     <v-label>驗證碼 <span class="red--text">*</span></v-label>
@@ -161,7 +161,7 @@
                             <v-card height="250px">
                                 <v-form lazy-validation ref="forgetAuthenticationForm">
                                     <div class="dialog-sub-title forget">
-                                        請輸入您的帳號以確認身份，系統將會傳送一組驗證碼至您的手機以進行重設密碼
+                                        請輸入您的帳號以確認身分，系統將會傳送一組驗證碼至您的手機以進行重設密碼
                                     </div>
                                     <div>
                                         <v-label>帳號 <span class="red--text">*</span></v-label>
@@ -187,7 +187,7 @@
                         <template v-slot:step-2="{next}">
                             <v-card height="250px">
                                 <div class="dialog-sub-title forget">
-                                    請輸入６位數驗證碼以完成身份確認（{{forgetAuthenticationSec}}s）
+                                    請輸入６位數驗證碼以完成身分確認（{{forgetAuthenticationSec}}s）
                                 </div>
                                 <div>
                                     <v-label>驗證碼 <span class="red--text">*</span></v-label>

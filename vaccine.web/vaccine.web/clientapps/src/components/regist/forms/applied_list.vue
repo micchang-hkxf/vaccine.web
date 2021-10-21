@@ -91,7 +91,7 @@
                 <div class="pls-login" v-if="!isLogin">
                     <div class="login-content">
                         <img src="/regist/lock.svg" />
-                        <div class="msg">請登入您的身份以查詢接種資料</div>
+                        <div class="msg">請登入您的身分以查詢接種資料</div>
                         <v-btn class="click-login" @click="toLogin">點我登入</v-btn>
                     </div>
                 </div>

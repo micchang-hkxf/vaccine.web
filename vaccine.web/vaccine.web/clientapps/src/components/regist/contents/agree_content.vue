@@ -1,7 +1,7 @@
 ﻿<template>
     <app-layout :app-bar="appBar" class="agree-content">
         <template v-slot:regist-title>
-            報名登記與身份驗證
+            報名登記與身分驗證
 
             <com-dialog ref="errorActivityId" ref-key="errorActivityId" eager>
                 <template v-slot:toolbar>

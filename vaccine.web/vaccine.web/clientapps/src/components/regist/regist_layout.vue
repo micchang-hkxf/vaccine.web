@@ -30,7 +30,7 @@
                         <v-btn color="#736DB9" @click.stop="confirmLogOut" :ripple="false" width="152" v-show="user!=null" class="large-button">
                             <v-img src="/regist/log-out.svg" width="25" height="24"></v-img>
                             <v-spacer></v-spacer>
-                            <span>改登其他身份</span>
+                            <span>改登其他身分</span>
                         </v-btn>
                         <div class="large-button" v-show="user==null" style="width:152px!important;">&nbsp;</div>
                     </div>
@@ -45,7 +45,7 @@
                             <v-btn color="#736DB9" @click.stop="confirmLogOut" :ripple="false" width="152" v-show="user!=null">
                                 <v-img src="/regist/log-out.svg" width="25" height="24"></v-img>
                                 <v-spacer></v-spacer>
-                                <span>改登其他身份</span>
+                                <span>改登其他身分</span>
                             </v-btn>
                         </div>
                     </div>

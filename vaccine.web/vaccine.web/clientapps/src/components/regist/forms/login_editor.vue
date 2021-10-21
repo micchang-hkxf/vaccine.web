@@ -1,11 +1,11 @@
 ﻿<template>
     <v-dialog v-model="isShow">
         <v-card class="login-editor">
-            <v-card-title class="login-header">請輸入您的資料以驗證身份</v-card-title>
+            <v-card-title class="login-header">請輸入您的資料以驗證身分</v-card-title>
             <v-card-text class="login-container">
                 <v-form ref="loginForm" autocomplete="off">
                     <div class="login-field">
-                        <div class="login-field-label">身份證字號<span class="red--text">*</span></div>
+                        <div class="login-field-label">身分證字號<span class="red--text">*</span></div>
                         <div class="login-field-container">
                             <v-text-field class="login-field-text" v-model="uid" placeholder="請輸入您的身分證字號" :rules="[v=>!!v||'請輸入您的身分證字號', checkUid]" maxlength="10"></v-text-field>
                         </div>

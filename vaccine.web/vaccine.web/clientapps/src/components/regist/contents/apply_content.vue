@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         <div class="apply-field">
-                            <div class="apply-field-label">身份證字號<span class="red--text">*</span></div>
+                            <div class="apply-field-label">身分證字號<span class="red--text">*</span></div>
                             <div class="apply-field-container">
                                 <v-text-field class="apply-field-text" placeholder="請輸入您的身分證字號" v-model="uId" :rules="[rules.required]" :disabled="getLockUserInfo.lockIdentify"></v-text-field>
                             </div>
