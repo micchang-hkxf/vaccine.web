@@ -715,7 +715,8 @@
                 item.editMode = true;
 
                 item.isEnable = (item.isEnable.toString() == 'true') ? 'false' : 'true';
-                item.zones = [(item.zones[0].data[0]) ? item.zones[0].data[0].distId : ""];//todo
+                var zone = item.zones[0].data.filter((x) => x.hasAuth == true);
+                item.zones = [(zone.length > 0) ? zone[0].distId : ""];
                 comp.alertImgSrc = comp.warningIcon;
                 comp.changeUser(item).then(function (result) {
 
