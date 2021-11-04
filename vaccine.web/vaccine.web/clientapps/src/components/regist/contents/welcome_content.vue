@@ -161,7 +161,7 @@
             height: 160px;
         }
         .welcome-panel {
-            height: auto;
+            height: calc(100 vh - 200px);
             background-color: #736DB9;
         }
 
@@ -192,7 +192,7 @@
         }
 
         .welcome-panel {
-            height: auto;
+            height: calc(100 vh - 200 px );
             background-color: #736DB9;
         }
 
@@ -217,6 +217,13 @@
             width: 170px;
             height: 170px;
         }
+
+        .welcome-panel {
+            height: calc(100 vh - 160 px );
+            background-color: #736DB9;
+        }
+
+
 
         .welcome-image-container {
             top: 10px;
