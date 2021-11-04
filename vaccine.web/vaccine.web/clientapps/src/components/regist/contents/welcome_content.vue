@@ -161,7 +161,7 @@
             height: 160px;
         }
         .welcome-panel {
-            height: calc(100 vh - 200px);
+            height: calc(100vh - 200px);
             background-color: #736DB9;
         }
 
@@ -192,7 +192,7 @@
         }
 
         .welcome-panel {
-            height: calc(100 vh - 200 px );
+            height: calc(100vh - 200px );
             background-color: #736DB9;
         }
 
@@ -219,7 +219,7 @@
         }
 
         .welcome-panel {
-            height: calc(100 vh - 160 px );
+            height: calc(100vh - 160px );
             background-color: #736DB9;
         }
 
