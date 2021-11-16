@@ -287,6 +287,7 @@
             },
             viewerTitle: '',
             alertMessage: '',
+            isLoading:false,
         }),
         computed: {
             ...mapGetters('audit', ['getTypes']),
@@ -350,7 +351,7 @@
                 comp.downloadAudit(item)
                     .then(function (result) {
                         comp.$bus.$emit('loading_hide4');
-
+                        comp.isLoading = false;
                         switch (result.state) {
                             case 'not found':
                                 comp.alertMessage = '紀錄不存在';
@@ -363,10 +364,12 @@
                             comp.$bus.$emit('alert_show', true);
                             return;
                         }
-                        comp.isLoading = false;
+                       
                         console.log(result);
                     })
                     .catch(function () {
+                        comp.$bus.$emit('loading_hide4');
+                        comp.isLoading = false;
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
@@ -390,15 +393,15 @@
             save: function () {
                 var comp = this;
                 console.log('result', comp.result);
-
+                comp.close();             
                 comp.$bus.$emit('loading_show4', '資料處理中...');
-
+                comp.isLoading = true;
                 comp.saveAudit(comp.result.model)
                     .then(function (result) {
                         comp.$bus.$emit('loading_hide4');
-
+                        comp.isLoading = false;
                         console.log(result);
-                        comp.close();
+                        //comp.close();
                         comp.getAudit(1);
 
                         // 新增完直接下載
@@ -418,7 +421,7 @@
                     })
                     .catch(function () {
                         comp.$bus.$emit('loading_hide4');
-
+                        comp.isLoading = false;
                         comp.alertMessage = '網站異常，請稍後再試';
                         comp.$bus.$emit('alert_show', true);
                     });
